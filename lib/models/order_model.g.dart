@@ -50,6 +50,21 @@ _$OrderModelImpl _$$OrderModelImplFromJson(Map<String, dynamic> json) =>
       deliveryFee: (json['deliveryFee'] as num?)?.toDouble() ?? 0.0,
       handlingFee: (json['handlingFee'] as num?)?.toDouble() ?? 0.0,
       total: (json['total'] as num?)?.toDouble() ?? 0.0,
+      vendorCommissionEnabled:
+          json['vendorCommissionEnabled'] as bool? ?? false,
+      vendorCommissionType:
+          json['vendorCommissionType'] as String? ?? 'PERCENT',
+      vendorCommissionRate:
+          (json['vendorCommissionRate'] as num?)?.toDouble() ?? 0.0,
+      vendorCommissionAmount:
+          (json['vendorCommissionAmount'] as num?)?.toDouble() ?? 0.0,
+      vendorGstOnCommissionEnabled:
+          json['vendorGstOnCommissionEnabled'] as bool? ?? false,
+      vendorGstRate: (json['vendorGstRate'] as num?)?.toDouble() ?? 0.0,
+      vendorGstOnCommissionAmount:
+          (json['vendorGstOnCommissionAmount'] as num?)?.toDouble() ?? 0.0,
+      vendorPayoutAmount:
+          (json['vendorPayoutAmount'] as num?)?.toDouble() ?? 0.0,
       paymentMethod:
           $enumDecodeNullable(_$PaymentMethodEnumMap, json['paymentMethod']) ??
               PaymentMethod.upi,
@@ -98,6 +113,14 @@ Map<String, dynamic> _$$OrderModelImplToJson(_$OrderModelImpl instance) =>
       'deliveryFee': instance.deliveryFee,
       'handlingFee': instance.handlingFee,
       'total': instance.total,
+      'vendorCommissionEnabled': instance.vendorCommissionEnabled,
+      'vendorCommissionType': instance.vendorCommissionType,
+      'vendorCommissionRate': instance.vendorCommissionRate,
+      'vendorCommissionAmount': instance.vendorCommissionAmount,
+      'vendorGstOnCommissionEnabled': instance.vendorGstOnCommissionEnabled,
+      'vendorGstRate': instance.vendorGstRate,
+      'vendorGstOnCommissionAmount': instance.vendorGstOnCommissionAmount,
+      'vendorPayoutAmount': instance.vendorPayoutAmount,
       'paymentMethod': _$PaymentMethodEnumMap[instance.paymentMethod]!,
       'isPaid': instance.isPaid,
       'pickupAddressId': instance.pickupAddressId,

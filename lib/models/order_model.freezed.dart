@@ -363,6 +363,20 @@ mixin _$OrderModel {
   /// the price breakdown always reconciles with the displayed total.
   double get handlingFee => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
+
+  /// What the vendor actually earns: service subtotal + delivery fee
+  /// (they run their own delivery) minus LNDRY's commission and GST on
+  /// that commission. A live estimate from the vendor's current
+  /// fee-settings config, not a locked settlement snapshot — see
+  /// backend `VendorOrdersService#_attachVendorEarnings`.
+  bool get vendorCommissionEnabled => throw _privateConstructorUsedError;
+  String get vendorCommissionType => throw _privateConstructorUsedError;
+  double get vendorCommissionRate => throw _privateConstructorUsedError;
+  double get vendorCommissionAmount => throw _privateConstructorUsedError;
+  bool get vendorGstOnCommissionEnabled => throw _privateConstructorUsedError;
+  double get vendorGstRate => throw _privateConstructorUsedError;
+  double get vendorGstOnCommissionAmount => throw _privateConstructorUsedError;
+  double get vendorPayoutAmount => throw _privateConstructorUsedError;
   PaymentMethod get paymentMethod => throw _privateConstructorUsedError;
   bool get isPaid => throw _privateConstructorUsedError;
   String get pickupAddressId => throw _privateConstructorUsedError;
@@ -387,6 +401,18 @@ mixin _$OrderModel {
   /// while the customer's decision is still outstanding.
   @JsonKey(includeFromJson: false, includeToJson: false)
   VendorReconciliationView? get pendingReconciliation =>
+      throw _privateConstructorUsedError;
+
+  /// Who currently holds the pickup/delivery leg, if anyone — parsed
+  /// manually in `_parseOrder` (same reason as `pendingReconciliation`
+  /// above), so the order-details screen can show the real current
+  /// assignee instead of always showing a generic "choose a rider"
+  /// prompt regardless of assignment state.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  RiderAssignmentView? get pickupAssignment =>
+      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  RiderAssignmentView? get deliveryAssignment =>
       throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -418,6 +444,14 @@ abstract class $OrderModelCopyWith<$Res> {
       double deliveryFee,
       double handlingFee,
       double total,
+      bool vendorCommissionEnabled,
+      String vendorCommissionType,
+      double vendorCommissionRate,
+      double vendorCommissionAmount,
+      bool vendorGstOnCommissionEnabled,
+      double vendorGstRate,
+      double vendorGstOnCommissionAmount,
+      double vendorPayoutAmount,
       PaymentMethod paymentMethod,
       bool isPaid,
       String pickupAddressId,
@@ -435,7 +469,11 @@ abstract class $OrderModelCopyWith<$Res> {
       DateTime createdAt,
       DateTime? updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      VendorReconciliationView? pendingReconciliation});
+      VendorReconciliationView? pendingReconciliation,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      RiderAssignmentView? pickupAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      RiderAssignmentView? deliveryAssignment});
 }
 
 /// @nodoc
@@ -467,6 +505,14 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? deliveryFee = null,
     Object? handlingFee = null,
     Object? total = null,
+    Object? vendorCommissionEnabled = null,
+    Object? vendorCommissionType = null,
+    Object? vendorCommissionRate = null,
+    Object? vendorCommissionAmount = null,
+    Object? vendorGstOnCommissionEnabled = null,
+    Object? vendorGstRate = null,
+    Object? vendorGstOnCommissionAmount = null,
+    Object? vendorPayoutAmount = null,
     Object? paymentMethod = null,
     Object? isPaid = null,
     Object? pickupAddressId = null,
@@ -484,6 +530,8 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? createdAt = null,
     Object? updatedAt = freezed,
     Object? pendingReconciliation = freezed,
+    Object? pickupAssignment = freezed,
+    Object? deliveryAssignment = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -550,6 +598,38 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      vendorCommissionEnabled: null == vendorCommissionEnabled
+          ? _value.vendorCommissionEnabled
+          : vendorCommissionEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      vendorCommissionType: null == vendorCommissionType
+          ? _value.vendorCommissionType
+          : vendorCommissionType // ignore: cast_nullable_to_non_nullable
+              as String,
+      vendorCommissionRate: null == vendorCommissionRate
+          ? _value.vendorCommissionRate
+          : vendorCommissionRate // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorCommissionAmount: null == vendorCommissionAmount
+          ? _value.vendorCommissionAmount
+          : vendorCommissionAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorGstOnCommissionEnabled: null == vendorGstOnCommissionEnabled
+          ? _value.vendorGstOnCommissionEnabled
+          : vendorGstOnCommissionEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      vendorGstRate: null == vendorGstRate
+          ? _value.vendorGstRate
+          : vendorGstRate // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorGstOnCommissionAmount: null == vendorGstOnCommissionAmount
+          ? _value.vendorGstOnCommissionAmount
+          : vendorGstOnCommissionAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorPayoutAmount: null == vendorPayoutAmount
+          ? _value.vendorPayoutAmount
+          : vendorPayoutAmount // ignore: cast_nullable_to_non_nullable
+              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
@@ -618,6 +698,14 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
           ? _value.pendingReconciliation
           : pendingReconciliation // ignore: cast_nullable_to_non_nullable
               as VendorReconciliationView?,
+      pickupAssignment: freezed == pickupAssignment
+          ? _value.pickupAssignment
+          : pickupAssignment // ignore: cast_nullable_to_non_nullable
+              as RiderAssignmentView?,
+      deliveryAssignment: freezed == deliveryAssignment
+          ? _value.deliveryAssignment
+          : deliveryAssignment // ignore: cast_nullable_to_non_nullable
+              as RiderAssignmentView?,
     ) as $Val);
   }
 }
@@ -647,6 +735,14 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       double deliveryFee,
       double handlingFee,
       double total,
+      bool vendorCommissionEnabled,
+      String vendorCommissionType,
+      double vendorCommissionRate,
+      double vendorCommissionAmount,
+      bool vendorGstOnCommissionEnabled,
+      double vendorGstRate,
+      double vendorGstOnCommissionAmount,
+      double vendorPayoutAmount,
       PaymentMethod paymentMethod,
       bool isPaid,
       String pickupAddressId,
@@ -664,7 +760,11 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       DateTime createdAt,
       DateTime? updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      VendorReconciliationView? pendingReconciliation});
+      VendorReconciliationView? pendingReconciliation,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      RiderAssignmentView? pickupAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      RiderAssignmentView? deliveryAssignment});
 }
 
 /// @nodoc
@@ -694,6 +794,14 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? deliveryFee = null,
     Object? handlingFee = null,
     Object? total = null,
+    Object? vendorCommissionEnabled = null,
+    Object? vendorCommissionType = null,
+    Object? vendorCommissionRate = null,
+    Object? vendorCommissionAmount = null,
+    Object? vendorGstOnCommissionEnabled = null,
+    Object? vendorGstRate = null,
+    Object? vendorGstOnCommissionAmount = null,
+    Object? vendorPayoutAmount = null,
     Object? paymentMethod = null,
     Object? isPaid = null,
     Object? pickupAddressId = null,
@@ -711,6 +819,8 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? createdAt = null,
     Object? updatedAt = freezed,
     Object? pendingReconciliation = freezed,
+    Object? pickupAssignment = freezed,
+    Object? deliveryAssignment = freezed,
   }) {
     return _then(_$OrderModelImpl(
       id: null == id
@@ -777,6 +887,38 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.total
           : total // ignore: cast_nullable_to_non_nullable
               as double,
+      vendorCommissionEnabled: null == vendorCommissionEnabled
+          ? _value.vendorCommissionEnabled
+          : vendorCommissionEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      vendorCommissionType: null == vendorCommissionType
+          ? _value.vendorCommissionType
+          : vendorCommissionType // ignore: cast_nullable_to_non_nullable
+              as String,
+      vendorCommissionRate: null == vendorCommissionRate
+          ? _value.vendorCommissionRate
+          : vendorCommissionRate // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorCommissionAmount: null == vendorCommissionAmount
+          ? _value.vendorCommissionAmount
+          : vendorCommissionAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorGstOnCommissionEnabled: null == vendorGstOnCommissionEnabled
+          ? _value.vendorGstOnCommissionEnabled
+          : vendorGstOnCommissionEnabled // ignore: cast_nullable_to_non_nullable
+              as bool,
+      vendorGstRate: null == vendorGstRate
+          ? _value.vendorGstRate
+          : vendorGstRate // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorGstOnCommissionAmount: null == vendorGstOnCommissionAmount
+          ? _value.vendorGstOnCommissionAmount
+          : vendorGstOnCommissionAmount // ignore: cast_nullable_to_non_nullable
+              as double,
+      vendorPayoutAmount: null == vendorPayoutAmount
+          ? _value.vendorPayoutAmount
+          : vendorPayoutAmount // ignore: cast_nullable_to_non_nullable
+              as double,
       paymentMethod: null == paymentMethod
           ? _value.paymentMethod
           : paymentMethod // ignore: cast_nullable_to_non_nullable
@@ -845,6 +987,14 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.pendingReconciliation
           : pendingReconciliation // ignore: cast_nullable_to_non_nullable
               as VendorReconciliationView?,
+      pickupAssignment: freezed == pickupAssignment
+          ? _value.pickupAssignment
+          : pickupAssignment // ignore: cast_nullable_to_non_nullable
+              as RiderAssignmentView?,
+      deliveryAssignment: freezed == deliveryAssignment
+          ? _value.deliveryAssignment
+          : deliveryAssignment // ignore: cast_nullable_to_non_nullable
+              as RiderAssignmentView?,
     ));
   }
 }
@@ -869,6 +1019,14 @@ class _$OrderModelImpl implements _OrderModel {
       this.deliveryFee = 0.0,
       this.handlingFee = 0.0,
       this.total = 0.0,
+      this.vendorCommissionEnabled = false,
+      this.vendorCommissionType = 'PERCENT',
+      this.vendorCommissionRate = 0.0,
+      this.vendorCommissionAmount = 0.0,
+      this.vendorGstOnCommissionEnabled = false,
+      this.vendorGstRate = 0.0,
+      this.vendorGstOnCommissionAmount = 0.0,
+      this.vendorPayoutAmount = 0.0,
       this.paymentMethod = PaymentMethod.upi,
       this.isPaid = false,
       this.pickupAddressId = '',
@@ -886,7 +1044,11 @@ class _$OrderModelImpl implements _OrderModel {
       required this.createdAt,
       this.updatedAt,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.pendingReconciliation})
+      this.pendingReconciliation,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.pickupAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.deliveryAssignment})
       : _items = items;
 
   factory _$OrderModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -948,6 +1110,36 @@ class _$OrderModelImpl implements _OrderModel {
   @override
   @JsonKey()
   final double total;
+
+  /// What the vendor actually earns: service subtotal + delivery fee
+  /// (they run their own delivery) minus LNDRY's commission and GST on
+  /// that commission. A live estimate from the vendor's current
+  /// fee-settings config, not a locked settlement snapshot — see
+  /// backend `VendorOrdersService#_attachVendorEarnings`.
+  @override
+  @JsonKey()
+  final bool vendorCommissionEnabled;
+  @override
+  @JsonKey()
+  final String vendorCommissionType;
+  @override
+  @JsonKey()
+  final double vendorCommissionRate;
+  @override
+  @JsonKey()
+  final double vendorCommissionAmount;
+  @override
+  @JsonKey()
+  final bool vendorGstOnCommissionEnabled;
+  @override
+  @JsonKey()
+  final double vendorGstRate;
+  @override
+  @JsonKey()
+  final double vendorGstOnCommissionAmount;
+  @override
+  @JsonKey()
+  final double vendorPayoutAmount;
   @override
   @JsonKey()
   final PaymentMethod paymentMethod;
@@ -994,9 +1186,21 @@ class _$OrderModelImpl implements _OrderModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final VendorReconciliationView? pendingReconciliation;
 
+  /// Who currently holds the pickup/delivery leg, if anyone — parsed
+  /// manually in `_parseOrder` (same reason as `pendingReconciliation`
+  /// above), so the order-details screen can show the real current
+  /// assignee instead of always showing a generic "choose a rider"
+  /// prompt regardless of assignment state.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final RiderAssignmentView? pickupAssignment;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final RiderAssignmentView? deliveryAssignment;
+
   @override
   String toString() {
-    return 'OrderModel(id: $id, orderNumber: $orderNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, deliveryAddressText: $deliveryAddressText, vendorId: $vendorId, deliveryPartnerId: $deliveryPartnerId, items: $items, status: $status, subtotal: $subtotal, platformFee: $platformFee, gstAmount: $gstAmount, deliveryFee: $deliveryFee, handlingFee: $handlingFee, total: $total, paymentMethod: $paymentMethod, isPaid: $isPaid, pickupAddressId: $pickupAddressId, deliveryAddressId: $deliveryAddressId, scheduledPickupAt: $scheduledPickupAt, estimatedDeliveryAt: $estimatedDeliveryAt, pickedUpAt: $pickedUpAt, deliveredAt: $deliveredAt, cancellationReason: $cancellationReason, vendorRejectionReason: $vendorRejectionReason, customerNotes: $customerNotes, customerRating: $customerRating, deliveryRating: $deliveryRating, customerReview: $customerReview, createdAt: $createdAt, updatedAt: $updatedAt, pendingReconciliation: $pendingReconciliation)';
+    return 'OrderModel(id: $id, orderNumber: $orderNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, deliveryAddressText: $deliveryAddressText, vendorId: $vendorId, deliveryPartnerId: $deliveryPartnerId, items: $items, status: $status, subtotal: $subtotal, platformFee: $platformFee, gstAmount: $gstAmount, deliveryFee: $deliveryFee, handlingFee: $handlingFee, total: $total, vendorCommissionEnabled: $vendorCommissionEnabled, vendorCommissionType: $vendorCommissionType, vendorCommissionRate: $vendorCommissionRate, vendorCommissionAmount: $vendorCommissionAmount, vendorGstOnCommissionEnabled: $vendorGstOnCommissionEnabled, vendorGstRate: $vendorGstRate, vendorGstOnCommissionAmount: $vendorGstOnCommissionAmount, vendorPayoutAmount: $vendorPayoutAmount, paymentMethod: $paymentMethod, isPaid: $isPaid, pickupAddressId: $pickupAddressId, deliveryAddressId: $deliveryAddressId, scheduledPickupAt: $scheduledPickupAt, estimatedDeliveryAt: $estimatedDeliveryAt, pickedUpAt: $pickedUpAt, deliveredAt: $deliveredAt, cancellationReason: $cancellationReason, vendorRejectionReason: $vendorRejectionReason, customerNotes: $customerNotes, customerRating: $customerRating, deliveryRating: $deliveryRating, customerReview: $customerReview, createdAt: $createdAt, updatedAt: $updatedAt, pendingReconciliation: $pendingReconciliation, pickupAssignment: $pickupAssignment, deliveryAssignment: $deliveryAssignment)';
   }
 
   @override
@@ -1032,6 +1236,24 @@ class _$OrderModelImpl implements _OrderModel {
             (identical(other.handlingFee, handlingFee) ||
                 other.handlingFee == handlingFee) &&
             (identical(other.total, total) || other.total == total) &&
+            (identical(other.vendorCommissionEnabled, vendorCommissionEnabled) ||
+                other.vendorCommissionEnabled == vendorCommissionEnabled) &&
+            (identical(other.vendorCommissionType, vendorCommissionType) ||
+                other.vendorCommissionType == vendorCommissionType) &&
+            (identical(other.vendorCommissionRate, vendorCommissionRate) ||
+                other.vendorCommissionRate == vendorCommissionRate) &&
+            (identical(other.vendorCommissionAmount, vendorCommissionAmount) ||
+                other.vendorCommissionAmount == vendorCommissionAmount) &&
+            (identical(other.vendorGstOnCommissionEnabled, vendorGstOnCommissionEnabled) ||
+                other.vendorGstOnCommissionEnabled ==
+                    vendorGstOnCommissionEnabled) &&
+            (identical(other.vendorGstRate, vendorGstRate) ||
+                other.vendorGstRate == vendorGstRate) &&
+            (identical(other.vendorGstOnCommissionAmount, vendorGstOnCommissionAmount) ||
+                other.vendorGstOnCommissionAmount ==
+                    vendorGstOnCommissionAmount) &&
+            (identical(other.vendorPayoutAmount, vendorPayoutAmount) ||
+                other.vendorPayoutAmount == vendorPayoutAmount) &&
             (identical(other.paymentMethod, paymentMethod) ||
                 other.paymentMethod == paymentMethod) &&
             (identical(other.isPaid, isPaid) || other.isPaid == isPaid) &&
@@ -1055,16 +1277,13 @@ class _$OrderModelImpl implements _OrderModel {
                 other.customerNotes == customerNotes) &&
             (identical(other.customerRating, customerRating) ||
                 other.customerRating == customerRating) &&
-            (identical(other.deliveryRating, deliveryRating) ||
-                other.deliveryRating == deliveryRating) &&
-            (identical(other.customerReview, customerReview) ||
-                other.customerReview == customerReview) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.updatedAt, updatedAt) ||
-                other.updatedAt == updatedAt) &&
-            (identical(other.pendingReconciliation, pendingReconciliation) ||
-                other.pendingReconciliation == pendingReconciliation));
+            (identical(other.deliveryRating, deliveryRating) || other.deliveryRating == deliveryRating) &&
+            (identical(other.customerReview, customerReview) || other.customerReview == customerReview) &&
+            (identical(other.createdAt, createdAt) || other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt) &&
+            (identical(other.pendingReconciliation, pendingReconciliation) || other.pendingReconciliation == pendingReconciliation) &&
+            (identical(other.pickupAssignment, pickupAssignment) || other.pickupAssignment == pickupAssignment) &&
+            (identical(other.deliveryAssignment, deliveryAssignment) || other.deliveryAssignment == deliveryAssignment));
   }
 
   @JsonKey(ignore: true)
@@ -1087,6 +1306,14 @@ class _$OrderModelImpl implements _OrderModel {
         deliveryFee,
         handlingFee,
         total,
+        vendorCommissionEnabled,
+        vendorCommissionType,
+        vendorCommissionRate,
+        vendorCommissionAmount,
+        vendorGstOnCommissionEnabled,
+        vendorGstRate,
+        vendorGstOnCommissionAmount,
+        vendorPayoutAmount,
         paymentMethod,
         isPaid,
         pickupAddressId,
@@ -1103,7 +1330,9 @@ class _$OrderModelImpl implements _OrderModel {
         customerReview,
         createdAt,
         updatedAt,
-        pendingReconciliation
+        pendingReconciliation,
+        pickupAssignment,
+        deliveryAssignment
       ]);
 
   @JsonKey(ignore: true)
@@ -1122,41 +1351,52 @@ class _$OrderModelImpl implements _OrderModel {
 
 abstract class _OrderModel implements OrderModel {
   const factory _OrderModel(
-          {required final String id,
-          final String orderNumber,
-          required final String customerId,
-          final String customerName,
-          final String customerPhone,
-          final String deliveryAddressText,
-          required final String vendorId,
-          final String? deliveryPartnerId,
-          required final List<OrderItem> items,
-          required final OrderStatus status,
-          final double subtotal,
-          final double platformFee,
-          final double gstAmount,
-          final double deliveryFee,
-          final double handlingFee,
-          final double total,
-          final PaymentMethod paymentMethod,
-          final bool isPaid,
-          final String pickupAddressId,
-          final String deliveryAddressId,
-          final DateTime? scheduledPickupAt,
-          final DateTime? estimatedDeliveryAt,
-          final DateTime? pickedUpAt,
-          final DateTime? deliveredAt,
-          final String? cancellationReason,
-          final String? vendorRejectionReason,
-          final String? customerNotes,
-          final double? customerRating,
-          final double? deliveryRating,
-          final String? customerReview,
-          required final DateTime createdAt,
-          final DateTime? updatedAt,
-          @JsonKey(includeFromJson: false, includeToJson: false)
-          final VendorReconciliationView? pendingReconciliation}) =
-      _$OrderModelImpl;
+      {required final String id,
+      final String orderNumber,
+      required final String customerId,
+      final String customerName,
+      final String customerPhone,
+      final String deliveryAddressText,
+      required final String vendorId,
+      final String? deliveryPartnerId,
+      required final List<OrderItem> items,
+      required final OrderStatus status,
+      final double subtotal,
+      final double platformFee,
+      final double gstAmount,
+      final double deliveryFee,
+      final double handlingFee,
+      final double total,
+      final bool vendorCommissionEnabled,
+      final String vendorCommissionType,
+      final double vendorCommissionRate,
+      final double vendorCommissionAmount,
+      final bool vendorGstOnCommissionEnabled,
+      final double vendorGstRate,
+      final double vendorGstOnCommissionAmount,
+      final double vendorPayoutAmount,
+      final PaymentMethod paymentMethod,
+      final bool isPaid,
+      final String pickupAddressId,
+      final String deliveryAddressId,
+      final DateTime? scheduledPickupAt,
+      final DateTime? estimatedDeliveryAt,
+      final DateTime? pickedUpAt,
+      final DateTime? deliveredAt,
+      final String? cancellationReason,
+      final String? vendorRejectionReason,
+      final String? customerNotes,
+      final double? customerRating,
+      final double? deliveryRating,
+      final String? customerReview,
+      required final DateTime createdAt,
+      final DateTime? updatedAt,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final VendorReconciliationView? pendingReconciliation,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final RiderAssignmentView? pickupAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final RiderAssignmentView? deliveryAssignment}) = _$OrderModelImpl;
 
   factory _OrderModel.fromJson(Map<String, dynamic> json) =
       _$OrderModelImpl.fromJson;
@@ -1202,6 +1442,28 @@ abstract class _OrderModel implements OrderModel {
   @override
   double get total;
   @override
+
+  /// What the vendor actually earns: service subtotal + delivery fee
+  /// (they run their own delivery) minus LNDRY's commission and GST on
+  /// that commission. A live estimate from the vendor's current
+  /// fee-settings config, not a locked settlement snapshot — see
+  /// backend `VendorOrdersService#_attachVendorEarnings`.
+  bool get vendorCommissionEnabled;
+  @override
+  String get vendorCommissionType;
+  @override
+  double get vendorCommissionRate;
+  @override
+  double get vendorCommissionAmount;
+  @override
+  bool get vendorGstOnCommissionEnabled;
+  @override
+  double get vendorGstRate;
+  @override
+  double get vendorGstOnCommissionAmount;
+  @override
+  double get vendorPayoutAmount;
+  @override
   PaymentMethod get paymentMethod;
   @override
   bool get isPaid;
@@ -1242,6 +1504,18 @@ abstract class _OrderModel implements OrderModel {
   /// while the customer's decision is still outstanding.
   @JsonKey(includeFromJson: false, includeToJson: false)
   VendorReconciliationView? get pendingReconciliation;
+  @override
+
+  /// Who currently holds the pickup/delivery leg, if anyone — parsed
+  /// manually in `_parseOrder` (same reason as `pendingReconciliation`
+  /// above), so the order-details screen can show the real current
+  /// assignee instead of always showing a generic "choose a rider"
+  /// prompt regardless of assignment state.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  RiderAssignmentView? get pickupAssignment;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  RiderAssignmentView? get deliveryAssignment;
   @override
   @JsonKey(ignore: true)
   _$$OrderModelImplCopyWith<_$OrderModelImpl> get copyWith =>

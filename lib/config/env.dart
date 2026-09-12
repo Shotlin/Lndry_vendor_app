@@ -29,6 +29,16 @@ abstract final class Env {
     };
   }
 
+  // Same host as [baseUrl], without the `/api/v1` REST path — Socket.IO
+  // connects to the server root (default `/socket.io/` path), not the API
+  // prefix.
+  static String get socketBaseUrl {
+    const suffix = '/api/v1';
+    return baseUrl.endsWith(suffix)
+        ? baseUrl.substring(0, baseUrl.length - suffix.length)
+        : baseUrl;
+  }
+
   // ── Mock flag ─────────────────────────────────────────────────────────────
   /// When true, every repository resolves to the MockCustomerRepository.
   /// Only set this for visual/golden tests or offline UI review.

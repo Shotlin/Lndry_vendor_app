@@ -19,6 +19,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   bool _isSaving = false;
+  String? _riderFormError;
 
   @override
   void dispose() {
@@ -30,6 +31,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
   void _showAddRiderForm() {
     _nameController.clear();
     _phoneController.clear();
+    _riderFormError = null;
 
     showModalBottomSheet<void>(
       context: context,
@@ -39,81 +41,95 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
       ),
       builder: (context) {
         final l10n = AppLocalizations.of(context);
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-            left: 20.w,
-            right: 20.w,
-            top: 24.h,
-          ),
-          child: Form(
-            key: _formKey,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    l10n.riderManagementAddRiderTitle,
-                    style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 4.h),
-                  Text(
-                    l10n.riderManagementAddRiderSubtitle,
-                    style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
-                  ),
-                  SizedBox(height: 16.h),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: l10n.employeesFullNameLabel,
-                      hintText: l10n.riderManagementFullNameHint,
-                      prefixIcon: const Icon(Icons.person_outline_rounded),
-                    ),
-                    validator: (value) => value == null || value.isEmpty ? l10n.employeesNameRequired : null,
-                  ),
-                  SizedBox(height: 12.h),
-                  TextFormField(
-                    controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(
-                      labelText: l10n.riderManagementPhoneLabel,
-                      hintText: l10n.employeesPhoneHint,
-                      prefixIcon: const Icon(Icons.phone_android_outlined),
-                    ),
-                    validator: (value) =>
-                        value == null || value.trim().length < 10 ? l10n.riderManagementPhoneInvalid : null,
-                  ),
-                  SizedBox(height: 24.h),
-                  ElevatedButton(
-                    onPressed: _isSaving ? null : _saveRider,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      foregroundColor: AppColors.white,
-                      padding: EdgeInsets.symmetric(vertical: 14.h),
-                    ),
-                    child: _isSaving
-                        ? SizedBox(
-                            width: 20.r,
-                            height: 20.r,
-                            child: const CircularProgressIndicator(color: AppColors.white, strokeWidth: 2),
-                          )
-                        : Text(l10n.riderManagementAddRiderTitle),
-                  ),
-                  SizedBox(height: 24.h),
-                ],
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                left: 20.w,
+                right: 20.w,
+                top: 24.h,
               ),
-            ),
-          ),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        l10n.riderManagementAddRiderTitle,
+                        style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        l10n.riderManagementAddRiderSubtitle,
+                        style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                      ),
+                      SizedBox(height: 16.h),
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: l10n.employeesFullNameLabel,
+                          hintText: l10n.riderManagementFullNameHint,
+                          prefixIcon: const Icon(Icons.person_outline_rounded),
+                        ),
+                        validator: (value) => value == null || value.isEmpty ? l10n.employeesNameRequired : null,
+                      ),
+                      SizedBox(height: 12.h),
+                      TextFormField(
+                        controller: _phoneController,
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          labelText: l10n.riderManagementPhoneLabel,
+                          hintText: l10n.employeesPhoneHint,
+                          prefixIcon: const Icon(Icons.phone_android_outlined),
+                        ),
+                        validator: (value) =>
+                            value == null || value.trim().length < 10 ? l10n.riderManagementPhoneInvalid : null,
+                      ),
+                      if (_riderFormError != null) ...[
+                        SizedBox(height: 12.h),
+                        Text(
+                          _riderFormError!,
+                          style: AppTypography.bodySmall.copyWith(color: AppColors.error),
+                        ),
+                      ],
+                      SizedBox(height: 24.h),
+                      ElevatedButton(
+                        onPressed: _isSaving ? null : () => _saveRider(setSheetState),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.primary,
+                          foregroundColor: AppColors.white,
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
+                        ),
+                        child: _isSaving
+                            ? SizedBox(
+                                width: 20.r,
+                                height: 20.r,
+                                child: const CircularProgressIndicator(color: AppColors.white, strokeWidth: 2),
+                              )
+                            : Text(l10n.riderManagementAddRiderTitle),
+                      ),
+                      SizedBox(height: 24.h),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
         );
       },
     );
   }
 
-  Future<void> _saveRider() async {
+  Future<void> _saveRider(StateSetter setSheetState) async {
     if (!_formKey.currentState!.validate()) return;
     final l10n = AppLocalizations.of(context);
-    setState(() => _isSaving = true);
+    setSheetState(() {
+      _isSaving = true;
+      _riderFormError = null;
+    });
     try {
       await ref.read(ridersListProvider.notifier).addRider(
             name: _nameController.text.trim(),
@@ -126,13 +142,10 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
         );
       }
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
-        );
-      }
-    } finally {
-      if (mounted) setState(() => _isSaving = false);
+      setSheetState(() {
+        _isSaving = false;
+        _riderFormError = l10n.dashboardActionFailed('$e');
+      });
     }
   }
 

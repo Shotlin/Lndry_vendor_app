@@ -26,6 +26,7 @@ dependencies:
   # ── Networking ────────────────────────────────────────────────────────────
   dio: any
   pretty_dio_logger: any
+  socket_io_client: ^2.0.3+1
 
   # ── Local Storage ─────────────────────────────────────────────────────────
   shared_preferences: ^2.3.1

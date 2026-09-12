@@ -1233,6 +1233,162 @@ abstract class AppLocalizations {
   /// **'Total Payable'**
   String get orderDetailsTotalPayable;
 
+  /// No description provided for @orderDetailsServiceFee.
+  ///
+  /// In en, this message translates to:
+  /// **'Service Fee'**
+  String get orderDetailsServiceFee;
+
+  /// No description provided for @orderDetailsLndryCommission.
+  ///
+  /// In en, this message translates to:
+  /// **'LNDRY Commission ({rate}%)'**
+  String orderDetailsLndryCommission(String rate);
+
+  /// No description provided for @orderDetailsLndryCommissionFlat.
+  ///
+  /// In en, this message translates to:
+  /// **'LNDRY Commission'**
+  String get orderDetailsLndryCommissionFlat;
+
+  /// No description provided for @orderDetailsGstOnCommission.
+  ///
+  /// In en, this message translates to:
+  /// **'GST on Commission ({rate}%)'**
+  String orderDetailsGstOnCommission(String rate);
+
+  /// No description provided for @orderDetailsVendorPayout.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ll Receive'**
+  String get orderDetailsVendorPayout;
+
+  /// No description provided for @orderDetailsPickupRiderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup Rider'**
+  String get orderDetailsPickupRiderLabel;
+
+  /// No description provided for @orderDetailsDeliveryRiderLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery Rider'**
+  String get orderDetailsDeliveryRiderLabel;
+
+  /// No description provided for @orderDetailsAssignRiderHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose who handles this order'**
+  String get orderDetailsAssignRiderHint;
+
+  /// No description provided for @orderDetailsAssignRiderButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign'**
+  String get orderDetailsAssignRiderButton;
+
+  /// No description provided for @orderDetailsAssignRiderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Rider'**
+  String get orderDetailsAssignRiderTitle;
+
+  /// No description provided for @orderDetailsNoActiveRiders.
+  ///
+  /// In en, this message translates to:
+  /// **'No active riders yet. Add one from Rider Management.'**
+  String get orderDetailsNoActiveRiders;
+
+  /// No description provided for @orderDetailsRiderAssignedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Rider assigned'**
+  String get orderDetailsRiderAssignedSnack;
+
+  /// No description provided for @orderDetailsBroadcastButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast to All Riders'**
+  String get orderDetailsBroadcastButton;
+
+  /// No description provided for @orderDetailsBroadcastSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Broadcast sent to active riders'**
+  String get orderDetailsBroadcastSnack;
+
+  /// No description provided for @orderDetailsAssignedToRider.
+  ///
+  /// In en, this message translates to:
+  /// **'Assigned to {name}'**
+  String orderDetailsAssignedToRider(String name);
+
+  /// No description provided for @orderDetailsOfferPendingBroadcast.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer sent to all riders — awaiting acceptance'**
+  String get orderDetailsOfferPendingBroadcast;
+
+  /// No description provided for @orderDetailsOfferPendingSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'Offered to {name} — awaiting response'**
+  String orderDetailsOfferPendingSingle(String name);
+
+  /// No description provided for @orderDetailsReassignButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Reassign'**
+  String get orderDetailsReassignButton;
+
+  /// No description provided for @jobOfferTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New Job Offer!'**
+  String get jobOfferTitle;
+
+  /// No description provided for @jobOfferOrderNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{orderNumber}'**
+  String jobOfferOrderNumber(String orderNumber);
+
+  /// No description provided for @jobOfferAcceptButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get jobOfferAcceptButton;
+
+  /// No description provided for @jobOfferAcceptedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Job accepted — check My Jobs'**
+  String get jobOfferAcceptedSnack;
+
+  /// No description provided for @jobOfferUnavailableSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'Too late — someone else already took this job'**
+  String get jobOfferUnavailableSnack;
+
+  /// No description provided for @jobOfferNotNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Not Now'**
+  String get jobOfferNotNowButton;
+
+  /// No description provided for @jobOfferCountdownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto re-offers in {time}'**
+  String jobOfferCountdownLabel(String time);
+
+  /// No description provided for @jobOfferExpiredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-offering now…'**
+  String get jobOfferExpiredLabel;
+
   /// No description provided for @orderDetailsCustomerReview.
   ///
   /// In en, this message translates to:

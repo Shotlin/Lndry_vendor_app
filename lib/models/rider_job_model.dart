@@ -53,6 +53,7 @@ class RiderJobModel {
     this.lines = const [],
     this.paymentMethod,
     this.balanceDuePaise,
+    this.offerExpiresAt,
   });
 
   final String assignmentId;
@@ -74,6 +75,11 @@ class RiderJobModel {
   /// 'COD' or 'ONLINE' — governs how the delivery-leg balance is settled.
   final String? paymentMethod;
   final int? balanceDuePaise;
+
+  /// Set only for a pending offer (GET /vendor/rider/offers) — when the
+  /// broadcast will automatically re-fire if nobody's accepted by then.
+  /// Null for a confirmed job (GET /vendor/rider/jobs).
+  final DateTime? offerExpiresAt;
 
   bool get isPickup => assignmentType == 'PICKUP';
   bool get hasLocation => lat != null && lng != null;
@@ -111,6 +117,9 @@ class RiderJobModel {
           const [],
       paymentMethod: json['payment_method'] as String?,
       balanceDuePaise: (json['balance_due_paise'] as num?)?.toInt(),
+      offerExpiresAt: json['offer_expires_at'] != null
+          ? DateTime.tryParse(json['offer_expires_at'] as String)
+          : null,
     );
   }
 }

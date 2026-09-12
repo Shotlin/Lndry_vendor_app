@@ -541,6 +541,25 @@ class ApiVendorRepository implements VendorRepository {
   }
 
   @override
+  Future<OrderModel> assignRider(String orderId, String employeeId) async {
+    await _dio.post(
+      '/vendor/orders/$orderId/assign-rider',
+      data: {'employee_id': employeeId},
+    );
+    return getOrder(orderId);
+  }
+
+  @override
+  Future<void> broadcastRider(String orderId) async {
+    await _dio.post('/vendor/orders/$orderId/broadcast-rider', data: const {});
+  }
+
+  @override
+  Future<void> acceptJobOffer(String orderId) async {
+    await _dio.post('/vendor/rider/offers/$orderId/accept', data: const {});
+  }
+
+  @override
   Future<OrderModel> markOrderReady(String orderId) async {
     return updateProcessingStage(orderId, 'PACKED');
   }
@@ -800,6 +819,15 @@ class ApiVendorRepository implements VendorRepository {
     final resp = await _dio.get('/vendor/rider/jobs/$orderId');
     final data = _extractData(resp.data as Map<String, dynamic>);
     return RiderJobModel.fromJson(data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<List<RiderJobModel>> getJobOffers() async {
+    final resp = await _dio.get('/vendor/rider/offers');
+    final list = _extractList(resp.data as Map<String, dynamic>);
+    return list
+        .map((e) => RiderJobModel.fromJson(e as Map<String, dynamic>))
+        .toList();
   }
 
   @override
@@ -1069,6 +1097,14 @@ class ApiVendorRepository implements VendorRepository {
         deliveryFee: _toDouble(json['delivery_fee']) ?? _toDouble(json['deliveryFee']) ?? 0.0,
         handlingFee: _toDouble(json['handling_fee']) ?? _toDouble(json['handlingFee']) ?? 0.0,
         total: _parseOrderTotal(json),
+        vendorCommissionEnabled: json['vendor_commission_enabled'] as bool? ?? false,
+        vendorCommissionType: json['vendor_commission_type'] as String? ?? 'PERCENT',
+        vendorCommissionRate: _toDouble(json['vendor_commission_rate']) ?? 0.0,
+        vendorCommissionAmount: _toDouble(json['vendor_commission_amount']) ?? 0.0,
+        vendorGstOnCommissionEnabled: json['vendor_gst_on_commission_enabled'] as bool? ?? false,
+        vendorGstRate: _toDouble(json['vendor_gst_rate']) ?? 0.0,
+        vendorGstOnCommissionAmount: _toDouble(json['vendor_gst_on_commission_amount']) ?? 0.0,
+        vendorPayoutAmount: _toDouble(json['vendor_payout_amount']) ?? 0.0,
         paymentMethod: _parsePaymentMethod(
             json['payment_method'] as String? ?? json['paymentMethod'] as String?),
         isPaid: (json['payment_status'] as String? ?? json['paymentStatus'] as String?)
@@ -1113,7 +1149,22 @@ class ApiVendorRepository implements VendorRepository {
                 json['created_at'] as String? ?? json['createdAt'] as String? ?? '') ??
             DateTime.now(),
         pendingReconciliation: _parsePendingReconciliation(json['latestReconciliation']),
+        pickupAssignment: _parseRiderAssignment(json['pickupAssignment']),
+        deliveryAssignment: _parseRiderAssignment(json['deliveryAssignment']),
       );
+
+  RiderAssignmentView? _parseRiderAssignment(dynamic raw) {
+    if (raw is! Map<String, dynamic>) return null;
+    final status = raw['status'] as String?;
+    if (status == null) return null;
+    return RiderAssignmentView(
+      riderName: raw['riderName'] as String?,
+      riderPhone: raw['riderPhone'] as String?,
+      status: status,
+      isBroadcastOffer: raw['isBroadcastOffer'] as bool? ?? false,
+      offerExpiresAt: DateTime.tryParse(raw['offerExpiresAt'] as String? ?? ''),
+    );
+  }
 
   VendorReconciliationView? _parsePendingReconciliation(dynamic raw) {
     if (raw is! Map<String, dynamic>) return null;

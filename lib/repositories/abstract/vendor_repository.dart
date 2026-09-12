@@ -139,7 +139,21 @@ abstract interface class VendorRepository {
   Future<OrderModel> acceptOrder(String orderId);
   
   Future<OrderModel> rejectOrder(String orderId, {String? reason});
-  
+
+  /// Manually assign (or reassign) a specific rider/staff to this order.
+  /// [employeeId] is a vendor_employees.id (as returned by [getRiders] /
+  /// [getEmployees]), not the person's own user id.
+  Future<OrderModel> assignRider(String orderId, String employeeId);
+
+  /// Broadcast this order to every active rider at once — first to
+  /// accept wins. Phase 3 of the rider-assignment initiative.
+  Future<void> broadcastRider(String orderId);
+
+  /// Atomically accept a job offer received over the socket
+  /// ([JobOffer]/`job:offered`) — the rider-side counterpart of
+  /// [broadcastRider]. Throws if someone else already claimed it.
+  Future<void> acceptJobOffer(String orderId);
+
   Future<OrderModel> markOrderReady(String orderId);
 
   Future<OrderModel> updateProcessingStage(String orderId, String stage);
@@ -224,6 +238,12 @@ abstract interface class VendorRepository {
   Future<List<RiderJobModel>> getRiderJobs();
 
   Future<RiderJobModel> getRiderJobDetail(String orderId);
+
+  /// Jobs currently offered to this rider, pending accept — Phase 6 of
+  /// the rider-assignment initiative. Checked on socket (re)connect so a
+  /// still-open offer isn't missed just because the app was closed or
+  /// briefly disconnected when it was first broadcast.
+  Future<List<RiderJobModel>> getJobOffers();
 
   /// Marks the rider as on the way to pickup (order status -> GOING_FOR_PICKUP).
   Future<void> startPickup(String orderId);

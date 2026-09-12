@@ -640,6 +640,99 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsTotalPayable => 'Total Payable';
 
   @override
+  String get orderDetailsServiceFee => 'Service Fee';
+
+  @override
+  String orderDetailsLndryCommission(String rate) {
+    return 'LNDRY Commission ($rate%)';
+  }
+
+  @override
+  String get orderDetailsLndryCommissionFlat => 'LNDRY Commission';
+
+  @override
+  String orderDetailsGstOnCommission(String rate) {
+    return 'GST on Commission ($rate%)';
+  }
+
+  @override
+  String get orderDetailsVendorPayout => 'You\'ll Receive';
+
+  @override
+  String get orderDetailsPickupRiderLabel => 'Pickup Rider';
+
+  @override
+  String get orderDetailsDeliveryRiderLabel => 'Delivery Rider';
+
+  @override
+  String get orderDetailsAssignRiderHint => 'Choose who handles this order';
+
+  @override
+  String get orderDetailsAssignRiderButton => 'Assign';
+
+  @override
+  String get orderDetailsAssignRiderTitle => 'Assign Rider';
+
+  @override
+  String get orderDetailsNoActiveRiders =>
+      'No active riders yet. Add one from Rider Management.';
+
+  @override
+  String get orderDetailsRiderAssignedSnack => 'Rider assigned';
+
+  @override
+  String get orderDetailsBroadcastButton => 'Broadcast to All Riders';
+
+  @override
+  String get orderDetailsBroadcastSnack => 'Broadcast sent to active riders';
+
+  @override
+  String orderDetailsAssignedToRider(String name) {
+    return 'Assigned to $name';
+  }
+
+  @override
+  String get orderDetailsOfferPendingBroadcast =>
+      'Offer sent to all riders — awaiting acceptance';
+
+  @override
+  String orderDetailsOfferPendingSingle(String name) {
+    return 'Offered to $name — awaiting response';
+  }
+
+  @override
+  String get orderDetailsReassignButton => 'Reassign';
+
+  @override
+  String get jobOfferTitle => 'New Job Offer!';
+
+  @override
+  String jobOfferOrderNumber(String orderNumber) {
+    return 'Order #$orderNumber';
+  }
+
+  @override
+  String get jobOfferAcceptButton => 'Accept';
+
+  @override
+  String get jobOfferAcceptedSnack => 'Job accepted — check My Jobs';
+
+  @override
+  String get jobOfferUnavailableSnack =>
+      'Too late — someone else already took this job';
+
+  @override
+  String get jobOfferNotNowButton => 'Not Now';
+
+  @override
+  String jobOfferCountdownLabel(String time) {
+    return 'Auto re-offers in $time';
+  }
+
+  @override
+  String get jobOfferExpiredLabel => 'Re-offering now…';
+
+  @override
   String get orderDetailsCustomerReview => 'Customer Review';
 
   @override

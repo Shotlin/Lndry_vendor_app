@@ -812,6 +812,21 @@ class DemoVendorRepository implements VendorRepository {
   }
 
   @override
+  Future<OrderModel> assignRider(String orderId, String employeeId) async {
+    final idx = _orders.indexWhere((o) => o.id == orderId);
+    if (idx != -1) {
+      return _orders[idx];
+    }
+    throw const ApiException(message: 'Order not found');
+  }
+
+  @override
+  Future<void> broadcastRider(String orderId) async {}
+
+  @override
+  Future<void> acceptJobOffer(String orderId) async {}
+
+  @override
   Future<OrderModel> markOrderReady(String orderId) async {
     return updateProcessingStage(orderId, 'PACKED');
   }
@@ -1020,6 +1035,9 @@ class DemoVendorRepository implements VendorRepository {
 
   @override
   Future<List<RiderJobModel>> getRiderJobs() async => const [];
+
+  @override
+  Future<List<RiderJobModel>> getJobOffers() async => const [];
 
   @override
   Future<RiderJobModel> getRiderJobDetail(String orderId) async {

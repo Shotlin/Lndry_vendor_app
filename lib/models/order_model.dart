@@ -233,6 +233,19 @@ class OrderModel with _$OrderModel {
     /// the price breakdown always reconciles with the displayed total.
     @Default(0.0) double handlingFee,
     @Default(0.0) double total,
+    /// What the vendor actually earns: service subtotal + delivery fee
+    /// (they run their own delivery) minus LNDRY's commission and GST on
+    /// that commission. A live estimate from the vendor's current
+    /// fee-settings config, not a locked settlement snapshot — see
+    /// backend `VendorOrdersService#_attachVendorEarnings`.
+    @Default(false) bool vendorCommissionEnabled,
+    @Default('PERCENT') String vendorCommissionType,
+    @Default(0.0) double vendorCommissionRate,
+    @Default(0.0) double vendorCommissionAmount,
+    @Default(false) bool vendorGstOnCommissionEnabled,
+    @Default(0.0) double vendorGstRate,
+    @Default(0.0) double vendorGstOnCommissionAmount,
+    @Default(0.0) double vendorPayoutAmount,
     @Default(PaymentMethod.upi) PaymentMethod paymentMethod,
     @Default(false) bool isPaid,
     @Default('') String pickupAddressId,
@@ -256,6 +269,15 @@ class OrderModel with _$OrderModel {
     /// while the customer's decision is still outstanding.
     @JsonKey(includeFromJson: false, includeToJson: false)
     VendorReconciliationView? pendingReconciliation,
+    /// Who currently holds the pickup/delivery leg, if anyone — parsed
+    /// manually in `_parseOrder` (same reason as `pendingReconciliation`
+    /// above), so the order-details screen can show the real current
+    /// assignee instead of always showing a generic "choose a rider"
+    /// prompt regardless of assignment state.
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    RiderAssignmentView? pickupAssignment,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    RiderAssignmentView? deliveryAssignment,
   }) = _OrderModel;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>
@@ -343,6 +365,29 @@ String _normalizePaymentMethod(String raw) {
   }
   // Safe fallback.
   return 'upi';
+}
+
+/// Plain (non-Freezed) view of who currently holds a pickup/delivery leg —
+/// parsed manually in `_parseOrder`, same pattern as [VendorReconciliationView].
+class RiderAssignmentView {
+  const RiderAssignmentView({
+    this.riderName,
+    this.riderPhone,
+    required this.status,
+    required this.isBroadcastOffer,
+    this.offerExpiresAt,
+  });
+
+  final String? riderName;
+  final String? riderPhone;
+
+  /// 'ASSIGNED' | 'OFFERED' | 'IN_TRANSIT' | other terminal statuses.
+  final String status;
+  final bool isBroadcastOffer;
+  final DateTime? offerExpiresAt;
+
+  bool get isPending => status == 'OFFERED';
+  bool get isConfirmed => status == 'ASSIGNED' || status == 'IN_TRANSIT';
 }
 
 /// Plain (non-Freezed) view of a reconciliation proposal, for the vendor's

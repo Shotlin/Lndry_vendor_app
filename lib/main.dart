@@ -10,6 +10,7 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/tokens/breakpoints.dart';
 import 'core/services/storage_service.dart';
+import 'core/widgets/job_offer_listener.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'providers/theme_provider.dart';
 import 'providers/locale_provider.dart';
@@ -78,6 +79,9 @@ class LndryVendorApp extends ConsumerWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           routerConfig: router,
+          builder: (context, child) {
+            return JobOfferListener(child: child ?? const SizedBox.shrink());
+          },
         );
       },
     );

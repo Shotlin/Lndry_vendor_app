@@ -642,6 +642,99 @@ class AppLocalizationsHi extends AppLocalizations {
   String get orderDetailsTotalPayable => 'कुल देय राशि';
 
   @override
+  String get orderDetailsServiceFee => 'सेवा शुल्क';
+
+  @override
+  String orderDetailsLndryCommission(String rate) {
+    return 'LNDRY कमीशन ($rate%)';
+  }
+
+  @override
+  String get orderDetailsLndryCommissionFlat => 'LNDRY कमीशन';
+
+  @override
+  String orderDetailsGstOnCommission(String rate) {
+    return 'कमीशन पर GST ($rate%)';
+  }
+
+  @override
+  String get orderDetailsVendorPayout => 'आपको मिलेगा';
+
+  @override
+  String get orderDetailsPickupRiderLabel => 'पिकअप राइडर';
+
+  @override
+  String get orderDetailsDeliveryRiderLabel => 'डिलीवरी राइडर';
+
+  @override
+  String get orderDetailsAssignRiderHint => 'चुनें कि यह ऑर्डर कौन संभालेगा';
+
+  @override
+  String get orderDetailsAssignRiderButton => 'असाइन करें';
+
+  @override
+  String get orderDetailsAssignRiderTitle => 'राइडर असाइन करें';
+
+  @override
+  String get orderDetailsNoActiveRiders =>
+      'अभी तक कोई सक्रिय राइडर नहीं है। राइडर प्रबंधन से एक जोड़ें।';
+
+  @override
+  String get orderDetailsRiderAssignedSnack => 'राइडर असाइन किया गया';
+
+  @override
+  String get orderDetailsBroadcastButton => 'सभी राइडर को भेजें';
+
+  @override
+  String get orderDetailsBroadcastSnack => 'सक्रिय राइडर को भेज दिया गया';
+
+  @override
+  String orderDetailsAssignedToRider(String name) {
+    return '$name को असाइन किया गया';
+  }
+
+  @override
+  String get orderDetailsOfferPendingBroadcast =>
+      'सभी राइडर को ऑफर भेजा गया — स्वीकृति की प्रतीक्षा है';
+
+  @override
+  String orderDetailsOfferPendingSingle(String name) {
+    return '$name को ऑफर किया गया — प्रतिक्रिया की प्रतीक्षा है';
+  }
+
+  @override
+  String get orderDetailsReassignButton => 'फिर से असाइन करें';
+
+  @override
+  String get jobOfferTitle => 'नया जॉब ऑफर!';
+
+  @override
+  String jobOfferOrderNumber(String orderNumber) {
+    return 'ऑर्डर #$orderNumber';
+  }
+
+  @override
+  String get jobOfferAcceptButton => 'स्वीकार करें';
+
+  @override
+  String get jobOfferAcceptedSnack => 'जॉब स्वीकार किया गया — माय जॉब्स देखें';
+
+  @override
+  String get jobOfferUnavailableSnack =>
+      'देर हो गई — यह जॉब किसी और ने ले लिया';
+
+  @override
+  String get jobOfferNotNowButton => 'अभी नहीं';
+
+  @override
+  String jobOfferCountdownLabel(String time) {
+    return '$time में फिर से भेजा जाएगा';
+  }
+
+  @override
+  String get jobOfferExpiredLabel => 'फिर से भेजा जा रहा है…';
+
+  @override
   String get orderDetailsCustomerReview => 'ग्राहक समीक्षा';
 
   @override
@@ -2885,6 +2978,102 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get orderDetailsTotalPayable => 'Total Payable';
+
+  @override
+  String get orderDetailsServiceFee => 'Service Fee';
+
+  @override
+  String orderDetailsLndryCommission(String rate) {
+    return 'LNDRY Commission ($rate%)';
+  }
+
+  @override
+  String get orderDetailsLndryCommissionFlat => 'LNDRY Commission';
+
+  @override
+  String orderDetailsGstOnCommission(String rate) {
+    return 'Commission Par GST ($rate%)';
+  }
+
+  @override
+  String get orderDetailsVendorPayout => 'Aapko Milega';
+
+  @override
+  String get orderDetailsPickupRiderLabel => 'Pickup Rider';
+
+  @override
+  String get orderDetailsDeliveryRiderLabel => 'Delivery Rider';
+
+  @override
+  String get orderDetailsAssignRiderHint =>
+      'Chunein Kaun Yeh Order Handle Karega';
+
+  @override
+  String get orderDetailsAssignRiderButton => 'Assign Karein';
+
+  @override
+  String get orderDetailsAssignRiderTitle => 'Rider Assign Karein';
+
+  @override
+  String get orderDetailsNoActiveRiders =>
+      'Abhi Tak Koi Active Rider Nahi Hai. Rider Management Se Ek Add Karein.';
+
+  @override
+  String get orderDetailsRiderAssignedSnack => 'Rider Assign Ho Gaya';
+
+  @override
+  String get orderDetailsBroadcastButton => 'Sabhi Rider Ko Bhejein';
+
+  @override
+  String get orderDetailsBroadcastSnack =>
+      'Active Riders Ko Broadcast Bhej Diya Gaya';
+
+  @override
+  String orderDetailsAssignedToRider(String name) {
+    return '$name Ko Assign Kiya Gaya';
+  }
+
+  @override
+  String get orderDetailsOfferPendingBroadcast =>
+      'Sabhi Riders Ko Offer Bhej Diya — Acceptance Ka Wait Hai';
+
+  @override
+  String orderDetailsOfferPendingSingle(String name) {
+    return '$name Ko Offer Kiya Gaya — Response Ka Wait Hai';
+  }
+
+  @override
+  String get orderDetailsReassignButton => 'Reassign Karein';
+
+  @override
+  String get jobOfferTitle => 'Naya Job Offer!';
+
+  @override
+  String jobOfferOrderNumber(String orderNumber) {
+    return 'Order #$orderNumber';
+  }
+
+  @override
+  String get jobOfferAcceptButton => 'Accept Karein';
+
+  @override
+  String get jobOfferAcceptedSnack =>
+      'Job Accept Ho Gaya — My Jobs Check Karein';
+
+  @override
+  String get jobOfferUnavailableSnack =>
+      'Der Ho Gayi — Yeh Job Kisi Aur Ne Le Liya';
+
+  @override
+  String get jobOfferNotNowButton => 'Abhi Nahi';
+
+  @override
+  String jobOfferCountdownLabel(String time) {
+    return '$time Mein Phir Se Bheja Jayega';
+  }
+
+  @override
+  String get jobOfferExpiredLabel => 'Phir Se Bheja Ja Raha Hai…';
 
   @override
   String get orderDetailsCustomerReview => 'Customer Review';

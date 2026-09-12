@@ -8,6 +8,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../l10n/order_status_l10n.dart';
 import '../../../../providers/orders_provider.dart';
+import '../../../../providers/riders_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
 
@@ -881,6 +882,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ),
                       SizedBox(height: 24.h),
 
+                      // Rider Assignment — manual assign/reassign, only
+                      // shown while the order is at a stage that can
+                      // actually be (re)assigned (mirrors the backend's
+                      // assignSpecificEmployee stage check).
+                      if (_assignablePurpose(order.status) != null) ...[
+                        _buildRiderAssignmentCard(order),
+                        SizedBox(height: 24.h),
+                      ],
+
                       // Garment Items List — while a re-evaluation is
                       // pending/disputed, this shows exactly what was
                       // submitted (services, quantities, final amount,
@@ -939,17 +949,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                               ),
                               const Divider(thickness: 1.5),
                               SizedBox(height: 8.h),
-                              _buildPriceSummaryRow(l10n.orderDetailsSubtotal, '₹${order.subtotal.toStringAsFixed(2)}'),
-                              _buildPriceSummaryRow(l10n.orderDetailsGstTaxes, '₹${order.gstAmount.toStringAsFixed(2)}'),
-                              _buildPriceSummaryRow(l10n.orderDetailsPlatformFee, '₹${order.platformFee.toStringAsFixed(2)}'),
+                              // Vendor-earnings breakdown — what THIS vendor
+                              // takes home, not the customer's bill. No
+                              // platform fee / GST / surge / handling here —
+                              // those are LNDRY/customer-side charges the
+                              // vendor never sees. Mirrors how Zomato/Swiggy
+                              // show restaurant partners their own earnings:
+                              // service value + delivery (vendor-run, kept in
+                              // full) minus LNDRY's commission and GST on it.
+                              _buildPriceSummaryRow(l10n.orderDetailsServiceFee, '₹${order.subtotal.toStringAsFixed(2)}'),
                               if (order.deliveryFee > 0)
                                 _buildPriceSummaryRow(l10n.orderDetailsDeliveryFee, '₹${order.deliveryFee.toStringAsFixed(2)}'),
-                              if (order.handlingFee > 0)
-                                _buildPriceSummaryRow(l10n.orderDetailsHandlingFee, '₹${order.handlingFee.toStringAsFixed(2)}'),
+                              if (order.vendorCommissionEnabled && order.vendorCommissionAmount > 0)
+                                _buildPriceSummaryRow(
+                                  order.vendorCommissionType == 'PERCENT'
+                                      ? l10n.orderDetailsLndryCommission(_formatRate(order.vendorCommissionRate))
+                                      : l10n.orderDetailsLndryCommissionFlat,
+                                  '−₹${order.vendorCommissionAmount.toStringAsFixed(2)}',
+                                ),
+                              if (order.vendorGstOnCommissionEnabled && order.vendorGstOnCommissionAmount > 0)
+                                _buildPriceSummaryRow(
+                                  l10n.orderDetailsGstOnCommission(_formatRate(order.vendorGstRate)),
+                                  '−₹${order.vendorGstOnCommissionAmount.toStringAsFixed(2)}',
+                                ),
                               const Divider(),
                               _buildPriceSummaryRow(
-                                l10n.orderDetailsTotalPayable,
-                                '₹${order.total.toStringAsFixed(2)}',
+                                l10n.orderDetailsVendorPayout,
+                                '₹${order.vendorPayoutAmount.toStringAsFixed(2)}',
                                 isBold: true,
                                 color: AppColors.primary,
                               ),
@@ -1173,6 +1199,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     );
   }
 
+  /// Formats a percentage rate for display, dropping a trailing ".0" (e.g.
+  /// 10.0 -> "10", 12.5 -> "12.5").
+  String _formatRate(double rate) =>
+      rate == rate.truncateToDouble() ? rate.toInt().toString() : rate.toString();
+
   static const double _timelineStageWidth = 64.0;
 
   Widget _buildTimeline(OrderStatus status) {
@@ -1289,6 +1320,227 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     }
     if (status == OrderStatus.delivered || status == OrderStatus.deliveryOtpVerified) return 6;
     return 0;
+  }
+
+  /// Returns 'PICKUP' or 'DELIVERY' when [status] is at a stage a rider can
+  /// be manually (re)assigned to, else null — mirrors the backend's
+  /// assignSpecificEmployee stage check exactly.
+  String? _assignablePurpose(OrderStatus status) {
+    const pickupStages = [
+      OrderStatus.vendorAccepted,
+      OrderStatus.pickupAssigned,
+      OrderStatus.goingForPickup,
+      OrderStatus.pickupOtpVerified,
+    ];
+    const deliveryStages = [
+      OrderStatus.packed,
+      OrderStatus.deliveryAssigned,
+      OrderStatus.outForDelivery,
+    ];
+    if (pickupStages.contains(status)) return 'PICKUP';
+    if (deliveryStages.contains(status)) return 'DELIVERY';
+    return null;
+  }
+
+  Widget _buildRiderAssignmentCard(OrderModel order) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
+    final purpose = _assignablePurpose(order.status)!;
+    final assignment = purpose == 'PICKUP' ? order.pickupAssignment : order.deliveryAssignment;
+
+    String statusLine;
+    if (assignment == null) {
+      statusLine = l10n.orderDetailsAssignRiderHint;
+    } else if (assignment.isConfirmed) {
+      statusLine = l10n.orderDetailsAssignedToRider(assignment.riderName ?? '');
+    } else if (assignment.isPending) {
+      statusLine = assignment.isBroadcastOffer
+          ? l10n.orderDetailsOfferPendingBroadcast
+          : l10n.orderDetailsOfferPendingSingle(assignment.riderName ?? '');
+    } else {
+      statusLine = l10n.orderDetailsAssignRiderHint;
+    }
+
+    return Container(
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkSurface : AppColors.white,
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20.r,
+                backgroundColor: AppColors.secondaryLight,
+                child: Icon(Icons.two_wheeler_rounded, color: AppColors.secondary),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      purpose == 'PICKUP' ? l10n.orderDetailsPickupRiderLabel : l10n.orderDetailsDeliveryRiderLabel,
+                      style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(
+                      statusLine,
+                      style: AppTypography.bodySmall.copyWith(
+                        color: assignment?.isConfirmed == true ? AppColors.secondary : AppColors.textSecondary,
+                        fontWeight: assignment?.isConfirmed == true ? FontWeight.w600 : FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              TextButton(
+                onPressed: () => _showAssignRiderSheet(order.id),
+                child: Text(assignment == null ? l10n.orderDetailsAssignRiderButton : l10n.orderDetailsReassignButton),
+              ),
+            ],
+          ),
+          // Broadcasting only makes sense while nobody has confirmed the
+          // job yet — once a rider is ASSIGNED/IN_TRANSIT, the backend
+          // now refuses a broadcast rather than silently clobbering that
+          // assignment, so hide the button in that state instead of
+          // letting the vendor hit an avoidable error.
+          if (assignment?.isConfirmed != true) ...[
+            SizedBox(height: 4.h),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                onPressed: () => _broadcastToRiders(order.id),
+                icon: Icon(Icons.campaign_outlined, size: 18.r),
+                label: Text(l10n.orderDetailsBroadcastButton),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Future<void> _broadcastToRiders(String orderId) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      await ref.read(vendorRepositoryProvider).broadcastRider(orderId);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.orderDetailsBroadcastSnack)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+        );
+      }
+    }
+  }
+
+  void _showAssignRiderSheet(String orderId) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      builder: (sheetContext) {
+        final l10n = AppLocalizations.of(sheetContext);
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.all(20.r),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.orderDetailsAssignRiderTitle, style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold)),
+                SizedBox(height: 16.h),
+                // Wrapped in its own Consumer rather than calling
+                // ref.watch directly in this builder — a raw
+                // showModalBottomSheet `builder:` callback is a plain
+                // function, not a widget Riverpod tracks, so a bare
+                // ref.watch here never triggers a rebuild when the
+                // (autoDispose) provider's data actually arrives — the
+                // sheet was stuck showing its initial loading spinner
+                // forever, for every vendor, regardless of whether they
+                // actually had riders. Consumer gives Riverpod a real
+                // Element to subscribe against, so this updates
+                // correctly once the fetch resolves.
+                Consumer(
+                  builder: (context, ref, _) {
+                    final ridersAsync = ref.watch(ridersListProvider);
+                    return ridersAsync.when(
+                      data: (riders) {
+                        final active = riders.where((r) => r.isActive).toList();
+                        if (active.isEmpty) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24.h),
+                            child: Text(l10n.orderDetailsNoActiveRiders, style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                          );
+                        }
+                        return ConstrainedBox(
+                          constraints: BoxConstraints(maxHeight: 360.h),
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: active.length,
+                            separatorBuilder: (_, __) => const Divider(),
+                            itemBuilder: (context, idx) {
+                              final rider = active[idx];
+                              return ListTile(
+                                contentPadding: EdgeInsets.zero,
+                                leading: CircleAvatar(
+                                  backgroundColor: AppColors.secondaryLight,
+                                  child: Icon(Icons.two_wheeler_rounded, color: AppColors.secondary),
+                                ),
+                                title: Text(rider.name),
+                                subtitle: rider.phone != null ? Text(rider.phone!) : null,
+                                onTap: () {
+                                  Navigator.pop(sheetContext);
+                                  _assignRider(orderId, rider.id);
+                                },
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      loading: () => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                      error: (err, _) => Text(l10n.riderManagementFailedToLoad('$err')),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _assignRider(String orderId, String employeeId) async {
+    final l10n = AppLocalizations.of(context);
+    try {
+      await ref.read(vendorRepositoryProvider).assignRider(orderId, employeeId);
+      ref.invalidate(orderDetailsProvider(orderId));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.orderDetailsRiderAssignedSnack)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+        );
+      }
+    }
   }
 
   Widget _buildBottomActions(OrderModel order) {
