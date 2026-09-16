@@ -7,6 +7,8 @@
   "commonReject": "अस्वीकार करें",
   "commonAccept": "स्वीकार करें",
   "commonExit": "बाहर निकलें",
+  "commonCallCustomer": "ग्राहक को कॉल करें",
+  "commonCouldNotOpenDialer": "फोन डायलर नहीं खुल सका। कृपया फिर से कोशिश करें।",
 
   "splashAppName": "LNDRY Vendor",
   "splashTagline": "पार्टनर पोर्टल",

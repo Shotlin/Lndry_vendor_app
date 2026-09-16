@@ -229,6 +229,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
       await _storage.saveString('auth_user_phone', authPhone);
       await _saveShopRole(result.shopRole, result.permissions);
 
+      // A newly registered phone in the vendor app always begins by
+      // completing its vendor application. Do this from the authoritative
+      // OTP response instead of depending on a subsequent profile request:
+      // it prevents a new account from briefly entering the dashboard and
+      // showing failed operational calls when a profile endpoint responds
+      // unexpectedly. A pre-invited rider is the one exception — riders use
+      // the job flow, not owner onboarding.
+      if (result.isNewUser && result.shopRole != 'VENDOR_RIDER') {
+        state = AuthNeedsVendorApplication(authPhone);
+        return;
+      }
+
       // Load the full vendor profile immediately using the verified session.
       // A 404 means this phone has no vendor record yet — route to the
       // onboarding wizard instead of surfacing it as an error; tokens are

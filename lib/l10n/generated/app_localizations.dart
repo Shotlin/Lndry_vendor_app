@@ -135,6 +135,18 @@ abstract class AppLocalizations {
   /// **'Exit'**
   String get commonExit;
 
+  /// Accessible label for the button that opens the customer's phone number in the device dialer
+  ///
+  /// In en, this message translates to:
+  /// **'Call customer'**
+  String get commonCallCustomer;
+
+  /// Shown when the device cannot open its default phone dialer
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the phone dialer. Please try again.'**
+  String get commonCouldNotOpenDialer;
+
   /// App name shown on splash screen
   ///
   /// In en, this message translates to:

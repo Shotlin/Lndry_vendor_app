@@ -93,6 +93,9 @@ class ApiVendorRepository implements VendorRepository {
 
     final userJson = data['user'] as Map<String, dynamic>? ?? {};
     final userPhone = userJson['phone'] as String? ?? '';
+    final isNewUser = userJson['isNewUser'] as bool? ??
+        userJson['is_new_user'] as bool? ??
+        false;
     final shopRole =
         userJson['shop_role'] as String? ?? userJson['shopRole'] as String?;
     final permissions = (userJson['permissions'] as List<dynamic>?)
@@ -104,6 +107,7 @@ class ApiVendorRepository implements VendorRepository {
       accessToken: accessToken,
       refreshToken: refreshToken,
       vendor: vendor,
+      isNewUser: isNewUser,
       userPhone: userPhone.isNotEmpty ? userPhone : null,
       shopRole: shopRole,
       permissions: permissions,
@@ -1053,7 +1057,11 @@ class ApiVendorRepository implements VendorRepository {
   /// orders that predate the paise-denominated fields.
   double _parseOrderTotal(Map<String, dynamic> json) {
     final paiseTotal = _toDouble(json['payable_amount_paise']) ??
-        _toDouble(json['estimated_amount_paise']);
+        _toDouble(json['estimated_amount_paise']) ??
+        // Older/vendor-order responses call the same confirmed amount
+        // `total_amount_paise`. Accept it as well, including when the API
+        // serializes it as a string, so the order total never falls to zero.
+        _toDouble(json['total_amount_paise']);
     if (paiseTotal != null && paiseTotal > 0) return paiseTotal / 100.0;
     return _toDouble(json['total_amount']) ?? _toDouble(json['totalAmount']) ?? 0.0;
   }

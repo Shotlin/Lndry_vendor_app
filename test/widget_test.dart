@@ -24,7 +24,10 @@ void main() {
     // Verify that the app builds without errors
     expect(find.byType(MaterialApp), findsOneWidget);
 
-    // Advance clock past the splash transition delay
-    await tester.pump(const Duration(seconds: 2));
+    // Advance past the splash transition and the bounded secure-storage
+    // fallback used on a fresh install. Without this, the test intentionally
+    // disposes while that defensive timeout is still pending.
+    await tester.pump(const Duration(seconds: 6));
+    await tester.pumpAndSettle();
   });
 }

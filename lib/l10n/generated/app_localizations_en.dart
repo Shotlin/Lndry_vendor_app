@@ -27,6 +27,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonExit => 'Exit';
 
   @override
+  String get commonCallCustomer => 'Call customer';
+
+  @override
+  String get commonCouldNotOpenDialer =>
+      'Could not open the phone dialer. Please try again.';
+
+  @override
   String get splashAppName => 'LNDRY Vendor';
 
   @override

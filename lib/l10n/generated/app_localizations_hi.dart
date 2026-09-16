@@ -27,6 +27,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get commonExit => 'बाहर निकलें';
 
   @override
+  String get commonCallCustomer => 'ग्राहक को कॉल करें';
+
+  @override
+  String get commonCouldNotOpenDialer =>
+      'फोन डायलर नहीं खुल सका। कृपया फिर से कोशिश करें।';
+
+  @override
   String get splashAppName => 'LNDRY Vendor';
 
   @override
@@ -2361,6 +2368,13 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get commonExit => 'Exit karein';
+
+  @override
+  String get commonCallCustomer => 'Customer ko call karein';
+
+  @override
+  String get commonCouldNotOpenDialer =>
+      'Phone dialer open nahi ho paya. Please phir try karein.';
 
   @override
   String get splashAppName => 'LNDRY Vendor';

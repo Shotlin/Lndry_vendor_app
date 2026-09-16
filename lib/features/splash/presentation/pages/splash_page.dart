@@ -34,6 +34,8 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     final state = ref.read(authProvider);
     if (state is AuthAuthenticated) {
       context.go(AppRoutes.dashboard);
+    } else if (state is AuthNeedsVendorApplication) {
+      context.go(AppRoutes.profileSetup);
     } else if (state is AuthUnauthenticated || state is AuthError) {
       context.go(AppRoutes.login);
     }

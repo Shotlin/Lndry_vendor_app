@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/design/design_system.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -26,15 +27,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   final _notesController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final Map<String, int> _confirmedQuantities = {};
+
   /// Decimal weight/area text controllers for continuous-unit lines (kg,
   /// sq ft) — these lines take an exact decimal correction instead of the
   /// +/- stepper used for piece-priced lines.
   final Map<String, TextEditingController> _weightControllers = {};
   final List<String> _reconcilePhotoUrls = [];
+
   /// order_line_id -> chosen replacement service, when the vendor moves an
   /// item to a different service than the customer originally picked (e.g.
   /// a delicate item found unsuitable for a per-kg wash).
   final Map<String, ReclassifyOption> _reclassifications = {};
+
   /// Brand-new services added during reconciliation — not tied to any
   /// existing order line. Covers a genuine addition, and the destination
   /// for garments moved out of a partially-reduced continuous-unit line
@@ -48,6 +52,24 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   bool _autoOpenedReconcile = false;
   final ScrollController _timelineScrollController = ScrollController();
   int? _timelineScrolledForIndex;
+
+  Future<void> _callCustomer(String phone) async {
+    // The phone number is deliberately never rendered in the interface. It
+    // is used only as the target of the native dialer, preventing accidental
+    // copying or sharing from the order screen.
+    final uri = Uri(
+      scheme: 'tel',
+      path: phone.replaceAll(RegExp(r'[^0-9+]'), ''),
+    );
+    final opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context).commonCouldNotOpenDialer),
+        ),
+      );
+    }
+  }
 
   @override
   void dispose() {
@@ -134,9 +156,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     }
   }
 
-  Future<void> _loadServiceCatalog(OrderModel order, void Function(void Function()) setSheetState) async {
+  Future<void> _loadServiceCatalog(
+    OrderModel order,
+    void Function(void Function()) setSheetState,
+  ) async {
     try {
-      final catalog = await ref.read(vendorRepositoryProvider).getVendorServiceCatalog();
+      final catalog = await ref
+          .read(vendorRepositoryProvider)
+          .getVendorServiceCatalog();
       setSheetState(() => _serviceCatalog = catalog);
     } catch (_) {
       // Non-critical — reclassification/add-service is optional; the vendor
@@ -149,18 +176,28 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// image/logo per item so this matches the shared-screen design language
   /// (only the vendor's own active, approved services ever appear here,
   /// resolved server-side, never a partial/broken list).
-  Future<ReclassifyOption?> _pickCatalogOption(BuildContext sheetContext, {String? title}) async {
+  Future<ReclassifyOption?> _pickCatalogOption(
+    BuildContext sheetContext, {
+    String? title,
+  }) async {
     final l10n = AppLocalizations.of(context);
     final sheetTitle = title ?? l10n.orderDetailsChooseServiceTitle;
     if (_serviceCatalog.isEmpty) return null;
     final grouped = <String, List<ReclassifyOption>>{};
     for (final option in _serviceCatalog) {
-      grouped.putIfAbsent(option.categoryName ?? l10n.orderDetailsOtherCategoryFallback, () => []).add(option);
+      grouped
+          .putIfAbsent(
+            option.categoryName ?? l10n.orderDetailsOtherCategoryFallback,
+            () => [],
+          )
+          .add(option);
     }
     return showModalBottomSheet<ReclassifyOption>(
       context: sheetContext,
       isScrollControlled: true,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20.r))),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
       builder: (context) => SafeArea(
         child: DraggableScrollableSheet(
           initialChildSize: 0.6,
@@ -171,29 +208,54 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             controller: scrollController,
             padding: EdgeInsets.all(16.r),
             children: [
-              Text(sheetTitle, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+              Text(
+                sheetTitle,
+                style: AppTypography.bodyLarge.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(height: 12.h),
               for (final entry in grouped.entries) ...[
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 6.h),
-                  child: Text(entry.key, style: AppTypography.bodySmall.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                  child: Text(
+                    entry.key,
+                    style: AppTypography.bodySmall.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 for (final option in entry.value)
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8.r),
-                      child: option.imageUrl != null && option.imageUrl!.isNotEmpty
-                          ? Image.network(option.imageUrl!, width: 44.r, height: 44.r, fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => _catalogPlaceholderIcon())
+                      child:
+                          option.imageUrl != null && option.imageUrl!.isNotEmpty
+                          ? Image.network(
+                              option.imageUrl!,
+                              width: 44.r,
+                              height: 44.r,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) =>
+                                  _catalogPlaceholderIcon(),
+                            )
                           : _catalogPlaceholderIcon(),
                     ),
-                    title: Text(option.garmentName, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                    title: Text(
+                      option.garmentName,
+                      style: AppTypography.bodyMedium.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     subtitle: Text(option.serviceName),
                     trailing: Text(
                       '₹${(option.ratePaise / 100).toStringAsFixed(0)}\n${_unitPricingLabel(option.unit)}',
                       textAlign: TextAlign.right,
-                      style: AppTypography.bodySmall.copyWith(fontWeight: FontWeight.bold),
+                      style: AppTypography.bodySmall.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     onTap: () => Navigator.of(context).pop(option),
                   ),
@@ -206,18 +268,25 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   }
 
   Widget _catalogPlaceholderIcon() => Container(
-        width: 44.r,
-        height: 44.r,
-        color: AppColors.primaryContainer,
-        child: Icon(Icons.local_laundry_service_outlined, color: AppColors.primary, size: 20.r),
-      );
+    width: 44.r,
+    height: 44.r,
+    color: AppColors.primaryContainer,
+    child: Icon(
+      Icons.local_laundry_service_outlined,
+      color: AppColors.primary,
+      size: 20.r,
+    ),
+  );
 
   Future<void> _pickReplacementService(
     BuildContext sheetContext,
     String lineKey,
     void Function(void Function()) setSheetState,
   ) async {
-    final selected = await _pickCatalogOption(sheetContext, title: AppLocalizations.of(context).orderDetailsMoveServiceTitle);
+    final selected = await _pickCatalogOption(
+      sheetContext,
+      title: AppLocalizations.of(context).orderDetailsMoveServiceTitle,
+    );
     if (selected != null) {
       setSheetState(() => _reclassifications[lineKey] = selected);
     }
@@ -230,7 +299,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     void Function(void Function()) setSheetState,
   ) async {
     final l10n = AppLocalizations.of(context);
-    final selected = await _pickCatalogOption(sheetContext, title: l10n.orderDetailsAddServiceTitle);
+    final selected = await _pickCatalogOption(
+      sheetContext,
+      title: l10n.orderDetailsAddServiceTitle,
+    );
     if (selected == null) return;
 
     final isWeight = selected.isWeightBased;
@@ -244,16 +316,26 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           autofocus: true,
           keyboardType: TextInputType.numberWithOptions(decimal: isWeight),
           decoration: InputDecoration(
-            labelText: isWeight ? _unitPricingLabel(selected.unit) : l10n.orderDetailsQuantityLabel,
-            suffixText: isWeight ? (selected.unit.toLowerCase() == 'sqft' ? 'sq ft' : 'kg') : null,
+            labelText: isWeight
+                ? _unitPricingLabel(selected.unit)
+                : l10n.orderDetailsQuantityLabel,
+            suffixText: isWeight
+                ? (selected.unit.toLowerCase() == 'sqft' ? 'sq ft' : 'kg')
+                : null,
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.commonCancel)),
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.commonCancel),
+          ),
           ElevatedButton(
             onPressed: () {
               final parsed = double.tryParse(controller.text.trim());
-              Navigator.pop(dialogContext, (parsed != null && parsed > 0) ? parsed : null);
+              Navigator.pop(
+                dialogContext,
+                (parsed != null && parsed > 0) ? parsed : null,
+              );
             },
             child: Text(l10n.orderDetailsAddButton),
           ),
@@ -263,12 +345,21 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     controller.dispose();
     if (quantity == null) return;
 
-    setSheetState(() => _newLineDrafts.add(_NewLineDraft(option: selected, quantity: quantity)));
+    setSheetState(
+      () => _newLineDrafts.add(
+        _NewLineDraft(option: selected, quantity: quantity),
+      ),
+    );
   }
 
-  Future<void> _addReconcilePhoto(void Function(void Function()) setSheetState) async {
+  Future<void> _addReconcilePhoto(
+    void Function(void Function()) setSheetState,
+  ) async {
     final picker = ImagePicker();
-    final XFile? picked = await picker.pickImage(source: ImageSource.camera, imageQuality: 85);
+    final XFile? picked = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 85,
+    );
     if (picked == null) return;
 
     setSheetState(() => _isUploadingReconcilePhoto = true);
@@ -280,7 +371,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'))),
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'),
+            ),
+          ),
         );
       }
     } finally {
@@ -291,9 +386,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   Future<void> _submitReconciliation(OrderModel order) async {
     final l10n = AppLocalizations.of(context);
     if (_reconcilePhotoUrls.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.orderDetailsPhotoRequired)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.orderDetailsPhotoRequired)));
       return;
     }
     if (_formKey.currentState!.validate()) {
@@ -314,12 +409,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
         final List<Map<String, dynamic>> lines = _confirmedQuantities.entries
             .where((e) => !_weightControllers.containsKey(e.key))
-            .map((e) => <String, dynamic>{
-                  'order_line_id': e.key,
-                  'confirmed_quantity': e.value,
-                  if (_reclassifications.containsKey(e.key))
-                    'new_garment_type_id': _reclassifications[e.key]!.garmentTypeId,
-                })
+            .map(
+              (e) => <String, dynamic>{
+                'order_line_id': e.key,
+                'confirmed_quantity': e.value,
+                if (_reclassifications.containsKey(e.key))
+                  'new_garment_type_id':
+                      _reclassifications[e.key]!.garmentTypeId,
+              },
+            )
             .toList();
         // A continuous-unit line's reclassification (if any) still needs to
         // reach the backend even though its quantity travels via
@@ -336,20 +434,26 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         final notes = _notesController.text.trim();
 
         final newLines = _newLineDrafts
-            .map((d) => <String, dynamic>{
-                  'garment_type_id': d.option.garmentTypeId,
-                  'quantity': d.quantity,
-                })
+            .map(
+              (d) => <String, dynamic>{
+                'garment_type_id': d.option.garmentTypeId,
+                'quantity': d.quantity,
+              },
+            )
             .toList();
 
-        await ref.read(ordersListProvider.notifier).reconcile(
-          order.id,
-          lines: lines,
-          confirmedWeightKg: confirmedWeightKg,
-          adjustmentReason: notes.isNotEmpty ? notes : 'Receipt reconciliation',
-          photoUrls: _reconcilePhotoUrls,
-          newLines: newLines.isNotEmpty ? newLines : null,
-        );
+        await ref
+            .read(ordersListProvider.notifier)
+            .reconcile(
+              order.id,
+              lines: lines,
+              confirmedWeightKg: confirmedWeightKg,
+              adjustmentReason: notes.isNotEmpty
+                  ? notes
+                  : 'Receipt reconciliation',
+              photoUrls: _reconcilePhotoUrls,
+              newLines: newLines.isNotEmpty ? newLines : null,
+            );
 
         ref.invalidate(orderDetailsProvider(order.id));
         if (mounted) {
@@ -361,7 +465,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.orderDetailsReconciliationFailed('$e'))),
+            SnackBar(
+              content: Text(l10n.orderDetailsReconciliationFailed('$e')),
+            ),
           );
         }
       } finally {
@@ -408,12 +514,16 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                     children: [
                       Text(
                         l10n.orderDetailsReconcileSheetTitle,
-                        style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold),
+                        style: AppTypography.headlineMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       Text(
                         l10n.orderDetailsReconcileSheetSubtitle,
-                        style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                        style: AppTypography.bodySmall.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                       SizedBox(height: 20.h),
 
@@ -426,7 +536,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         itemBuilder: (context, idx) {
                           final item = order.items[idx];
                           final key = item.orderLineId ?? item.serviceId;
-                          final count = _confirmedQuantities[key] ?? item.quantity;
+                          final count =
+                              _confirmedQuantities[key] ?? item.quantity;
                           final reclassifiedTo = _reclassifications[key];
                           final weightController = _weightControllers[key];
                           return Column(
@@ -436,17 +547,38 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          reclassifiedTo != null ? reclassifiedTo.garmentName : item.serviceName,
-                                          style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold),
+                                          reclassifiedTo != null
+                                              ? reclassifiedTo.garmentName
+                                              : item.serviceName,
+                                          style: AppTypography.bodyLarge
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                         ),
-                                        Text(l10n.orderDetailsEstQuantity(_quantityLabel(item)), style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+                                        Text(
+                                          l10n.orderDetailsEstQuantity(
+                                            _quantityLabel(item),
+                                          ),
+                                          style: AppTypography.bodySmall
+                                              .copyWith(
+                                                color: AppColors.textSecondary,
+                                              ),
+                                        ),
                                         if (reclassifiedTo != null)
                                           Text(
-                                            l10n.orderDetailsMovedFrom(item.serviceName, reclassifiedTo.serviceName),
-                                            style: AppTypography.bodySmall.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600),
+                                            l10n.orderDetailsMovedFrom(
+                                              item.serviceName,
+                                              reclassifiedTo.serviceName,
+                                            ),
+                                            style: AppTypography.bodySmall
+                                                .copyWith(
+                                                  color: AppColors.primary,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
                                           ),
                                       ],
                                     ),
@@ -456,11 +588,19 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                       width: 90.w,
                                       child: TextField(
                                         controller: weightController,
-                                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                        keyboardType:
+                                            const TextInputType.numberWithOptions(
+                                              decimal: true,
+                                            ),
                                         textAlign: TextAlign.center,
-                                        style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold),
+                                        style: AppTypography.bodyLarge.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                         decoration: InputDecoration(
-                                          suffixText: item.unit.toLowerCase() == 'sqft' ? 'sq ft' : 'kg',
+                                          suffixText:
+                                              item.unit.toLowerCase() == 'sqft'
+                                              ? 'sq ft'
+                                              : 'kg',
                                           isDense: true,
                                           border: const OutlineInputBorder(),
                                         ),
@@ -470,15 +610,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                     Row(
                                       children: [
                                         IconButton(
-                                          icon: const Icon(Icons.remove_circle_outline_rounded),
+                                          icon: const Icon(
+                                            Icons.remove_circle_outline_rounded,
+                                          ),
                                           onPressed: count > 0
-                                              ? () => setSheetState(() => _confirmedQuantities[key] = count - 1)
+                                              ? () => setSheetState(
+                                                  () =>
+                                                      _confirmedQuantities[key] =
+                                                          count - 1,
+                                                )
                                               : null,
                                         ),
-                                        Text('$count', style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                                        Text(
+                                          '$count',
+                                          style: AppTypography.bodyLarge
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                         IconButton(
-                                          icon: const Icon(Icons.add_circle_outline_rounded, color: AppColors.primary),
-                                          onPressed: () => setSheetState(() => _confirmedQuantities[key] = count + 1),
+                                          icon: const Icon(
+                                            Icons.add_circle_outline_rounded,
+                                            color: AppColors.primary,
+                                          ),
+                                          onPressed: () => setSheetState(
+                                            () => _confirmedQuantities[key] =
+                                                count + 1,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -488,9 +646,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: TextButton.icon(
-                                    onPressed: () => _pickReplacementService(context, key, setSheetState),
-                                    icon: const Icon(Icons.swap_horiz_rounded, size: 16),
-                                    label: Text(reclassifiedTo != null ? l10n.orderDetailsChangeServiceAgain : l10n.orderDetailsMoveServicePrompt),
+                                    onPressed: () => _pickReplacementService(
+                                      context,
+                                      key,
+                                      setSheetState,
+                                    ),
+                                    icon: const Icon(
+                                      Icons.swap_horiz_rounded,
+                                      size: 16,
+                                    ),
+                                    label: Text(
+                                      reclassifiedTo != null
+                                          ? l10n.orderDetailsChangeServiceAgain
+                                          : l10n.orderDetailsMoveServicePrompt,
+                                    ),
                                   ),
                                 ),
                             ],
@@ -509,24 +678,42 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             padding: EdgeInsets.symmetric(vertical: 4.h),
                             child: Row(
                               children: [
-                                Icon(Icons.add_circle_rounded, color: AppColors.success, size: 18.r),
+                                Icon(
+                                  Icons.add_circle_rounded,
+                                  color: AppColors.success,
+                                  size: 18.r,
+                                ),
                                 SizedBox(width: 8.w),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Text(_newLineDrafts[i].option.garmentName,
-                                          style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+                                      Text(
+                                        _newLineDrafts[i].option.garmentName,
+                                        style: AppTypography.bodyMedium
+                                            .copyWith(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                      ),
                                       Text(
                                         '${_formatDraftQuantity(_newLineDrafts[i])} · ${_newLineDrafts[i].option.serviceName}',
-                                        style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                                        style: AppTypography.bodySmall.copyWith(
+                                          color: AppColors.textSecondary,
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
                                 IconButton(
-                                  icon: Icon(Icons.close_rounded, size: 18.r, color: AppColors.error),
-                                  onPressed: () => setSheetState(() => _newLineDrafts.removeAt(i)),
+                                  icon: Icon(
+                                    Icons.close_rounded,
+                                    size: 18.r,
+                                    color: AppColors.error,
+                                  ),
+                                  onPressed: () => setSheetState(
+                                    () => _newLineDrafts.removeAt(i),
+                                  ),
                                 ),
                               ],
                             ),
@@ -537,7 +724,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: TextButton.icon(
-                            onPressed: () => _addNewServiceLine(context, setSheetState),
+                            onPressed: () =>
+                                _addNewServiceLine(context, setSheetState),
                             icon: const Icon(Icons.add_rounded, size: 18),
                             label: Text(l10n.orderDetailsAddServiceButton),
                           ),
@@ -558,7 +746,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       // Photo evidence — required before submit is enabled.
                       Text(
                         l10n.orderDetailsPhotoEvidenceLabel,
-                        style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                        style: AppTypography.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       SizedBox(height: 8.h),
                       Wrap(
@@ -577,18 +767,30 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                     color: AppColors.primaryContainer,
                                     borderRadius: BorderRadius.circular(12.r),
                                   ),
-                                  child: Image.network(_reconcilePhotoUrls[i], fit: BoxFit.cover),
+                                  child: Image.network(
+                                    _reconcilePhotoUrls[i],
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                                 Positioned(
                                   top: -6,
                                   right: -6,
                                   child: GestureDetector(
-                                    onTap: () => setSheetState(() => _reconcilePhotoUrls.removeAt(i)),
+                                    onTap: () => setSheetState(
+                                      () => _reconcilePhotoUrls.removeAt(i),
+                                    ),
                                     child: Container(
                                       width: 20.r,
                                       height: 20.r,
-                                      decoration: const BoxDecoration(color: AppColors.error, shape: BoxShape.circle),
-                                      child: Icon(Icons.close_rounded, color: AppColors.white, size: 14.r),
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.error,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.close_rounded,
+                                        color: AppColors.white,
+                                        size: 14.r,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -602,7 +804,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 color: AppColors.primaryContainer,
                                 borderRadius: BorderRadius.circular(12.r),
                               ),
-                              child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                              child: const Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
                             )
                           else
                             GestureDetector(
@@ -612,9 +818,16 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 height: 56.r,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(color: AppColors.primary, width: 1.5),
+                                  border: Border.all(
+                                    color: AppColors.primary,
+                                    width: 1.5,
+                                  ),
                                 ),
-                                child: Icon(Icons.add_a_photo_outlined, color: AppColors.primary, size: 22.r),
+                                child: Icon(
+                                  Icons.add_a_photo_outlined,
+                                  color: AppColors.primary,
+                                  size: 22.r,
+                                ),
                               ),
                             ),
                         ],
@@ -622,7 +835,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       SizedBox(height: 24.h),
 
                       ElevatedButton(
-                        onPressed: (_isReconciling || _reconcilePhotoUrls.isEmpty)
+                        onPressed:
+                            (_isReconciling || _reconcilePhotoUrls.isEmpty)
                             ? null
                             : () => _submitReconciliation(order),
                         style: ElevatedButton.styleFrom(
@@ -634,7 +848,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             ? SizedBox(
                                 width: 20.r,
                                 height: 20.r,
-                                child: const CircularProgressIndicator(color: AppColors.white, strokeWidth: 2),
+                                child: const CircularProgressIndicator(
+                                  color: AppColors.white,
+                                  strokeWidth: 2,
+                                ),
                               )
                             : Text(l10n.orderDetailsSubmitButton),
                       ),
@@ -655,9 +872,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     try {
       await ref.read(ordersListProvider.notifier).updateStage(id, stage);
       ref.invalidate(orderDetailsProvider(id));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersStageUpdatedSnack(stage))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.ordersStageUpdatedSnack(stage))),
+      );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
     }
   }
 
@@ -666,9 +887,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     try {
       await ref.read(ordersListProvider.notifier).acceptOrder(id);
       ref.invalidate(orderDetailsProvider(id));
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersOrderAcceptedSnack)));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.ordersOrderAcceptedSnack)));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
     }
   }
 
@@ -696,12 +921,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                 final reason = _reasonController.text.trim();
                 Navigator.pop(context);
                 try {
-                  await ref.read(ordersListProvider.notifier).rejectOrder(id, reason: reason);
+                  await ref
+                      .read(ordersListProvider.notifier)
+                      .rejectOrder(id, reason: reason);
                   ref.invalidate(orderDetailsProvider(id));
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersOrderRejectedSnack)));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.ordersOrderRejectedSnack)),
+                  );
                   context.pop();
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed('$e'))));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
@@ -720,12 +951,17 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : const Color(0xFFF8F9FD),
+      backgroundColor: isDark
+          ? AppColors.darkBackground
+          : const Color(0xFFF8F9FD),
       appBar: AppBar(
         backgroundColor: isDark ? AppColors.darkSurface : AppColors.white,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new_rounded, color: isDark ? AppColors.white : AppColors.textBlack),
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: isDark ? AppColors.white : AppColors.textBlack,
+          ),
           onPressed: () => context.pop(),
         ),
         title: Text(
@@ -739,17 +975,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       body: orderAsync.when(
         data: (order) {
           final statusColor = _getStatusColor(order.status);
-          
+
           if (!_autoOpenedReconcile) {
             final uri = GoRouterState.of(context).uri;
-            if (uri.fragment == 'reconcile' || uri.queryParameters['reconcile'] == 'true') {
+            if (uri.fragment == 'reconcile' ||
+                uri.queryParameters['reconcile'] == 'true') {
               _autoOpenedReconcile = true;
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 _showReconcileSheet(order);
               });
             }
           }
-          
+
           return Column(
             children: [
               Expanded(
@@ -762,9 +999,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       Container(
                         padding: EdgeInsets.all(16.r),
                         decoration: BoxDecoration(
-                          color: isDark ? AppColors.darkSurface : AppColors.white,
+                          color: isDark
+                              ? AppColors.darkSurface
+                              : AppColors.white,
                           borderRadius: BorderRadius.circular(16.r),
-                          border: Border.all(color: AppColors.outline.withOpacity(0.1)),
+                          border: Border.all(
+                            color: AppColors.outline.withOpacity(0.1),
+                          ),
                         ),
                         child: Column(
                           children: [
@@ -772,15 +1013,25 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  l10n.dashboardOrderIdLabel(order.orderNumber.isNotEmpty ? order.orderNumber : order.id.substring(0, 8).toUpperCase()),
-                                  style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold),
+                                  l10n.dashboardOrderIdLabel(
+                                    order.orderNumber.isNotEmpty
+                                        ? order.orderNumber
+                                        : order.id
+                                              .substring(0, 8)
+                                              .toUpperCase(),
+                                  ),
+                                  style: AppTypography.headlineMedium.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 SizedBox(height: 4.h),
                                 Text(
                                   _formatDateTime(order.createdAt),
-                                  style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+                                  style: AppTypography.bodySmall.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
                                 ),
                                 SizedBox(height: 10.h),
                                 // Full-width so a long status (e.g.
@@ -791,14 +1042,22 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 // a sliver, or overflowing off-screen.
                                 Container(
                                   width: double.infinity,
-                                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w,
+                                    vertical: 8.h,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: statusColor.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(14.r),
-                                    border: Border.all(color: statusColor.withOpacity(0.3)),
+                                    border: Border.all(
+                                      color: statusColor.withOpacity(0.3),
+                                    ),
                                   ),
                                   child: Text(
-                                    orderStatusLabel(l10n, order.status).toUpperCase(),
+                                    orderStatusLabel(
+                                      l10n,
+                                      order.status,
+                                    ).toUpperCase(),
                                     style: AppTypography.bodySmall.copyWith(
                                       fontWeight: FontWeight.bold,
                                       color: statusColor,
@@ -812,7 +1071,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ),
                       SizedBox(height: 16.h),
 
-                      if (order.status == OrderStatus.reconciliationPending) ...[
+                      if (order.status ==
+                          OrderStatus.reconciliationPending) ...[
                         _buildReconciliationBanner(
                           icon: Icons.hourglass_top_rounded,
                           color: AppColors.warning,
@@ -820,7 +1080,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                           body: l10n.orderDetailsAwaitingApprovalBody,
                         ),
                         SizedBox(height: 16.h),
-                      ] else if (order.status == OrderStatus.reconciliationDisputed) ...[
+                      ] else if (order.status ==
+                          OrderStatus.reconciliationDisputed) ...[
                         _buildReconciliationBanner(
                           icon: Icons.error_outline_rounded,
                           color: AppColors.error,
@@ -831,18 +1092,30 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ],
 
                       // Stepper / Timeline summary
-                      Text(l10n.orderDetailsLifecycleStepper, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                      Text(
+                        l10n.orderDetailsLifecycleStepper,
+                        style: AppTypography.bodyLarge.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 8.h),
                       _buildTimeline(order.status),
                       SizedBox(height: 24.h),
 
                       // Customer Info
-                      Text(l10n.orderDetailsCustomerDetails, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                      Text(
+                        l10n.orderDetailsCustomerDetails,
+                        style: AppTypography.bodyLarge.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 8.h),
                       Container(
                         padding: EdgeInsets.all(16.r),
                         decoration: BoxDecoration(
-                          color: isDark ? AppColors.darkSurface : AppColors.white,
+                          color: isDark
+                              ? AppColors.darkSurface
+                              : AppColors.white,
                           borderRadius: BorderRadius.circular(16.r),
                         ),
                         child: Column(
@@ -853,28 +1126,75 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 CircleAvatar(
                                   radius: 20.r,
                                   backgroundColor: AppColors.primaryContainer,
-                                  child: const Icon(Icons.person, color: AppColors.primary),
+                                  child: const Icon(
+                                    Icons.person,
+                                    color: AppColors.primary,
+                                  ),
                                 ),
                                 SizedBox(width: 12.w),
                                 Expanded(
                                   child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(order.customerName.isNotEmpty ? order.customerName : l10n.orderDetailsCustomerFallback, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
-                                    SizedBox(height: 2.h),
-                                    if (order.customerPhone.isNotEmpty) ...[
-                                      Text(order.customerPhone, style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        order.customerName.isNotEmpty
+                                            ? order.customerName
+                                            : l10n.orderDetailsCustomerFallback,
+                                        style: AppTypography.bodyLarge.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                       SizedBox(height: 2.h),
+                                      if (order.deliveryAddressText.isNotEmpty)
+                                        Text(
+                                          order.deliveryAddressText,
+                                          style: AppTypography.bodySmall
+                                              .copyWith(
+                                                color: AppColors.textSecondary,
+                                              ),
+                                        ),
+                                      if (order.customerNotes != null &&
+                                          order.customerNotes!.isNotEmpty) ...[
+                                        SizedBox(height: 6.h),
+                                        Text(
+                                          l10n.orderDetailsCustomerNote(
+                                            order.customerNotes!,
+                                          ),
+                                          style: AppTypography.bodySmall
+                                              .copyWith(
+                                                color: AppColors.warning,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
+                                      ],
                                     ],
-                                    if (order.deliveryAddressText.isNotEmpty)
-                                      Text(order.deliveryAddressText, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
-                                    if (order.customerNotes != null && order.customerNotes!.isNotEmpty) ...[
-                                      SizedBox(height: 6.h),
-                                      Text(l10n.orderDetailsCustomerNote(order.customerNotes!), style: AppTypography.bodySmall.copyWith(color: AppColors.warning, fontWeight: FontWeight.bold)),
-                                    ],
-                                  ],
                                   ),
                                 ),
+                                if (order.customerPhone.isNotEmpty) ...[
+                                  SizedBox(width: 8.w),
+                                  Semantics(
+                                    button: true,
+                                    label: l10n.commonCallCustomer,
+                                    child: Material(
+                                      color: AppColors.success,
+                                      shape: const CircleBorder(),
+                                      child: InkWell(
+                                        customBorder: const CircleBorder(),
+                                        onTap: () =>
+                                            _callCustomer(order.customerPhone),
+                                        child: SizedBox(
+                                          width: 44.r,
+                                          height: 44.r,
+                                          child: const Icon(
+                                            Icons.phone_rounded,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ],
                             ),
                           ],
@@ -904,12 +1224,19 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(l10n.orderDetailsGarmentItems, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                            Text(
+                              l10n.orderDetailsGarmentItems,
+                              style: AppTypography.bodyLarge.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             if (order.status == OrderStatus.receivedAtVendor)
                               TextButton.icon(
                                 onPressed: () => _showReconcileSheet(order),
                                 icon: const Icon(Icons.scale_rounded, size: 16),
-                                label: Text(l10n.orderDetailsReconcileCountButton),
+                                label: Text(
+                                  l10n.orderDetailsReconcileCountButton,
+                                ),
                               ),
                           ],
                         ),
@@ -917,7 +1244,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         Container(
                           padding: EdgeInsets.all(16.r),
                           decoration: BoxDecoration(
-                            color: isDark ? AppColors.darkSurface : AppColors.white,
+                            color: isDark
+                                ? AppColors.darkSurface
+                                : AppColors.white,
                             borderRadius: BorderRadius.circular(16.r),
                           ),
                           child: Column(
@@ -930,18 +1259,43 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 itemBuilder: (context, idx) {
                                   final item = order.items[idx];
                                   return Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 4.h),
+                                    padding: EdgeInsets.symmetric(
+                                      vertical: 4.h,
+                                    ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Text(item.serviceName, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
-                                            Text(l10n.orderDetailsQuantityValue(_quantityLabel(item)), style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+                                            Text(
+                                              item.serviceName,
+                                              style: AppTypography.bodyLarge
+                                                  .copyWith(
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                            ),
+                                            Text(
+                                              l10n.orderDetailsQuantityValue(
+                                                _quantityLabel(item),
+                                              ),
+                                              style: AppTypography.bodySmall
+                                                  .copyWith(
+                                                    color:
+                                                        AppColors.textSecondary,
+                                                  ),
+                                            ),
                                           ],
                                         ),
-                                        Text('₹${item.totalPrice.toStringAsFixed(2)}', style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                                        Text(
+                                          '₹${item.totalPrice.toStringAsFixed(2)}',
+                                          style: AppTypography.bodyLarge
+                                              .copyWith(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                        ),
                                       ],
                                     ),
                                   );
@@ -957,19 +1311,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                               // show restaurant partners their own earnings:
                               // service value + delivery (vendor-run, kept in
                               // full) minus LNDRY's commission and GST on it.
-                              _buildPriceSummaryRow(l10n.orderDetailsServiceFee, '₹${order.subtotal.toStringAsFixed(2)}'),
+                              _buildPriceSummaryRow(
+                                l10n.orderDetailsServiceFee,
+                                '₹${order.subtotal.toStringAsFixed(2)}',
+                              ),
                               if (order.deliveryFee > 0)
-                                _buildPriceSummaryRow(l10n.orderDetailsDeliveryFee, '₹${order.deliveryFee.toStringAsFixed(2)}'),
-                              if (order.vendorCommissionEnabled && order.vendorCommissionAmount > 0)
+                                _buildPriceSummaryRow(
+                                  l10n.orderDetailsDeliveryFee,
+                                  '₹${order.deliveryFee.toStringAsFixed(2)}',
+                                ),
+                              if (order.vendorCommissionEnabled &&
+                                  order.vendorCommissionAmount > 0)
                                 _buildPriceSummaryRow(
                                   order.vendorCommissionType == 'PERCENT'
-                                      ? l10n.orderDetailsLndryCommission(_formatRate(order.vendorCommissionRate))
+                                      ? l10n.orderDetailsLndryCommission(
+                                          _formatRate(
+                                            order.vendorCommissionRate,
+                                          ),
+                                        )
                                       : l10n.orderDetailsLndryCommissionFlat,
                                   '−₹${order.vendorCommissionAmount.toStringAsFixed(2)}',
                                 ),
-                              if (order.vendorGstOnCommissionEnabled && order.vendorGstOnCommissionAmount > 0)
+                              if (order.vendorGstOnCommissionEnabled &&
+                                  order.vendorGstOnCommissionAmount > 0)
                                 _buildPriceSummaryRow(
-                                  l10n.orderDetailsGstOnCommission(_formatRate(order.vendorGstRate)),
+                                  l10n.orderDetailsGstOnCommission(
+                                    _formatRate(order.vendorGstRate),
+                                  ),
                                   '−₹${order.vendorGstOnCommissionAmount.toStringAsFixed(2)}',
                                 ),
                               const Divider(),
@@ -988,25 +1356,42 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       // Customer Review — only present once the customer
                       // has actually submitted one for this order.
                       if (order.customerRating != null) ...[
-                        Text(l10n.orderDetailsCustomerReview, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                        Text(
+                          l10n.orderDetailsCustomerReview,
+                          style: AppTypography.bodyLarge.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         SizedBox(height: 8.h),
                         Container(
                           padding: EdgeInsets.all(16.r),
                           decoration: BoxDecoration(
-                            color: isDark ? AppColors.darkSurface : AppColors.white,
+                            color: isDark
+                                ? AppColors.darkSurface
+                                : AppColors.white,
                             borderRadius: BorderRadius.circular(16.r),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRatingRow(l10n.orderDetailsVendorRating, order.customerRating!),
+                              _buildRatingRow(
+                                l10n.orderDetailsVendorRating,
+                                order.customerRating!,
+                              ),
                               if (order.deliveryRating != null) ...[
                                 SizedBox(height: 8.h),
-                                _buildRatingRow(l10n.orderDetailsDeliveryRating, order.deliveryRating!),
+                                _buildRatingRow(
+                                  l10n.orderDetailsDeliveryRating,
+                                  order.deliveryRating!,
+                                ),
                               ],
-                              if (order.customerReview != null && order.customerReview!.isNotEmpty) ...[
+                              if (order.customerReview != null &&
+                                  order.customerReview!.isNotEmpty) ...[
                                 SizedBox(height: 12.h),
-                                Text(order.customerReview!, style: AppTypography.bodyMedium),
+                                Text(
+                                  order.customerReview!,
+                                  style: AppTypography.bodyMedium,
+                                ),
                               ],
                             ],
                           ),
@@ -1017,14 +1402,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   ),
                 ),
               ),
-              
+
               // Bottom Action panel (sticky)
               _buildBottomActions(order),
             ],
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text(l10n.orderDetailsErrorLoading('$err'))),
+        error: (err, _) =>
+            Center(child: Text(l10n.orderDetailsErrorLoading('$err'))),
       ),
     );
   }
@@ -1051,9 +1437,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold, color: color)),
+                Text(
+                  title,
+                  style: AppTypography.bodyMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
                 SizedBox(height: 4.h),
-                Text(body, style: AppTypography.bodySmall.copyWith(color: color)),
+                Text(
+                  body,
+                  style: AppTypography.bodySmall.copyWith(color: color),
+                ),
               ],
             ),
           ),
@@ -1071,14 +1466,19 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
           children: List.generate(
             5,
             (i) => Icon(
-              i < rating.round() ? Icons.star_rounded : Icons.star_border_rounded,
+              i < rating.round()
+                  ? Icons.star_rounded
+                  : Icons.star_border_rounded,
               color: AppColors.warning,
               size: 16.r,
             ),
           ),
         ),
         SizedBox(width: 8.w),
-        Text('$percent%', style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+        Text(
+          '$percent%',
+          style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
@@ -1097,14 +1497,21 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         Row(
           children: [
             Icon(
-              isDisputed ? Icons.report_problem_rounded : Icons.hourglass_top_rounded,
+              isDisputed
+                  ? Icons.report_problem_rounded
+                  : Icons.hourglass_top_rounded,
               size: 18.r,
               color: isDisputed ? AppColors.error : AppColors.warning,
             ),
             SizedBox(width: 6.w),
             Text(
-              isDisputed ? l10n.orderStatusReconciliationDisputed : l10n.orderDetailsSubmittedReevaluation,
-              style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold, color: isDisputed ? AppColors.error : AppColors.warning),
+              isDisputed
+                  ? l10n.orderStatusReconciliationDisputed
+                  : l10n.orderDetailsSubmittedReevaluation,
+              style: AppTypography.bodyLarge.copyWith(
+                fontWeight: FontWeight.bold,
+                color: isDisputed ? AppColors.error : AppColors.warning,
+              ),
             ),
           ],
         ),
@@ -1132,16 +1539,41 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(c.displayName, style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.bold)),
+                              Text(
+                                c.displayName,
+                                style: AppTypography.bodyLarge.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               if (c.isNew)
-                                Text(l10n.orderDetailsNewServiceAdded, style: AppTypography.bodySmall.copyWith(color: AppColors.success, fontWeight: FontWeight.w600))
+                                Text(
+                                  l10n.orderDetailsNewServiceAdded,
+                                  style: AppTypography.bodySmall.copyWith(
+                                    color: AppColors.success,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                )
                               else if (c.isReclassified)
-                                Text(l10n.orderDetailsMovedGeneric(c.previousName ?? l10n.orderDetailsItemFallback, c.displayName),
-                                    style: AppTypography.bodySmall.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+                                Text(
+                                  l10n.orderDetailsMovedGeneric(
+                                    c.previousName ??
+                                        l10n.orderDetailsItemFallback,
+                                    c.displayName,
+                                  ),
+                                  style: AppTypography.bodySmall.copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                             ],
                           ),
                         ),
-                        Text(c.quantityLabel, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+                        Text(
+                          c.quantityLabel,
+                          style: AppTypography.bodyMedium.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   );
@@ -1149,7 +1581,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               ),
               const Divider(thickness: 1.5),
               SizedBox(height: 8.h),
-              _buildPriceSummaryRow(l10n.orderDetailsPreviousTotal, '₹${(recon.previousPayableAmountPaise / 100).toStringAsFixed(2)}'),
+              _buildPriceSummaryRow(
+                l10n.orderDetailsPreviousTotal,
+                '₹${(recon.previousPayableAmountPaise / 100).toStringAsFixed(2)}',
+              ),
               _buildPriceSummaryRow(
                 l10n.orderDetailsFinalEvaluatedAmount,
                 '₹${(recon.proposedPayableAmountPaise / 100).toStringAsFixed(2)}',
@@ -1161,13 +1596,28 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ),
         if (recon.reason != null && recon.reason!.isNotEmpty) ...[
           SizedBox(height: 12.h),
-          Text(l10n.orderDetailsAdjustmentNoteHeader, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            l10n.orderDetailsAdjustmentNoteHeader,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           SizedBox(height: 4.h),
-          Text(recon.reason!, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+          Text(
+            recon.reason!,
+            style: AppTypography.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
         ],
         if (recon.photos.isNotEmpty) ...[
           SizedBox(height: 12.h),
-          Text(l10n.orderDetailsPhotoEvidenceHeader, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            l10n.orderDetailsPhotoEvidenceHeader,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           SizedBox(height: 8.h),
           SizedBox(
             height: 72.r,
@@ -1177,7 +1627,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               separatorBuilder: (_, __) => SizedBox(width: 8.w),
               itemBuilder: (context, idx) => ClipRRect(
                 borderRadius: BorderRadius.circular(10.r),
-                child: Image.network(recon.photos[idx], width: 72.r, height: 72.r, fit: BoxFit.cover),
+                child: Image.network(
+                  recon.photos[idx],
+                  width: 72.r,
+                  height: 72.r,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
@@ -1186,14 +1641,31 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     );
   }
 
-  Widget _buildPriceSummaryRow(String label, String value, {bool isBold = false, Color? color}) {
+  Widget _buildPriceSummaryRow(
+    String label,
+    String value, {
+    bool isBold = false,
+    Color? color,
+  }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: AppTypography.bodyMedium.copyWith(color: color, fontWeight: isBold ? FontWeight.bold : null)),
-          Text(value, style: AppTypography.bodyLarge.copyWith(color: color, fontWeight: isBold ? FontWeight.bold : null)),
+          Text(
+            label,
+            style: AppTypography.bodyMedium.copyWith(
+              color: color,
+              fontWeight: isBold ? FontWeight.bold : null,
+            ),
+          ),
+          Text(
+            value,
+            style: AppTypography.bodyLarge.copyWith(
+              color: color,
+              fontWeight: isBold ? FontWeight.bold : null,
+            ),
+          ),
         ],
       ),
     );
@@ -1201,8 +1673,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   /// Formats a percentage rate for display, dropping a trailing ".0" (e.g.
   /// 10.0 -> "10", 12.5 -> "12.5").
-  String _formatRate(double rate) =>
-      rate == rate.truncateToDouble() ? rate.toInt().toString() : rate.toString();
+  String _formatRate(double rate) => rate == rate.truncateToDouble()
+      ? rate.toInt().toString()
+      : rate.toString();
 
   static const double _timelineStageWidth = 64.0;
 
@@ -1227,8 +1700,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       _timelineScrolledForIndex = activeIndex;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!_timelineScrollController.hasClients) return;
-        final target = (activeIndex * _timelineStageWidth.w - 80.w)
-            .clamp(0.0, _timelineScrollController.position.maxScrollExtent);
+        final target = (activeIndex * _timelineStageWidth.w - 80.w).clamp(
+          0.0,
+          _timelineScrollController.position.maxScrollExtent,
+        );
         _timelineScrollController.animateTo(
           target,
           duration: const Duration(milliseconds: 300),
@@ -1267,17 +1742,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       color: isCurrent
                           ? AppColors.primary
                           : isActive
-                              ? AppColors.primary.withOpacity(0.5)
-                              : Colors.grey.shade400,
+                          ? AppColors.primary.withOpacity(0.5)
+                          : Colors.grey.shade400,
                       shape: BoxShape.circle,
-                      border: isCurrent ? Border.all(color: Colors.white, width: 2) : null,
+                      border: isCurrent
+                          ? Border.all(color: Colors.white, width: 2)
+                          : null,
                     ),
                     child: Center(
-                      child: Icon(
-                        Icons.check,
-                        size: 14.r,
-                        color: Colors.white,
-                      ),
+                      child: Icon(Icons.check, size: 14.r, color: Colors.white),
                     ),
                   ),
                   SizedBox(height: 6.h),
@@ -1288,7 +1761,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                     overflow: TextOverflow.ellipsis,
                     style: AppTypography.bodySmall.copyWith(
                       fontWeight: isCurrent ? FontWeight.bold : null,
-                      color: isCurrent ? AppColors.primary : AppColors.textSecondary,
+                      color: isCurrent
+                          ? AppColors.primary
+                          : AppColors.textSecondary,
                       fontSize: 9.sp,
                     ),
                   ),
@@ -1303,9 +1778,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   int _getStageIndex(OrderStatus status) {
     if (status == OrderStatus.waitingForVendorConfirmation) return 0;
-    if (status == OrderStatus.vendorAccepted || status == OrderStatus.pickupAssigned || status == OrderStatus.goingForPickup || status == OrderStatus.pickupOtpVerified || status == OrderStatus.pickedUp) return 1;
+    if (status == OrderStatus.vendorAccepted ||
+        status == OrderStatus.pickupAssigned ||
+        status == OrderStatus.goingForPickup ||
+        status == OrderStatus.pickupOtpVerified ||
+        status == OrderStatus.pickedUp)
+      return 1;
     if (status == OrderStatus.receivedAtVendor) return 2;
-    if (status == OrderStatus.reconciliationPending || status == OrderStatus.reconciliationDisputed) {
+    if (status == OrderStatus.reconciliationPending ||
+        status == OrderStatus.reconciliationDisputed) {
       return 3;
     }
     if (status == OrderStatus.processing) return 4;
@@ -1315,10 +1796,14 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     // statuses matched none of the conditions here and fell through to the
     // `return 0` default, making the stepper show WAITING as active even
     // for an order already out for delivery.
-    if (status == OrderStatus.packed || status == OrderStatus.deliveryAssigned || status == OrderStatus.outForDelivery) {
+    if (status == OrderStatus.packed ||
+        status == OrderStatus.deliveryAssigned ||
+        status == OrderStatus.outForDelivery) {
       return 5;
     }
-    if (status == OrderStatus.delivered || status == OrderStatus.deliveryOtpVerified) return 6;
+    if (status == OrderStatus.delivered ||
+        status == OrderStatus.deliveryOtpVerified)
+      return 6;
     return 0;
   }
 
@@ -1346,7 +1831,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
     final purpose = _assignablePurpose(order.status)!;
-    final assignment = purpose == 'PICKUP' ? order.pickupAssignment : order.deliveryAssignment;
+    final assignment = purpose == 'PICKUP'
+        ? order.pickupAssignment
+        : order.deliveryAssignment;
 
     String statusLine;
     if (assignment == null) {
@@ -1375,7 +1862,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               CircleAvatar(
                 radius: 20.r,
                 backgroundColor: AppColors.secondaryLight,
-                child: Icon(Icons.two_wheeler_rounded, color: AppColors.secondary),
+                child: Icon(
+                  Icons.two_wheeler_rounded,
+                  color: AppColors.secondary,
+                ),
               ),
               SizedBox(width: 12.w),
               Expanded(
@@ -1383,15 +1873,23 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      purpose == 'PICKUP' ? l10n.orderDetailsPickupRiderLabel : l10n.orderDetailsDeliveryRiderLabel,
-                      style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.bold),
+                      purpose == 'PICKUP'
+                          ? l10n.orderDetailsPickupRiderLabel
+                          : l10n.orderDetailsDeliveryRiderLabel,
+                      style: AppTypography.bodyMedium.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     SizedBox(height: 2.h),
                     Text(
                       statusLine,
                       style: AppTypography.bodySmall.copyWith(
-                        color: assignment?.isConfirmed == true ? AppColors.secondary : AppColors.textSecondary,
-                        fontWeight: assignment?.isConfirmed == true ? FontWeight.w600 : FontWeight.normal,
+                        color: assignment?.isConfirmed == true
+                            ? AppColors.secondary
+                            : AppColors.textSecondary,
+                        fontWeight: assignment?.isConfirmed == true
+                            ? FontWeight.w600
+                            : FontWeight.normal,
                       ),
                     ),
                   ],
@@ -1399,7 +1897,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               ),
               TextButton(
                 onPressed: () => _showAssignRiderSheet(order.id),
-                child: Text(assignment == null ? l10n.orderDetailsAssignRiderButton : l10n.orderDetailsReassignButton),
+                child: Text(
+                  assignment == null
+                      ? l10n.orderDetailsAssignRiderButton
+                      : l10n.orderDetailsReassignButton,
+                ),
               ),
             ],
           ),
@@ -1458,7 +1960,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(l10n.orderDetailsAssignRiderTitle, style: AppTypography.headlineMedium.copyWith(fontWeight: FontWeight.bold)),
+                Text(
+                  l10n.orderDetailsAssignRiderTitle,
+                  style: AppTypography.headlineMedium.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 SizedBox(height: 16.h),
                 // Wrapped in its own Consumer rather than calling
                 // ref.watch directly in this builder — a raw
@@ -1480,7 +1987,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         if (active.isEmpty) {
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: 24.h),
-                            child: Text(l10n.orderDetailsNoActiveRiders, style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                            child: Text(
+                              l10n.orderDetailsNoActiveRiders,
+                              style: AppTypography.bodyMedium.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
                           );
                         }
                         return ConstrainedBox(
@@ -1495,10 +2007,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 contentPadding: EdgeInsets.zero,
                                 leading: CircleAvatar(
                                   backgroundColor: AppColors.secondaryLight,
-                                  child: Icon(Icons.two_wheeler_rounded, color: AppColors.secondary),
+                                  child: Icon(
+                                    Icons.two_wheeler_rounded,
+                                    color: AppColors.secondary,
+                                  ),
                                 ),
                                 title: Text(rider.name),
-                                subtitle: rider.phone != null ? Text(rider.phone!) : null,
+                                subtitle: rider.phone != null
+                                    ? Text(rider.phone!)
+                                    : null,
                                 onTap: () {
                                   Navigator.pop(sheetContext);
                                   _assignRider(orderId, rider.id);
@@ -1512,7 +2029,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         padding: EdgeInsets.symmetric(vertical: 24),
                         child: Center(child: CircularProgressIndicator()),
                       ),
-                      error: (err, _) => Text(l10n.riderManagementFailedToLoad('$err')),
+                      error: (err, _) =>
+                          Text(l10n.riderManagementFailedToLoad('$err')),
                     );
                   },
                 ),
@@ -1650,11 +2168,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.hourglass_top_rounded, size: 18.r, color: AppColors.warning),
+            Icon(
+              Icons.hourglass_top_rounded,
+              size: 18.r,
+              color: AppColors.warning,
+            ),
             SizedBox(width: 8.w),
             Text(
               l10n.orderDetailsWaitingApprovalStatus,
-              style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600, color: AppColors.warning),
+              style: AppTypography.bodyMedium.copyWith(
+                fontWeight: FontWeight.w600,
+                color: AppColors.warning,
+              ),
             ),
           ],
         ),
@@ -1727,7 +2252,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text(l10n.ordersUpdateProcessingStageTitle, style: const TextStyle(fontWeight: FontWeight.bold)),
+                title: Text(
+                  l10n.ordersUpdateProcessingStageTitle,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               const Divider(),
               ListTile(
@@ -1768,8 +2296,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       OrderStatus.pickupAssigned ||
       OrderStatus.goingForPickup ||
       OrderStatus.pickupOtpVerified ||
-      OrderStatus.pickedUp =>
-        AppColors.primary,
+      OrderStatus.pickedUp => AppColors.primary,
       OrderStatus.receivedAtVendor => Color(0xFF8E2DE2),
       OrderStatus.reconciliationPending => AppColors.warning,
       OrderStatus.reconciliationDisputed => AppColors.error,
@@ -1779,8 +2306,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       OrderStatus.vendorRejected ||
       OrderStatus.autoRejected ||
       OrderStatus.customerCancelled ||
-      OrderStatus.adminCancelled =>
-        AppColors.error,
+      OrderStatus.adminCancelled => AppColors.error,
       _ => AppColors.textSecondary,
     };
   }

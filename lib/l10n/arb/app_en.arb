@@ -13,6 +13,10 @@
   "@commonAccept": {"description": "Accept an order"},
   "commonExit": "Exit",
   "@commonExit": {"description": "Exit the app confirmation button"},
+  "commonCallCustomer": "Call customer",
+  "@commonCallCustomer": {"description": "Accessible label for the button that opens the customer's phone number in the device dialer"},
+  "commonCouldNotOpenDialer": "Could not open the phone dialer. Please try again.",
+  "@commonCouldNotOpenDialer": {"description": "Shown when the device cannot open its default phone dialer"},
 
   "splashAppName": "LNDRY Vendor",
   "@splashAppName": {"description": "App name shown on splash screen"},

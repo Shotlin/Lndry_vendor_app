@@ -145,6 +145,14 @@ String? _vendorRedirect(
 
   final isProtectedPath = protectedPaths.contains(path) ||
       path.startsWith('/orders/details/');
+  // These routes carry authenticated vendor data even though they live
+  // outside the dashboard shell. They must never remain on screen after a
+  // logout; otherwise the session clears but the user appears stuck on the
+  // old onboarding or rider page.
+  final isAuthenticatedOnlyPath =
+      isProtectedPath ||
+      path == AppRoutes.profileSetup ||
+      path.startsWith('/rider');
 
   // While initialising or loading, stay put (don't flicker).
   if (authState is AuthInitial || authState is AuthLoading) return null;
@@ -154,12 +162,16 @@ String? _vendorRedirect(
 
   // Auth error: allow public browsing and send protected routes to login.
   if (authState is AuthError) {
-    if (isProtectedPath) return loginLocation(returnTo: state.uri.toString());
+    if (isAuthenticatedOnlyPath) {
+      return loginLocation(returnTo: state.uri.toString());
+    }
     return null;
   }
 
   if (authState is AuthUnauthenticated) {
-    if (isProtectedPath) return loginLocation(returnTo: state.uri.toString());
+    if (isAuthenticatedOnlyPath) {
+      return loginLocation(returnTo: state.uri.toString());
+    }
     return null;
   }
 
@@ -174,6 +186,11 @@ String? _vendorRedirect(
   }
 
   if (authState is AuthAuthenticated) {
+    // The onboarding wizard is only for an account that still needs an
+    // application. A previously saved return location must not send an
+    // approved vendor back into that wizard after they log in again.
+    if (path == AppRoutes.profileSetup) return AppRoutes.dashboard;
+
     // Riders get a restricted, job-fulfillment-only view — never the full
     // 5-tab dashboard shell or any dashboard-only route (Staff Management,
     // pricing, etc).

@@ -7,6 +7,8 @@
   "commonReject": "Reject karein",
   "commonAccept": "Accept karein",
   "commonExit": "Exit karein",
+  "commonCallCustomer": "Customer ko call karein",
+  "commonCouldNotOpenDialer": "Phone dialer open nahi ho paya. Please phir try karein.",
 
   "splashAppName": "LNDRY Vendor",
   "splashTagline": "Partner Portal",

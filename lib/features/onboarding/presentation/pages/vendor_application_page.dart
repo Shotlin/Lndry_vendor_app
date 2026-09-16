@@ -8,13 +8,13 @@ import '../../../../providers/auth_provider.dart';
 import '../../../../repositories/repositories.dart';
 
 List<String> _stepTitles(AppLocalizations l10n) => [
-      l10n.onboardingStepBusinessDetails,
-      l10n.onboardingStepOwnerBank,
-      l10n.onboardingStepLocation,
-      l10n.onboardingStepRadius,
-      l10n.onboardingStepDocuments,
-      l10n.onboardingStepReview,
-    ];
+  l10n.onboardingStepBusinessDetails,
+  l10n.onboardingStepOwnerBank,
+  l10n.onboardingStepLocation,
+  l10n.onboardingStepRadius,
+  l10n.onboardingStepDocuments,
+  l10n.onboardingStepReview,
+];
 
 /// Maps each step index to the correction-section key an admin can flag on
 /// `POST /vendors/admin/:id/review`. Null (the review step) is never locked —
@@ -29,12 +29,12 @@ const List<String?> _kStepSectionKeys = [
 ];
 
 Map<String, String> _sectionLabels(AppLocalizations l10n) => {
-      'business': l10n.onboardingStepBusinessDetails,
-      'owner_bank': l10n.onboardingStepOwnerBank,
-      'location': l10n.onboardingStepLocation,
-      'radius': l10n.onboardingStepRadius,
-      'documents': l10n.onboardingStepDocuments,
-    };
+  'business': l10n.onboardingStepBusinessDetails,
+  'owner_bank': l10n.onboardingStepOwnerBank,
+  'location': l10n.onboardingStepLocation,
+  'radius': l10n.onboardingStepRadius,
+  'documents': l10n.onboardingStepDocuments,
+};
 
 /// Onboarding wizard for a vendor with no vendor record yet
 /// (`AuthNeedsVendorApplication`). Mirrors the backend's 6-step application
@@ -45,7 +45,8 @@ class VendorApplicationPage extends ConsumerStatefulWidget {
   const VendorApplicationPage({super.key});
 
   @override
-  ConsumerState<VendorApplicationPage> createState() => _VendorApplicationPageState();
+  ConsumerState<VendorApplicationPage> createState() =>
+      _VendorApplicationPageState();
 }
 
 class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
@@ -91,22 +92,28 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
   final _capacityController = TextEditingController(text: '10');
 
   bool get _hasOwnerIdentity =>
-      _application?.documents.any((d) => d.documentType == 'owner_identity') ?? false;
+      _application?.documents.any((d) => d.documentType == 'owner_identity') ??
+      false;
   bool get _hasShopPhoto =>
-      _application?.documents.any((d) => d.documentType == 'shop_photo') ?? false;
+      _application?.documents.any((d) => d.documentType == 'shop_photo') ??
+      false;
   bool get _hasServiceList =>
-      _application?.documents.any((d) => d.documentType == 'service_list') ?? false;
+      _application?.documents.any((d) => d.documentType == 'service_list') ??
+      false;
 
   bool get _isCorrectionMode => _application?.status == 'CORRECTION_REQUIRED';
 
   /// Older correction requests (made before flagged sections existed) carry
   /// no section list — treat those as "everything's editable" rather than
   /// locking a vendor out of a correction they can't otherwise clear.
-  bool get _hasFlaggedSections => (_application?.correctionSections ?? []).isNotEmpty;
+  bool get _hasFlaggedSections =>
+      (_application?.correctionSections ?? []).isNotEmpty;
 
   bool _isStepEditable(int stepIndex) {
     if (!_isCorrectionMode || !_hasFlaggedSections) return true;
-    final key = stepIndex < _kStepSectionKeys.length ? _kStepSectionKeys[stepIndex] : null;
+    final key = stepIndex < _kStepSectionKeys.length
+        ? _kStepSectionKeys[stepIndex]
+        : null;
     if (key == null) return true;
     return _application!.correctionSections.contains(key);
   }
@@ -144,7 +151,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _loadError = null;
     });
     try {
-      final app = await ref.read(vendorRepositoryProvider).getOrCreateApplication();
+      final app = await ref
+          .read(vendorRepositoryProvider)
+          .getOrCreateApplication();
       if (!mounted) return;
       _populateFrom(app);
       setState(() {
@@ -185,7 +194,8 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
   }
 
   int _computeStartingStep(VendorApplicationModel app) {
-    if (app.status == 'CORRECTION_REQUIRED' && app.correctionSections.isNotEmpty) {
+    if (app.status == 'CORRECTION_REQUIRED' &&
+        app.correctionSections.isNotEmpty) {
       final firstFlagged = _kStepSectionKeys.indexWhere(
         (key) => key != null && app.correctionSections.contains(key),
       );
@@ -211,12 +221,18 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _stepError = null;
     });
     try {
-      final updated = await ref.read(vendorRepositoryProvider).updateApplicationBusiness(
+      final updated = await ref
+          .read(vendorRepositoryProvider)
+          .updateApplicationBusiness(
             _application!.id,
             name: _nameController.text.trim(),
             description: _descController.text.trim(),
-            gstNumber: _gstController.text.trim().isEmpty ? null : _gstController.text.trim(),
-            panNumber: _panController.text.trim().isEmpty ? null : _panController.text.trim(),
+            gstNumber: _gstController.text.trim().isEmpty
+                ? null
+                : _gstController.text.trim(),
+            panNumber: _panController.text.trim().isEmpty
+                ? null
+                : _panController.text.trim(),
           );
       if (!mounted) return;
       setState(() {
@@ -237,15 +253,23 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _stepError = null;
     });
     try {
-      final updated = await ref.read(vendorRepositoryProvider).updateApplicationOwner(
+      final updated = await ref
+          .read(vendorRepositoryProvider)
+          .updateApplicationOwner(
             _application!.id,
             ownerName: _ownerNameController.text.trim(),
-            email: _emailController.text.trim().isEmpty ? null : _emailController.text.trim(),
+            email: _emailController.text.trim().isEmpty
+                ? null
+                : _emailController.text.trim(),
             bankAccountNumber: _bankAccountController.text.trim().isEmpty
                 ? null
                 : _bankAccountController.text.trim(),
-            bankIfsc: _bankIfscController.text.trim().isEmpty ? null : _bankIfscController.text.trim(),
-            bankName: _bankNameController.text.trim().isEmpty ? null : _bankNameController.text.trim(),
+            bankIfsc: _bankIfscController.text.trim().isEmpty
+                ? null
+                : _bankIfscController.text.trim(),
+            bankName: _bankNameController.text.trim().isEmpty
+                ? null
+                : _bankNameController.text.trim(),
             bankHolderName: _bankHolderController.text.trim().isEmpty
                 ? null
                 : _bankHolderController.text.trim(),
@@ -269,11 +293,14 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _stepError = null;
     });
     try {
-      final updated = await ref.read(vendorRepositoryProvider).updateApplicationLocation(
+      final updated = await ref
+          .read(vendorRepositoryProvider)
+          .updateApplicationLocation(
             _application!.id,
             addressLine1: _addressLine1Controller.text.trim(),
-            addressLine2:
-                _addressLine2Controller.text.trim().isEmpty ? null : _addressLine2Controller.text.trim(),
+            addressLine2: _addressLine2Controller.text.trim().isEmpty
+                ? null
+                : _addressLine2Controller.text.trim(),
             city: _cityController.text.trim(),
             state: _stateController.text.trim(),
             pincode: _pincodeController.text.trim(),
@@ -298,7 +325,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _stepError = null;
     });
     try {
-      final captured = await ref.read(locationCaptureServiceProvider).captureCurrentLocation();
+      final captured = await ref
+          .read(locationCaptureServiceProvider)
+          .captureCurrentLocation();
       if (!mounted) return;
       setState(() {
         _addressLine1Controller.text = captured.line1;
@@ -321,7 +350,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       _stepError = null;
     });
     try {
-      final updated = await ref.read(vendorRepositoryProvider).updateApplicationRadius(
+      final updated = await ref
+          .read(vendorRepositoryProvider)
+          .updateApplicationRadius(
             _application!.id,
             _requestedRadiusKm,
             requestedDailyCapacity: _requestedDailyCapacity,
@@ -343,13 +374,20 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     if (documentType == 'service_list') {
       file = await openFile(
         acceptedTypeGroups: const [
-          XTypeGroup(label: 'PDF', extensions: ['pdf'], mimeTypes: ['application/pdf']),
+          XTypeGroup(
+            label: 'PDF',
+            extensions: ['pdf'],
+            mimeTypes: ['application/pdf'],
+          ),
         ],
       );
       if (file == null) return;
     } else {
       final picker = ImagePicker();
-      file = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+      file = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
       if (file == null) return;
     }
 
@@ -366,8 +404,14 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     try {
       await ref
           .read(vendorRepositoryProvider)
-          .uploadApplicationDocument(_application!.id, documentType: documentType, file: file);
-      final refreshed = await ref.read(vendorRepositoryProvider).getApplicationMe();
+          .uploadApplicationDocument(
+            _application!.id,
+            documentType: documentType,
+            file: file,
+          );
+      final refreshed = await ref
+          .read(vendorRepositoryProvider)
+          .getApplicationMe();
       if (!mounted) return;
       setState(() => _application = refreshed);
     } catch (e) {
@@ -385,7 +429,11 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
 
   Future<void> _submit() async {
     if (!_hasOwnerIdentity || !_hasShopPhoto || !_hasServiceList) {
-      setState(() => _stepError = AppLocalizations.of(context).onboardingUploadAllDocuments);
+      setState(
+        () => _stepError = AppLocalizations.of(
+          context,
+        ).onboardingUploadAllDocuments,
+      );
       return;
     }
     setState(() {
@@ -395,15 +443,20 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     try {
       final isCorrection = _application!.status == 'CORRECTION_REQUIRED';
       final updated = isCorrection
-          ? await ref.read(vendorRepositoryProvider).resubmitApplication(_application!.id)
-          : await ref.read(vendorRepositoryProvider).submitApplication(_application!.id);
+          ? await ref
+                .read(vendorRepositoryProvider)
+                .resubmitApplication(_application!.id)
+          : await ref
+                .read(vendorRepositoryProvider)
+                .submitApplication(_application!.id);
       if (!mounted) return;
       if (updated.status == 'APPROVED') {
         // Dev-only fast path: the backend's ALLOW_AUTO_APPROVE_VENDOR flag
         // promoted this application to a live vendor immediately instead of
         // waiting on HQ review, so go straight to the dashboard.
-        final becameVendor =
-            await ref.read(authProvider.notifier).refreshProfileIfApproved();
+        final becameVendor = await ref
+            .read(authProvider.notifier)
+            .refreshProfileIfApproved();
         if (becameVendor && mounted) {
           context.go(AppRoutes.dashboard);
           return;
@@ -439,11 +492,22 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.error_outline_rounded, size: 48.r, color: AppColors.error),
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 48.r,
+                  color: AppColors.error,
+                ),
                 SizedBox(height: 16.h),
-                Text(_loadError!, style: AppTypography.bodyMedium, textAlign: TextAlign.center),
+                Text(
+                  _loadError!,
+                  style: AppTypography.bodyMedium,
+                  textAlign: TextAlign.center,
+                ),
                 SizedBox(height: 16.h),
-                ElevatedButton(onPressed: _loadApplication, child: Text(l10n.commonRetry)),
+                ElevatedButton(
+                  onPressed: _loadApplication,
+                  child: Text(l10n.commonRetry),
+                ),
               ],
             ),
           ),
@@ -470,6 +534,14 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               color: isDark ? AppColors.white : AppColors.textBlack,
             ),
           ),
+          actions: [
+            IconButton(
+              tooltip: l10n.onboardingLogOutButton,
+              icon: const Icon(Icons.logout_rounded),
+              color: AppColors.error,
+              onPressed: () => ref.read(authProvider.notifier).logout(),
+            ),
+          ],
         ),
         body: SafeArea(
           child: Column(
@@ -478,7 +550,10 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               if (_isCorrectionMode) _buildCorrectionBanner(isDark),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 16.h,
+                  ),
                   child: _buildStepBody(isDark),
                 ),
               ),
@@ -494,6 +569,19 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            tooltip: l10n.onboardingLogOutButton,
+            icon: const Icon(Icons.logout_rounded),
+            color: AppColors.error,
+            onPressed: () => ref.read(authProvider.notifier).logout(),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -509,7 +597,11 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                     color: AppColors.primary.withOpacity(0.1),
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(Icons.hourglass_top_rounded, size: 48.r, color: AppColors.primary),
+                  child: Icon(
+                    Icons.hourglass_top_rounded,
+                    size: 48.r,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
               SizedBox(height: 32.h),
@@ -524,7 +616,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               SizedBox(height: 8.h),
               Text(
                 l10n.onboardingApplicationSubmittedBody,
-                style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+                style: AppTypography.bodyMedium.copyWith(
+                  color: AppColors.textSecondary,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 40.h),
@@ -561,7 +655,11 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
           ),
           SizedBox(height: 8.h),
           Text(
-            l10n.onboardingStepOfTotal(_stepIndex + 1, titles.length, titles[_stepIndex]),
+            l10n.onboardingStepOfTotal(
+              _stepIndex + 1,
+              titles.length,
+              titles[_stepIndex],
+            ),
             style: AppTypography.bodyMedium.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
@@ -590,7 +688,11 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
         children: [
           Row(
             children: [
-              Icon(Icons.error_outline_rounded, color: AppColors.warning, size: 20.r),
+              Icon(
+                Icons.error_outline_rounded,
+                color: AppColors.warning,
+                size: 20.r,
+              ),
               SizedBox(width: 8.w),
               Text(
                 l10n.onboardingCorrectionNeeded,
@@ -609,7 +711,10 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               children: sections.map((key) {
                 final label = sectionLabels[key] ?? key;
                 return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 5.h,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.warning.withOpacity(0.15),
                     borderRadius: BorderRadius.circular(AppRadius.full.r),
@@ -629,14 +734,18 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
             SizedBox(height: 10.h),
             Text(
               reason,
-              style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+              style: AppTypography.bodyMedium.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
           if (sections.isNotEmpty) ...[
             SizedBox(height: 8.h),
             Text(
               l10n.onboardingCorrectionOnlyFlaggedEditable,
-              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
         ],
@@ -665,7 +774,10 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
             decoration: BoxDecoration(
               color: AppColors.error.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppRadius.md.r),
-              border: Border.all(color: AppColors.error.withOpacity(0.3), width: 1),
+              border: Border.all(
+                color: AppColors.error.withOpacity(0.3),
+                width: 1,
+              ),
             ),
             child: Row(
               children: [
@@ -674,7 +786,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                 Expanded(
                   child: Text(
                     _stepError!,
-                    style: AppTypography.bodyMedium.copyWith(color: AppColors.error),
+                    style: AppTypography.bodyMedium.copyWith(
+                      color: AppColors.error,
+                    ),
                   ),
                 ),
               ],
@@ -701,7 +815,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               hintText: l10n.onboardingBusinessNameHint,
               prefixIcon: const Icon(Icons.storefront_outlined),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? l10n.onboardingBusinessNameRequired : null,
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? l10n.onboardingBusinessNameRequired
+                : null,
           ),
           SizedBox(height: 12.h),
           TextFormField(
@@ -713,7 +829,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               hintText: l10n.onboardingDescriptionHint,
               prefixIcon: const Icon(Icons.description_outlined),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? l10n.servicesDescriptionRequired : null,
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? l10n.servicesDescriptionRequired
+                : null,
           ),
           SizedBox(height: 12.h),
           TextFormField(
@@ -744,68 +862,75 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     return Form(
       key: _formKeys[1],
       child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        TextFormField(
-          controller: _ownerNameController,
-          enabled: enabled,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingOwnerNameLabel,
-            hintText: l10n.onboardingOwnerNameHint,
-            prefixIcon: const Icon(Icons.badge_outlined),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextFormField(
+            controller: _ownerNameController,
+            enabled: enabled,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingOwnerNameLabel,
+              hintText: l10n.onboardingOwnerNameHint,
+              prefixIcon: const Icon(Icons.badge_outlined),
+            ),
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? l10n.onboardingOwnerNameRequired
+                : null,
           ),
-          validator: (v) => (v == null || v.trim().isEmpty) ? l10n.onboardingOwnerNameRequired : null,
-        ),
-        SizedBox(height: 12.h),
-        TextFormField(
-          controller: _emailController,
-          enabled: enabled,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingEmailOptionalLabel,
-            prefixIcon: const Icon(Icons.email_outlined),
+          SizedBox(height: 12.h),
+          TextFormField(
+            controller: _emailController,
+            enabled: enabled,
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingEmailOptionalLabel,
+              prefixIcon: const Icon(Icons.email_outlined),
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        Text(l10n.onboardingBankDetailsOptionalHeader, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
-        SizedBox(height: 8.h),
-        TextFormField(
-          controller: _bankAccountController,
-          enabled: enabled,
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingBankAccountLabel,
-            prefixIcon: const Icon(Icons.account_balance_outlined),
+          SizedBox(height: 12.h),
+          Text(
+            l10n.onboardingBankDetailsOptionalHeader,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        TextFormField(
-          controller: _bankIfscController,
-          enabled: enabled,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingIfscLabel,
-            prefixIcon: const Icon(Icons.pin_outlined),
+          SizedBox(height: 8.h),
+          TextFormField(
+            controller: _bankAccountController,
+            enabled: enabled,
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingBankAccountLabel,
+              prefixIcon: const Icon(Icons.account_balance_outlined),
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        TextFormField(
-          controller: _bankNameController,
-          enabled: enabled,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingBankNameLabel,
-            prefixIcon: const Icon(Icons.account_balance_wallet_outlined),
+          SizedBox(height: 12.h),
+          TextFormField(
+            controller: _bankIfscController,
+            enabled: enabled,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingIfscLabel,
+              prefixIcon: const Icon(Icons.pin_outlined),
+            ),
           ),
-        ),
-        SizedBox(height: 12.h),
-        TextFormField(
-          controller: _bankHolderController,
-          enabled: enabled,
-          decoration: InputDecoration(
-            labelText: l10n.onboardingAccountHolderLabel,
-            prefixIcon: const Icon(Icons.person_outline),
+          SizedBox(height: 12.h),
+          TextFormField(
+            controller: _bankNameController,
+            enabled: enabled,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingBankNameLabel,
+              prefixIcon: const Icon(Icons.account_balance_wallet_outlined),
+            ),
           ),
-        ),
-      ],
+          SizedBox(height: 12.h),
+          TextFormField(
+            controller: _bankHolderController,
+            enabled: enabled,
+            decoration: InputDecoration(
+              labelText: l10n.onboardingAccountHolderLabel,
+              prefixIcon: const Icon(Icons.person_outline),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -821,7 +946,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
           SizedBox(
             height: 48.h,
             child: OutlinedButton.icon(
-              onPressed: (!enabled || _isDetectingLocation) ? null : _detectLocation,
+              onPressed: (!enabled || _isDetectingLocation)
+                  ? null
+                  : _detectLocation,
               icon: _isDetectingLocation
                   ? SizedBox(
                       width: 18.r,
@@ -829,7 +956,11 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                       child: const CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.my_location_rounded),
-              label: Text(_isDetectingLocation ? l10n.onboardingDetectingLocation : l10n.onboardingUseCurrentLocation),
+              label: Text(
+                _isDetectingLocation
+                    ? l10n.onboardingDetectingLocation
+                    : l10n.onboardingUseCurrentLocation,
+              ),
             ),
           ),
           SizedBox(height: 16.h),
@@ -841,7 +972,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               hintText: l10n.onboardingAddressLine1Hint,
               prefixIcon: const Icon(Icons.location_on_outlined),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? l10n.onboardingAddressRequired : null,
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? l10n.onboardingAddressRequired
+                : null,
           ),
           SizedBox(height: 12.h),
           TextFormField(
@@ -860,7 +993,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                   controller: _cityController,
                   enabled: enabled,
                   decoration: InputDecoration(labelText: l10n.profileCityLabel),
-                  validator: (v) => (v == null || v.trim().isEmpty) ? l10n.profileRequiredField : null,
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.profileRequiredField
+                      : null,
                 ),
               ),
               SizedBox(width: 12.w),
@@ -868,8 +1003,12 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                 child: TextFormField(
                   controller: _stateController,
                   enabled: enabled,
-                  decoration: InputDecoration(labelText: l10n.profileStateLabel),
-                  validator: (v) => (v == null || v.trim().isEmpty) ? l10n.profileRequiredField : null,
+                  decoration: InputDecoration(
+                    labelText: l10n.profileStateLabel,
+                  ),
+                  validator: (v) => (v == null || v.trim().isEmpty)
+                      ? l10n.profileRequiredField
+                      : null,
                 ),
               ),
             ],
@@ -881,16 +1020,23 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(labelText: l10n.profilePincodeLabel),
             validator: (v) {
-              if (v == null || v.trim().isEmpty) return l10n.onboardingPincodeRequired;
-              if (!RegExp(r'^[1-9][0-9]{5}$').hasMatch(v.trim())) return l10n.onboardingPincodeInvalid;
+              if (v == null || v.trim().isEmpty)
+                return l10n.onboardingPincodeRequired;
+              if (!RegExp(r'^[1-9][0-9]{5}$').hasMatch(v.trim()))
+                return l10n.onboardingPincodeInvalid;
               return null;
             },
           ),
           if (_lat != null && _lng != null) ...[
             SizedBox(height: 8.h),
             Text(
-              l10n.onboardingDetectedCoords(_lat!.toStringAsFixed(4), _lng!.toStringAsFixed(4)),
-              style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary),
+              l10n.onboardingDetectedCoords(
+                _lat!.toStringAsFixed(4),
+                _lng!.toStringAsFixed(4),
+              ),
+              style: AppTypography.bodySmall.copyWith(
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
         ],
@@ -906,7 +1052,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       children: [
         Text(
           l10n.onboardingRadiusQuestion,
-          style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+          style: AppTypography.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
         SizedBox(height: 16.h),
         Center(
@@ -925,12 +1073,16 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
           divisions: 48,
           label: l10n.onboardingKmValue(_requestedRadiusKm.toStringAsFixed(1)),
           activeColor: AppColors.primary,
-          onChanged: enabled ? (v) => setState(() => _requestedRadiusKm = v) : null,
+          onChanged: enabled
+              ? (v) => setState(() => _requestedRadiusKm = v)
+              : null,
         ),
         SizedBox(height: 24.h),
         Text(
           l10n.onboardingCapacityQuestion,
-          style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+          style: AppTypography.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
         SizedBox(height: 12.h),
         Row(
@@ -944,9 +1096,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                   selected: selected,
                   onSelected: enabled
                       ? (_) => setState(() {
-                            _requestedDailyCapacity = preset;
-                            _capacityController.text = preset.toString();
-                          })
+                          _requestedDailyCapacity = preset;
+                          _capacityController.text = preset.toString();
+                        })
                       : null,
                   selectedColor: AppColors.primary,
                   labelStyle: TextStyle(
@@ -961,7 +1113,10 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                 controller: _capacityController,
                 enabled: enabled,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: l10n.onboardingCustomLabel, isDense: true),
+                decoration: InputDecoration(
+                  labelText: l10n.onboardingCustomLabel,
+                  isDense: true,
+                ),
                 onChanged: (v) {
                   final parsed = int.tryParse(v);
                   if (parsed != null && parsed > 0) {
@@ -984,7 +1139,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       children: [
         Text(
           l10n.onboardingUploadDocumentsPrompt,
-          style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+          style: AppTypography.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
         SizedBox(height: 16.h),
         _buildDocumentTile(
@@ -1028,10 +1185,14 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: uploaded ? AppColors.success.withOpacity(0.08) : AppColors.primary.withOpacity(0.05),
+        color: uploaded
+            ? AppColors.success.withOpacity(0.08)
+            : AppColors.primary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(AppRadius.md.r),
         border: Border.all(
-          color: uploaded ? AppColors.success.withOpacity(0.4) : AppColors.outline.withOpacity(0.3),
+          color: uploaded
+              ? AppColors.success.withOpacity(0.4)
+              : AppColors.outline.withOpacity(0.3),
         ),
       ),
       child: Row(
@@ -1044,7 +1205,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
           Expanded(
             child: Text(
               title,
-              style: AppTypography.bodyLarge.copyWith(fontWeight: FontWeight.w600),
+              style: AppTypography.bodyLarge.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           isUploading
@@ -1054,17 +1217,21 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                   child: const CircularProgressIndicator(strokeWidth: 2),
                 )
               : canModify
-                  ? TextButton(
-                      onPressed: () => _pickAndUploadDocument(documentType),
-                      child: Text(uploaded ? l10n.onboardingReplaceButton : l10n.onboardingUploadButton),
-                    )
-                  : Text(
-                      l10n.onboardingUploadedLabel,
-                      style: AppTypography.bodySmall.copyWith(
-                        color: AppColors.success,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+              ? TextButton(
+                  onPressed: () => _pickAndUploadDocument(documentType),
+                  child: Text(
+                    uploaded
+                        ? l10n.onboardingReplaceButton
+                        : l10n.onboardingUploadButton,
+                  ),
+                )
+              : Text(
+                  l10n.onboardingUploadedLabel,
+                  style: AppTypography.bodySmall.copyWith(
+                    color: AppColors.success,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
         ],
       ),
     );
@@ -1077,17 +1244,43 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       children: [
         Text(
           l10n.onboardingReviewPrompt,
-          style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
+          style: AppTypography.bodyMedium.copyWith(
+            color: AppColors.textSecondary,
+          ),
         ),
         SizedBox(height: 16.h),
         _reviewRow(l10n.onboardingReviewOwner, _ownerNameController.text),
         _reviewRow(l10n.onboardingBusinessNameLabel, _nameController.text),
-        _reviewRow(l10n.profileAddressFieldLabel, '${_addressLine1Controller.text}, ${_cityController.text}, ${_stateController.text} ${_pincodeController.text}'),
-        _reviewRow(l10n.onboardingReviewServiceRadius, l10n.onboardingKmValue(_requestedRadiusKm.toStringAsFixed(1))),
-        _reviewRow(l10n.onboardingReviewDailyCapacity, l10n.onboardingOrdersPerDay(_requestedDailyCapacity)),
-        _reviewRow(l10n.onboardingReviewOwnerIdentity, _hasOwnerIdentity ? l10n.onboardingUploadedLabel : l10n.onboardingMissingLabel),
-        _reviewRow(l10n.onboardingReviewShopPhoto, _hasShopPhoto ? l10n.onboardingUploadedLabel : l10n.onboardingMissingLabel),
-        _reviewRow(l10n.onboardingReviewServiceList, _hasServiceList ? l10n.onboardingUploadedLabel : l10n.onboardingMissingLabel),
+        _reviewRow(
+          l10n.profileAddressFieldLabel,
+          '${_addressLine1Controller.text}, ${_cityController.text}, ${_stateController.text} ${_pincodeController.text}',
+        ),
+        _reviewRow(
+          l10n.onboardingReviewServiceRadius,
+          l10n.onboardingKmValue(_requestedRadiusKm.toStringAsFixed(1)),
+        ),
+        _reviewRow(
+          l10n.onboardingReviewDailyCapacity,
+          l10n.onboardingOrdersPerDay(_requestedDailyCapacity),
+        ),
+        _reviewRow(
+          l10n.onboardingReviewOwnerIdentity,
+          _hasOwnerIdentity
+              ? l10n.onboardingUploadedLabel
+              : l10n.onboardingMissingLabel,
+        ),
+        _reviewRow(
+          l10n.onboardingReviewShopPhoto,
+          _hasShopPhoto
+              ? l10n.onboardingUploadedLabel
+              : l10n.onboardingMissingLabel,
+        ),
+        _reviewRow(
+          l10n.onboardingReviewServiceList,
+          _hasServiceList
+              ? l10n.onboardingUploadedLabel
+              : l10n.onboardingMissingLabel,
+        ),
       ],
     );
   }
@@ -1098,8 +1291,18 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
-          Text(value.isEmpty ? '—' : value, style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600)),
+          Text(
+            label,
+            style: AppTypography.bodySmall.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          Text(
+            value.isEmpty ? '—' : value,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
@@ -1118,15 +1321,17 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
         2 => _saveLocationStep,
         3 => _saveRadiusStep,
         4 => () {
-            if (!_hasOwnerIdentity || !_hasShopPhoto || !_hasServiceList) {
-              setState(() => _stepError = l10n.onboardingUploadDocumentsToContinue);
-              return;
-            }
-            setState(() {
-              _stepIndex = 5;
-              _stepError = null;
-            });
-          },
+          if (!_hasOwnerIdentity || !_hasShopPhoto || !_hasServiceList) {
+            setState(
+              () => _stepError = l10n.onboardingUploadDocumentsToContinue,
+            );
+            return;
+          }
+          setState(() {
+            _stepIndex = 5;
+            _stepError = null;
+          });
+        },
         _ => _submit,
       };
     }
@@ -1140,7 +1345,9 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
               child: SizedBox(
                 height: 54.h,
                 child: OutlinedButton(
-                  onPressed: _isSaving ? null : () => setState(() => _stepIndex -= 1),
+                  onPressed: _isSaving
+                      ? null
+                      : () => setState(() => _stepIndex -= 1),
                   child: Text(l10n.onboardingBackButton),
                 ),
               ),
@@ -1161,9 +1368,13 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
                           valueColor: AlwaysStoppedAnimation(AppColors.white),
                         ),
                       )
-                    : Text(isLastStep
-                        ? l10n.onboardingSubmitApplicationButton
-                        : (isDocumentsStep ? l10n.riderContinueButton : l10n.onboardingNextButton)),
+                    : Text(
+                        isLastStep
+                            ? l10n.onboardingSubmitApplicationButton
+                            : (isDocumentsStep
+                                  ? l10n.riderContinueButton
+                                  : l10n.onboardingNextButton),
+                      ),
               ),
             ),
           ),

@@ -385,6 +385,7 @@ class VerifyOtpVendorResult {
     required this.accessToken,
     required this.refreshToken,
     required this.vendor,
+    this.isNewUser = false,
     this.userPhone,
     this.shopRole,
     this.permissions = const [],
@@ -393,6 +394,11 @@ class VerifyOtpVendorResult {
   final String accessToken;
   final String refreshToken;
   final VendorModel vendor;
+
+  /// True only on the first successful OTP verification for this phone.
+  /// The vendor app uses this to enter onboarding before loading any
+  /// dashboard/profile data.
+  final bool isNewUser;
   final String? userPhone;
 
   /// e.g. 'VENDOR_OWNER' / 'VENDOR_STAFF' / 'VENDOR_RIDER' — determines
