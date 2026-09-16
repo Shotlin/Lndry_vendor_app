@@ -1107,16 +1107,22 @@ abstract class AppLocalizations {
   /// **'Photo evidence (required)'**
   String get orderDetailsPhotoEvidenceLabel;
 
+  /// No description provided for @orderDetailsPhotoEvidenceOptionalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Additional photo evidence (optional — already covered by your re-evaluation report below)'**
+  String get orderDetailsPhotoEvidenceOptionalLabel;
+
   /// No description provided for @orderDetailsReportProblemButton.
   ///
   /// In en, this message translates to:
-  /// **'Report a Problem'**
+  /// **'Report to Re-evaluation'**
   String get orderDetailsReportProblemButton;
 
   /// No description provided for @orderDetailsReportProblemTitle.
   ///
   /// In en, this message translates to:
-  /// **'Report a Problem'**
+  /// **'Report to Re-evaluation'**
   String get orderDetailsReportProblemTitle;
 
   /// No description provided for @orderDetailsProblemTypeLabel.
@@ -1158,14 +1164,20 @@ abstract class AppLocalizations {
   /// No description provided for @orderDetailsProblemSaveButton.
   ///
   /// In en, this message translates to:
-  /// **'Save Problem'**
+  /// **'Save Report'**
   String get orderDetailsProblemSaveButton;
 
   /// No description provided for @orderDetailsReportedProblemsHeader.
   ///
   /// In en, this message translates to:
-  /// **'Reported Problems'**
+  /// **'Re-evaluation Reports'**
   String get orderDetailsReportedProblemsHeader;
+
+  /// No description provided for @orderDetailsProblemForItem.
+  ///
+  /// In en, this message translates to:
+  /// **'For: {item}'**
+  String orderDetailsProblemForItem(String item);
 
   /// No description provided for @orderDetailsSubmitButton.
   ///

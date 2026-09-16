@@ -423,14 +423,20 @@ class VendorReconciliationView {
 /// of this file's plain views.
 class VendorReconciliationProblem {
   const VendorReconciliationProblem({
-    required this.orderLineId,
+    this.orderLineId,
+    this.newLineIndex,
     this.problemTypeId,
     this.problemTypeLabel,
     this.customMessage,
     required this.photoUrls,
   });
 
-  final String orderLineId;
+  /// Exactly one of [orderLineId] (an existing line) / [newLineIndex] (a
+  /// line added during this same reconciliation, referenced by its 0-based
+  /// position among the reconciliation's is-new line changes — it had no
+  /// real order_lines.id yet at submission time) is non-null.
+  final String? orderLineId;
+  final int? newLineIndex;
   /// Null means the vendor picked "Other" — [customMessage] carries the
   /// reason instead of an admin-defined category.
   final String? problemTypeId;

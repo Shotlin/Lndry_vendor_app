@@ -570,10 +570,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsPhotoEvidenceLabel => 'Photo evidence (required)';
 
   @override
-  String get orderDetailsReportProblemButton => 'Report a Problem';
+  String get orderDetailsPhotoEvidenceOptionalLabel =>
+      'Additional photo evidence (optional — already covered by your re-evaluation report below)';
 
   @override
-  String get orderDetailsReportProblemTitle => 'Report a Problem';
+  String get orderDetailsReportProblemButton => 'Report to Re-evaluation';
+
+  @override
+  String get orderDetailsReportProblemTitle => 'Report to Re-evaluation';
 
   @override
   String get orderDetailsProblemTypeLabel => 'What\'s the problem?';
@@ -595,10 +599,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsProblemRemoveButton => 'Remove';
 
   @override
-  String get orderDetailsProblemSaveButton => 'Save Problem';
+  String get orderDetailsProblemSaveButton => 'Save Report';
 
   @override
-  String get orderDetailsReportedProblemsHeader => 'Reported Problems';
+  String get orderDetailsReportedProblemsHeader => 'Re-evaluation Reports';
+
+  @override
+  String orderDetailsProblemForItem(String item) {
+    return 'For: $item';
+  }
 
   @override
   String get orderDetailsSubmitButton => 'Submit for Customer Approval';

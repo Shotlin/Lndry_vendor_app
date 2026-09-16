@@ -54,6 +54,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// price change still comes from the quantity/reclassification controls
   /// above.
   final Map<String, _ProblemDraft> _lineProblems = {};
+
+  /// Same as [_lineProblems] but for a line the vendor is adding during
+  /// this same reconciliation (no real order_line_id exists yet) — keyed by
+  /// the draft's own object identity rather than an index, so removing an
+  /// earlier draft from [_newLineDrafts] never silently shifts another
+  /// draft's reported problem onto the wrong item.
+  final Map<_NewLineDraft, _ProblemDraft> _newLineProblems = {};
+
+  /// Whether at least one line already has a re-evaluation report attached
+  /// (and therefore its own required photo) — when true, the blanket
+  /// overall photo-evidence requirement below is relaxed rather than
+  /// forcing a redundant, less-specific duplicate.
+  bool get _hasAnyProblemReport =>
+      _lineProblems.isNotEmpty || _newLineProblems.isNotEmpty;
   List<ReconciliationProblemType> _problemTypeCatalog = [];
   bool _problemTypeCatalogFetchAttempted = false;
   bool _isReconciling = false;
@@ -435,6 +449,124 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     });
   }
 
+  /// Same control as [_buildProblemControl], for a line the vendor is
+  /// adding in this same reconciliation rather than one already on the
+  /// order — see [_newLineProblems].
+  Widget _buildNewLineProblemControl(
+    _NewLineDraft newLineDraft,
+    void Function(void Function()) setSheetState,
+  ) {
+    final l10n = AppLocalizations.of(context);
+    final draft = _newLineProblems[newLineDraft];
+
+    if (draft == null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: OutlinedButton.icon(
+          onPressed: () =>
+              _openNewLineProblemSheet(newLineDraft, setSheetState),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.black,
+            side: const BorderSide(color: AppColors.black, width: 1.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          ),
+          icon: Icon(Icons.report_problem_outlined, size: 16.r),
+          label: Text(
+            l10n.orderDetailsReportProblemButton,
+            style: TextStyle(fontWeight: FontWeight.w800),
+          ),
+        ),
+      );
+    }
+
+    final reasonLabel = draft.problemTypeLabel ??
+        (draft.customMessage?.isNotEmpty == true
+            ? draft.customMessage!
+            : l10n.orderDetailsProblemOtherOption);
+
+    return GestureDetector(
+      onTap: () => _openNewLineProblemSheet(newLineDraft, setSheetState),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: AppColors.black,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.report_problem_rounded,
+              color: AppColors.white,
+              size: 16.r,
+            ),
+            SizedBox(width: 8.w),
+            Expanded(
+              child: Text(
+                reasonLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.bodySmall.copyWith(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Icon(
+              Icons.photo_camera_rounded,
+              color: AppColors.white,
+              size: 14.r,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              '${draft.photoUrls.length}',
+              style: AppTypography.bodySmall.copyWith(color: AppColors.white),
+            ),
+            SizedBox(width: 10.w),
+            GestureDetector(
+              onTap: () =>
+                  setSheetState(() => _newLineProblems.remove(newLineDraft)),
+              child: Icon(
+                Icons.close_rounded,
+                color: AppColors.white,
+                size: 16.r,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openNewLineProblemSheet(
+    _NewLineDraft newLineDraft,
+    void Function(void Function()) setSheetState,
+  ) async {
+    final result = await showModalBottomSheet<_ProblemSheetResult>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      builder: (_) => _ReportProblemSheet(
+        itemLabel: newLineDraft.option.garmentName,
+        problemTypes: _problemTypeCatalog,
+        initialDraft: _newLineProblems[newLineDraft],
+      ),
+    );
+    if (result == null) return;
+    setSheetState(() {
+      if (result.removed) {
+        _newLineProblems.remove(newLineDraft);
+      } else if (result.draft != null) {
+        _newLineProblems[newLineDraft] = result.draft!;
+      }
+    });
+  }
+
   /// Prompts for a quantity (decimal for kg/sq ft services, whole-number
   /// stepper for piece services) and adds the picked service as a new line.
   Future<void> _addNewServiceLine(
@@ -528,7 +660,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   Future<void> _submitReconciliation(OrderModel order) async {
     final l10n = AppLocalizations.of(context);
-    if (_reconcilePhotoUrls.isEmpty) {
+    if (_reconcilePhotoUrls.isEmpty && !_hasAnyProblemReport) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(l10n.orderDetailsPhotoRequired)));
@@ -585,19 +717,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             )
             .toList();
 
-        final problems = _lineProblems.entries
-            .map(
-              (e) => <String, dynamic>{
-                'order_line_id': e.key,
-                if (e.value.problemTypeId != null)
-                  'problem_type_id': e.value.problemTypeId,
-                if (e.value.customMessage != null &&
-                    e.value.customMessage!.isNotEmpty)
-                  'custom_message': e.value.customMessage,
-                'photo_urls': e.value.photoUrls,
-              },
-            )
-            .toList();
+        final problems = [
+          ..._lineProblems.entries.map(
+            (e) => <String, dynamic>{
+              'order_line_id': e.key,
+              if (e.value.problemTypeId != null)
+                'problem_type_id': e.value.problemTypeId,
+              if (e.value.customMessage != null &&
+                  e.value.customMessage!.isNotEmpty)
+                'custom_message': e.value.customMessage,
+              'photo_urls': e.value.photoUrls,
+            },
+          ),
+          // new_line_index is this draft's current position within
+          // _newLineDrafts — the exact same order newLines[] above was
+          // just built from, so the two arrays line up on the backend.
+          ..._newLineProblems.entries.map(
+            (e) => <String, dynamic>{
+              'new_line_index': _newLineDrafts.indexOf(e.key),
+              if (e.value.problemTypeId != null)
+                'problem_type_id': e.value.problemTypeId,
+              if (e.value.customMessage != null &&
+                  e.value.customMessage!.isNotEmpty)
+                'custom_message': e.value.customMessage,
+              'photo_urls': e.value.photoUrls,
+            },
+          ),
+        ];
 
         await ref
             .read(ordersListProvider.notifier)
@@ -641,6 +787,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     _reconcilePhotoUrls.clear();
     _catalogFetchAttempted = false;
     _lineProblems.clear();
+    _newLineProblems.clear();
     _problemTypeCatalogFetchAttempted = false;
     _notesController.text = '';
     final l10n = AppLocalizations.of(context);
@@ -852,44 +999,61 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         for (var i = 0; i < _newLineDrafts.length; i++)
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 4.h),
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(
-                                  Icons.add_circle_rounded,
-                                  color: AppColors.success,
-                                  size: 18.r,
-                                ),
-                                SizedBox(width: 8.w),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        _newLineDrafts[i].option.garmentName,
-                                        style: AppTypography.bodyMedium
-                                            .copyWith(
-                                              fontWeight: FontWeight.w600,
-                                            ),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_circle_rounded,
+                                      color: AppColors.success,
+                                      size: 18.r,
+                                    ),
+                                    SizedBox(width: 8.w),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            _newLineDrafts[i]
+                                                .option
+                                                .garmentName,
+                                            style: AppTypography.bodyMedium
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                          Text(
+                                            '${_formatDraftQuantity(_newLineDrafts[i])} · ${_newLineDrafts[i].option.serviceName}',
+                                            style: AppTypography.bodySmall
+                                                .copyWith(
+                                                  color:
+                                                      AppColors.textSecondary,
+                                                ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        '${_formatDraftQuantity(_newLineDrafts[i])} · ${_newLineDrafts[i].option.serviceName}',
-                                        style: AppTypography.bodySmall.copyWith(
-                                          color: AppColors.textSecondary,
-                                        ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.close_rounded,
+                                        size: 18.r,
+                                        color: AppColors.error,
                                       ),
-                                    ],
-                                  ),
+                                      onPressed: () => setSheetState(() {
+                                        _newLineProblems.remove(
+                                          _newLineDrafts[i],
+                                        );
+                                        _newLineDrafts.removeAt(i);
+                                      }),
+                                    ),
+                                  ],
                                 ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.close_rounded,
-                                    size: 18.r,
-                                    color: AppColors.error,
-                                  ),
-                                  onPressed: () => setSheetState(
-                                    () => _newLineDrafts.removeAt(i),
-                                  ),
+                                SizedBox(height: 6.h),
+                                _buildNewLineProblemControl(
+                                  _newLineDrafts[i],
+                                  setSheetState,
                                 ),
                               ],
                             ),
@@ -919,9 +1083,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ),
                       SizedBox(height: 16.h),
 
-                      // Photo evidence — required before submit is enabled.
+                      // Photo evidence — required before submit is enabled,
+                      // unless a per-line re-evaluation report (with its own
+                      // required photos) already covers it.
                       Text(
-                        l10n.orderDetailsPhotoEvidenceLabel,
+                        _hasAnyProblemReport
+                            ? l10n.orderDetailsPhotoEvidenceOptionalLabel
+                            : l10n.orderDetailsPhotoEvidenceLabel,
                         style: AppTypography.bodyMedium.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -1012,7 +1180,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
                       ElevatedButton(
                         onPressed:
-                            (_isReconciling || _reconcilePhotoUrls.isEmpty)
+                            (_isReconciling ||
+                                (_reconcilePhotoUrls.isEmpty &&
+                                    !_hasAnyProblemReport))
                             ? null
                             : () => _submitReconciliation(order),
                         style: ElevatedButton.styleFrom(
@@ -1663,6 +1833,32 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// is pending customer approval (or was just disputed) — the vendor's
   /// submitted services/quantities/amount/note/photos, since the real
   /// order data doesn't change until the customer accepts.
+  /// Which item a submitted problem report belongs to — an existing line's
+  /// name comes from `order.items`; a new line (no order_lines.id yet at
+  /// submission time) comes from the reconciliation's own line_changes,
+  /// matched by position among its is-new entries.
+  String? _resolveProblemItemName(
+    OrderModel order,
+    VendorReconciliationView recon,
+    VendorReconciliationProblem problem,
+  ) {
+    if (problem.orderLineId != null) {
+      for (final item in order.items) {
+        if (item.orderLineId == problem.orderLineId) return item.serviceName;
+      }
+      return null;
+    }
+    if (problem.newLineIndex != null) {
+      final newLineChanges =
+          recon.lineChanges.where((c) => c.isNew).toList();
+      if (problem.newLineIndex! >= 0 &&
+          problem.newLineIndex! < newLineChanges.length) {
+        return newLineChanges[problem.newLineIndex!].proposedName;
+      }
+    }
+    return null;
+  }
+
   Widget _buildPendingReconciliationCard(OrderModel order, bool isDark) {
     final l10n = AppLocalizations.of(context);
     final recon = order.pendingReconciliation!;
@@ -1854,6 +2050,16 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ),
                     ],
                   ),
+                  if (_resolveProblemItemName(order, recon, problem)
+                      case final itemName?) ...[
+                    SizedBox(height: 2.h),
+                    Text(
+                      l10n.orderDetailsProblemForItem(itemName),
+                      style: AppTypography.bodySmall.copyWith(
+                        color: AppColors.white.withOpacity(0.75),
+                      ),
+                    ),
+                  ],
                   if (problem.photoUrls.isNotEmpty) ...[
                     SizedBox(height: 8.h),
                     SizedBox(

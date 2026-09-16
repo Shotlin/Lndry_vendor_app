@@ -1216,9 +1216,11 @@ class ApiVendorRepository implements VendorRepository {
             ?.map((e) {
               final m = e as Map<String, dynamic>;
               final orderLineId = m['orderLineId'] as String?;
-              if (orderLineId == null) return null;
+              final newLineIndex = (m['newLineIndex'] as num?)?.toInt();
+              if (orderLineId == null && newLineIndex == null) return null;
               return VendorReconciliationProblem(
                 orderLineId: orderLineId,
+                newLineIndex: newLineIndex,
                 problemTypeId: m['problemTypeId'] as String?,
                 problemTypeLabel: m['problemTypeLabel'] as String?,
                 customMessage: m['customMessage'] as String?,

@@ -571,10 +571,16 @@ class AppLocalizationsHi extends AppLocalizations {
   String get orderDetailsPhotoEvidenceLabel => 'फोटो सबूत (आवश्यक)';
 
   @override
-  String get orderDetailsReportProblemButton => 'समस्या दर्ज करें';
+  String get orderDetailsPhotoEvidenceOptionalLabel =>
+      'अतिरिक्त फोटो सबूत (वैकल्पिक — यह पहले से ही नीचे दी गई आपकी पुनर्मूल्यांकन रिपोर्ट में शामिल है)';
 
   @override
-  String get orderDetailsReportProblemTitle => 'समस्या दर्ज करें';
+  String get orderDetailsReportProblemButton =>
+      'पुनर्मूल्यांकन में रिपोर्ट करें';
+
+  @override
+  String get orderDetailsReportProblemTitle =>
+      'पुनर्मूल्यांकन में रिपोर्ट करें';
 
   @override
   String get orderDetailsProblemTypeLabel => 'समस्या क्या है?';
@@ -596,10 +602,15 @@ class AppLocalizationsHi extends AppLocalizations {
   String get orderDetailsProblemRemoveButton => 'हटाएं';
 
   @override
-  String get orderDetailsProblemSaveButton => 'समस्या सेव करें';
+  String get orderDetailsProblemSaveButton => 'रिपोर्ट सेव करें';
 
   @override
-  String get orderDetailsReportedProblemsHeader => 'दर्ज की गई समस्याएं';
+  String get orderDetailsReportedProblemsHeader => 'पुनर्मूल्यांकन रिपोर्ट्स';
+
+  @override
+  String orderDetailsProblemForItem(String item) {
+    return 'के लिए: $item';
+  }
 
   @override
   String get orderDetailsSubmitButton => 'ग्राहक की स्वीकृति के लिए सबमिट करें';
@@ -2947,10 +2958,16 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   String get orderDetailsPhotoEvidenceLabel => 'Photo Evidence (Zaroori)';
 
   @override
-  String get orderDetailsReportProblemButton => 'Problem Report Karein';
+  String get orderDetailsPhotoEvidenceOptionalLabel =>
+      'Additional Photo Evidence (Optional — yeh pehle se hi neeche diye gaye aapke re-evaluation report mein cover ho chuka hai)';
 
   @override
-  String get orderDetailsReportProblemTitle => 'Problem Report Karein';
+  String get orderDetailsReportProblemButton =>
+      'Re-evaluation Mein Report Karein';
+
+  @override
+  String get orderDetailsReportProblemTitle =>
+      'Re-evaluation Mein Report Karein';
 
   @override
   String get orderDetailsProblemTypeLabel => 'Problem Kya Hai?';
@@ -2972,10 +2989,15 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   String get orderDetailsProblemRemoveButton => 'Hatayein';
 
   @override
-  String get orderDetailsProblemSaveButton => 'Problem Save Karein';
+  String get orderDetailsProblemSaveButton => 'Report Save Karein';
 
   @override
-  String get orderDetailsReportedProblemsHeader => 'Report Ki Gayi Problems';
+  String get orderDetailsReportedProblemsHeader => 'Re-evaluation Reports';
+
+  @override
+  String orderDetailsProblemForItem(String item) {
+    return 'Iske Liye: $item';
+  }
 
   @override
   String get orderDetailsSubmitButton =>
