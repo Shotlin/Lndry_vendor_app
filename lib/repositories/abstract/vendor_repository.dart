@@ -175,6 +175,12 @@ abstract interface class VendorRepository {
     /// the destination for a partial quantity moved out of an existing
     /// continuous-unit line. Each `{garment_type_id, quantity}`.
     List<Map<String, dynamic>>? newLines,
+    /// Structured "report a problem" annotations attached to specific
+    /// existing lines — each `{order_line_id, problem_type_id?,
+    /// custom_message?, photo_urls}`. Purely evidentiary; doesn't affect
+    /// pricing on its own (that still comes from lines/confirmedWeightKg/
+    /// reclassification above).
+    List<Map<String, dynamic>>? problems,
   });
 
   /// This vendor's own active service catalog (category + service name +
@@ -184,6 +190,11 @@ abstract interface class VendorRepository {
   /// to a per-piece dry-clean service, or adding a service that wasn't on
   /// the order at all.
   Future<List<ReclassifyOption>> getVendorServiceCatalog();
+
+  /// The admin-curated, universal library of reasons a vendor can attach
+  /// when reporting a problem with a specific line item during
+  /// reconciliation (e.g. "Damaged Item"). Same list for every vendor.
+  Future<List<ReconciliationProblemType>> getReconciliationProblemTypes();
 
   Future<Map<String, dynamic>> getDashboardStats();
   

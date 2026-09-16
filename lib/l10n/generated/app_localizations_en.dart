@@ -570,6 +570,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsPhotoEvidenceLabel => 'Photo evidence (required)';
 
   @override
+  String get orderDetailsReportProblemButton => 'Report a Problem';
+
+  @override
+  String get orderDetailsReportProblemTitle => 'Report a Problem';
+
+  @override
+  String get orderDetailsProblemTypeLabel => 'What\'s the problem?';
+
+  @override
+  String get orderDetailsProblemOtherOption => 'Other';
+
+  @override
+  String get orderDetailsProblemCustomMessageLabel => 'Describe the problem';
+
+  @override
+  String get orderDetailsProblemCustomMessageHint =>
+      'e.g. Zipper broken on this item';
+
+  @override
+  String get orderDetailsProblemPhotoLabel => 'Photo evidence (1-3 required)';
+
+  @override
+  String get orderDetailsProblemRemoveButton => 'Remove';
+
+  @override
+  String get orderDetailsProblemSaveButton => 'Save Problem';
+
+  @override
+  String get orderDetailsReportedProblemsHeader => 'Reported Problems';
+
+  @override
   String get orderDetailsSubmitButton => 'Submit for Customer Approval';
 
   @override

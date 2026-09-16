@@ -586,12 +586,14 @@ class ApiVendorRepository implements VendorRepository {
     String? adjustmentReason,
     required List<String> photoUrls,
     List<Map<String, dynamic>>? newLines,
+    List<Map<String, dynamic>>? problems,
   }) async {
     final body = <String, dynamic>{'photo_urls': photoUrls};
     if (lines != null) body['lines'] = lines;
     if (confirmedWeightKg != null) body['confirmed_weight_kg'] = confirmedWeightKg;
     if (adjustmentReason != null) body['adjustment_reason'] = adjustmentReason;
     if (newLines != null && newLines.isNotEmpty) body['new_lines'] = newLines;
+    if (problems != null && problems.isNotEmpty) body['problems'] = problems;
 
     final resp = await _dio.post(
       '/vendor/orders/$orderId/reconcile',
@@ -620,6 +622,18 @@ class ApiVendorRepository implements VendorRepository {
         imageUrl: m['image_url'] as String?,
       );
     }).where((o) => o.garmentTypeId.isNotEmpty).toList();
+  }
+
+  @override
+  Future<List<ReconciliationProblemType>> getReconciliationProblemTypes() async {
+    // Top-level route, not under /vendor — any authenticated user can read
+    // it (see reconciliation-problem-types.routes.js's vendor-facing plugin).
+    final resp = await _dio.get('/reconciliation-problem-types/active');
+    final list = _extractList(resp.data as Map<String, dynamic>);
+    return list
+        .map((e) => ReconciliationProblemType.fromJson(e as Map<String, dynamic>))
+        .where((t) => t.id.isNotEmpty)
+        .toList();
   }
 
   @override
@@ -1198,6 +1212,26 @@ class ApiVendorRepository implements VendorRepository {
             .toList() ??
         [];
 
+    final problems = (raw['problems'] as List<dynamic>?)
+            ?.map((e) {
+              final m = e as Map<String, dynamic>;
+              final orderLineId = m['orderLineId'] as String?;
+              if (orderLineId == null) return null;
+              return VendorReconciliationProblem(
+                orderLineId: orderLineId,
+                problemTypeId: m['problemTypeId'] as String?,
+                problemTypeLabel: m['problemTypeLabel'] as String?,
+                customMessage: m['customMessage'] as String?,
+                photoUrls: (m['photoUrls'] as List<dynamic>?)
+                        ?.map((p) => p.toString())
+                        .toList() ??
+                    [],
+              );
+            })
+            .whereType<VendorReconciliationProblem>()
+            .toList() ??
+        [];
+
     return VendorReconciliationView(
       status: status ?? 'PENDING_CUSTOMER',
       proposedPayableAmountPaise: _toInt(raw['proposed_payable_amount_paise']) ?? 0,
@@ -1205,6 +1239,7 @@ class ApiVendorRepository implements VendorRepository {
       reason: raw['reason'] as String?,
       photos: (raw['photos'] as List<dynamic>?)?.map((p) => p.toString()).toList() ?? [],
       lineChanges: lineChanges,
+      problems: problems,
     );
   }
 

@@ -1107,6 +1107,66 @@ abstract class AppLocalizations {
   /// **'Photo evidence (required)'**
   String get orderDetailsPhotoEvidenceLabel;
 
+  /// No description provided for @orderDetailsReportProblemButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Problem'**
+  String get orderDetailsReportProblemButton;
+
+  /// No description provided for @orderDetailsReportProblemTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Report a Problem'**
+  String get orderDetailsReportProblemTitle;
+
+  /// No description provided for @orderDetailsProblemTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the problem?'**
+  String get orderDetailsProblemTypeLabel;
+
+  /// No description provided for @orderDetailsProblemOtherOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get orderDetailsProblemOtherOption;
+
+  /// No description provided for @orderDetailsProblemCustomMessageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the problem'**
+  String get orderDetailsProblemCustomMessageLabel;
+
+  /// No description provided for @orderDetailsProblemCustomMessageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Zipper broken on this item'**
+  String get orderDetailsProblemCustomMessageHint;
+
+  /// No description provided for @orderDetailsProblemPhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo evidence (1-3 required)'**
+  String get orderDetailsProblemPhotoLabel;
+
+  /// No description provided for @orderDetailsProblemRemoveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get orderDetailsProblemRemoveButton;
+
+  /// No description provided for @orderDetailsProblemSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Problem'**
+  String get orderDetailsProblemSaveButton;
+
+  /// No description provided for @orderDetailsReportedProblemsHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported Problems'**
+  String get orderDetailsReportedProblemsHeader;
+
   /// No description provided for @orderDetailsSubmitButton.
   ///
   /// In en, this message translates to:

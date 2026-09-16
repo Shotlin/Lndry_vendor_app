@@ -47,6 +47,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   final List<_NewLineDraft> _newLineDrafts = [];
   List<ReclassifyOption> _serviceCatalog = [];
   bool _catalogFetchAttempted = false;
+
+  /// order_line_id -> the problem the vendor is reporting for that item
+  /// (damaged, not applicable to this service, etc.) — see
+  /// reconciliation-problem-types module. Purely evidentiary; the actual
+  /// price change still comes from the quantity/reclassification controls
+  /// above.
+  final Map<String, _ProblemDraft> _lineProblems = {};
+  List<ReconciliationProblemType> _problemTypeCatalog = [];
+  bool _problemTypeCatalogFetchAttempted = false;
   bool _isReconciling = false;
   bool _isUploadingReconcilePhoto = false;
   bool _autoOpenedReconcile = false;
@@ -171,6 +180,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     }
   }
 
+  Future<void> _loadProblemTypeCatalog(
+    void Function(void Function()) setSheetState,
+  ) async {
+    try {
+      final types = await ref
+          .read(vendorRepositoryProvider)
+          .getReconciliationProblemTypes();
+      setSheetState(() => _problemTypeCatalog = types);
+    } catch (_) {
+      // Non-critical — reporting a problem is optional; the vendor can still
+      // adjust quantities/weight and submit without it if this fails.
+    }
+  }
+
   /// Shared catalog picker for both "move this item to a different service"
   /// and "add a service" — groups by category, shows the vendor's real
   /// image/logo per item so this matches the shared-screen design language
@@ -290,6 +313,126 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     if (selected != null) {
       setSheetState(() => _reclassifications[lineKey] = selected);
     }
+  }
+
+  /// Either a "Report a Problem" prompt (nothing staged yet) or a bold,
+  /// high-contrast badge summarizing what was staged — tap either to open
+  /// [_ReportProblemSheet]. Deliberately styled in pure black (not the
+  /// app's usual violet/teal accents) so a flagged problem reads as
+  /// distinctly more serious than an ordinary quantity/service edit.
+  Widget _buildProblemControl(
+    OrderItem item,
+    String lineKey,
+    void Function(void Function()) setSheetState,
+  ) {
+    final l10n = AppLocalizations.of(context);
+    final draft = _lineProblems[lineKey];
+
+    if (draft == null) {
+      return Align(
+        alignment: Alignment.centerLeft,
+        child: OutlinedButton.icon(
+          onPressed: () => _openProblemSheet(item, lineKey, setSheetState),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: AppColors.black,
+            side: const BorderSide(color: AppColors.black, width: 1.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          ),
+          icon: Icon(Icons.report_problem_outlined, size: 16.r),
+          label: Text(
+            l10n.orderDetailsReportProblemButton,
+            style: TextStyle(fontWeight: FontWeight.w800),
+          ),
+        ),
+      );
+    }
+
+    final reasonLabel = draft.problemTypeLabel ??
+        (draft.customMessage?.isNotEmpty == true
+            ? draft.customMessage!
+            : l10n.orderDetailsProblemOtherOption);
+
+    return GestureDetector(
+      onTap: () => _openProblemSheet(item, lineKey, setSheetState),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+        decoration: BoxDecoration(
+          color: AppColors.black,
+          borderRadius: BorderRadius.circular(8.r),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.report_problem_rounded,
+              color: AppColors.white,
+              size: 16.r,
+            ),
+            SizedBox(width: 8.w),
+            Expanded(
+              child: Text(
+                reasonLabel,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.bodySmall.copyWith(
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Icon(
+              Icons.photo_camera_rounded,
+              color: AppColors.white,
+              size: 14.r,
+            ),
+            SizedBox(width: 2.w),
+            Text(
+              '${draft.photoUrls.length}',
+              style: AppTypography.bodySmall.copyWith(color: AppColors.white),
+            ),
+            SizedBox(width: 10.w),
+            GestureDetector(
+              onTap: () => setSheetState(() => _lineProblems.remove(lineKey)),
+              child: Icon(
+                Icons.close_rounded,
+                color: AppColors.white,
+                size: 16.r,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openProblemSheet(
+    OrderItem item,
+    String lineKey,
+    void Function(void Function()) setSheetState,
+  ) async {
+    final result = await showModalBottomSheet<_ProblemSheetResult>(
+      context: context,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+      ),
+      builder: (_) => _ReportProblemSheet(
+        itemLabel: item.serviceName,
+        problemTypes: _problemTypeCatalog,
+        initialDraft: _lineProblems[lineKey],
+      ),
+    );
+    if (result == null) return;
+    setSheetState(() {
+      if (result.removed) {
+        _lineProblems.remove(lineKey);
+      } else if (result.draft != null) {
+        _lineProblems[lineKey] = result.draft!;
+      }
+    });
   }
 
   /// Prompts for a quantity (decimal for kg/sq ft services, whole-number
@@ -442,6 +585,20 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             )
             .toList();
 
+        final problems = _lineProblems.entries
+            .map(
+              (e) => <String, dynamic>{
+                'order_line_id': e.key,
+                if (e.value.problemTypeId != null)
+                  'problem_type_id': e.value.problemTypeId,
+                if (e.value.customMessage != null &&
+                    e.value.customMessage!.isNotEmpty)
+                  'custom_message': e.value.customMessage,
+                'photo_urls': e.value.photoUrls,
+              },
+            )
+            .toList();
+
         await ref
             .read(ordersListProvider.notifier)
             .reconcile(
@@ -453,6 +610,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   : 'Receipt reconciliation',
               photoUrls: _reconcilePhotoUrls,
               newLines: newLines.isNotEmpty ? newLines : null,
+              problems: problems.isNotEmpty ? problems : null,
             );
 
         ref.invalidate(orderDetailsProvider(order.id));
@@ -482,6 +640,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     _initializeQuantities(order);
     _reconcilePhotoUrls.clear();
     _catalogFetchAttempted = false;
+    _lineProblems.clear();
+    _problemTypeCatalogFetchAttempted = false;
     _notesController.text = '';
     final l10n = AppLocalizations.of(context);
 
@@ -497,6 +657,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             if (!_catalogFetchAttempted) {
               _catalogFetchAttempted = true;
               _loadServiceCatalog(order, setSheetState);
+            }
+            if (!_problemTypeCatalogFetchAttempted) {
+              _problemTypeCatalogFetchAttempted = true;
+              _loadProblemTypeCatalog(setSheetState);
             }
             return Padding(
               padding: EdgeInsets.only(
@@ -662,6 +826,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                     ),
                                   ),
                                 ),
+                              // Reporting a problem only makes sense for a
+                              // real, already-existing order line — never for
+                              // a service-only key that has no order_line_id
+                              // yet (the backend requires a real line id).
+                              if (item.orderLineId != null) ...[
+                                SizedBox(height: 8.h),
+                                _buildProblemControl(
+                                  item,
+                                  item.orderLineId!,
+                                  setSheetState,
+                                ),
+                              ],
                             ],
                           );
                         },
@@ -1637,6 +1813,71 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             ),
           ),
         ],
+        if (recon.problems.isNotEmpty) ...[
+          SizedBox(height: 12.h),
+          Text(
+            l10n.orderDetailsReportedProblemsHeader,
+            style: AppTypography.bodyMedium.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8.h),
+          for (final problem in recon.problems)
+            Container(
+              margin: EdgeInsets.only(bottom: 8.h),
+              padding: EdgeInsets.all(12.r),
+              decoration: BoxDecoration(
+                color: AppColors.black,
+                borderRadius: BorderRadius.circular(10.r),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.report_problem_rounded,
+                        color: AppColors.white,
+                        size: 16.r,
+                      ),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: Text(
+                          problem.displayReason(
+                            l10n.orderDetailsProblemOtherOption,
+                          ),
+                          style: AppTypography.bodySmall.copyWith(
+                            color: AppColors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (problem.photoUrls.isNotEmpty) ...[
+                    SizedBox(height: 8.h),
+                    SizedBox(
+                      height: 56.r,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: problem.photoUrls.length,
+                        separatorBuilder: (_, __) => SizedBox(width: 6.w),
+                        itemBuilder: (context, idx) => ClipRRect(
+                          borderRadius: BorderRadius.circular(6.r),
+                          child: Image.network(
+                            problem.photoUrls[idx],
+                            width: 56.r,
+                            height: 56.r,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+        ],
       ],
     );
   }
@@ -2322,4 +2563,458 @@ class _NewLineDraft {
   _NewLineDraft({required this.option, required this.quantity});
   final ReclassifyOption option;
   final double quantity;
+}
+
+/// A problem staged locally for one order line, before submission — see
+/// [_OrderDetailsPageState._lineProblems]. `problemTypeId` null means the
+/// vendor picked "Other" and wrote [customMessage] themselves instead of
+/// using an admin-defined category.
+class _ProblemDraft {
+  const _ProblemDraft({
+    this.problemTypeId,
+    this.problemTypeLabel,
+    this.customMessage,
+    required this.photoUrls,
+  });
+
+  final String? problemTypeId;
+  final String? problemTypeLabel;
+  final String? customMessage;
+  final List<String> photoUrls;
+}
+
+/// What [_ReportProblemSheet] pops back — either a saved/updated draft, or
+/// an explicit removal (distinct from the sheet being dismissed with no
+/// change at all, which pops `null`).
+class _ProblemSheetResult {
+  const _ProblemSheetResult.save(this.draft) : removed = false;
+  const _ProblemSheetResult.remove() : draft = null, removed = true;
+
+  final _ProblemDraft? draft;
+  final bool removed;
+}
+
+/// One selectable "square-based" problem-reason card — deliberately styled
+/// in pure black rather than the app's usual violet/teal accents (per the
+/// explicit ask for bold, high-contrast, unmistakably-serious styling for
+/// a damage/problem report, distinct from an ordinary edit).
+class _ProblemOptionCard extends StatelessWidget {
+  const _ProblemOptionCard({
+    required this.label,
+    required this.description,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final String? description;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 154.w,
+        padding: EdgeInsets.all(12.r),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.black : AppColors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(
+            color: AppColors.black,
+            width: selected ? 2 : 1.5,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: AppTypography.bodyMedium.copyWith(
+                fontWeight: FontWeight.w800,
+                color: selected ? AppColors.white : AppColors.black,
+              ),
+            ),
+            if (description != null && description!.isNotEmpty) ...[
+              SizedBox(height: 4.h),
+              Text(
+                description!,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.bodySmall.copyWith(
+                  color: selected
+                      ? AppColors.white.withOpacity(0.85)
+                      : AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// "Report a Problem" — a focused, single-purpose sheet stacked on top of
+/// the main reconcile sheet. Its own [ConsumerStatefulWidget] (rather than
+/// living on [_OrderDetailsPageState] like the outer sheet's fields) since
+/// its state — selected type, message, photos — is single-use per open and
+/// benefits from normal widget dispose, unlike the outer sheet's state
+/// which must survive across reopens.
+class _ReportProblemSheet extends ConsumerStatefulWidget {
+  const _ReportProblemSheet({
+    required this.itemLabel,
+    required this.problemTypes,
+    required this.initialDraft,
+  });
+
+  final String itemLabel;
+  final List<ReconciliationProblemType> problemTypes;
+  final _ProblemDraft? initialDraft;
+
+  @override
+  ConsumerState<_ReportProblemSheet> createState() =>
+      _ReportProblemSheetState();
+}
+
+class _ReportProblemSheetState extends ConsumerState<_ReportProblemSheet> {
+  String? _selectedProblemTypeId;
+  bool _isOther = false;
+  final _messageController = TextEditingController();
+  final List<String> _photoUrls = [];
+  bool _isUploading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    final draft = widget.initialDraft;
+    if (draft != null) {
+      _selectedProblemTypeId = draft.problemTypeId;
+      _isOther = draft.problemTypeId == null;
+      _messageController.text = draft.customMessage ?? '';
+      _photoUrls.addAll(draft.photoUrls);
+    }
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _addPhoto() async {
+    if (_photoUrls.length >= 3) return;
+    final picker = ImagePicker();
+    final XFile? picked = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 85,
+    );
+    if (picked == null) return;
+
+    setState(() => _isUploading = true);
+    try {
+      final url = await ref
+          .read(vendorRepositoryProvider)
+          .uploadImage(picked, folder: 'order-reconciliation-problem-photos');
+      setState(() => _photoUrls.add(url));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'),
+            ),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isUploading = false);
+    }
+  }
+
+  bool get _canSave {
+    final hasReason = (!_isOther && _selectedProblemTypeId != null) ||
+        (_isOther && _messageController.text.trim().isNotEmpty);
+    return hasReason && _photoUrls.isNotEmpty;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        left: 20.w,
+        right: 20.w,
+        top: 24.h,
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(8.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.black,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Icon(
+                    Icons.report_problem_rounded,
+                    color: AppColors.white,
+                    size: 20.r,
+                  ),
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.orderDetailsReportProblemTitle,
+                        style: AppTypography.headlineMedium.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: AppColors.black,
+                        ),
+                      ),
+                      Text(
+                        widget.itemLabel,
+                        style: AppTypography.bodyMedium.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              l10n.orderDetailsProblemTypeLabel,
+              style: AppTypography.bodyMedium.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AppColors.black,
+              ),
+            ),
+            SizedBox(height: 10.h),
+            Wrap(
+              spacing: 10.w,
+              runSpacing: 10.h,
+              children: [
+                for (final type in widget.problemTypes)
+                  _ProblemOptionCard(
+                    label: type.label,
+                    description: type.description,
+                    selected: !_isOther && _selectedProblemTypeId == type.id,
+                    onTap: () => setState(() {
+                      _isOther = false;
+                      _selectedProblemTypeId = type.id;
+                    }),
+                  ),
+                _ProblemOptionCard(
+                  label: l10n.orderDetailsProblemOtherOption,
+                  description: null,
+                  selected: _isOther,
+                  onTap: () => setState(() {
+                    _isOther = true;
+                    _selectedProblemTypeId = null;
+                  }),
+                ),
+              ],
+            ),
+            if (_isOther) ...[
+              SizedBox(height: 16.h),
+              TextField(
+                controller: _messageController,
+                maxLines: 3,
+                maxLength: 500,
+                onChanged: (_) => setState(() {}),
+                decoration: InputDecoration(
+                  labelText: l10n.orderDetailsProblemCustomMessageLabel,
+                  hintText: l10n.orderDetailsProblemCustomMessageHint,
+                  border: const OutlineInputBorder(),
+                ),
+              ),
+            ],
+            SizedBox(height: 12.h),
+            Row(
+              children: [
+                Text(
+                  l10n.orderDetailsProblemPhotoLabel,
+                  style: AppTypography.bodyMedium.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.black,
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '${_photoUrls.length}/3',
+                  style: AppTypography.bodySmall.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Wrap(
+              spacing: 8.w,
+              runSpacing: 8.h,
+              children: [
+                for (var i = 0; i < _photoUrls.length; i++)
+                  Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Container(
+                        width: 64.r,
+                        height: 64.r,
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryContainer,
+                          borderRadius: BorderRadius.circular(10.r),
+                          border: Border.all(
+                            color: AppColors.black,
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Image.network(_photoUrls[i], fit: BoxFit.cover),
+                      ),
+                      Positioned(
+                        top: -6,
+                        right: -6,
+                        child: GestureDetector(
+                          onTap: () =>
+                              setState(() => _photoUrls.removeAt(i)),
+                          child: Container(
+                            width: 20.r,
+                            height: 20.r,
+                            decoration: const BoxDecoration(
+                              color: AppColors.error,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.close_rounded,
+                              color: AppColors.white,
+                              size: 14.r,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                if (_isUploading)
+                  Container(
+                    width: 64.r,
+                    height: 64.r,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryContainer,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  )
+                else if (_photoUrls.length < 3)
+                  GestureDetector(
+                    onTap: _addPhoto,
+                    child: Container(
+                      width: 64.r,
+                      height: 64.r,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.r),
+                        border: Border.all(color: AppColors.black, width: 2),
+                      ),
+                      child: Icon(
+                        Icons.add_a_photo_outlined,
+                        color: AppColors.black,
+                        size: 22.r,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            SizedBox(height: 24.h),
+            Row(
+              children: [
+                if (widget.initialDraft != null) ...[
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(
+                        context,
+                        const _ProblemSheetResult.remove(),
+                      ),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.error,
+                        side: const BorderSide(color: AppColors.error),
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.r),
+                        ),
+                      ),
+                      child: Text(l10n.orderDetailsProblemRemoveButton),
+                    ),
+                  ),
+                  SizedBox(width: 12.w),
+                ],
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    onPressed: _canSave
+                        ? () {
+                            ReconciliationProblemType? selectedType;
+                            if (!_isOther) {
+                              for (final t in widget.problemTypes) {
+                                if (t.id == _selectedProblemTypeId) {
+                                  selectedType = t;
+                                  break;
+                                }
+                              }
+                            }
+                            Navigator.pop(
+                              context,
+                              _ProblemSheetResult.save(
+                                _ProblemDraft(
+                                  problemTypeId: _isOther
+                                      ? null
+                                      : _selectedProblemTypeId,
+                                  problemTypeLabel: selectedType?.label,
+                                  customMessage: _isOther
+                                      ? _messageController.text.trim()
+                                      : null,
+                                  photoUrls: List<String>.from(_photoUrls),
+                                ),
+                              ),
+                            );
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.black,
+                      foregroundColor: AppColors.white,
+                      disabledBackgroundColor: AppColors.black.withOpacity(
+                        0.35,
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 14.h),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                    ),
+                    child: Text(
+                      l10n.orderDetailsProblemSaveButton,
+                      style: const TextStyle(fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 24.h),
+          ],
+        ),
+      ),
+    );
+  }
 }

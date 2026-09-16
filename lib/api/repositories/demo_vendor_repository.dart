@@ -856,6 +856,7 @@ class DemoVendorRepository implements VendorRepository {
     String? adjustmentReason,
     required List<String> photoUrls,
     List<Map<String, dynamic>>? newLines,
+    List<Map<String, dynamic>>? problems,
   }) async {
     final idx = _orders.indexWhere((o) => o.id == orderId);
     if (idx == -1) throw const ApiException(message: 'Order not found');
@@ -875,6 +876,10 @@ class DemoVendorRepository implements VendorRepository {
 
   @override
   Future<List<ReclassifyOption>> getVendorServiceCatalog() async => const [];
+
+  @override
+  Future<List<ReconciliationProblemType>> getReconciliationProblemTypes() async =>
+      const [];
 
   @override
   Future<Map<String, dynamic>> getDashboardStats() async {

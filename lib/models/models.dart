@@ -9,3 +9,4 @@ export 'pickup_slot_model.dart';
 export 'vendor_application_model.dart';
 export 'garment_type_model.dart';
 export 'rider_job_model.dart';
+export 'reconciliation_problem_type_model.dart';

@@ -571,6 +571,37 @@ class AppLocalizationsHi extends AppLocalizations {
   String get orderDetailsPhotoEvidenceLabel => 'फोटो सबूत (आवश्यक)';
 
   @override
+  String get orderDetailsReportProblemButton => 'समस्या दर्ज करें';
+
+  @override
+  String get orderDetailsReportProblemTitle => 'समस्या दर्ज करें';
+
+  @override
+  String get orderDetailsProblemTypeLabel => 'समस्या क्या है?';
+
+  @override
+  String get orderDetailsProblemOtherOption => 'अन्य';
+
+  @override
+  String get orderDetailsProblemCustomMessageLabel => 'समस्या बताएं';
+
+  @override
+  String get orderDetailsProblemCustomMessageHint =>
+      'जैसे: इस वस्तु की ज़िप टूटी है';
+
+  @override
+  String get orderDetailsProblemPhotoLabel => 'फोटो सबूत (1-3 आवश्यक)';
+
+  @override
+  String get orderDetailsProblemRemoveButton => 'हटाएं';
+
+  @override
+  String get orderDetailsProblemSaveButton => 'समस्या सेव करें';
+
+  @override
+  String get orderDetailsReportedProblemsHeader => 'दर्ज की गई समस्याएं';
+
+  @override
   String get orderDetailsSubmitButton => 'ग्राहक की स्वीकृति के लिए सबमिट करें';
 
   @override
@@ -2914,6 +2945,37 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get orderDetailsPhotoEvidenceLabel => 'Photo Evidence (Zaroori)';
+
+  @override
+  String get orderDetailsReportProblemButton => 'Problem Report Karein';
+
+  @override
+  String get orderDetailsReportProblemTitle => 'Problem Report Karein';
+
+  @override
+  String get orderDetailsProblemTypeLabel => 'Problem Kya Hai?';
+
+  @override
+  String get orderDetailsProblemOtherOption => 'Other';
+
+  @override
+  String get orderDetailsProblemCustomMessageLabel => 'Problem Batayein';
+
+  @override
+  String get orderDetailsProblemCustomMessageHint =>
+      'Jaise: Is item ki zip toothi hai';
+
+  @override
+  String get orderDetailsProblemPhotoLabel => 'Photo Evidence (1-3 Zaroori)';
+
+  @override
+  String get orderDetailsProblemRemoveButton => 'Hatayein';
+
+  @override
+  String get orderDetailsProblemSaveButton => 'Problem Save Karein';
+
+  @override
+  String get orderDetailsReportedProblemsHeader => 'Report Ki Gayi Problems';
 
   @override
   String get orderDetailsSubmitButton =>

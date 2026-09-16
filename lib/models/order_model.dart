@@ -401,6 +401,7 @@ class VendorReconciliationView {
     this.reason,
     required this.photos,
     required this.lineChanges,
+    this.problems = const [],
   });
 
   /// 'PENDING_CUSTOMER' | 'ACCEPTED' | 'REJECTED' | 'APPLIED'.
@@ -410,6 +411,37 @@ class VendorReconciliationView {
   final String? reason;
   final List<String> photos;
   final List<VendorReconciliationLineChange> lineChanges;
+
+  /// Structured "report a problem" annotations (damaged item, item not
+  /// applicable to this service, etc.) the vendor attached to specific
+  /// lines on this submission — see reconciliation-problem-types module.
+  final List<VendorReconciliationProblem> problems;
+}
+
+/// One vendor-reported problem on a specific order line, carried on a
+/// [VendorReconciliationView] — parsed manually, same pattern as the rest
+/// of this file's plain views.
+class VendorReconciliationProblem {
+  const VendorReconciliationProblem({
+    required this.orderLineId,
+    this.problemTypeId,
+    this.problemTypeLabel,
+    this.customMessage,
+    required this.photoUrls,
+  });
+
+  final String orderLineId;
+  /// Null means the vendor picked "Other" — [customMessage] carries the
+  /// reason instead of an admin-defined category.
+  final String? problemTypeId;
+  final String? problemTypeLabel;
+  final String? customMessage;
+  final List<String> photoUrls;
+
+  /// What to actually show as the reason — the admin-curated label when
+  /// one was picked, otherwise the vendor's own custom message.
+  String displayReason(String otherFallbackLabel) =>
+      problemTypeLabel ?? customMessage ?? otherFallbackLabel;
 }
 
 class VendorReconciliationLineChange {

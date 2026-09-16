@@ -92,6 +92,7 @@ class OrdersNotifier extends StateNotifier<AsyncValue<PaginatedResponse<OrderMod
     String? adjustmentReason,
     required List<String> photoUrls,
     List<Map<String, dynamic>>? newLines,
+    List<Map<String, dynamic>>? problems,
   }) async {
     try {
       await _repo.reconcileOrder(
@@ -101,6 +102,7 @@ class OrdersNotifier extends StateNotifier<AsyncValue<PaginatedResponse<OrderMod
         adjustmentReason: adjustmentReason,
         photoUrls: photoUrls,
         newLines: newLines,
+        problems: problems,
       );
       _syncStats();
       await fetchOrders();
