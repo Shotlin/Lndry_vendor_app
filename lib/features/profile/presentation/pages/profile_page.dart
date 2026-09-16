@@ -759,7 +759,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                 onTap: () {
                   showAboutDialog(
                     context: context,
-                    applicationName: 'LNDRY Vendor',
+                    applicationName: 'Lndry Partner',
                     applicationVersion: '1.0.0',
                     applicationLegalese:
                         '© 2026 LNDRY Technologies Pvt. Ltd.',

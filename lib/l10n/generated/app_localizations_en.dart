@@ -34,7 +34,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not open the phone dialer. Please try again.';
 
   @override
-  String get splashAppName => 'LNDRY Vendor';
+  String get splashAppName => 'Lndry Partner';
 
   @override
   String get splashTagline => 'Partner Portal';
@@ -293,7 +293,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String settingsFooter(String version) {
-    return 'LNDRY Vendor App • Version $version\n© 2026 LNDRY Technologies Pvt. Ltd.';
+    return 'Lndry Partner • Version $version\n© 2026 LNDRY Technologies Pvt. Ltd.';
   }
 
   @override
@@ -301,7 +301,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get routerExitAppMessage =>
-      'Are you sure you want to exit LNDRY Vendor?';
+      'Are you sure you want to exit Lndry Partner?';
 
   @override
   String get routerPageNotFound => 'Page not found';
@@ -697,10 +697,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsVendorPayout => 'You\'ll Receive';
 
   @override
-  String get orderDetailsPickupRiderLabel => 'Pickup Rider';
+  String get orderDetailsPickupRiderLabel => 'Pickup Captain';
 
   @override
-  String get orderDetailsDeliveryRiderLabel => 'Delivery Rider';
+  String get orderDetailsDeliveryRiderLabel => 'Delivery Captain';
 
   @override
   String get orderDetailsAssignRiderHint => 'Choose who handles this order';
@@ -709,20 +709,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsAssignRiderButton => 'Assign';
 
   @override
-  String get orderDetailsAssignRiderTitle => 'Assign Rider';
+  String get orderDetailsAssignRiderTitle => 'Assign Captain';
 
   @override
   String get orderDetailsNoActiveRiders =>
-      'No active riders yet. Add one from Rider Management.';
+      'No active captains yet. Add one from Captain Management.';
 
   @override
-  String get orderDetailsRiderAssignedSnack => 'Rider assigned';
+  String get orderDetailsRiderAssignedSnack => 'Captain assigned';
 
   @override
-  String get orderDetailsBroadcastButton => 'Broadcast to All Riders';
+  String get orderDetailsBroadcastButton => 'Broadcast to All Captains';
 
   @override
-  String get orderDetailsBroadcastSnack => 'Broadcast sent to active riders';
+  String get orderDetailsBroadcastSnack => 'Broadcast sent to active captains';
 
   @override
   String orderDetailsAssignedToRider(String name) {
@@ -731,7 +731,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderDetailsOfferPendingBroadcast =>
-      'Offer sent to all riders — awaiting acceptance';
+      'Offer sent to all captains — awaiting acceptance';
 
   @override
   String orderDetailsOfferPendingSingle(String name) {
@@ -1452,11 +1452,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get riderManagementAddRiderTitle => 'Add Rider';
+  String get riderManagementAddRiderTitle => 'Add Captain';
 
   @override
   String get riderManagementAddRiderSubtitle =>
-      'The rider logs in with this phone number, the same way you do.';
+      'The captain logs in with this phone number, the same way you do.';
 
   @override
   String get riderManagementFullNameHint => 'e.g. Rahul Sen';
@@ -1468,10 +1468,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get riderManagementPhoneInvalid => 'Enter a valid phone number';
 
   @override
-  String get riderManagementRiderAddedSnack => 'Rider added';
+  String get riderManagementRiderAddedSnack => 'Captain added';
 
   @override
-  String get riderManagementRemoveRiderTitle => 'Remove Rider';
+  String get riderManagementRemoveRiderTitle => 'Remove Captain';
 
   @override
   String riderManagementRemoveConfirm(String name) {
@@ -1479,18 +1479,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get riderManagementPageTitle => 'Rider Management';
+  String get riderManagementPageTitle => 'Captain Management';
 
   @override
-  String get riderManagementEmptyTitle => 'No Riders Yet';
+  String get riderManagementEmptyTitle => 'No Captains Yet';
 
   @override
   String get riderManagementEmptySubtitle =>
-      'Add your own delivery riders — they log in with their phone and only see their assigned pickups and deliveries.';
+      'Add your own delivery captains — they log in with their phone and only see their assigned pickups and deliveries.';
 
   @override
   String riderManagementFailedToLoad(String error) {
-    return 'Failed to load riders: $error';
+    return 'Failed to load captains: $error';
   }
 
   @override
@@ -1878,7 +1878,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileStaffSubtitle => 'Add and manage employees';
 
   @override
-  String get profileRiderSubtitle => 'Add and manage your delivery riders';
+  String get profileRiderSubtitle => 'Add and manage your delivery captains';
 
   @override
   String get profileSlotsLabel => 'Pickup Slots';

@@ -65,7 +65,7 @@ class LndryVendorApp extends ConsumerWidget {
       builder: (context, child) {
         return MaterialApp.router(
           key: ValueKey(themeMode),
-          title: 'LNDRY Vendor',
+          title: 'Lndry Partner',
           debugShowCheckedModeBanner: Env.showDebugBanner,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,

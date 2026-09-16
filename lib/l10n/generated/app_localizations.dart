@@ -150,7 +150,7 @@ abstract class AppLocalizations {
   /// App name shown on splash screen
   ///
   /// In en, this message translates to:
-  /// **'LNDRY Vendor'**
+  /// **'Lndry Partner'**
   String get splashAppName;
 
   /// Tagline shown on splash screen
@@ -612,7 +612,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsFooter.
   ///
   /// In en, this message translates to:
-  /// **'LNDRY Vendor App • Version {version}\n© 2026 LNDRY Technologies Pvt. Ltd.'**
+  /// **'Lndry Partner • Version {version}\n© 2026 LNDRY Technologies Pvt. Ltd.'**
   String settingsFooter(String version);
 
   /// No description provided for @routerExitAppTitle.
@@ -624,7 +624,7 @@ abstract class AppLocalizations {
   /// No description provided for @routerExitAppMessage.
   ///
   /// In en, this message translates to:
-  /// **'Are you sure you want to exit LNDRY Vendor?'**
+  /// **'Are you sure you want to exit Lndry Partner?'**
   String get routerExitAppMessage;
 
   /// No description provided for @routerPageNotFound.
@@ -1338,13 +1338,13 @@ abstract class AppLocalizations {
   /// No description provided for @orderDetailsPickupRiderLabel.
   ///
   /// In en, this message translates to:
-  /// **'Pickup Rider'**
+  /// **'Pickup Captain'**
   String get orderDetailsPickupRiderLabel;
 
   /// No description provided for @orderDetailsDeliveryRiderLabel.
   ///
   /// In en, this message translates to:
-  /// **'Delivery Rider'**
+  /// **'Delivery Captain'**
   String get orderDetailsDeliveryRiderLabel;
 
   /// No description provided for @orderDetailsAssignRiderHint.
@@ -1362,31 +1362,31 @@ abstract class AppLocalizations {
   /// No description provided for @orderDetailsAssignRiderTitle.
   ///
   /// In en, this message translates to:
-  /// **'Assign Rider'**
+  /// **'Assign Captain'**
   String get orderDetailsAssignRiderTitle;
 
   /// No description provided for @orderDetailsNoActiveRiders.
   ///
   /// In en, this message translates to:
-  /// **'No active riders yet. Add one from Rider Management.'**
+  /// **'No active captains yet. Add one from Captain Management.'**
   String get orderDetailsNoActiveRiders;
 
   /// No description provided for @orderDetailsRiderAssignedSnack.
   ///
   /// In en, this message translates to:
-  /// **'Rider assigned'**
+  /// **'Captain assigned'**
   String get orderDetailsRiderAssignedSnack;
 
   /// No description provided for @orderDetailsBroadcastButton.
   ///
   /// In en, this message translates to:
-  /// **'Broadcast to All Riders'**
+  /// **'Broadcast to All Captains'**
   String get orderDetailsBroadcastButton;
 
   /// No description provided for @orderDetailsBroadcastSnack.
   ///
   /// In en, this message translates to:
-  /// **'Broadcast sent to active riders'**
+  /// **'Broadcast sent to active captains'**
   String get orderDetailsBroadcastSnack;
 
   /// No description provided for @orderDetailsAssignedToRider.
@@ -1398,7 +1398,7 @@ abstract class AppLocalizations {
   /// No description provided for @orderDetailsOfferPendingBroadcast.
   ///
   /// In en, this message translates to:
-  /// **'Offer sent to all riders — awaiting acceptance'**
+  /// **'Offer sent to all captains — awaiting acceptance'**
   String get orderDetailsOfferPendingBroadcast;
 
   /// No description provided for @orderDetailsOfferPendingSingle.
@@ -2659,13 +2659,13 @@ abstract class AppLocalizations {
   /// No description provided for @riderManagementAddRiderTitle.
   ///
   /// In en, this message translates to:
-  /// **'Add Rider'**
+  /// **'Add Captain'**
   String get riderManagementAddRiderTitle;
 
   /// No description provided for @riderManagementAddRiderSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'The rider logs in with this phone number, the same way you do.'**
+  /// **'The captain logs in with this phone number, the same way you do.'**
   String get riderManagementAddRiderSubtitle;
 
   /// No description provided for @riderManagementFullNameHint.
@@ -2689,13 +2689,13 @@ abstract class AppLocalizations {
   /// No description provided for @riderManagementRiderAddedSnack.
   ///
   /// In en, this message translates to:
-  /// **'Rider added'**
+  /// **'Captain added'**
   String get riderManagementRiderAddedSnack;
 
   /// No description provided for @riderManagementRemoveRiderTitle.
   ///
   /// In en, this message translates to:
-  /// **'Remove Rider'**
+  /// **'Remove Captain'**
   String get riderManagementRemoveRiderTitle;
 
   /// No description provided for @riderManagementRemoveConfirm.
@@ -2707,25 +2707,25 @@ abstract class AppLocalizations {
   /// No description provided for @riderManagementPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Rider Management'**
+  /// **'Captain Management'**
   String get riderManagementPageTitle;
 
   /// No description provided for @riderManagementEmptyTitle.
   ///
   /// In en, this message translates to:
-  /// **'No Riders Yet'**
+  /// **'No Captains Yet'**
   String get riderManagementEmptyTitle;
 
   /// No description provided for @riderManagementEmptySubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Add your own delivery riders — they log in with their phone and only see their assigned pickups and deliveries.'**
+  /// **'Add your own delivery captains — they log in with their phone and only see their assigned pickups and deliveries.'**
   String get riderManagementEmptySubtitle;
 
   /// No description provided for @riderManagementFailedToLoad.
   ///
   /// In en, this message translates to:
-  /// **'Failed to load riders: {error}'**
+  /// **'Failed to load captains: {error}'**
   String riderManagementFailedToLoad(String error);
 
   /// No description provided for @riderMyJobsTitleWithVendor.
@@ -3361,7 +3361,7 @@ abstract class AppLocalizations {
   /// No description provided for @profileRiderSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Add and manage your delivery riders'**
+  /// **'Add and manage your delivery captains'**
   String get profileRiderSubtitle;
 
   /// No description provided for @profileSlotsLabel.
