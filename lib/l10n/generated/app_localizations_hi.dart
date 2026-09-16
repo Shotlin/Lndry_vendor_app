@@ -526,6 +526,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get orderDetailsPhotoRequired => 'कम से कम एक फोटो आवश्यक है';
 
   @override
+  String get orderDetailsProblemReportRequired =>
+      'सबमिट करने से पहले कम से कम एक आइटम पर Report to Re-evaluation करें';
+
+  @override
   String get orderDetailsSubmittedForApproval =>
       'ग्राहक की स्वीकृति के लिए भेज दिया गया';
 
@@ -2910,6 +2914,10 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get orderDetailsPhotoRequired => 'Kam se kam ek photo zaroori hai';
+
+  @override
+  String get orderDetailsProblemReportRequired =>
+      'Submit karne se pehle kam se kam ek item par Report to Re-evaluation karein';
 
   @override
   String get orderDetailsSubmittedForApproval =>

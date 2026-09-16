@@ -204,6 +204,7 @@
   "orderDetailsPhotoUploadFailed": "Photo upload failed: {error}",
   "@orderDetailsPhotoUploadFailed": {"placeholders": {"error": {"type": "String"}}},
   "orderDetailsPhotoRequired": "At least one photo is required",
+  "orderDetailsProblemReportRequired": "Report to Re-evaluation on at least one item before submitting",
   "orderDetailsSubmittedForApproval": "Submitted for customer approval",
   "orderDetailsReconciliationFailed": "Reconciliation failed: {error}",
   "@orderDetailsReconciliationFailed": {"placeholders": {"error": {"type": "String"}}},

@@ -525,6 +525,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderDetailsPhotoRequired => 'At least one photo is required';
 
   @override
+  String get orderDetailsProblemReportRequired =>
+      'Report to Re-evaluation on at least one item before submitting';
+
+  @override
   String get orderDetailsSubmittedForApproval =>
       'Submitted for customer approval';
 

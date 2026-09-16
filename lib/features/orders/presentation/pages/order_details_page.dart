@@ -24,7 +24,6 @@ class OrderDetailsPage extends ConsumerStatefulWidget {
 
 class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   final _reasonController = TextEditingController();
-  final _notesController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final Map<String, int> _confirmedQuantities = {};
 
@@ -32,7 +31,6 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// sq ft) — these lines take an exact decimal correction instead of the
   /// +/- stepper used for piece-priced lines.
   final Map<String, TextEditingController> _weightControllers = {};
-  final List<String> _reconcilePhotoUrls = [];
 
   /// order_line_id -> chosen replacement service, when the vendor moves an
   /// item to a different service than the customer originally picked (e.g.
@@ -62,16 +60,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// draft's reported problem onto the wrong item.
   final Map<_NewLineDraft, _ProblemDraft> _newLineProblems = {};
 
-  /// Whether at least one line already has a re-evaluation report attached
-  /// (and therefore its own required photo) — when true, the blanket
-  /// overall photo-evidence requirement below is relaxed rather than
-  /// forcing a redundant, less-specific duplicate.
+  /// Whether at least one line has a re-evaluation report attached — this
+  /// is the sole reason/evidence requirement for submitting a
+  /// reconciliation (Report to Re-evaluation already carries its own
+  /// required 1-3 photos, so there's no separate blanket note/photo field).
   bool get _hasAnyProblemReport =>
       _lineProblems.isNotEmpty || _newLineProblems.isNotEmpty;
   List<ReconciliationProblemType> _problemTypeCatalog = [];
   bool _problemTypeCatalogFetchAttempted = false;
   bool _isReconciling = false;
-  bool _isUploadingReconcilePhoto = false;
   bool _autoOpenedReconcile = false;
   final ScrollController _timelineScrollController = ScrollController();
   int? _timelineScrolledForIndex;
@@ -97,7 +94,6 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   @override
   void dispose() {
     _reasonController.dispose();
-    _notesController.dispose();
     for (final c in _weightControllers.values) {
       c.dispose();
     }
@@ -627,43 +623,12 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     );
   }
 
-  Future<void> _addReconcilePhoto(
-    void Function(void Function()) setSheetState,
-  ) async {
-    final picker = ImagePicker();
-    final XFile? picked = await picker.pickImage(
-      source: ImageSource.camera,
-      imageQuality: 85,
-    );
-    if (picked == null) return;
-
-    setSheetState(() => _isUploadingReconcilePhoto = true);
-    try {
-      final url = await ref
-          .read(vendorRepositoryProvider)
-          .uploadImage(picked, folder: 'order-reconciliation-photos');
-      setSheetState(() => _reconcilePhotoUrls.add(url));
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'),
-            ),
-          ),
-        );
-      }
-    } finally {
-      setSheetState(() => _isUploadingReconcilePhoto = false);
-    }
-  }
-
   Future<void> _submitReconciliation(OrderModel order) async {
     final l10n = AppLocalizations.of(context);
-    if (_reconcilePhotoUrls.isEmpty && !_hasAnyProblemReport) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(l10n.orderDetailsPhotoRequired)));
+    if (!_hasAnyProblemReport) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.orderDetailsProblemReportRequired)),
+      );
       return;
     }
     if (_formKey.currentState!.validate()) {
@@ -705,8 +670,6 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
             });
           }
         }
-
-        final notes = _notesController.text.trim();
 
         final newLines = _newLineDrafts
             .map(
@@ -751,10 +714,11 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
               order.id,
               lines: lines,
               confirmedWeightKg: confirmedWeightKg,
-              adjustmentReason: notes.isNotEmpty
-                  ? notes
-                  : 'Receipt reconciliation',
-              photoUrls: _reconcilePhotoUrls,
+              // The reason/evidence now lives entirely in problems[] below
+              // (Report to Re-evaluation) — this is just a fixed label for
+              // the backend's required adjustment_reason field.
+              adjustmentReason: 'Receipt reconciliation',
+              photoUrls: const [],
               newLines: newLines.isNotEmpty ? newLines : null,
               problems: problems.isNotEmpty ? problems : null,
             );
@@ -784,12 +748,10 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   void _showReconcileSheet(OrderModel order) {
     _initializeQuantities(order);
-    _reconcilePhotoUrls.clear();
     _catalogFetchAttempted = false;
     _lineProblems.clear();
     _newLineProblems.clear();
     _problemTypeCatalogFetchAttempted = false;
-    _notesController.text = '';
     final l10n = AppLocalizations.of(context);
 
     showModalBottomSheet<void>(
@@ -1072,117 +1034,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         ),
                       SizedBox(height: 20.h),
 
-                      // Adjustment notes
-                      TextFormField(
-                        controller: _notesController,
-                        decoration: InputDecoration(
-                          labelText: l10n.orderDetailsAdjustmentNoteLabel,
-                          hintText: l10n.orderDetailsAdjustmentNoteHint,
-                          prefixIcon: const Icon(Icons.note_alt_rounded),
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Photo evidence — required before submit is enabled,
-                      // unless a per-line re-evaluation report (with its own
-                      // required photos) already covers it.
-                      Text(
-                        _hasAnyProblemReport
-                            ? l10n.orderDetailsPhotoEvidenceOptionalLabel
-                            : l10n.orderDetailsPhotoEvidenceLabel,
-                        style: AppTypography.bodyMedium.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      Wrap(
-                        spacing: 8.w,
-                        runSpacing: 8.h,
-                        children: [
-                          for (var i = 0; i < _reconcilePhotoUrls.length; i++)
-                            Stack(
-                              clipBehavior: Clip.none,
-                              children: [
-                                Container(
-                                  width: 56.r,
-                                  height: 56.r,
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryContainer,
-                                    borderRadius: BorderRadius.circular(12.r),
-                                  ),
-                                  child: Image.network(
-                                    _reconcilePhotoUrls[i],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: -6,
-                                  right: -6,
-                                  child: GestureDetector(
-                                    onTap: () => setSheetState(
-                                      () => _reconcilePhotoUrls.removeAt(i),
-                                    ),
-                                    child: Container(
-                                      width: 20.r,
-                                      height: 20.r,
-                                      decoration: const BoxDecoration(
-                                        color: AppColors.error,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Icon(
-                                        Icons.close_rounded,
-                                        color: AppColors.white,
-                                        size: 14.r,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          if (_isUploadingReconcilePhoto)
-                            Container(
-                              width: 56.r,
-                              height: 56.r,
-                              decoration: BoxDecoration(
-                                color: AppColors.primaryContainer,
-                                borderRadius: BorderRadius.circular(12.r),
-                              ),
-                              child: const Center(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              ),
-                            )
-                          else
-                            GestureDetector(
-                              onTap: () => _addReconcilePhoto(setSheetState),
-                              child: Container(
-                                width: 56.r,
-                                height: 56.r,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  border: Border.all(
-                                    color: AppColors.primary,
-                                    width: 1.5,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.add_a_photo_outlined,
-                                  color: AppColors.primary,
-                                  size: 22.r,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      SizedBox(height: 24.h),
-
                       ElevatedButton(
-                        onPressed:
-                            (_isReconciling ||
-                                (_reconcilePhotoUrls.isEmpty &&
-                                    !_hasAnyProblemReport))
+                        onPressed: (_isReconciling || !_hasAnyProblemReport)
                             ? null
                             : () => _submitReconciliation(order),
                         style: ElevatedButton.styleFrom(

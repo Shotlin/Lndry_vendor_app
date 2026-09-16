@@ -165,6 +165,7 @@
   "orderDetailsAddButton": "Add Karein",
   "orderDetailsPhotoUploadFailed": "Photo upload nahi ho payi: {error}",
   "orderDetailsPhotoRequired": "Kam se kam ek photo zaroori hai",
+  "orderDetailsProblemReportRequired": "Submit karne se pehle kam se kam ek item par Report to Re-evaluation karein",
   "orderDetailsSubmittedForApproval": "Customer approval ke liye bhej diya gaya",
   "orderDetailsReconciliationFailed": "Reconciliation fail ho gaya: {error}",
   "orderDetailsReconcileSheetTitle": "Order Items Milayein",

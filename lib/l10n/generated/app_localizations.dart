@@ -1035,6 +1035,12 @@ abstract class AppLocalizations {
   /// **'At least one photo is required'**
   String get orderDetailsPhotoRequired;
 
+  /// No description provided for @orderDetailsProblemReportRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Report to Re-evaluation on at least one item before submitting'**
+  String get orderDetailsProblemReportRequired;
+
   /// No description provided for @orderDetailsSubmittedForApproval.
   ///
   /// In en, this message translates to:

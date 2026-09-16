@@ -165,6 +165,7 @@
   "orderDetailsAddButton": "जोड़ें",
   "orderDetailsPhotoUploadFailed": "फोटो अपलोड नहीं हो सकी: {error}",
   "orderDetailsPhotoRequired": "कम से कम एक फोटो आवश्यक है",
+  "orderDetailsProblemReportRequired": "सबमिट करने से पहले कम से कम एक आइटम पर Report to Re-evaluation करें",
   "orderDetailsSubmittedForApproval": "ग्राहक की स्वीकृति के लिए भेज दिया गया",
   "orderDetailsReconciliationFailed": "पुनर्मूल्यांकन विफल: {error}",
   "orderDetailsReconcileSheetTitle": "ऑर्डर आइटम मिलाएं",
