@@ -199,6 +199,19 @@ String? _vendorRedirect(
       return AppRoutes.riderJobs;
     }
 
+    // The mirror-image guard: a non-rider session must never remain on a
+    // `/rider/*` screen. Without this, logging out of a rider account and
+    // straight back in as the vendor owner (or any VENDOR_STAFF) left the
+    // still-mounted RiderJobListPage on screen — it isn't a rider-only
+    // path guard by itself, only riders were ever redirected *out* of
+    // non-rider paths above, nothing redirected a non-rider *out* of a
+    // rider path. The page then called the rider-only `/vendor/rider/jobs`
+    // endpoint with the new (non-rider) token and got a permanent 403,
+    // fixable before this only by force-closing and reopening the app.
+    if (path.startsWith('/rider')) {
+      return AppRoutes.dashboard;
+    }
+
     // Only redirect from auth pages.
     if (isAuthPath) {
       return _safeReturnTo(returnTo) ?? AppRoutes.dashboard;
