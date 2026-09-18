@@ -3,13 +3,13 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'config/config.dart';
 import 'core/router/vendor_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/app_colors.dart';
 import 'core/theme/tokens/breakpoints.dart';
 import 'core/services/storage_service.dart';
+import 'core/services/splash_diag.dart';
 import 'core/widgets/job_offer_listener.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'providers/theme_provider.dart';
@@ -17,17 +17,21 @@ import 'providers/locale_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  splashDiag('main_start');
 
   final prefs = await SharedPreferences.getInstance();
+  splashDiag('shared_prefs_ready');
 
-  // Firebase initialisation is best-effort; the app runs without it in
-  // offline/mock mode (FCM, auth still wired when backend is delivered).
-  try {
-    await Firebase.initializeApp();
-  } catch (e) {
-    debugPrint('[LNDRY Vendor] Firebase init skipped: $e');
-  }
+  // Firebase is intentionally not initialised here — disabled at the
+  // user's request (2026-09-16) after android/app/google-services.json's
+  // placeholder project caused the app to hang on the splash screen on
+  // some devices. Restore `await Firebase.initializeApp();` (wrapped in
+  // try/catch, as it was before) once a real Firebase project's
+  // google-services.json replaces the placeholder — and see
+  // auth_provider.dart's _registerDeviceIfPossible for the matching FCM
+  // re-enable step.
 
+  splashDiag('run_app_called');
   runApp(
     ProviderScope(
       overrides: [

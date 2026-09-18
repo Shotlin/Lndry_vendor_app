@@ -1,12 +1,10 @@
-import 'dart:io';
+import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 import '../models/models.dart';
 import '../core/services/storage_service.dart';
+import '../core/services/splash_diag.dart';
 import '../core/constants/app_constants.dart';
 import '../core/network/network.dart';
 import '../repositories/repositories.dart';
@@ -128,29 +126,106 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   // ── Initialisation (session restore via stored tokens) ──────────────────────
 
+  // The splash screen (see SplashPage._checkNavigation) only leaves once
+  // `state` stops being AuthLoading — so however _restoreSession gets
+  // there, it must always get there, FAST. The splash screen's own timer
+  // (splash_page.dart) shows it for ~1.5s; on a normal connection
+  // _restoreSession (two local storage reads + two API calls) finishes
+  // inside that same window, so in the ordinary case the two run in
+  // parallel and the user simply sees splash → dashboard in about a
+  // second or two, nothing more. This 6s figure is only the *ceiling* for
+  // when something is unusually slow or broken (bad network, or any other
+  // cause, known or not) — past it, waiting any longer stops being "a bit
+  // slow" and starts being indistinguishable from "stuck", which this app
+  // must never do again.
+  //
+  // 2026-09-16: a Future.timeout() wrapped around _restoreSession() was
+  // tried first here and did NOT reliably fire on a real device that got
+  // stuck — plausible cause is something inside _restoreSession's own
+  // await chain (network layer, a retry loop, or a native DNS/socket call)
+  // starving the event loop enough that even the timeout's own Timer never
+  // got a turn. A plain, independent Timer — created here and never
+  // chained onto _restoreSession's Future at all — doesn't share that
+  // failure mode: it's scheduled directly, so whatever _restoreSession is
+  // doing internally can't prevent it from firing.
+  Timer? _watchdog;
+
   Future<void> _init() async {
     state = const AuthLoading();
+    splashDiag('auth_init_start');
 
+    _watchdog = Timer(const Duration(seconds: 6), () {
+      splashDiag('auth_init_watchdog_fired', {'state': state.runtimeType.toString()});
+      if (state is AuthLoading) {
+        state = const AuthUnauthenticated();
+      }
+    });
+
+    try {
+      await _restoreSession();
+    } finally {
+      _watchdog?.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    _watchdog?.cancel();
+    super.dispose();
+  }
+
+  // 2026-09-16, same investigation as the watchdog above: the actual root
+  // cause turned out to be neither a hang nor a starved timer — it was an
+  // uncaught exception (a real device's Keystore throwing BAD_DECRYPT on a
+  // read, restored-ciphertext-with-no-matching-key after a reinstall —
+  // see storage_service.dart's getSecure) thrown from *outside* the one
+  // try/catch this function used to have, which only wrapped the
+  // refresh/profile network calls, not the token-read step above them. A
+  // thrown exception unwinds this whole function immediately, so no
+  // timeout — chained or independent — ever gets a chance to rescue it;
+  // only an enclosing try/catch does. storage_service.dart's methods are
+  // now hardened not to throw at all, but this outer wrapper stays as a
+  // second line of defense against anything else in here (now or added
+  // later) that might throw for a reason neither of us has found yet.
+  Future<void> _restoreSession() async {
+    try {
+      await _restoreSessionUnsafe();
+    } catch (e) {
+      splashDiag('auth_restore_uncaught_exception', {'error': e.toString()});
+      state = const AuthUnauthenticated();
+    }
+  }
+
+  Future<void> _restoreSessionUnsafe() async {
     // One-time session reset for fresh installs (clears stale dev data).
     final resetDone = _storage.getBool('vendor_fresh_install_reset_done_v1') ?? false;
     if (!resetDone) {
+      splashDiag('auth_fresh_install_reset_start');
       await _storage.clearSession();
       await _clearVendorPrefs();
       await _storage.saveBool('vendor_fresh_install_reset_done_v1', value: true);
+      splashDiag('auth_fresh_install_reset_done');
     }
 
     // Try reading stored tokens from secure storage.
     final accessToken = await _storage.getSecure(AppConstants.keyAccessToken);
     final refreshToken = await _storage.getSecure(AppConstants.keyRefreshToken);
+    splashDiag('auth_tokens_read', {
+      'hasAccessToken': accessToken != null,
+      'hasRefreshToken': refreshToken != null,
+    });
 
     if (accessToken == null && refreshToken == null) {
+      splashDiag('auth_no_tokens_unauthenticated');
       state = const AuthUnauthenticated();
       return;
     }
 
     // Attempt to restore session by refreshing the token pair.
     try {
+      splashDiag('auth_refresh_tokens_start');
       final pair = await _repo.refreshTokens();
+      splashDiag('auth_refresh_tokens_done');
 
       // Store refreshed tokens
       await _storage.saveSecure(AppConstants.keyAccessToken, pair.accessToken);
@@ -160,7 +235,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
       // vendor record exists yet (never finished onboarding) — that's not a
       // session failure, so it must not clear the tokens.
       try {
+        splashDiag('auth_get_profile_start');
         final vendor = await _repo.getProfile();
+        splashDiag('auth_get_profile_done');
         await _saveVendorPrefs(vendor);
         await _registerDeviceIfPossible();
         state = AuthAuthenticated(
@@ -168,11 +245,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
           shopRole: _currentShopRole(),
           permissions: _currentPermissions(),
         );
+        splashDiag('auth_authenticated');
       } on DioException catch (e) {
         // The error interceptor wraps the parsed ApiException inside
         // DioException.error rather than throwing it directly, so the
         // status code must be read off the DioException itself.
         if (e.response?.statusCode == 404) {
+          splashDiag('auth_get_profile_404_needs_application');
           final phone = _storage.getString('auth_user_phone') ??
               _storage.getString('vendor_phone') ??
               '';
@@ -181,8 +260,9 @@ class AuthNotifier extends StateNotifier<AuthState> {
         }
         rethrow;
       }
-    } catch (_) {
+    } catch (e) {
       // Token refresh failed — clear everything and go to login.
+      splashDiag('auth_restore_failed', {'error': e.toString()});
       await _storage.clearSession();
       await _clearVendorPrefs();
       state = const AuthUnauthenticated();
@@ -449,33 +529,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
     ]);
   }
 
-  Future<void> _registerDeviceIfPossible() async {
-    try {
-      final messaging = FirebaseMessaging.instance;
-      await messaging.requestPermission();
-      final token = await messaging.getToken();
-      if (token == null || token.isEmpty) return;
-
-      var deviceId = _storage.getString('device_id');
-      if (deviceId == null || deviceId.isEmpty) {
-        deviceId = const Uuid().v4();
-        await _storage.saveString('device_id', deviceId);
-      }
-
-      final platform = Platform.isAndroid
-          ? 'android'
-          : Platform.isIOS
-              ? 'ios'
-              : 'android';
-      await _repo.registerDevice(
-        deviceId: deviceId,
-        platform: platform,
-        fcmToken: token,
-      );
-    } catch (_) {
-      // Firebase config is optional for local/dev builds; auth must continue.
-    }
-  }
+  /// Push-notification device registration — temporarily disabled at the
+  /// user's request (2026-09-16). The FCM calls this used to make (via
+  /// FirebaseMessaging.instance.requestPermission()/getToken(), then
+  /// _repo.registerDevice(...)) hung the splash screen indefinitely on
+  /// some devices even behind a 5s .timeout() guard, because
+  /// android/app/google-services.json is still a placeholder Firebase
+  /// project (see project memory: vendor app splash-hang bug). Re-enable
+  /// by restoring the previous implementation from git history alongside
+  /// Firebase.initializeApp() in main.dart, once a real Firebase project's
+  /// google-services.json is in place.
+  Future<void> _registerDeviceIfPossible() async {}
 }
 
 // ── Providers ─────────────────────────────────────────────────────────────────

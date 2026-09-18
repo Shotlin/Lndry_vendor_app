@@ -6,6 +6,7 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../../config/env.dart';
 import '../services/storage_service.dart';
+import '../services/splash_diag.dart';
 import '../constants/app_constants.dart';
 import 'api_response.dart';
 import 'api_exception.dart';
@@ -34,6 +35,33 @@ Dio _createDio(StorageService storage, Ref ref) {
     ),
   );
 
+  // ── Diagnostic interceptor for the splash-hang investigation (2026-09-16)
+  // — logs every request/response/error made through this client so the
+  // actual HTTP traffic during startup is visible instead of guessed at.
+  // Temporary; remove alongside splash_diag.dart once that investigation
+  // is closed.
+  dio.interceptors.add(InterceptorsWrapper(
+    onRequest: (options, handler) {
+      splashDiag('http_request', {'method': options.method, 'path': options.path});
+      handler.next(options);
+    },
+    onResponse: (response, handler) {
+      splashDiag('http_response', {
+        'status': response.statusCode,
+        'path': response.requestOptions.path,
+      });
+      handler.next(response);
+    },
+    onError: (error, handler) {
+      splashDiag('http_error', {
+        'type': error.type.toString(),
+        'status': error.response?.statusCode,
+        'path': error.requestOptions.path,
+      });
+      handler.next(error);
+    },
+  ));
+
   // ── Auth interceptor: inject Bearer token ──────────────────────────────────
   dio.interceptors.add(QueuedInterceptorsWrapper(
     onRequest: (options, handler) async {
@@ -57,6 +85,7 @@ Dio _createDio(StorageService storage, Ref ref) {
     onError: (error, handler) async {
       // Attempt token refresh on 401
       if (error.response?.statusCode == 401) {
+        splashDiag('http_401_handler_start', {'path': error.requestOptions.path});
         try {
           final refreshToken =
               await storage.getSecure(AppConstants.keyRefreshToken);
@@ -72,10 +101,12 @@ Dio _createDio(StorageService storage, Ref ref) {
               ),
             );
 
+            splashDiag('http_401_refresh_attempt');
             final resp = await refreshDio.post(
               ApiEndpoints.refreshToken,
               data: {'refreshToken': refreshToken},
             );
+            splashDiag('http_401_refresh_response', {'status': resp.statusCode});
 
             final data = resp.data as Map<String, dynamic>?;
             final body = data?['data'] as Map<String, dynamic>?;
@@ -95,13 +126,16 @@ Dio _createDio(StorageService storage, Ref ref) {
                 // Retry the original request with new token
                 error.requestOptions.headers['Authorization'] =
                     'Bearer $newAccess';
+                splashDiag('http_401_retry_refetch', {'path': error.requestOptions.path});
                 final retryResponse = await dio.fetch(error.requestOptions);
+                splashDiag('http_401_retry_refetch_done');
                 return handler.resolve(retryResponse);
               }
             }
           }
-        } catch (_) {
+        } catch (e) {
           // Refresh failed; clear session and let error propagate
+          splashDiag('http_401_refresh_failed', {'error': e.toString()});
           await storage.clearSession();
         }
       }

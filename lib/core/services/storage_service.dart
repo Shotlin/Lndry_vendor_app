@@ -73,38 +73,74 @@ class StorageService {
   bool containsKey(String key) => _prefs.containsKey(key);
 
   // ── FlutterSecureStorage (sensitive) ──────────────────────────────────────
+  //
+  // Every method here is guarded against TWO independent Android Keystore
+  // failure modes, not just one:
+  //  1. Hanging indefinitely instead of returning (seen on Unisoc-based
+  //     budget chipsets) — guarded with a 5s .timeout().
+  //  2. Throwing instead of returning — confirmed live 2026-09-16 via a
+  //     remote device stuck on the splash screen: its diagnostic trail
+  //     stopped dead immediately after the app tried to read a stored
+  //     token, with none of the several timeout-based safety nets added
+  //     earlier ever getting a chance to fire, because a *thrown*
+  //     exception unwinds the calling function immediately rather than
+  //     waiting around for a timer to rescue it. The classic trigger: the
+  //     app is reinstalled, Android's own backup/restore brings back the
+  //     *encrypted bytes* from the old install (this app doesn't disable
+  //     that), but the AES key that encrypted them lived in the old
+  //     install's Keystore entry, which is gone — decrypting the restored
+  //     ciphertext with a new key throws (commonly BAD_DECRYPT /
+  //     KeyPermanentlyInvalidated on Android), not hangs. A `.timeout()`
+  //     does nothing for a call that fails fast.
+  // Every method below now catches both: any failure, slow or immediate,
+  // degrades to the same safe fallback a caller already treats as normal
+  // ("no token stored") instead of propagating an exception that a
+  // fire-and-forget caller (e.g. AuthNotifier's constructor calling
+  // _init() without awaiting it) has no way to catch at all.
 
-  // Same flaky-Keystore hang as getSecure below — bound it so a stuck
-  // write degrades to "token wasn't saved, user re-logs in next launch"
-  // instead of freezing whatever screen triggered it (e.g. OTP verify).
-  Future<void> saveSecure(String key, String value) => _secure
-      .write(key: key, value: value)
-      .timeout(const Duration(seconds: 5), onTimeout: () {});
+  Future<void> saveSecure(String key, String value) async {
+    try {
+      await _secure
+          .write(key: key, value: value)
+          .timeout(const Duration(seconds: 5), onTimeout: () {});
+    } catch (_) {
+      // Not saved; caller's next read correctly sees "no token".
+    }
+  }
 
-  // Some devices have a flaky/slow Android Keystore that can hang this
-  // read indefinitely (seen on Unisoc-based budget chipsets) — nothing
-  // throws, so an unguarded read strands every caller forever (the splash
-  // screen, the auth-header interceptor, token refresh). Falling back to
-  // null on timeout lets callers degrade to their normal "no token" path
-  // instead of hanging.
-  Future<String?> getSecure(String key) => _secure
-      .read(key: key)
-      .timeout(const Duration(seconds: 5), onTimeout: () => null);
+  Future<String?> getSecure(String key) async {
+    try {
+      return await _secure
+          .read(key: key)
+          .timeout(const Duration(seconds: 5), onTimeout: () => null);
+    } catch (_) {
+      return null;
+    }
+  }
 
-  // deleteSecure/deleteAllSecure hit the same Keystore path as
-  // saveSecure/getSecure above — guarded for the same reason. This one
-  // matters most on a fresh install: clearSession() below calls it before
-  // any read/write, so an unguarded hang here strands the app one step
-  // earlier than the read/write guards can help with.
-  Future<void> deleteSecure(String key) =>
-      _secure.delete(key: key).timeout(const Duration(seconds: 5), onTimeout: () {});
+  Future<void> deleteSecure(String key) async {
+    try {
+      await _secure.delete(key: key).timeout(const Duration(seconds: 5), onTimeout: () {});
+    } catch (_) {
+      // Nothing usable was there anyway from the caller's perspective.
+    }
+  }
 
-  Future<void> deleteAllSecure() =>
-      _secure.deleteAll().timeout(const Duration(seconds: 5), onTimeout: () {});
+  Future<void> deleteAllSecure() async {
+    try {
+      await _secure.deleteAll().timeout(const Duration(seconds: 5), onTimeout: () {});
+    } catch (_) {}
+  }
 
-  Future<Map<String, String>> getAllSecure() => _secure
-      .readAll()
-      .timeout(const Duration(seconds: 5), onTimeout: () => const {});
+  Future<Map<String, String>> getAllSecure() async {
+    try {
+      return await _secure
+          .readAll()
+          .timeout(const Duration(seconds: 5), onTimeout: () => const {});
+    } catch (_) {
+      return const {};
+    }
+  }
 
   // ── Convenience ───────────────────────────────────────────────────────────
 
