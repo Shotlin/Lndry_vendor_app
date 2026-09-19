@@ -958,7 +958,55 @@ class DemoVendorRepository implements VendorRepository {
 
   // ── Employee Management Implementation ────────────────────────────────────────
   @override
-  Future<List<EmployeeModel>> getEmployees() async {
+  Future<PermissionCatalog> getPermissionCatalog() async => const PermissionCatalog(modules: [
+        PermissionModule(key: 'orders', label: 'Orders', items: [
+          PermissionItem(key: 'orders.view', label: 'View orders', permissions: ['shop_orders.view']),
+          PermissionItem(key: 'orders.accept_reject', label: 'Accept / reject new orders', permissions: ['shop_orders.accept_reject']),
+        ]),
+      ]);
+
+  @override
+  Future<MyAccess> getMyAccess() async => MyAccess.owner;
+
+  // Demo mode keeps its supplies in memory for the session only.
+  final List<InventoryItem> _inventory = [
+    const InventoryItem(id: 'demo-inv-1', name: 'Liquid Detergent', quantity: 24, minThreshold: 5, unit: 'Liters'),
+    const InventoryItem(id: 'demo-inv-2', name: 'Fabric Softener', quantity: 15, minThreshold: 4, unit: 'Liters'),
+    const InventoryItem(id: 'demo-inv-3', name: 'Premium Bleach', quantity: 3, minThreshold: 5, unit: 'Liters'),
+  ];
+
+  @override
+  Future<List<InventoryItem>> getInventory() async => List.of(_inventory);
+
+  @override
+  Future<InventoryItem> createInventoryItem({
+    required String name,
+    required int quantity,
+    required int minThreshold,
+    required String unit,
+  }) async {
+    final item = InventoryItem(
+      id: 'demo-inv-${_inventory.length + 1}',
+      name: name,
+      quantity: quantity,
+      minThreshold: minThreshold,
+      unit: unit,
+    );
+    _inventory.add(item);
+    return item;
+  }
+
+  @override
+  Future<InventoryItem> adjustInventoryQuantity(String id, int delta) async {
+    final index = _inventory.indexWhere((i) => i.id == id);
+    final current = _inventory[index];
+    final next = current.copyWith(quantity: (current.quantity + delta).clamp(0, 1 << 30));
+    _inventory[index] = next;
+    return next;
+  }
+
+  @override
+  Future<List<EmployeeModel>> getStaff() async {
     return _employees;
   }
 

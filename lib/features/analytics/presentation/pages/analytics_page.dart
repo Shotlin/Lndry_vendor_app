@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/design/design_system.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/analytics_provider.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class AnalyticsPage extends ConsumerWidget {
   const AnalyticsPage({super.key});
@@ -70,7 +71,7 @@ class AnalyticsPage extends ConsumerWidget {
                     style: AppTypography.bodyLarge
                         .copyWith(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8.h),
-                Text(err.toString(),
+                Text(friendlyError(err),
                     style: AppTypography.bodyMedium
                         .copyWith(color: AppColors.textSecondary),
                     textAlign: TextAlign.center),

@@ -6,6 +6,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../models/models.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../repositories/repositories.dart';
+import '../../../../core/network/friendly_error.dart';
 
 List<String> _stepTitles(AppLocalizations l10n) => [
   l10n.onboardingStepBusinessDetails,
@@ -210,7 +211,7 @@ class _VendorApplicationPageState extends ConsumerState<VendorApplicationPage> {
   }
 
   void _showError(Object e) {
-    final message = e is LocationCaptureException ? e.message : e.toString();
+    final message = e is LocationCaptureException ? e.message : friendlyError(e);
     setState(() => _stepError = message);
   }
 

@@ -86,10 +86,14 @@ class _SplashPageState extends ConsumerState<SplashPage> {
                     ),
                   ],
                 ),
-                child: Icon(
-                  Icons.local_laundry_service_rounded,
-                  size: 64.r,
-                  color: AppColors.primary,
+                // The real Partner app icon (the same asset the launcher
+                // icon and native splash come from).
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(32.r),
+                  child: Image.asset(
+                    'assets/images/logo/lndry_logo.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(height: 24.h),

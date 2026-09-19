@@ -142,7 +142,7 @@ abstract interface class VendorRepository {
 
   /// Manually assign (or reassign) a specific rider/staff to this order.
   /// [employeeId] is a vendor_employees.id (as returned by [getRiders] /
-  /// [getEmployees]), not the person's own user id.
+  /// [getStaff]), not the person's own user id.
   Future<OrderModel> assignRider(String orderId, String employeeId);
 
   /// Broadcast this order to every active rider at once — first to
@@ -214,7 +214,32 @@ abstract interface class VendorRepository {
   Future<void> deleteNotification(String notificationId);
 
   // -- Employee staff management
-  Future<List<EmployeeModel>> getEmployees();
+  /// Vendor STAFF only (role VENDOR_STAFF). Captains are a separate account
+  /// type — see [getRiders] — and never appear here, nor does the owner.
+  Future<List<EmployeeModel>> getStaff();
+
+  /// What the owner can grant staff, served by the backend so the Permissions
+  /// screen shows exactly what the server enforces.
+  Future<PermissionCatalog> getPermissionCatalog();
+
+  /// The signed-in user's current role and access (works from the roster, not
+  /// the login token, so owner edits reach a staff session immediately).
+  Future<MyAccess> getMyAccess();
+
+  // -- Operational supplies (server-side, shared by every device and session)
+
+  Future<List<InventoryItem>> getInventory();
+
+  Future<InventoryItem> createInventoryItem({
+    required String name,
+    required int quantity,
+    required int minThreshold,
+    required String unit,
+  });
+
+  /// Adds [delta] (may be negative) to the saved quantity on the server and
+  /// returns the item exactly as the server now holds it.
+  Future<InventoryItem> adjustInventoryQuantity(String id, int delta);
 
   Future<EmployeeModel> createEmployee({
     required String name,

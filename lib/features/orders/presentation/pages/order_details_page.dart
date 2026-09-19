@@ -5,13 +5,16 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/design/design_system.dart';
+import '../../../../core/extensions/order_extensions.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../l10n/order_status_l10n.dart';
+import '../../../../providers/access_provider.dart';
 import '../../../../providers/orders_provider.dart';
 import '../../../../providers/riders_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class OrderDetailsPage extends ConsumerStatefulWidget {
   const OrderDetailsPage({super.key, required this.orderId});
@@ -734,7 +737,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(l10n.orderDetailsReconciliationFailed('$e')),
+              content: Text(l10n.orderDetailsReconciliationFailed(friendlyError(e))),
             ),
           );
         }
@@ -747,6 +750,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   }
 
   void _showReconcileSheet(OrderModel order) {
+    if (!ref.read(myAccessProvider).can('orders.reevaluate')) return;
     _initializeQuantities(order);
     _catalogFetchAttempted = false;
     _lineProblems.clear();
@@ -1077,7 +1081,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack(friendlyError(e)))));
     }
   }
 
@@ -1092,7 +1096,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack(friendlyError(e)))));
     }
   }
 
@@ -1130,7 +1134,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                   context.pop();
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+                    SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))),
                   );
                 }
               },
@@ -1212,13 +1216,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  l10n.dashboardOrderIdLabel(
-                                    order.orderNumber.isNotEmpty
-                                        ? order.orderNumber
-                                        : order.id
-                                              .substring(0, 8)
-                                              .toUpperCase(),
-                                  ),
+                                  l10n.dashboardOrderIdLabel(order.displayNumber),
                                   style: AppTypography.headlineMedium.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -1405,7 +1403,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       // shown while the order is at a stage that can
                       // actually be (re)assigned (mirrors the backend's
                       // assignSpecificEmployee stage check).
-                      if (_assignablePurpose(order.status) != null) ...[
+                      if (_assignablePurpose(order.status) != null &&
+                          ref.watch(myAccessProvider).can('orders.assign_captain')) ...[
                         _buildRiderAssignmentCard(order),
                         SizedBox(height: 24.h),
                       ],
@@ -1429,7 +1428,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            if (order.status == OrderStatus.receivedAtVendor)
+                            if (order.status == OrderStatus.receivedAtVendor &&
+                                ref.watch(myAccessProvider).can('orders.reevaluate'))
                               TextButton.icon(
                                 onPressed: () => _showReconcileSheet(order),
                                 icon: const Icon(Icons.scale_rounded, size: 16),
@@ -1609,7 +1609,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) =>
-            Center(child: Text(l10n.orderDetailsErrorLoading('$err'))),
+            Center(child: Text(l10n.orderDetailsErrorLoading(friendlyError(err)))),
       ),
     );
   }
@@ -2238,24 +2238,39 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+          SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))),
         );
       }
     }
   }
 
   void _showAssignRiderSheet(String orderId) {
+    // Only the owner manages captains, so only the owner gets the shortcut.
+    final canAddCaptain = ref.read(myAccessProvider).isOwner;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      useSafeArea: true,
+      // On the root navigator so the sheet sits above the bottom navigation
+      // bar instead of being partly covered by it.
+      useRootNavigator: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
       ),
       builder: (sheetContext) {
         final l10n = AppLocalizations.of(sheetContext);
-        return SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(20.r),
+        // The whole sheet scrolls (not just the list), so every captain and
+        // the Add Captain option stay reachable on a small screen, with many
+        // captains, or with the keyboard open.
+        return SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: 20.r,
+            right: 20.r,
+            top: 20.r,
+            bottom: 20.r + MediaQuery.of(sheetContext).viewInsets.bottom,
+          ),
+          child: SafeArea(
+            top: false,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2295,34 +2310,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                             ),
                           );
                         }
-                        return ConstrainedBox(
-                          constraints: BoxConstraints(maxHeight: 360.h),
-                          child: ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: active.length,
-                            separatorBuilder: (_, __) => const Divider(),
-                            itemBuilder: (context, idx) {
-                              final rider = active[idx];
-                              return ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                leading: CircleAvatar(
-                                  backgroundColor: AppColors.secondaryLight,
-                                  child: Icon(
-                                    Icons.two_wheeler_rounded,
-                                    color: AppColors.secondary,
-                                  ),
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          // The surrounding sheet does the scrolling.
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: active.length,
+                          separatorBuilder: (_, __) => const Divider(),
+                          itemBuilder: (context, idx) {
+                            final rider = active[idx];
+                            return ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              leading: CircleAvatar(
+                                backgroundColor: AppColors.secondaryLight,
+                                child: Icon(
+                                  Icons.two_wheeler_rounded,
+                                  color: AppColors.secondary,
                                 ),
-                                title: Text(rider.name),
-                                subtitle: rider.phone != null
-                                    ? Text(rider.phone!)
-                                    : null,
-                                onTap: () {
-                                  Navigator.pop(sheetContext);
-                                  _assignRider(orderId, rider.id);
-                                },
-                              );
-                            },
-                          ),
+                              ),
+                              title: Text(rider.name),
+                              subtitle: rider.phone != null
+                                  ? Text(rider.phone!)
+                                  : null,
+                              onTap: () {
+                                Navigator.pop(sheetContext);
+                                _assignRider(orderId, rider.id);
+                              },
+                            );
+                          },
                         );
                       },
                       loading: () => const Padding(
@@ -2330,16 +2344,49 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         child: Center(child: CircularProgressIndicator()),
                       ),
                       error: (err, _) =>
-                          Text(l10n.riderManagementFailedToLoad('$err')),
+                          Text(l10n.riderManagementFailedToLoad(friendlyError(err))),
                     );
                   },
                 ),
+                if (canAddCaptain) ...[
+                  const Divider(),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: CircleAvatar(
+                      backgroundColor: AppColors.primaryContainer,
+                      child: const Icon(Icons.add_rounded, color: AppColors.primary),
+                    ),
+                    title: Text(
+                      l10n.riderManagementAddRiderTitle,
+                      style: const TextStyle(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      _addCaptainThenReturn(orderId);
+                    },
+                  ),
+                ],
               ],
             ),
           ),
         );
       },
     );
+  }
+
+  /// Opens the existing Captain Management → Add Captain form. This order
+  /// screen stays underneath, so Back returns straight to it (same order,
+  /// same state) — and the Assign Captain sheet is reopened with a freshly
+  /// loaded list, so a captain just added can be picked for this order
+  /// right away.
+  Future<void> _addCaptainThenReturn(String orderId) async {
+    await context.push('${AppRoutes.riderManagement}?add=1');
+    if (!mounted) return;
+    ref.invalidate(ridersListProvider);
+    _showAssignRiderSheet(orderId);
   }
 
   Future<void> _assignRider(String orderId, String employeeId) async {
@@ -2355,7 +2402,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.dashboardActionFailed('$e'))),
+          SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))),
         );
       }
     }
@@ -2364,8 +2411,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   Widget _buildBottomActions(OrderModel order) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
+    final access = ref.watch(myAccessProvider);
+    final canAcceptReject = access.can('orders.accept_reject');
+    final canProcess = access.can('orders.process');
+    final canReevaluate = access.can('orders.reevaluate');
 
     if (order.status == OrderStatus.waitingForVendorConfirmation) {
+      if (!canAcceptReject) return const SizedBox.shrink();
       return Container(
         color: isDark ? AppColors.darkSurface : AppColors.white,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
@@ -2404,6 +2456,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
       OrderStatus.pickupOtpVerified,
       OrderStatus.pickedUp,
     ].contains(order.status)) {
+      if (!canProcess) return const SizedBox.shrink();
       // Garments are somewhere between vendor-accepted and physically
       // arriving at the shop — the state machine allows RECEIVED_AT_VENDOR
       // from any of these (rider flow or a manual/self-pickup bypass), but
@@ -2426,11 +2479,13 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ),
       );
     } else if (order.status == OrderStatus.receivedAtVendor) {
+      if (!canReevaluate && !canProcess) return const SizedBox.shrink();
       return Container(
         color: isDark ? AppColors.darkSurface : AppColors.white,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
         child: Row(
           children: [
+            if (canReevaluate)
             Expanded(
               child: OutlinedButton(
                 onPressed: () => _showReconcileSheet(order),
@@ -2442,7 +2497,8 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                 child: Text(l10n.orderDetailsReconcileItemsButton),
               ),
             ),
-            SizedBox(width: 16.w),
+            if (canReevaluate && canProcess) SizedBox(width: 16.w),
+            if (canProcess)
             Expanded(
               child: ElevatedButton(
                 onPressed: () => _updateStage(order.id, 'WASHING'),
@@ -2485,6 +2541,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ),
       );
     } else if (order.status == OrderStatus.reconciliationDisputed) {
+      if (!canReevaluate) return const SizedBox.shrink();
       // Customer rejected the proposal — resolution is a phone call, then
       // the vendor resubmits through the same sheet/endpoint (no separate
       // "resolve dispute" UI).
@@ -2505,6 +2562,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ),
       );
     } else if (order.status == OrderStatus.processing) {
+      if (!canProcess) return const SizedBox.shrink();
       return Container(
         color: isDark ? AppColors.darkSurface : AppColors.white,
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
@@ -2783,7 +2841,7 @@ class _ReportProblemSheetState extends ConsumerState<_ReportProblemSheet> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'),
+              AppLocalizations.of(context).orderDetailsPhotoUploadFailed(friendlyError(e)),
             ),
           ),
         );

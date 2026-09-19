@@ -8,6 +8,7 @@ import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// Delivery-leg balance-collection step, shown before the delivery-OTP
 /// screen. COD orders show a "Confirm Cash Collected" action that records
@@ -37,7 +38,7 @@ class _RiderCollectBalancePageState extends ConsumerState<RiderCollectBalancePag
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).riderFailedRecordCashCollection('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).riderFailedRecordCashCollection(friendlyError(e)))),
         );
       }
     } finally {

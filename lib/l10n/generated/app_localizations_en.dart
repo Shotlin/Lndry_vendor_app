@@ -1478,7 +1478,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get riderManagementPhoneLabel => 'Phone Number';
 
   @override
-  String get riderManagementPhoneInvalid => 'Enter a valid phone number';
+  String get riderManagementPhoneInvalid =>
+      'Enter a valid 10-digit mobile number.';
 
   @override
   String get riderManagementRiderAddedSnack => 'Captain added';
@@ -2385,4 +2386,103 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ticketClosedByTeamBanner =>
       'This ticket has been closed by our support team.';
+
+  @override
+  String get employeesAddStaffButton => 'Add Staff';
+
+  @override
+  String get employeesPhoneRequiredLabel => 'Phone Number';
+
+  @override
+  String get employeesPhoneRequiredError =>
+      'Enter a valid 10-digit phone number — staff sign in with it';
+
+  @override
+  String get employeesPermissionsRequired => 'Select at least one permission';
+
+  @override
+  String get employeesPermissionsLoadFailed =>
+      'Couldn\'t load the permission list';
+
+  @override
+  String get employeesPermissionsHint =>
+      'Only the sections you switch on will open for this staff member.';
+
+  @override
+  String get employeesStaffOnlyNote =>
+      'Staff sign in to the main Partner app. Captains are added under Captain Management.';
+
+  @override
+  String get permModuleOrders => 'Orders';
+
+  @override
+  String get permOrdersView => 'View orders';
+
+  @override
+  String get permOrdersAcceptReject => 'Accept / reject new orders';
+
+  @override
+  String get permOrdersProcess => 'Processing & status updates';
+
+  @override
+  String get permOrdersReevaluate => 'Re-evaluation';
+
+  @override
+  String get permOrdersAssignCaptain => 'Assign / broadcast to captains';
+
+  @override
+  String get permModuleCatalogue => 'Catalogue & pricing';
+
+  @override
+  String get permCatalogueView => 'View services & pricing';
+
+  @override
+  String get permCatalogueManage => 'Manage services & pricing';
+
+  @override
+  String get permModuleInventory => 'Inventory';
+
+  @override
+  String get permInventoryView => 'View inventory';
+
+  @override
+  String get permInventoryManage => 'Manage inventory';
+
+  @override
+  String get permModuleSlots => 'Pickup slots';
+
+  @override
+  String get permSlotsView => 'View pickup slots';
+
+  @override
+  String get permSlotsManage => 'Manage pickup slots & capacity';
+
+  @override
+  String get permModuleAnalytics => 'Analytics';
+
+  @override
+  String get permAnalyticsView => 'View analytics';
+
+  @override
+  String get errorGeneric => 'Something went wrong. Please try again.';
+
+  @override
+  String get errorNetwork =>
+      'Couldn\'t reach the server. Check your internet connection and try again.';
+
+  @override
+  String get errorTimeout => 'The request took too long. Please try again.';
+
+  @override
+  String get errorServerBusy =>
+      'The server is busy right now. Please try again in a moment.';
+
+  @override
+  String get inventoryLoadFailed => 'Couldn\'t load your supplies.';
+
+  @override
+  String get inventoryEmptyTitle => 'No supplies yet';
+
+  @override
+  String get inventoryEmptySubtitle => 'Tap + to add your first supply item.';
 }

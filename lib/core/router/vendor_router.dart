@@ -20,6 +20,8 @@ import '../../features/pricing/presentation/pages/pricing_page.dart';
 import '../../features/inventory/presentation/pages/inventory_page.dart';
 import '../../features/employees/presentation/pages/employees_page.dart';
 import '../../features/riders/presentation/pages/rider_management_page.dart';
+import '../../models/permission_catalog_model.dart';
+import '../../providers/access_provider.dart';
 import '../../features/rider/presentation/pages/rider_job_list_page.dart';
 import '../../features/rider/presentation/pages/rider_job_detail_page.dart';
 import '../../features/rider/presentation/pages/rider_measurement_page.dart';
@@ -89,6 +91,10 @@ final vendorRouterProvider = Provider<GoRouter>((ref) {
     ..onDispose(refreshListenable.dispose)
     ..listen<AuthState>(authProvider, (_, __) {
       refreshListenable.value++;
+    })
+    // Re-check the current screen when the owner changes this user's access.
+    ..listen<MyAccess>(myAccessProvider, (_, __) {
+      refreshListenable.value++;
     });
 
   return GoRouter(
@@ -96,8 +102,12 @@ final vendorRouterProvider = Provider<GoRouter>((ref) {
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: false,
     refreshListenable: refreshListenable,
-    redirect: (context, state) =>
-        _vendorRedirect(context, state, ref.read(authProvider)),
+    redirect: (context, state) => _vendorRedirect(
+      context,
+      state,
+      ref.read(authProvider),
+      ref.read(myAccessProvider),
+    ),
     errorBuilder: (context, state) => _ErrorPage(error: state.error),
     routes: _vendorRoutes,
   );
@@ -120,10 +130,42 @@ String otpLocation({String? returnTo}) {
 
 // ── Vendor-specific redirect (auth guard) ─────────────────────────────────────
 
+/// The captain (rider) job-fulfilment screens: `/rider/jobs/...`.
+///
+/// Deliberately NOT a bare `startsWith('/rider')`: Captain *Management* lives
+/// at `/rider-management`, which shares that prefix. Treating it as a captain
+/// screen bounced the owner straight back to the dashboard whenever they
+/// opened Captain Management.
+bool _isCaptainWorkflowPath(String path) =>
+    path == '/rider' || path.startsWith('/rider/');
+
+/// The permission module a route belongs to, or null if it's open to everyone
+/// (dashboard, profile, notifications, settings, help).
+String? _moduleForPath(String path) {
+  if (path == AppRoutes.orders || path.startsWith('/orders/')) return 'orders';
+  if (path == AppRoutes.services || path == AppRoutes.pricing) return 'catalogue';
+  if (path == AppRoutes.inventory) return 'inventory';
+  if (path == AppRoutes.slots) return 'slots';
+  if (path == AppRoutes.analytics) return 'analytics';
+  return null;
+}
+
+/// The redirect rules, exposed so tests can drive them without the app's
+/// screens. Production code goes through [vendorRouterProvider].
+@visibleForTesting
+String? vendorRedirectForTest(
+  BuildContext context,
+  GoRouterState state,
+  AuthState authState,
+  MyAccess access,
+) =>
+    _vendorRedirect(context, state, authState, access);
+
 String? _vendorRedirect(
   BuildContext context,
   GoRouterState state,
   AuthState authState,
+  MyAccess access,
 ) {
   final path = state.uri.path;
   final returnTo = state.uri.queryParameters['returnTo'];
@@ -152,7 +194,8 @@ String? _vendorRedirect(
   final isAuthenticatedOnlyPath =
       isProtectedPath ||
       path == AppRoutes.profileSetup ||
-      path.startsWith('/rider');
+      _isCaptainWorkflowPath(path) ||
+      path == AppRoutes.riderManagement;
 
   // While initialising or loading, stay put (don't flicker).
   if (authState is AuthInitial || authState is AuthLoading) return null;
@@ -195,7 +238,7 @@ String? _vendorRedirect(
     // 5-tab dashboard shell or any dashboard-only route (Staff Management,
     // pricing, etc).
     if (authState.shopRole == 'VENDOR_RIDER') {
-      if (path.startsWith('/rider')) return null;
+      if (_isCaptainWorkflowPath(path)) return null;
       return AppRoutes.riderJobs;
     }
 
@@ -208,13 +251,25 @@ String? _vendorRedirect(
     // rider path. The page then called the rider-only `/vendor/rider/jobs`
     // endpoint with the new (non-rider) token and got a permanent 403,
     // fixable before this only by force-closing and reopening the app.
-    if (path.startsWith('/rider')) {
+    if (_isCaptainWorkflowPath(path)) {
       return AppRoutes.dashboard;
     }
 
     // Only redirect from auth pages.
     if (isAuthPath) {
       return _safeReturnTo(returnTo) ?? AppRoutes.dashboard;
+    }
+
+    // Module access: a staff member only reaches what the owner has granted
+    // (the backend enforces the same rules on every request — this keeps them
+    // from landing on a screen that can only show an error), and Staff/Captain
+    // management belong to the owner alone.
+    if (path == AppRoutes.employees || path == AppRoutes.riderManagement) {
+      if (!access.isOwner) return AppRoutes.dashboard;
+    }
+    final module = _moduleForPath(path);
+    if (module != null && !access.canModule(module)) {
+      return AppRoutes.dashboard;
     }
     return null;
   }
@@ -381,7 +436,13 @@ final List<RouteBase> _vendorRoutes = [
     path: AppRoutes.riderManagement,
     name: AppRouteNames.riderManagement,
     pageBuilder: (c, s) => _slideTransition(
-        context: c, state: s, child: const RiderManagementPage()),
+        context: c,
+        state: s,
+        // ?add=1 opens the Add Captain form straight away (used by the
+        // "Add Captain" shortcut in an order's Assign Captain sheet).
+        child: RiderManagementPage(
+          openAddOnStart: s.uri.queryParameters['add'] == '1',
+        )),
   ),
   GoRoute(
     path: AppRoutes.slots,
@@ -476,6 +537,7 @@ class _VendorShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final access = ref.watch(myAccessProvider);
     final safeBottom = MediaQuery.paddingOf(context).bottom;
     final navHeight = 72.h;
     final navBottom = 12.h + safeBottom;
@@ -547,27 +609,30 @@ class _VendorShell extends ConsumerWidget {
                       selected: Icons.dashboard,
                       label: AppLocalizations.of(context).navHome,
                     ),
-                    _NavItem(
-                      shell: navigationShell,
-                      index: 1,
-                      unselected: Icons.receipt_long_outlined,
-                      selected: Icons.receipt_long,
-                      label: AppLocalizations.of(context).navOrders,
-                    ),
-                    _NavItem(
-                      shell: navigationShell,
-                      index: 2,
-                      unselected: Icons.category_outlined,
-                      selected: Icons.category,
-                      label: AppLocalizations.of(context).navServices,
-                    ),
-                    _NavItem(
-                      shell: navigationShell,
-                      index: 3,
-                      unselected: Icons.bar_chart_outlined,
-                      selected: Icons.bar_chart,
-                      label: AppLocalizations.of(context).navAnalytics,
-                    ),
+                    if (access.canModule('orders'))
+                      _NavItem(
+                        shell: navigationShell,
+                        index: 1,
+                        unselected: Icons.receipt_long_outlined,
+                        selected: Icons.receipt_long,
+                        label: AppLocalizations.of(context).navOrders,
+                      ),
+                    if (access.canModule('catalogue'))
+                      _NavItem(
+                        shell: navigationShell,
+                        index: 2,
+                        unselected: Icons.category_outlined,
+                        selected: Icons.category,
+                        label: AppLocalizations.of(context).navServices,
+                      ),
+                    if (access.canModule('analytics'))
+                      _NavItem(
+                        shell: navigationShell,
+                        index: 3,
+                        unselected: Icons.bar_chart_outlined,
+                        selected: Icons.bar_chart,
+                        label: AppLocalizations.of(context).navAnalytics,
+                      ),
                     _NavItem(
                       shell: navigationShell,
                       index: 4,

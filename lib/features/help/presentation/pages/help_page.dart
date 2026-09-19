@@ -6,6 +6,7 @@ import '../../../../core/design/design_system.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
 import '../widgets/ticket_detail_sheet.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class HelpPage extends ConsumerStatefulWidget {
   const HelpPage({super.key});
@@ -72,7 +73,7 @@ class _HelpPageState extends ConsumerState<HelpPage>
     } catch (e) {
       if (mounted)
         setState(() {
-          _ticketsError = e.toString();
+          _ticketsError = friendlyError(e);
           _ticketsLoading = false;
         });
     }
@@ -108,7 +109,7 @@ class _HelpPageState extends ConsumerState<HelpPage>
         setState(() => _isCreatingTicket = false);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).helpFailedCreateTicket('$e')),
+            content: Text(AppLocalizations.of(context).helpFailedCreateTicket(friendlyError(e))),
             backgroundColor: Colors.red,
           ),
         );

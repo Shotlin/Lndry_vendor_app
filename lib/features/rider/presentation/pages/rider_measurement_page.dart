@@ -7,6 +7,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// Rider's doorstep weigh-in/recount step, shown before the photo-capture
 /// screen on the pickup leg. Corrects the customer's rough self-declared
@@ -99,7 +100,7 @@ class _RiderMeasurementPageState extends ConsumerState<RiderMeasurementPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSaveMeasurements('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSaveMeasurements(friendlyError(e)))),
         );
       }
     } finally {

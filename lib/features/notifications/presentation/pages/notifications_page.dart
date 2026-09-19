@@ -6,6 +6,7 @@ import '../../../../core/design/design_system.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../models/models.dart';
 import '../../../../providers/notifications_provider.dart';
+import '../../../../core/network/friendly_error.dart';
 
 String _timeAgo(AppLocalizations l10n, DateTime time) {
   final diff = DateTime.now().difference(time);
@@ -63,7 +64,7 @@ class NotificationsPage extends ConsumerWidget {
           error: (err, _) => Center(
             child: Padding(
               padding: EdgeInsets.all(32.r),
-              child: Text(l10n.notificationsFailedToLoad('$err'), textAlign: TextAlign.center),
+              child: Text(l10n.notificationsFailedToLoad(friendlyError(err)), textAlign: TextAlign.center),
             ),
           ),
           data: (notifications) {

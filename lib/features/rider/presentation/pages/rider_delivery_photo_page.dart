@@ -8,6 +8,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// Optional single delivery-proof photo, shown before the delivery-OTP
 /// screen (reached from either the collect-balance step or straight from
@@ -45,7 +46,7 @@ class _RiderDeliveryPhotoPageState extends ConsumerState<RiderDeliveryPhotoPage>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).orderDetailsPhotoUploadFailed(friendlyError(e)))),
         );
       }
     } finally {
@@ -76,7 +77,7 @@ class _RiderDeliveryPhotoPageState extends ConsumerState<RiderDeliveryPhotoPage>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSavePhoto('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSavePhoto(friendlyError(e)))),
         );
       }
     } finally {

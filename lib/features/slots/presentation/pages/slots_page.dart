@@ -8,6 +8,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/slots_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class SlotsPage extends ConsumerStatefulWidget {
   const SlotsPage({super.key});
@@ -63,7 +64,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.slotsFailedToUpdateCapacity('$e'))),
+            SnackBar(content: Text(l10n.slotsFailedToUpdateCapacity(friendlyError(e)))),
           );
         }
       } finally {
@@ -96,7 +97,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
       await ref.read(slotsListProvider.notifier).toggleSlot(slot.id, isActive);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).slotsFailedGeneric('$e'))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).slotsFailedGeneric(friendlyError(e)))));
       }
     }
   }
@@ -110,7 +111,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.slotsFailedGeneric('$e'))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.slotsFailedGeneric(friendlyError(e)))));
       }
     }
   }
@@ -282,7 +283,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
                     },
                   ),
                   loading: () => const Center(child: CircularProgressIndicator()),
-                  error: (err, _) => Center(child: Text(l10n.slotsErrorGeneric('$err'))),
+                  error: (err, _) => Center(child: Text(l10n.slotsErrorGeneric(friendlyError(err)))),
                 ),
               ),
               SizedBox(height: 24.h),
@@ -379,7 +380,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
                   error: (err, _) => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(l10n.slotsErrorLoading('$err'), style: AppTypography.bodySmall.copyWith(color: AppColors.error)),
+                      Text(l10n.slotsErrorLoading(friendlyError(err)), style: AppTypography.bodySmall.copyWith(color: AppColors.error)),
                       TextButton(
                         onPressed: () => ref.invalidate(dailyCapacityProvider),
                         child: Text(l10n.commonRetry),
@@ -502,7 +503,7 @@ class _SlotsPageState extends ConsumerState<SlotsPage> {
                   ),
                   child: Column(
                     children: [
-                      Text(l10n.slotsErrorGeneric('$err')),
+                      Text(l10n.slotsErrorGeneric(friendlyError(err))),
                       TextButton(
                         onPressed: () => ref.invalidate(slotsListProvider),
                         child: Text(l10n.commonRetry),
@@ -647,7 +648,7 @@ class _AddEditSlotSheetState extends ConsumerState<_AddEditSlotSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.slotsErrorGeneric('$e')), backgroundColor: AppColors.error),
+          SnackBar(content: Text(l10n.slotsErrorGeneric(friendlyError(e))), backgroundColor: AppColors.error),
         );
       }
     } finally {

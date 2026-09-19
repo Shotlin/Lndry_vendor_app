@@ -8,6 +8,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../providers/rider_jobs_provider.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class RiderJobListPage extends ConsumerWidget {
   const RiderJobListPage({super.key});
@@ -102,7 +103,7 @@ class RiderJobListPage extends ConsumerWidget {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, _) => Center(child: Text(l10n.riderFailedToLoadJobs('$err'))),
+          error: (err, _) => Center(child: Text(l10n.riderFailedToLoadJobs(friendlyError(err)))),
         ),
       ),
     );

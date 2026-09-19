@@ -689,66 +689,64 @@ class ApiVendorRepository implements VendorRepository {
     await _dio.delete('${ApiEndpoints.notifications}/$notificationId');
   }
 
-  List<String> _mapUiPermissionsToBackend(List<String> uiPermissions) {
-    final backend = <String>[];
-    for (final p in uiPermissions) {
-      switch (p) {
-        case 'orders:read':
-          backend.add('shop_orders.view');
-          break;
-        case 'orders:write':
-          backend.addAll(['shop_orders.view', 'shop_orders.update_status', 'shop_orders.assign_rider', 'shop_orders.cancel']);
-          break;
-        case 'catalog:write':
-          backend.addAll(['vendor_services.create', 'vendor_services.update', 'vendor_services.delete', 'vendor_services.view']);
-          break;
-        case 'staff:write':
-          backend.addAll(['vendor_staff.create', 'vendor_staff.update', 'vendor_staff.delete', 'vendor_staff.view']);
-          break;
-        default:
-          backend.add(p);
-      }
-    }
-    return backend.toSet().toList();
-  }
-
-  List<String> _mapBackendPermissionsToUi(List<String> backendPermissions) {
-    final ui = <String>[];
-    final backendSet = backendPermissions.toSet();
-    if (backendSet.contains('shop_orders.view')) {
-      ui.add('orders:read');
-    }
-    if (backendSet.contains('shop_orders.update_status')) {
-      ui.add('orders:write');
-    }
-    if (backendSet.contains('vendor_services.create') ||
-        backendSet.contains('vendor_services.update')) {
-      ui.add('catalog:write');
-    }
-    if (backendSet.contains('vendor_staff.create') ||
-        backendSet.contains('vendor_staff.update')) {
-      ui.add('staff:write');
-    }
-    return ui;
-  }
-
-  EmployeeModel _parseEmployee(Map<String, dynamic> json) {
-    final mappedJson = Map<String, dynamic>.from(json);
-    if (mappedJson['permissions'] != null) {
-      mappedJson['permissions'] = _mapBackendPermissionsToUi(
-        (mappedJson['permissions'] as List<dynamic>).map((e) => e.toString()).toList(),
-      );
-    }
-    return EmployeeModel.fromJson(mappedJson);
-  }
+  EmployeeModel _parseEmployee(Map<String, dynamic> json) => EmployeeModel.fromJson(json);
 
   // -- Employees
   @override
-  Future<List<EmployeeModel>> getEmployees() async {
-    final resp = await _dio.get('/vendor/employees');
+  Future<List<EmployeeModel>> getStaff() async {
+    // The roster holds owner, staff and captains together; ask the backend
+    // for staff only so Staff Management never shows a captain (or the owner).
+    final resp = await _dio.get(
+      '/vendor/employees',
+      queryParameters: {'role': 'VENDOR_STAFF'},
+    );
     final data = _extractData(resp.data as Map<String, dynamic>);
     final list = data['staff'] as List<dynamic>? ?? [];
     return list.map((e) => _parseEmployee(e as Map<String, dynamic>)).toList();
+  }
+
+  @override
+  Future<PermissionCatalog> getPermissionCatalog() async {
+    final resp = await _dio.get('/vendor/employees/permission-catalog');
+    return PermissionCatalog.fromJson(_extractData(resp.data as Map<String, dynamic>));
+  }
+
+  @override
+  Future<MyAccess> getMyAccess() async {
+    final resp = await _dio.get('/vendor/employees/me');
+    return MyAccess.fromJson(_extractData(resp.data as Map<String, dynamic>));
+  }
+
+  // -- Operational supplies
+  @override
+  Future<List<InventoryItem>> getInventory() async {
+    final resp = await _dio.get('/vendor/inventory');
+    return _extractList(resp.data as Map<String, dynamic>)
+        .whereType<Map<String, dynamic>>()
+        .map(InventoryItem.fromJson)
+        .toList();
+  }
+
+  @override
+  Future<InventoryItem> createInventoryItem({
+    required String name,
+    required int quantity,
+    required int minThreshold,
+    required String unit,
+  }) async {
+    final resp = await _dio.post('/vendor/inventory', data: {
+      'name': name,
+      'quantity': quantity,
+      'minThreshold': minThreshold,
+      'unit': unit,
+    });
+    return InventoryItem.fromJson(_extractData(resp.data as Map<String, dynamic>));
+  }
+
+  @override
+  Future<InventoryItem> adjustInventoryQuantity(String id, int delta) async {
+    final resp = await _dio.post('/vendor/inventory/$id/adjust', data: {'delta': delta});
+    return InventoryItem.fromJson(_extractData(resp.data as Map<String, dynamic>));
   }
 
   @override
@@ -764,7 +762,7 @@ class ApiVendorRepository implements VendorRepository {
       'email': email,
       'role': role,
       if (phone != null) 'phone': phone,
-      if (permissions != null) 'permissions': _mapUiPermissionsToBackend(permissions),
+      if (permissions != null) 'permissions': permissions,
     });
     final json = _extractData(resp.data as Map<String, dynamic>);
     return _parseEmployee(json);
@@ -779,7 +777,7 @@ class ApiVendorRepository implements VendorRepository {
   }) async {
     final resp = await _dio.patch('/vendor/employees/$id', data: {
       'role': role,
-      'permissions': _mapUiPermissionsToBackend(permissions),
+      'permissions': permissions,
       'is_active': isActive,
     });
     final json = _extractData(resp.data as Map<String, dynamic>);

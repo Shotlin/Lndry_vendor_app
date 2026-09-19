@@ -6,9 +6,14 @@ import '../../../../core/design/design_system.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/riders_provider.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
+import '../../../../core/utils/phone_input.dart';
 
 class RiderManagementPage extends ConsumerStatefulWidget {
-  const RiderManagementPage({super.key});
+  const RiderManagementPage({super.key, this.openAddOnStart = false});
+
+  /// Opens the Add Captain form as soon as the page appears.
+  final bool openAddOnStart;
 
   @override
   ConsumerState<RiderManagementPage> createState() => _RiderManagementPageState();
@@ -20,6 +25,16 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
   final _phoneController = TextEditingController();
   bool _isSaving = false;
   String? _riderFormError;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.openAddOnStart) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _showAddRiderForm();
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -80,13 +95,15 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
                       TextFormField(
                         controller: _phoneController,
                         keyboardType: TextInputType.phone,
+                        inputFormatters: const [TenDigitPhoneFormatter()],
+                        maxLength: 10,
                         decoration: InputDecoration(
                           labelText: l10n.riderManagementPhoneLabel,
                           hintText: l10n.employeesPhoneHint,
                           prefixIcon: const Icon(Icons.phone_android_outlined),
+                          counterText: '',
                         ),
-                        validator: (value) =>
-                            value == null || value.trim().length < 10 ? l10n.riderManagementPhoneInvalid : null,
+                        validator: (value) => isValidTenDigitPhone(value) ? null : l10n.riderManagementPhoneInvalid,
                       ),
                       if (_riderFormError != null) ...[
                         SizedBox(height: 12.h),
@@ -144,7 +161,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
     } catch (e) {
       setSheetState(() {
         _isSaving = false;
-        _riderFormError = l10n.dashboardActionFailed('$e');
+        _riderFormError = l10n.dashboardActionFailed(friendlyError(e));
       });
     }
   }
@@ -154,7 +171,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
       await ref.read(ridersListProvider.notifier).toggleActive(rider.id, value);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).ordersErrorSnack('$e'))));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).ordersErrorSnack(friendlyError(e)))));
       }
     }
   }
@@ -179,7 +196,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
                   await ref.read(ridersListProvider.notifier).removeRider(rider.id);
                 } catch (e) {
                   if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed('$e'))));
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))));
                   }
                 }
               },
@@ -303,7 +320,7 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, _) => Center(child: Text(l10n.riderManagementFailedToLoad('$err'))),
+          error: (err, _) => Center(child: Text(l10n.riderManagementFailedToLoad(friendlyError(err)))),
         ),
       ),
       floatingActionButton: FloatingActionButton(

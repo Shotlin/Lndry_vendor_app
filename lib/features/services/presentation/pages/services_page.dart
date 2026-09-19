@@ -7,6 +7,7 @@ import '../../../../l10n/service_category_l10n.dart';
 import '../../../../providers/services_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// One admin-published subcategory row inside the Add/Edit Service form —
 /// merges the catalogue entry with the vendor's own existing rate for it
@@ -237,7 +238,7 @@ class _ServicesPageState extends ConsumerState<ServicesPage> {
               children: [
                 Icon(Icons.error_outline_rounded, color: AppColors.error, size: 48.r),
                 SizedBox(height: 16.h),
-                Text(l10n.servicesFailedToLoad('$err'), style: AppTypography.bodyMedium),
+                Text(l10n.servicesFailedToLoad(friendlyError(err)), style: AppTypography.bodyMedium),
                 SizedBox(height: 8.h),
                 ElevatedButton.icon(
                   onPressed: () => ref.invalidate(servicesListProvider),
@@ -368,7 +369,7 @@ class _ServiceFormSheetState extends ConsumerState<_ServiceFormSheet> {
       if (!mounted) return;
       setState(() {
         _isLoadingRows = false;
-        _error = e.toString();
+        _error = friendlyError(e);
       });
     }
   }
@@ -428,7 +429,7 @@ class _ServiceFormSheetState extends ConsumerState<_ServiceFormSheet> {
       Navigator.pop(context);
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.servicesFailedToSave('$e'))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.servicesFailedToSave(friendlyError(e)))));
     } finally {
       if (mounted) setState(() => _isSaving = false);
     }

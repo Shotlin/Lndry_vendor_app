@@ -1481,7 +1481,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String get riderManagementPhoneLabel => 'फोन नंबर';
 
   @override
-  String get riderManagementPhoneInvalid => 'एक मान्य फोन नंबर दर्ज करें';
+  String get riderManagementPhoneInvalid =>
+      'एक मान्य 10 अंकों का मोबाइल नंबर दर्ज करें।';
 
   @override
   String get riderManagementRiderAddedSnack => 'कैप्टन जोड़ा गया';
@@ -2391,6 +2392,106 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get ticketClosedByTeamBanner =>
       'यह टिकट हमारी सपोर्ट टीम द्वारा बंद कर दिया गया है।';
+
+  @override
+  String get employeesAddStaffButton => 'स्टाफ जोड़ें';
+
+  @override
+  String get employeesPhoneRequiredLabel => 'फ़ोन नंबर';
+
+  @override
+  String get employeesPhoneRequiredError =>
+      'सही 10 अंकों का फ़ोन नंबर डालें — स्टाफ इसी से लॉगिन करेगा';
+
+  @override
+  String get employeesPermissionsRequired => 'कम से कम एक अनुमति चुनें';
+
+  @override
+  String get employeesPermissionsLoadFailed => 'अनुमति सूची लोड नहीं हो सकी';
+
+  @override
+  String get employeesPermissionsHint =>
+      'केवल वही सेक्शन खुलेंगे जिन्हें आप चालू करेंगे।';
+
+  @override
+  String get employeesStaffOnlyNote =>
+      'स्टाफ मुख्य पार्टनर ऐप में लॉगिन करता है। कैप्टन को कैप्टन मैनेजमेंट में जोड़ें।';
+
+  @override
+  String get permModuleOrders => 'ऑर्डर';
+
+  @override
+  String get permOrdersView => 'ऑर्डर देखें';
+
+  @override
+  String get permOrdersAcceptReject => 'नए ऑर्डर स्वीकार / अस्वीकार करें';
+
+  @override
+  String get permOrdersProcess => 'प्रोसेसिंग और स्टेटस अपडेट';
+
+  @override
+  String get permOrdersReevaluate => 'री-इवैल्यूएशन';
+
+  @override
+  String get permOrdersAssignCaptain => 'कैप्टन को असाइन / ब्रॉडकास्ट करें';
+
+  @override
+  String get permModuleCatalogue => 'कैटलॉग और कीमत';
+
+  @override
+  String get permCatalogueView => 'सर्विस और कीमत देखें';
+
+  @override
+  String get permCatalogueManage => 'सर्विस और कीमत मैनेज करें';
+
+  @override
+  String get permModuleInventory => 'इन्वेंटरी';
+
+  @override
+  String get permInventoryView => 'इन्वेंटरी देखें';
+
+  @override
+  String get permInventoryManage => 'इन्वेंटरी मैनेज करें';
+
+  @override
+  String get permModuleSlots => 'पिकअप स्लॉट';
+
+  @override
+  String get permSlotsView => 'पिकअप स्लॉट देखें';
+
+  @override
+  String get permSlotsManage => 'पिकअप स्लॉट और क्षमता मैनेज करें';
+
+  @override
+  String get permModuleAnalytics => 'एनालिटिक्स';
+
+  @override
+  String get permAnalyticsView => 'एनालिटिक्स देखें';
+
+  @override
+  String get errorGeneric => 'कुछ गड़बड़ हो गई। कृपया फिर से कोशिश करें।';
+
+  @override
+  String get errorNetwork =>
+      'सर्वर तक नहीं पहुँच सके। अपना इंटरनेट जाँचें और फिर कोशिश करें।';
+
+  @override
+  String get errorTimeout =>
+      'अनुरोध में बहुत समय लगा। कृपया फिर से कोशिश करें।';
+
+  @override
+  String get errorServerBusy =>
+      'सर्वर अभी व्यस्त है। कृपया थोड़ी देर में फिर कोशिश करें।';
+
+  @override
+  String get inventoryLoadFailed => 'आपकी सप्लाई लोड नहीं हो सकी।';
+
+  @override
+  String get inventoryEmptyTitle => 'अभी कोई सप्लाई नहीं';
+
+  @override
+  String get inventoryEmptySubtitle =>
+      'पहला सप्लाई आइटम जोड़ने के लिए + दबाएँ।';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -3879,7 +3980,8 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   String get riderManagementPhoneLabel => 'Phone Number';
 
   @override
-  String get riderManagementPhoneInvalid => 'Ek valid phone number daalein';
+  String get riderManagementPhoneInvalid =>
+      'Ek valid 10 digit ka mobile number daalein.';
 
   @override
   String get riderManagementRiderAddedSnack => 'Captain add ho gaya';
@@ -4796,4 +4898,106 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   @override
   String get ticketClosedByTeamBanner =>
       'Ye ticket hamari support team dwara close kar diya gaya hai.';
+
+  @override
+  String get employeesAddStaffButton => 'Staff Jodein';
+
+  @override
+  String get employeesPhoneRequiredLabel => 'Phone Number';
+
+  @override
+  String get employeesPhoneRequiredError =>
+      'Sahi 10 digit ka phone number daalein — staff isi se login karega';
+
+  @override
+  String get employeesPermissionsRequired => 'Kam se kam ek permission chunein';
+
+  @override
+  String get employeesPermissionsLoadFailed =>
+      'Permission list load nahi ho payi';
+
+  @override
+  String get employeesPermissionsHint =>
+      'Sirf wahi sections khulenge jo aap on karenge.';
+
+  @override
+  String get employeesStaffOnlyNote =>
+      'Staff main Partner app mein login karta hai. Captains ko Captain Management mein add karein.';
+
+  @override
+  String get permModuleOrders => 'Orders';
+
+  @override
+  String get permOrdersView => 'Orders Dekhein';
+
+  @override
+  String get permOrdersAcceptReject => 'Naye Orders Accept / Reject Karein';
+
+  @override
+  String get permOrdersProcess => 'Processing & Status Update';
+
+  @override
+  String get permOrdersReevaluate => 'Re-evaluation';
+
+  @override
+  String get permOrdersAssignCaptain => 'Captains Ko Assign / Broadcast Karein';
+
+  @override
+  String get permModuleCatalogue => 'Catalogue & Pricing';
+
+  @override
+  String get permCatalogueView => 'Services & Pricing Dekhein';
+
+  @override
+  String get permCatalogueManage => 'Services & Pricing Manage Karein';
+
+  @override
+  String get permModuleInventory => 'Inventory';
+
+  @override
+  String get permInventoryView => 'Inventory Dekhein';
+
+  @override
+  String get permInventoryManage => 'Inventory Manage Karein';
+
+  @override
+  String get permModuleSlots => 'Pickup Slots';
+
+  @override
+  String get permSlotsView => 'Pickup Slots Dekhein';
+
+  @override
+  String get permSlotsManage => 'Pickup Slots & Capacity Manage Karein';
+
+  @override
+  String get permModuleAnalytics => 'Analytics';
+
+  @override
+  String get permAnalyticsView => 'Analytics Dekhein';
+
+  @override
+  String get errorGeneric =>
+      'Kuch gadbad ho gayi. Kripya phir se koshish karein.';
+
+  @override
+  String get errorNetwork =>
+      'Server tak nahi pahunch sake. Apna internet check karein aur phir koshish karein.';
+
+  @override
+  String get errorTimeout =>
+      'Request mein bahut time laga. Kripya phir se koshish karein.';
+
+  @override
+  String get errorServerBusy =>
+      'Server abhi busy hai. Kripya thodi der mein phir koshish karein.';
+
+  @override
+  String get inventoryLoadFailed => 'Aapki supplies load nahi ho saki.';
+
+  @override
+  String get inventoryEmptyTitle => 'Abhi koi supply nahi';
+
+  @override
+  String get inventoryEmptySubtitle =>
+      'Pehla supply item jodne ke liye + dabayein.';
 }

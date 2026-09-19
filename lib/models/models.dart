@@ -10,3 +10,5 @@ export 'vendor_application_model.dart';
 export 'garment_type_model.dart';
 export 'rider_job_model.dart';
 export 'reconciliation_problem_type_model.dart';
+export 'permission_catalog_model.dart';
+export 'inventory_item_model.dart';

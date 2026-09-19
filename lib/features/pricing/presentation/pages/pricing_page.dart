@@ -8,6 +8,7 @@ import '../../../../l10n/service_category_l10n.dart';
 import '../../../../providers/services_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// One subcategory row on the Pricing screen — merges admin's published
 /// catalogue entry ([GarmentTypeModel]) with the vendor's own rate for it
@@ -127,7 +128,7 @@ class _PricingPageState extends ConsumerState<PricingPage> {
     } catch (e) {
       setState(() {
         _isLoadingRows = false;
-        _loadError = e.toString();
+        _loadError = friendlyError(e);
       });
     }
   }
@@ -168,7 +169,7 @@ class _PricingPageState extends ConsumerState<PricingPage> {
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.pricingFailedToSavePrices('$e'))),
+        SnackBar(content: Text(l10n.pricingFailedToSavePrices(friendlyError(e)))),
       );
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -283,7 +284,7 @@ class _PricingPageState extends ConsumerState<PricingPage> {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (err, _) => Center(child: Text(l10n.pricingErrorLoadingServices('$err'))),
+          error: (err, _) => Center(child: Text(l10n.pricingErrorLoadingServices(friendlyError(err)))),
         ),
         floatingActionButton: hasDirtyRows
             ? FloatingActionButton.extended(

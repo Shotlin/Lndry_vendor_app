@@ -3,13 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/design/design_system.dart';
+import '../../../../core/extensions/order_extensions.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../providers/access_provider.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../providers/dashboard_provider.dart';
 import '../../../../providers/orders_provider.dart';
 import '../../../../providers/slots_provider.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
@@ -22,8 +25,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   bool _isTogglingStatus = false;
 
   Future<void> _refreshData() async {
-    ref.invalidate(dashboardStatsProvider);
-    ref.read(ordersListProvider.notifier).fetchOrders();
+    final access = ref.read(myAccessProvider);
+    if (access.canModule('orders') || access.canModule('analytics')) {
+      ref.invalidate(dashboardStatsProvider);
+    }
+    if (access.canModule('orders')) {
+      ref.read(ordersListProvider.notifier).fetchOrders();
+    }
     try {
       await ref.read(authProvider.notifier).refreshProfile();
     } catch (_) {}
@@ -126,7 +134,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.dashboardActionFailed('$e')), backgroundColor: AppColors.error),
+          SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e))), backgroundColor: AppColors.error),
         );
       }
     } finally {
@@ -142,8 +150,13 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    final statsAsync = ref.watch(dashboardStatsProvider);
-    final ordersAsync = ref.watch(ordersListProvider);
+    // Staff only see (and only load) what the owner opened for them.
+    final access = ref.watch(myAccessProvider);
+    final canOrders = access.canModule('orders');
+    final canAnalytics = access.canModule('analytics');
+    final showStats = canOrders || canAnalytics;
+    final statsAsync = showStats ? ref.watch(dashboardStatsProvider) : null;
+    final ordersAsync = canOrders ? ref.watch(ordersListProvider) : null;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
 
@@ -316,6 +329,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                     ),
                 ],
               ),
+              if (statsAsync != null) ...[
               SizedBox(height: 24.h),
               Text(l10n.dashboardTodaysOperations,
                   style: AppTypography.headlineMedium.copyWith(
@@ -329,6 +343,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisSpacing: 12.r, mainAxisSpacing: 12.r, childAspectRatio: 1.4,
                   children: [
+                    if (canAnalytics)
                     _buildMetricCard(
                       title: l10n.dashboardTodaysRevenue,
                       value: '₹${(((stats["revenue_today_paise"] is num ? (stats["revenue_today_paise"] as num).toDouble() : double.tryParse(stats["revenue_today_paise"]?.toString() ?? '')) ?? 0.0) / 100.0).toStringAsFixed(0)}',
@@ -336,6 +351,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                       gradient: const LinearGradient(colors: [Color(0xFF00B4DB), Color(0xFF0083B0)]),
                       onTap: () => context.push(AppRoutes.analytics),
                     ),
+                    if (canOrders)
                     _buildMetricCard(
                       title: l10n.dashboardPendingOrders,
                       value: '${stats["pending_orders"] ?? 0}',
@@ -343,6 +359,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                       gradient: const LinearGradient(colors: [Color(0xFFF2994A), Color(0xFFF2C94C)]),
                       onTap: () => _goToOrdersTab(0),
                     ),
+                    if (canOrders)
                     _buildMetricCard(
                       title: l10n.dashboardProcessingOrders,
                       value: '${stats["processing_orders"] ?? 0}',
@@ -350,6 +367,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                       gradient: const LinearGradient(colors: [Color(0xFF8E2DE2), Color(0xFF4A00E0)]),
                       onTap: () => _goToOrdersTab(1),
                     ),
+                    if (canOrders)
                     _buildMetricCard(
                       title: l10n.dashboardReadyPacked,
                       value: '${stats["packed_orders"] ?? 0}',
@@ -365,6 +383,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onRetry: () => ref.invalidate(dashboardStatsProvider),
                 ),
               ),
+              ],
               SizedBox(height: 24.h),
               Text(l10n.dashboardQuickActions,
                   style: AppTypography.headlineMedium.copyWith(
@@ -374,16 +393,20 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildQuickAction(icon: Icons.category_rounded, label: l10n.dashboardCatalogue,
-                      onTap: () => context.push(AppRoutes.services)),
-                  _buildQuickAction(icon: Icons.date_range_rounded, label: l10n.dashboardSlots,
-                      onTap: () => context.push(AppRoutes.slots)),
-                  _buildQuickAction(icon: Icons.bar_chart_rounded, label: l10n.dashboardAnalytics,
-                      onTap: () => context.push(AppRoutes.analytics)),
+                  if (access.canModule('catalogue'))
+                    _buildQuickAction(icon: Icons.category_rounded, label: l10n.dashboardCatalogue,
+                        onTap: () => context.push(AppRoutes.services)),
+                  if (access.canModule('slots'))
+                    _buildQuickAction(icon: Icons.date_range_rounded, label: l10n.dashboardSlots,
+                        onTap: () => context.push(AppRoutes.slots)),
+                  if (canAnalytics)
+                    _buildQuickAction(icon: Icons.bar_chart_rounded, label: l10n.dashboardAnalytics,
+                        onTap: () => context.push(AppRoutes.analytics)),
                   _buildQuickAction(icon: Icons.help_outline_rounded, label: l10n.dashboardHelp,
                       onTap: () => context.push(AppRoutes.help)),
                 ],
               ),
+              if (ordersAsync != null) ...[
               SizedBox(height: 28.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -440,6 +463,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   onRetry: () => ref.read(ordersListProvider.notifier).fetchOrders(),
                 ),
               ),
+              ],
             ],
           ),
         ),
@@ -580,7 +604,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(l10n.dashboardOrderIdLabel(order.id.substring(0, 8).toUpperCase()),
+          Text(l10n.dashboardOrderIdLabel(order.displayNumber),
               style: AppTypography.bodyLarge.copyWith(
                   fontWeight: FontWeight.bold,
                   color: isDark ? AppColors.white : AppColors.textBlack)),
@@ -593,6 +617,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                 order.items.length, order.items.map((i) => i.serviceName).join(", ")),
             style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
             maxLines: 1, overflow: TextOverflow.ellipsis),
+        if (ref.watch(myAccessProvider).can('orders.accept_reject')) ...[
         SizedBox(height: 12.h),
         Row(children: [
           Expanded(
@@ -602,7 +627,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   await ref.read(ordersListProvider.notifier).rejectOrder(order.id);
                   ref.invalidate(dashboardStatsProvider);
                 } catch (e) {
-                  if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed('$e'))));
+                  if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))));
                 }
               },
               style: OutlinedButton.styleFrom(foregroundColor: AppColors.error, side: const BorderSide(color: AppColors.error)),
@@ -618,7 +643,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
                   ref.invalidate(dashboardStatsProvider);
                   if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardOrderAccepted)));
                 } catch (e) {
-                  if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed('$e'))));
+                  if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.dashboardActionFailed(friendlyError(e)))));
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: AppColors.success, foregroundColor: AppColors.white),
@@ -626,6 +651,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage> {
             ),
           ),
         ]),
+        ],
       ]),
     );
   }

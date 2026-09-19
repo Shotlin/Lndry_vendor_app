@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/design/design_system.dart';
+import '../../../../core/extensions/order_extensions.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../l10n/order_status_l10n.dart';
+import '../../../../providers/access_provider.dart';
 import '../../../../providers/orders_provider.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class OrdersPage extends ConsumerStatefulWidget {
   const OrdersPage({super.key});
@@ -148,7 +151,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    err.toString(),
+                    friendlyError(err),
                     style: AppTypography.bodyMedium.copyWith(color: AppColors.textSecondary),
                     textAlign: TextAlign.center,
                   ),
@@ -216,6 +219,10 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final l10n = AppLocalizations.of(context);
     final statusColor = _getStatusColor(order.status);
+    final access = ref.watch(myAccessProvider);
+    final canAcceptReject = access.can('orders.accept_reject');
+    final canProcess = access.can('orders.process');
+    final canReevaluate = access.can('orders.reevaluate');
 
     return Card(
       elevation: 0,
@@ -240,7 +247,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                 children: [
                   Expanded(
                     child: Text(
-                      l10n.dashboardOrderIdLabel(order.orderNumber.isNotEmpty ? order.orderNumber : order.id.substring(0, 8).toUpperCase()),
+                      l10n.dashboardOrderIdLabel(order.displayNumber),
                       style: AppTypography.bodyLarge.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isDark ? AppColors.white : AppColors.textBlack,
@@ -311,7 +318,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
               ),
               
               // Conditional Action Buttons
-              if (order.status == OrderStatus.waitingForVendorConfirmation) ...[
+              if (order.status == OrderStatus.waitingForVendorConfirmation && canAcceptReject) ...[
                 SizedBox(height: 16.h),
                 const Divider(),
                 SizedBox(height: 8.h),
@@ -340,12 +347,13 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                     ),
                   ],
                 ),
-              ] else if (order.status == OrderStatus.receivedAtVendor) ...[
+              ] else if (order.status == OrderStatus.receivedAtVendor && (canReevaluate || canProcess)) ...[
                 SizedBox(height: 16.h),
                 const Divider(),
                 SizedBox(height: 8.h),
                 Row(
                   children: [
+                    if (canReevaluate)
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => context.push('/orders/details/${order.id}#reconcile'),
@@ -356,7 +364,8 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                         child: Text(l10n.ordersReconcileReceiptsButton),
                       ),
                     ),
-                    SizedBox(width: 12.w),
+                    if (canReevaluate && canProcess) SizedBox(width: 12.w),
+                    if (canProcess)
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () => _updateStage(order.id, 'WASHING'),
@@ -369,7 +378,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                     ),
                   ],
                 ),
-              ] else if (order.status == OrderStatus.processing) ...[
+              ] else if (order.status == OrderStatus.processing && canProcess) ...[
                 SizedBox(height: 16.h),
                 const Divider(),
                 SizedBox(height: 8.h),
@@ -434,7 +443,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
       await ref.read(ordersListProvider.notifier).acceptOrder(id);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersOrderAcceptedSnack)));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack(friendlyError(e)))));
     }
   }
 
@@ -444,7 +453,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
       await ref.read(ordersListProvider.notifier).rejectOrder(id);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersOrderRejectedSnack)));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack(friendlyError(e)))));
     }
   }
 
@@ -454,7 +463,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
       await ref.read(ordersListProvider.notifier).updateStage(id, stage);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersStageUpdatedSnack(stage))));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack('$e'))));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.ordersErrorSnack(friendlyError(e)))));
     }
   }
 

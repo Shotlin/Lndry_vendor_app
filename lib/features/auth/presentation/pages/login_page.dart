@@ -68,11 +68,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   children: [
                     // Brand Icon
                     Center(
+                      // The real Partner app icon (the same asset the launcher
+                      // icon and native splash come from).
                       child: Container(
                         width: 96.r,
                         height: 96.r,
                         decoration: BoxDecoration(
-                          gradient: AppColors.primaryGradient,
                           borderRadius: BorderRadius.circular(24.r),
                           boxShadow: [
                             BoxShadow(
@@ -82,10 +83,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                           ],
                         ),
-                        child: Icon(
-                          Icons.local_laundry_service_rounded,
-                          size: 48.r,
-                          color: AppColors.white,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(24.r),
+                          child: Image.asset(
+                            'assets/images/logo/lndry_logo.png',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

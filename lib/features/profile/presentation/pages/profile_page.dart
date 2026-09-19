@@ -8,9 +8,11 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../core/design/design_system.dart';
 import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../../providers/access_provider.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../providers/theme_provider.dart';
 import '../../../../repositories/repositories.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -71,7 +73,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(AppLocalizations.of(context).servicesFailedToSave('$e')),
+              content: Text(AppLocalizations.of(context).servicesFailedToSave(friendlyError(e))),
               backgroundColor: AppColors.error,
             ),
           );
@@ -158,7 +160,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context).profileFailedUploadImage('$e')),
+            content: Text(AppLocalizations.of(context).profileFailedUploadImage(friendlyError(e))),
             backgroundColor: AppColors.error,
           ),
         );
@@ -213,11 +215,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).profileFailedToPublish('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).profileFailedToPublish(friendlyError(e)))),
         );
       }
     }
   }
+
+  /// Marks the final tile so it draws no divider under it.
+  List<_MenuTile> _withLastFlag(List<_MenuTile> tiles) => [
+        for (var i = 0; i < tiles.length; i++)
+          i == tiles.length - 1 ? tiles[i].asLast() : tiles[i],
+      ];
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +236,62 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     if (authState is! AuthAuthenticated) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+
+    // What this person may open. Staff see only the modules the owner turned
+    // on for them; staff & captain management and publishing are owner-only.
+    // (The router and the server enforce the same rules — this just keeps
+    // dead ends out of the menu.)
+    final access = ref.watch(myAccessProvider);
+    final businessTiles = <_MenuTile>[
+      if (access.canModule('catalogue'))
+        _MenuTile(
+          icon: Icons.category_outlined,
+          label: l10n.servicesPageTitle,
+          subtitle: l10n.profileCatalogueSubtitle,
+          onTap: () => context.push(AppRoutes.services),
+          isDark: isDark,
+        ),
+      if (access.isOwner)
+        _MenuTile(
+          icon: Icons.storefront_outlined,
+          label: l10n.profilePublishLabel,
+          subtitle: l10n.profilePublishSubtitle,
+          onTap: () => _publishToMarketplace(),
+          isDark: isDark,
+        ),
+      if (access.isOwner)
+        _MenuTile(
+          icon: Icons.people_outlined,
+          label: l10n.profileStaffLabel,
+          subtitle: l10n.profileStaffSubtitle,
+          onTap: () => context.push(AppRoutes.employees),
+          isDark: isDark,
+        ),
+      if (access.isOwner)
+        _MenuTile(
+          icon: Icons.two_wheeler_outlined,
+          label: l10n.riderManagementPageTitle,
+          subtitle: l10n.profileRiderSubtitle,
+          onTap: () => context.push(AppRoutes.riderManagement),
+          isDark: isDark,
+        ),
+      if (access.canModule('slots'))
+        _MenuTile(
+          icon: Icons.date_range_outlined,
+          label: l10n.profileSlotsLabel,
+          subtitle: l10n.profileSlotsSubtitle,
+          onTap: () => context.push(AppRoutes.slots),
+          isDark: isDark,
+        ),
+      if (access.canModule('inventory'))
+        _MenuTile(
+          icon: Icons.inventory_2_outlined,
+          label: l10n.profileInventoryLabel,
+          subtitle: l10n.profileInventorySubtitle,
+          onTap: () => context.push(AppRoutes.inventory),
+          isDark: isDark,
+        ),
+    ];
 
     final vendor = authState.vendor;
 
@@ -695,53 +759,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             ], isDark),
             SizedBox(height: 16.h),
 
-            _buildSectionHeader(l10n.profileBusinessSection, isDark),
-            _buildMenuCard([
-              _MenuTile(
-                icon: Icons.category_outlined,
-                label: l10n.servicesPageTitle,
-                subtitle: l10n.profileCatalogueSubtitle,
-                onTap: () => context.push(AppRoutes.services),
-                isDark: isDark,
-              ),
-              _MenuTile(
-                icon: Icons.storefront_outlined,
-                label: l10n.profilePublishLabel,
-                subtitle: l10n.profilePublishSubtitle,
-                onTap: () => _publishToMarketplace(),
-                isDark: isDark,
-              ),
-              _MenuTile(
-                icon: Icons.people_outlined,
-                label: l10n.profileStaffLabel,
-                subtitle: l10n.profileStaffSubtitle,
-                onTap: () => context.push(AppRoutes.employees),
-                isDark: isDark,
-              ),
-              _MenuTile(
-                icon: Icons.two_wheeler_outlined,
-                label: l10n.riderManagementPageTitle,
-                subtitle: l10n.profileRiderSubtitle,
-                onTap: () => context.push(AppRoutes.riderManagement),
-                isDark: isDark,
-              ),
-              _MenuTile(
-                icon: Icons.date_range_outlined,
-                label: l10n.profileSlotsLabel,
-                subtitle: l10n.profileSlotsSubtitle,
-                onTap: () => context.push(AppRoutes.slots),
-                isDark: isDark,
-              ),
-              _MenuTile(
-                icon: Icons.inventory_2_outlined,
-                label: l10n.profileInventoryLabel,
-                subtitle: l10n.profileInventorySubtitle,
-                onTap: () => context.push(AppRoutes.inventory),
-                isDark: isDark,
-                isLast: true,
-              ),
-            ], isDark),
-            SizedBox(height: 16.h),
+            if (businessTiles.isNotEmpty) ...[
+              _buildSectionHeader(l10n.profileBusinessSection, isDark),
+              _buildMenuCard(_withLastFlag(businessTiles), isDark),
+              SizedBox(height: 16.h),
+            ],
 
             _buildSectionHeader(l10n.profileSupportSection, isDark),
             _buildMenuCard([
@@ -885,6 +907,15 @@ class _MenuTile extends StatelessWidget {
   final VoidCallback onTap;
   final bool isDark;
   final bool isLast;
+
+  _MenuTile asLast() => _MenuTile(
+        icon: icon,
+        label: label,
+        subtitle: subtitle,
+        onTap: onTap,
+        isDark: isDark,
+        isLast: true,
+      );
 
   @override
   Widget build(BuildContext context) {

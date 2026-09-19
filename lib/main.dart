@@ -10,6 +10,7 @@ import 'core/theme/app_colors.dart';
 import 'core/theme/tokens/breakpoints.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/splash_diag.dart';
+import 'core/widgets/access_sync.dart';
 import 'core/widgets/job_offer_listener.dart';
 import 'l10n/generated/app_localizations.dart';
 import 'providers/theme_provider.dart';
@@ -84,7 +85,9 @@ class LndryVendorApp extends ConsumerWidget {
           ],
           routerConfig: router,
           builder: (context, child) {
-            return JobOfferListener(child: child ?? const SizedBox.shrink());
+            return AccessSync(
+              child: JobOfferListener(child: child ?? const SizedBox.shrink()),
+            );
           },
         );
       },

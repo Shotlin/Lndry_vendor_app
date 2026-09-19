@@ -8,6 +8,7 @@ import '../../../../core/router/app_routes.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// One photo slot: either the single shared slot for all weight(kg)-priced
 /// lines on the order, or a dedicated slot for one piece/pair line.
@@ -98,7 +99,7 @@ class _RiderPhotoCapturePageState extends ConsumerState<RiderPhotoCapturePage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).orderDetailsPhotoUploadFailed('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).orderDetailsPhotoUploadFailed(friendlyError(e)))),
         );
       }
     } finally {
@@ -132,7 +133,7 @@ class _RiderPhotoCapturePageState extends ConsumerState<RiderPhotoCapturePage> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSavePhotos('$e'))),
+          SnackBar(content: Text(AppLocalizations.of(context).riderFailedSavePhotos(friendlyError(e)))),
         );
       }
     } finally {

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/design/design_system.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../repositories/repositories.dart';
+import '../../../../core/network/friendly_error.dart';
 
 /// Shown when a vendor taps a ticket — displays the conversation
 /// (description, admin reply, any follow-up) and the status-driven
@@ -79,7 +80,7 @@ class _TicketDetailSheetState extends ConsumerState<_TicketDetailSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalizations.of(context).ticketFailedSubmitRating('$e'))));
+            SnackBar(content: Text(AppLocalizations.of(context).ticketFailedSubmitRating(friendlyError(e)))));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);
@@ -108,7 +109,7 @@ class _TicketDetailSheetState extends ConsumerState<_TicketDetailSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).ticketFailedToSend('$e'))));
+            .showSnackBar(SnackBar(content: Text(AppLocalizations.of(context).ticketFailedToSend(friendlyError(e)))));
       }
     } finally {
       if (mounted) setState(() => _isSubmitting = false);

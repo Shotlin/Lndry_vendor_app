@@ -12,7 +12,7 @@ class EmployeesNotifier extends StateNotifier<AsyncValue<List<EmployeeModel>>> {
   Future<void> fetchEmployees() async {
     state = const AsyncValue.loading();
     try {
-      final list = await _repo.getEmployees();
+      final list = await _repo.getStaff();
       state = AsyncValue.data(list);
     } catch (e, st) {
       state = AsyncValue.error(e, st);

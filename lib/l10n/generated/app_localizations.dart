@@ -2701,7 +2701,7 @@ abstract class AppLocalizations {
   /// No description provided for @riderManagementPhoneInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a valid phone number'**
+  /// **'Enter a valid 10-digit mobile number.'**
   String get riderManagementPhoneInvalid;
 
   /// No description provided for @riderManagementRiderAddedSnack.
@@ -4287,6 +4287,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This ticket has been closed by our support team.'**
   String get ticketClosedByTeamBanner;
+
+  /// No description provided for @employeesAddStaffButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Staff'**
+  String get employeesAddStaffButton;
+
+  /// No description provided for @employeesPhoneRequiredLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get employeesPhoneRequiredLabel;
+
+  /// No description provided for @employeesPhoneRequiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 10-digit phone number — staff sign in with it'**
+  String get employeesPhoneRequiredError;
+
+  /// No description provided for @employeesPermissionsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Select at least one permission'**
+  String get employeesPermissionsRequired;
+
+  /// No description provided for @employeesPermissionsLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the permission list'**
+  String get employeesPermissionsLoadFailed;
+
+  /// No description provided for @employeesPermissionsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the sections you switch on will open for this staff member.'**
+  String get employeesPermissionsHint;
+
+  /// No description provided for @employeesStaffOnlyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Staff sign in to the main Partner app. Captains are added under Captain Management.'**
+  String get employeesStaffOnlyNote;
+
+  /// No description provided for @permModuleOrders.
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get permModuleOrders;
+
+  /// No description provided for @permOrdersView.
+  ///
+  /// In en, this message translates to:
+  /// **'View orders'**
+  String get permOrdersView;
+
+  /// No description provided for @permOrdersAcceptReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept / reject new orders'**
+  String get permOrdersAcceptReject;
+
+  /// No description provided for @permOrdersProcess.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing & status updates'**
+  String get permOrdersProcess;
+
+  /// No description provided for @permOrdersReevaluate.
+  ///
+  /// In en, this message translates to:
+  /// **'Re-evaluation'**
+  String get permOrdersReevaluate;
+
+  /// No description provided for @permOrdersAssignCaptain.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign / broadcast to captains'**
+  String get permOrdersAssignCaptain;
+
+  /// No description provided for @permModuleCatalogue.
+  ///
+  /// In en, this message translates to:
+  /// **'Catalogue & pricing'**
+  String get permModuleCatalogue;
+
+  /// No description provided for @permCatalogueView.
+  ///
+  /// In en, this message translates to:
+  /// **'View services & pricing'**
+  String get permCatalogueView;
+
+  /// No description provided for @permCatalogueManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage services & pricing'**
+  String get permCatalogueManage;
+
+  /// No description provided for @permModuleInventory.
+  ///
+  /// In en, this message translates to:
+  /// **'Inventory'**
+  String get permModuleInventory;
+
+  /// No description provided for @permInventoryView.
+  ///
+  /// In en, this message translates to:
+  /// **'View inventory'**
+  String get permInventoryView;
+
+  /// No description provided for @permInventoryManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage inventory'**
+  String get permInventoryManage;
+
+  /// No description provided for @permModuleSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup slots'**
+  String get permModuleSlots;
+
+  /// No description provided for @permSlotsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View pickup slots'**
+  String get permSlotsView;
+
+  /// No description provided for @permSlotsManage.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage pickup slots & capacity'**
+  String get permSlotsManage;
+
+  /// No description provided for @permModuleAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get permModuleAnalytics;
+
+  /// No description provided for @permAnalyticsView.
+  ///
+  /// In en, this message translates to:
+  /// **'View analytics'**
+  String get permAnalyticsView;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorGeneric;
+
+  /// No description provided for @errorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t reach the server. Check your internet connection and try again.'**
+  String get errorNetwork;
+
+  /// No description provided for @errorTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'The request took too long. Please try again.'**
+  String get errorTimeout;
+
+  /// No description provided for @errorServerBusy.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is busy right now. Please try again in a moment.'**
+  String get errorServerBusy;
+
+  /// No description provided for @inventoryLoadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your supplies.'**
+  String get inventoryLoadFailed;
+
+  /// No description provided for @inventoryEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No supplies yet'**
+  String get inventoryEmptyTitle;
+
+  /// No description provided for @inventoryEmptySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap + to add your first supply item.'**
+  String get inventoryEmptySubtitle;
 }
 
 class _AppLocalizationsDelegate

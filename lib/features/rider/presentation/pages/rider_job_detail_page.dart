@@ -10,6 +10,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/rider_jobs_provider.dart';
 import '../../../../repositories/repositories.dart';
 import '../../../../models/models.dart';
+import '../../../../core/network/friendly_error.dart';
 
 class RiderJobDetailPage extends ConsumerStatefulWidget {
   const RiderJobDetailPage({super.key, required this.orderId});
@@ -77,8 +78,8 @@ class _RiderJobDetailPageState extends ConsumerState<RiderJobDetailPage> {
           SnackBar(
             content: Text(
               job.isPickup
-                  ? l10n.riderCouldNotStartPickup('$e')
-                  : l10n.riderCouldNotStartDelivery('$e'),
+                  ? l10n.riderCouldNotStartPickup(friendlyError(e))
+                  : l10n.riderCouldNotStartDelivery(friendlyError(e)),
             ),
           ),
         );
@@ -132,7 +133,7 @@ class _RiderJobDetailPageState extends ConsumerState<RiderJobDetailPage> {
         data: (job) => _buildBody(context, job, isDark),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, _) =>
-            Center(child: Text(l10n.riderFailedToLoadJob('$err'))),
+            Center(child: Text(l10n.riderFailedToLoadJob(friendlyError(err)))),
       ),
     );
   }

@@ -38,8 +38,10 @@ android {
         create("release") {
             keyAlias = keystoreProperties["keyAlias"] as String?
             keyPassword = keystoreProperties["keyPassword"] as String?
+            // key.properties may hold a path relative to itself or an absolute one.
             storeFile = keystoreProperties["storeFile"]?.let {
-                File(keystorePropertiesFile.parentFile, it as String)
+                val configured = File(it as String)
+                if (configured.isAbsolute) configured else File(keystorePropertiesFile.parentFile, it)
             }
             storePassword = keystoreProperties["storePassword"] as String?
         }
