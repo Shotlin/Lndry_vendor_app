@@ -161,7 +161,9 @@ class _RiderManagementPageState extends ConsumerState<RiderManagementPage> {
     } catch (e) {
       setSheetState(() {
         _isSaving = false;
-        _riderFormError = l10n.dashboardActionFailed(friendlyError(e));
+        // The plain sentence itself (e.g. "This mobile number is already
+        // registered as a captain with another vendor."), shown inside the form.
+        _riderFormError = friendlyError(e);
       });
     }
   }

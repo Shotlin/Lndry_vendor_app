@@ -218,6 +218,26 @@ void main() {
     });
   });
 
+  group('Add Captain — number already used by another vendor', () {
+    testWidgets('the friendly conflict is shown inside the form and "Captain added" never appears', (tester) async {
+      const msg = 'This mobile number is already registered as a captain with another vendor.';
+      final server = _Server()..createError = _bad(409, message: msg);
+      await tester.pumpWidget(_app(const RiderManagementPage(), server));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(FloatingActionButton));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.widgetWithText(TextFormField, 'Full Name'), 'sayan');
+      await tester.enterText(find.widgetWithText(TextFormField, 'Phone Number'), '9775845585');
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Add Captain'));
+      await tester.pumpAndSettle();
+      expect(find.text(msg), findsOneWidget, reason: 'exactly the backend sentence, inside the sheet');
+      expect(find.text('Captain added'), findsNothing);
+      expect(find.textContaining('Failed:'), findsNothing);
+      expect(find.textContaining('DioException'), findsNothing);
+      expect(server.riders, isEmpty);
+    });
+  });
+
   group('Operational Supplies', () {
     testWidgets('a + is saved on the server and is still there when the screen is reopened', (tester) async {
       final server = _Server();

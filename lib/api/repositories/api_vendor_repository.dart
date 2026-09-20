@@ -78,6 +78,17 @@ class ApiVendorRepository implements VendorRepository {
     final resp = await _dio.post(ApiEndpoints.verifyOtp, data: body);
     final data = _extractData(resp.data as Map<String, dynamic>);
 
+    // The server answers "pick a shop" when a number is on several vendors'
+    // rosters. This app has no shop picker, and carrying on without a token
+    // would end in a confusing "Unauthorized" — say what is actually going on.
+    if (data['requires_shop_selection'] == true) {
+      throw const ApiException(
+        message:
+            'This number is linked to more than one vendor. Please contact support.',
+        statusCode: 409,
+      );
+    }
+
     final accessToken = data['accessToken'] as String? ?? '';
     final refreshToken = data['refreshToken'] as String? ?? '';
     final vendorJson = data['vendor'] as Map<String, dynamic>? ?? {};
