@@ -1,3 +1,4 @@
+import '../../core/notifications/notification_target.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -659,19 +660,42 @@ class ApiVendorRepository implements VendorRepository {
     required String deviceId,
     required String platform,
     required String fcmToken,
+    String? appVersion,
+    String? deviceModel,
   }) async {
-    // The backend's registerTokenSchema requires exactly {token, platform}
-    // — {device_id, fcm_token} previously failed AJV validation (400) on
-    // every call, so vendor push notifications were silently never wired up.
+    // One row per device (same physical device re-registering replaces its
+    // token); the backend records this as a Partner-app device and works out
+    // vendor vs captain from the person's roster role.
     await _dio.post(ApiEndpoints.registerDeviceToken, data: {
       'token': fcmToken,
       'platform': platform,
+      'app_type': 'partner',
+      'device_id': deviceId,
+      if (deviceModel != null && deviceModel.isNotEmpty) 'device_model': deviceModel,
+      if (appVersion != null && appVersion.isNotEmpty) 'app_version': appVersion,
     });
   }
 
   @override
-  Future<void> unregisterDevice(String deviceId) async {
-    await _dio.delete('${ApiEndpoints.devices}/$deviceId');
+  Future<void> unregisterDevice(String deviceId, {String? fcmToken}) async {
+    await _dio.post(ApiEndpoints.unregisterDeviceToken, data: {
+      'device_id': deviceId,
+      if (fcmToken != null && fcmToken.isNotEmpty) 'token': fcmToken,
+    });
+  }
+
+  @override
+  Future<void> reportNotificationOpened({
+    String? deliveryId,
+    String? notificationId,
+    String? campaignId,
+  }) async {
+    if (deliveryId == null && notificationId == null && campaignId == null) return;
+    await _dio.post(ApiEndpoints.notificationOpened, data: {
+      if (deliveryId != null) 'delivery_id': deliveryId,
+      if (notificationId != null) 'notification_id': notificationId,
+      if (campaignId != null) 'campaign_id': campaignId,
+    });
   }
 
   @override
@@ -682,7 +706,26 @@ class ApiVendorRepository implements VendorRepository {
     });
     final data = _extractData(resp.data as Map<String, dynamic>);
     final list = (data['notifications'] as List<dynamic>? ?? []);
-    return list.map((e) => NotificationModel.fromJson(e as Map<String, dynamic>)).toList();
+    return list
+        .map((e) => NotificationModel.fromJson(_withInboxRoute(e as Map<String, dynamic>)))
+        .toList();
+  }
+
+  /// Fills `deep_link` from the logical link the backend stored on the inbox
+  /// item (`data.link = {type, params}`), so tapping it opens the screen.
+  Map<String, dynamic> _withInboxRoute(Map<String, dynamic> json) {
+    final explicit = json['deep_link'];
+    if (explicit is String && explicit.isNotEmpty) return json;
+    final data = json['data'];
+    final link = data is Map ? data['link'] : null;
+    if (link is! Map) return json;
+    final rawParams = link['params'];
+    final params = <String, String>{
+      if (rawParams is Map)
+        for (final e in rawParams.entries) e.key.toString(): e.value.toString(),
+    };
+    final route = NotificationRoutes.forLink(link['type']?.toString() ?? '', params);
+    return route == null ? json : {...json, 'deep_link': route};
   }
 
   @override

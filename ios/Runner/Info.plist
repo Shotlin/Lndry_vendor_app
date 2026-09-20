@@ -68,5 +68,7 @@
 		</array>
 		<key>UIStatusBarHidden</key>
 		<false/>
-	</dict>
+		<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Lndry Partner uses your location to pin your shop on the map so nearby customers can find you.</string>
+</dict>
 </plist>

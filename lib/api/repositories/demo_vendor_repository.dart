@@ -927,10 +927,19 @@ class DemoVendorRepository implements VendorRepository {
     required String deviceId,
     required String platform,
     required String fcmToken,
+    String? appVersion,
+    String? deviceModel,
   }) async {}
 
   @override
-  Future<void> unregisterDevice(String deviceId) async {}
+  Future<void> unregisterDevice(String deviceId, {String? fcmToken}) async {}
+
+  @override
+  Future<void> reportNotificationOpened({
+    String? deliveryId,
+    String? notificationId,
+    String? campaignId,
+  }) async {}
 
   // ── Notifications Implementation ──────────────────────────────────────────────
   @override

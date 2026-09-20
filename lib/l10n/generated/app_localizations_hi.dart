@@ -2492,6 +2492,13 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get inventoryEmptySubtitle =>
       'पहला सप्लाई आइटम जोड़ने के लिए + दबाएँ।';
+
+  @override
+  String get notifOffBannerMessage =>
+      'सूचनाएँ बंद हैं, इसलिए आप नए ऑर्डर और जॉब ऑफ़र मिस कर सकते हैं।';
+
+  @override
+  String get notifOffBannerAction => 'चालू करें';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -5000,4 +5007,11 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   @override
   String get inventoryEmptySubtitle =>
       'Pehla supply item jodne ke liye + dabayein.';
+
+  @override
+  String get notifOffBannerMessage =>
+      'Notifications band hain, isliye aap naye orders aur job offers miss kar sakte hain.';
+
+  @override
+  String get notifOffBannerAction => 'Chalu karein';
 }

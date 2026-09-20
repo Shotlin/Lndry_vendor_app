@@ -203,9 +203,19 @@ abstract interface class VendorRepository {
     required String deviceId,
     required String platform,
     required String fcmToken,
+    String? appVersion,
+    String? deviceModel,
   });
-  
-  Future<void> unregisterDevice(String deviceId);
+
+  /// Detach this device from the signed-in person (logout).
+  Future<void> unregisterDevice(String deviceId, {String? fcmToken});
+
+  /// The person tapped a push notification (feeds the campaign's open rate).
+  Future<void> reportNotificationOpened({
+    String? deliveryId,
+    String? notificationId,
+    String? campaignId,
+  });
 
   // -- Notifications
   Future<List<NotificationModel>> getNotifications({int page = 1, int limit = 20});

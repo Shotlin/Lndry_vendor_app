@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +11,7 @@ import 'core/theme/app_colors.dart';
 import 'core/theme/tokens/breakpoints.dart';
 import 'core/services/storage_service.dart';
 import 'core/services/splash_diag.dart';
+import 'core/notifications/notification_bootstrap.dart';
 import 'core/widgets/access_sync.dart';
 import 'core/widgets/job_offer_listener.dart';
 import 'l10n/generated/app_localizations.dart';
@@ -23,14 +25,14 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   splashDiag('shared_prefs_ready');
 
-  // Firebase is intentionally not initialised here — disabled at the
-  // user's request (2026-09-16) after android/app/google-services.json's
-  // placeholder project caused the app to hang on the splash screen on
-  // some devices. Restore `await Firebase.initializeApp();` (wrapped in
-  // try/catch, as it was before) once a real Firebase project's
-  // google-services.json replaces the placeholder — and see
-  // auth_provider.dart's _registerDeviceIfPossible for the matching FCM
-  // re-enable step.
+  // Firebase (push notifications). Guarded by a timeout so a bad config can
+  // never hold up the splash screen again.
+  try {
+    await Firebase.initializeApp().timeout(const Duration(seconds: 5));
+    splashDiag('firebase_ready');
+  } catch (e) {
+    splashDiag('firebase_init_skipped');
+  }
 
   splashDiag('run_app_called');
   runApp(
@@ -86,7 +88,11 @@ class LndryVendorApp extends ConsumerWidget {
           routerConfig: router,
           builder: (context, child) {
             return AccessSync(
-              child: JobOfferListener(child: child ?? const SizedBox.shrink()),
+              child: JobOfferListener(
+                child: NotificationBootstrap(
+                  child: child ?? const SizedBox.shrink(),
+                ),
+              ),
             );
           },
         );

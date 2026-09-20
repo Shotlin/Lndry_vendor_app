@@ -71,6 +71,8 @@ abstract final class ApiEndpoints {
   static const String markAllRead = '/notifications/read-all';
   static const String notificationPreferences = '/notifications/preferences';
   static const String registerDeviceToken = '/notifications/tokens';
+  static const String unregisterDeviceToken = '/notifications/tokens/unregister';
+  static const String notificationOpened = '/notifications/opened';
   static const String devices = '/devices';
   static String deviceById(String id) => '/devices/$id';
 

@@ -1,6 +1,5 @@
 {
   "@@locale": "hi",
-
   "commonOk": "ठीक है",
   "commonCancel": "रद्द करें",
   "commonRetry": "पुनः प्रयास करें",
@@ -9,10 +8,8 @@
   "commonExit": "बाहर निकलें",
   "commonCallCustomer": "ग्राहक को कॉल करें",
   "commonCouldNotOpenDialer": "फोन डायलर नहीं खुल सका। कृपया फिर से कोशिश करें।",
-
   "splashAppName": "Lndry Partner",
   "splashTagline": "पार्टनर पोर्टल",
-
   "authWelcomeBack": "वापसी पर स्वागत है",
   "authLoginSubtitle": "अपने लॉन्ड्री कामकाज को संभालने के लिए अपना मोबाइल नंबर दर्ज करें",
   "authMobileNumberLabel": "मोबाइल नंबर",
@@ -31,7 +28,6 @@
   "authResendCountdownPrefix": "कोड इतने समय में फिर भेजें: ",
   "authResendOtpButton": "OTP फिर भेजें",
   "authResendCountdownSeconds": "{seconds} सेकंड",
-
   "dashboardTodayClosedTitle": "आज बंद के रूप में चिह्नित है",
   "dashboardTodayClosedMessage": "आज आपके वर्किंग ऑवर्स शेड्यूल में गैर-कार्य दिवस के रूप में सेट है, इसलिए इस स्विच के बावजूद आपका स्टोर ग्राहकों के लिए बंद रहेगा। आज खोलने के लिए वर्किंग ऑवर्स और स्लॉट्स अपडेट करें।",
   "dashboardOpenWorkingHoursButton": "वर्किंग ऑवर्स खोलें",
@@ -71,7 +67,6 @@
   "dashboardOrderIdLabel": "ऑर्डर #{id}",
   "dashboardOrderItemsSummary": "{count,plural, one{1 आइटम} other{{count} आइटम}} • {names}",
   "dashboardOrderAccepted": "ऑर्डर स्वीकार कर लिया गया!",
-
   "settingsTitle": "सेटिंग्स",
   "settingsLanguageTitle": "भाषा",
   "settingsNotificationsSection": "सूचनाएं",
@@ -91,7 +86,6 @@
   "settingsPrivacyPolicy": "गोपनीयता नीति",
   "settingsOpeningPrivacy": "गोपनीयता नीति खोली जा रही है…",
   "settingsFooter": "Lndry Partner • वर्शन {version}\n© 2026 LNDRY Technologies Pvt. Ltd.",
-
   "routerExitAppTitle": "एप्लिकेशन से बाहर निकलें?",
   "routerExitAppMessage": "क्या आप वाकई Lndry Partner से बाहर निकलना चाहते हैं?",
   "routerPageNotFound": "पेज नहीं मिला",
@@ -102,7 +96,6 @@
   "navServices": "सेवाएं",
   "navAnalytics": "एनालिटिक्स",
   "navProfile": "प्रोफाइल",
-
   "orderStatusPaymentPending": "भुगतान लंबित",
   "orderStatusPaymentFailed": "भुगतान विफल",
   "orderStatusWaitingForVendorConfirmation": "पार्टनर की पुष्टि का इंतज़ार",
@@ -126,7 +119,6 @@
   "orderStatusAdminCancelled": "रद्द",
   "orderStatusRefundPending": "रिफंड लंबित",
   "orderStatusRefunded": "रिफंड हो गया",
-
   "ordersPageTitle": "ऑपरेशनल ऑर्डर",
   "ordersTabPending": "लंबित",
   "ordersTabActive": "सक्रिय",
@@ -154,7 +146,6 @@
   "ordersOrderRejectedSnack": "ऑर्डर अस्वीकार हो गया",
   "ordersErrorSnack": "त्रुटि: {error}",
   "ordersStageUpdatedSnack": "स्टेज अपडेट होकर {stage} हो गया",
-
   "orderDetailsPerKg": "प्रति किलो",
   "orderDetailsPerSqFt": "प्रति वर्ग फुट",
   "orderDetailsPerItem": "प्रति आइटम",
@@ -270,14 +261,12 @@
   "orderDetailsResubmitButton": "पुनर्मूल्यांकन दोबारा भेजें",
   "orderDetailsErrorLoading": "विवरण लोड करने में त्रुटि: {error}",
   "orderDetailsOtherCategoryFallback": "अन्य",
-
   "serviceCategoryWash": "वॉश",
   "serviceCategoryIron": "आयरन",
   "serviceCategoryWashAndIron": "वॉश & आयरन",
   "serviceCategoryDryClean": "ड्राई क्लीन",
   "serviceCategoryFold": "फोल्ड",
   "serviceCategoryPremium": "प्रीमियम",
-
   "slotsSunday": "रविवार",
   "slotsMonday": "सोमवार",
   "slotsTuesday": "मंगलवार",
@@ -285,7 +274,6 @@
   "slotsThursday": "गुरुवार",
   "slotsFriday": "शुक्रवार",
   "slotsSaturday": "शनिवार",
-
   "servicesStatusPendingReview": "समीक्षा लंबित",
   "servicesStatusRejected": "अस्वीकृत",
   "servicesStatusLive": "लाइव",
@@ -320,7 +308,6 @@
   "servicesDemoPriceReferenceOnly": "डेमो कीमत: ₹{price}/{unit} — केवल संदर्भ के लिए",
   "servicesPriceAdjustedHeader": "एडमिन द्वारा कीमत समायोजित",
   "servicesYourPricePer": "आपकी कीमत प्रति {unit}",
-
   "pricingEnterPriceSnack": "हर सक्रिय सबकैटेगरी के लिए ₹0 से अधिक कीमत दर्ज करें।",
   "pricingPageTitle": "गारमेंट प्राइसिंग रेट्स",
   "pricingCreateServiceFirst": "कस्टम प्राइसिंग रेट्स सेट करने के लिए पहले एक लॉन्ड्री सेवा बनाएं।",
@@ -332,7 +319,6 @@
   "pricingDemoPriceChargeWhatYouLike": "डेमो कीमत: ₹{price}/{unit} — आप जो चाहें चार्ज कर सकते हैं",
   "pricingPricesSaved": "कीमतें सेव हो गईं",
   "pricingFailedToSavePrices": "कीमतें सेव करने में विफल: {error}",
-
   "inventoryPageTitle": "ऑपरेशनल सप्लाई",
   "inventoryAddSupplyItemTitle": "सप्लाई आइटम जोड़ें",
   "inventoryItemNameLabel": "आइटम का नाम",
@@ -349,7 +335,6 @@
   "inventoryQuantityOfThreshold": "{qty} / {threshold} {unit} (न्यूनतम सीमा)",
   "inventoryOutBadge": "खत्म",
   "inventoryLowBadge": "कम",
-
   "slotsPageTitle": "वर्किंग ऑवर्स और स्लॉट्स",
   "slotsCapacityRequestedSnack": "क्षमता बदलाव का अनुरोध भेजा गया — एडमिन की मंजूरी लंबित",
   "slotsFailedToUpdateCapacity": "क्षमता अपडेट करने में विफल: {error}",
@@ -388,7 +373,6 @@
   "slotsDayClosedError": "वर्किंग ऑवर्स के तहत चुना गया दिन बंद है।",
   "slotsOutsideWorkingHoursError": "स्लॉट का समय ऑपरेशनल वर्किंग ऑवर्स ({open} से {close}) के भीतर होना चाहिए।",
   "slotsOverlapError": "यह स्लॉट {day} को मौजूदा स्लॉट {start} - {end} से टकराता है।",
-
   "analyticsWeekSegment": "सप्ताह",
   "analyticsMonthSegment": "महीना",
   "analyticsFailedToLoad": "एनालिटिक्स लोड नहीं हो सका",
@@ -407,7 +391,6 @@
   "analyticsSlaCustomerRetention": "SLA और ग्राहक रिटेंशन",
   "analyticsOnTimeDelivery": "समय पर डिलीवरी",
   "analyticsRepeatCustomers": "रिपीट ग्राहक",
-
   "employeesEditStaffTitle": "स्टाफ सदस्य संपादित करें",
   "employeesInviteStaffTitle": "स्टाफ सदस्य आमंत्रित करें",
   "employeesFullNameLabel": "पूरा नाम",
@@ -450,7 +433,6 @@
   "employeesSavePasswordButton": "पासवर्ड सेव करें",
   "employeesPermissionsButton": "परमिशन",
   "employeesFailedToLoad": "कर्मचारी लोड नहीं हो सके: {error}",
-
   "riderManagementAddRiderTitle": "कैप्टन जोड़ें",
   "riderManagementAddRiderSubtitle": "कैप्टन इसी फोन नंबर से लॉगिन करेगा, जैसे आप करते हैं।",
   "riderManagementFullNameHint": "जैसे: राहुल सेन",
@@ -463,7 +445,6 @@
   "riderManagementEmptyTitle": "अभी तक कोई कैप्टन नहीं",
   "riderManagementEmptySubtitle": "अपने खुद के डिलीवरी कैप्टन जोड़ें — वे अपने फोन से लॉगिन करते हैं और केवल अपनी सौंपी गई पिकअप और डिलीवरी देखते हैं।",
   "riderManagementFailedToLoad": "कैप्टन लोड नहीं हो सके: {error}",
-
   "riderMyJobsTitleWithVendor": "{vendor} — मेरे काम",
   "riderMyJobsTitle": "मेरे काम",
   "riderNoJobsTitle": "अभी कोई काम नहीं",
@@ -472,7 +453,6 @@
   "riderPickupBadge": "पिकअप",
   "riderDeliveryBadge": "डिलीवरी",
   "riderInProgressBadge": "जारी है",
-
   "riderOtpEnterCode": "6 अंकों का कोड दर्ज करें",
   "riderOtpPickupConfirmedSnack": "पिकअप की पुष्टि हुई",
   "riderOtpDeliveryConfirmedSnack": "डिलीवरी की पुष्टि हुई",
@@ -480,7 +460,6 @@
   "riderConfirmPickupTitle": "पिकअप की पुष्टि करें",
   "riderConfirmDeliveryTitle": "डिलीवरी की पुष्टि करें",
   "riderOtpPrompt": "ग्राहक से उनके ऐप में दिखा कोड पूछें, फिर उसे नीचे दर्ज करें।",
-
   "riderNoLocationSnack": "इस पते के लिए कोई लोकेशन उपलब्ध नहीं है",
   "riderCouldNotOpenMaps": "Google Maps नहीं खोल सके",
   "riderCouldNotStartPickup": "पिकअप शुरू नहीं हो सका: {error}",
@@ -499,7 +478,6 @@
   "riderPickUpButton": "पिक अप करें",
   "riderMarkDeliveredButton": "डिलीवर के रूप में मार्क करें",
   "riderCancelPickupButton": "पिकअप रद्द करें",
-
   "riderConfirmWeightCountTitle": "वजन और गिनती की पुष्टि करें",
   "riderWeighRecountPrompt": "अभी ग्राहक के आइटम को तौलें और गिनें — यह पिकअप की पुष्टि से पहले उनके अनुमान को सही करता है।",
   "riderWeightAreaBasedHeader": "वजन / क्षेत्रफल आधारित",
@@ -507,7 +485,6 @@
   "riderPieceBasedHeader": "पीस आधारित",
   "riderFailedSaveMeasurements": "माप सेव नहीं हो सका: {error}",
   "riderSaveContinueButton": "सेव करें और जारी रखें",
-
   "riderWeightBasedItemsLabel": "वजन-आधारित आइटम ({items})",
   "riderMaxPhotosPerItem": "प्रति आइटम अधिकतम {max} फोटो।",
   "riderFailedSavePhotos": "फोटो सेव नहीं हो सकीं: {error}",
@@ -515,7 +492,6 @@
   "riderPhotographEachItemPrompt": "पिकअप से पहले हर आइटम की फोटो लें — इससे डैमेज विवाद होने पर आप और ग्राहक दोनों सुरक्षित रहते हैं।",
   "riderPhotosCountLabel": "{count}/{max} फोटो · 1 आवश्यक, बाकी वैकल्पिक",
   "riderSaveButton": "सेव करें",
-
   "riderCollectBalanceTitle": "बकाया राशि लें",
   "riderBalanceDueLabel": "बकाया राशि",
   "riderPaymentMethodCod": "भुगतान का तरीका: कैश ऑन डिलीवरी",
@@ -526,13 +502,11 @@
   "riderFailedRecordCashCollection": "कैश कलेक्शन दर्ज नहीं हो सका: {error}",
   "riderConfirmCashCollectedButton": "{amount} कैश कलेक्ट होने की पुष्टि करें",
   "riderContinueButton": "जारी रखें",
-
   "riderDeliveryPhotoTitle": "डिलीवरी फोटो",
   "riderOptionalPhotoPrompt": "वैकल्पिक रूप से हैंडओवर की फोटो लें, डिलीवरी प्रूफ के रूप में। इसे छोड़ा जा सकता है।",
   "riderTakePhotoLabel": "फोटो लें",
   "riderFailedSavePhoto": "फोटो सेव नहीं हो सकी: {error}",
   "riderSkipContinueButton": "छोड़ें और जारी रखें",
-
   "notificationsJustNow": "अभी अभी",
   "notificationsMinsAgo": "{mins} मिनट पहले",
   "notificationsHoursAgo": "{hours,plural, one{1 घंटा पहले} other{{hours} घंटे पहले}}",
@@ -542,7 +516,6 @@
   "notificationsFailedToLoad": "सूचनाएं लोड नहीं हो सकीं: {error}",
   "notificationsEmptyTitle": "अभी तक कोई सूचना नहीं",
   "notificationsEmptySubtitle": "ऑपरेशनल पुश अपडेट, भुगतान अलर्ट और एडमिन प्राइसिंग नोट यहां दिखेंगे।",
-
   "profileUpdatedSnack": "प्रोफाइल सफलतापूर्वक अपडेट हुई",
   "profileCropLogoTitle": "लोगो क्रॉप करें",
   "profileCropBannerTitle": "बैनर इमेज क्रॉप करें",
@@ -587,7 +560,6 @@
   "profileHelpSubtitle": "हमारी पार्टनर टीम से सहायता प्राप्त करें",
   "profileAboutLabel": "LNDRY के बारे में",
   "profileAboutSubtitle": "वर्शन {version} • © 2026 LNDRY Technologies",
-
   "onboardingStepBusinessDetails": "बिजनेस विवरण",
   "onboardingStepOwnerBank": "मालिक और बैंक विवरण",
   "onboardingStepLocation": "दुकान का स्थान",
@@ -650,7 +622,6 @@
   "onboardingBackButton": "वापस",
   "onboardingSubmitApplicationButton": "आवेदन सबमिट करें",
   "onboardingNextButton": "अगला",
-
   "helpFaq1Q": "मैं ऑर्डर कैसे स्वीकार करूं?",
   "helpFaq1A": "जब कोई नया ऑर्डर आता है, तो यह आपके डैशबोर्ड पर \"नए आने वाले ऑर्डर\" के तहत दिखता है। इसे पुष्ट करने के लिए \"स्वीकार करें\" पर टैप करें, या यदि आप पूरा नहीं कर सकते तो \"अस्वीकार करें\" पर टैप करें। स्वीकृत ऑर्डर ऑर्डर्स के Active टैब में चले जाते हैं।",
   "helpFaq2Q": "भुगतान कैसे काम करता है?",
@@ -714,7 +685,6 @@
   "helpStatusReplied": "जवाब मिला",
   "helpStatusOpen": "खुला",
   "helpStatusClosed": "बंद",
-
   "ticketYouLabel": "आप",
   "ticketSupportTeamLabel": "सपोर्ट टीम",
   "ticketWaitingForReplyBanner": "हमारी सपोर्ट टीम के जवाब का इंतज़ार है। हम आमतौर पर 24 घंटे के भीतर जवाब देते हैं।",
@@ -762,5 +732,7 @@
   "errorServerBusy": "सर्वर अभी व्यस्त है। कृपया थोड़ी देर में फिर कोशिश करें।",
   "inventoryLoadFailed": "आपकी सप्लाई लोड नहीं हो सकी।",
   "inventoryEmptyTitle": "अभी कोई सप्लाई नहीं",
-  "inventoryEmptySubtitle": "पहला सप्लाई आइटम जोड़ने के लिए + दबाएँ।"
+  "inventoryEmptySubtitle": "पहला सप्लाई आइटम जोड़ने के लिए + दबाएँ।",
+  "notifOffBannerMessage": "सूचनाएँ बंद हैं, इसलिए आप नए ऑर्डर और जॉब ऑफ़र मिस कर सकते हैं।",
+  "notifOffBannerAction": "चालू करें"
 }

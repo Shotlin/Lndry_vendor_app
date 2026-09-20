@@ -1,6 +1,5 @@
 {
   "@@locale": "en",
-
   "commonOk": "OK",
   "@commonOk": {"description": "Generic OK button label"},
   "commonCancel": "Cancel",
@@ -17,12 +16,10 @@
   "@commonCallCustomer": {"description": "Accessible label for the button that opens the customer's phone number in the device dialer"},
   "commonCouldNotOpenDialer": "Could not open the phone dialer. Please try again.",
   "@commonCouldNotOpenDialer": {"description": "Shown when the device cannot open its default phone dialer"},
-
   "splashAppName": "Lndry Partner",
   "@splashAppName": {"description": "App name shown on splash screen"},
   "splashTagline": "Partner Portal",
   "@splashTagline": {"description": "Tagline shown on splash screen"},
-
   "authWelcomeBack": "Welcome Back",
   "authLoginSubtitle": "Enter your mobile number to manage your laundry operations",
   "authMobileNumberLabel": "Mobile Number",
@@ -31,9 +28,7 @@
   "authGetOtpButton": "Get OTP",
   "authVerifyMobile": "Verify Mobile",
   "authOtpSubtitleWithPhone": "Enter the 6-digit OTP code sent to {phone}",
-  "@authOtpSubtitleWithPhone": {
-    "placeholders": {"phone": {"type": "String"}}
-  },
+  "@authOtpSubtitleWithPhone": {"placeholders": {"phone": {"type": "String"}}},
   "authOtpSubtitleGeneric": "Enter the verification code sent to your mobile",
   "authDemoOtpLabel": "Demo OTP: ",
   "authOtpCodeLabel": "OTP Code",
@@ -44,10 +39,7 @@
   "authResendCountdownPrefix": "Resend code in ",
   "authResendOtpButton": "Resend OTP",
   "authResendCountdownSeconds": "{seconds}s",
-  "@authResendCountdownSeconds": {
-    "placeholders": {"seconds": {"type": "int"}}
-  },
-
+  "@authResendCountdownSeconds": {"placeholders": {"seconds": {"type": "int"}}},
   "dashboardTodayClosedTitle": "Today is marked closed",
   "dashboardTodayClosedMessage": "Today is set as a non-working day in your Working Hours schedule, so your store stays closed to customers regardless of this switch. Update Working Hours & Slots to open today.",
   "dashboardOpenWorkingHoursButton": "Open Working Hours",
@@ -60,9 +52,7 @@
   "dashboardStoreNowOpen": "Store is now OPEN",
   "dashboardStoreNowClosed": "Store is now CLOSED",
   "dashboardActionFailed": "Failed: {error}",
-  "@dashboardActionFailed": {
-    "placeholders": {"error": {"type": "String"}}
-  },
+  "@dashboardActionFailed": {"placeholders": {"error": {"type": "String"}}},
   "dashboardLaundryPartnerFallback": "Laundry Partner",
   "dashboardOpenBadge": "OPEN",
   "dashboardClosedBadge": "CLOSED",
@@ -71,9 +61,7 @@
   "dashboardTotalReviews": "Total Reviews",
   "dashboardAvgTurnaround": "Avg Turnaround",
   "dashboardHoursValue": "{hours} hrs",
-  "@dashboardHoursValue": {
-    "placeholders": {"hours": {"type": "String"}}
-  },
+  "@dashboardHoursValue": {"placeholders": {"hours": {"type": "String"}}},
   "dashboardTodaysOperations": "Today's Operations",
   "dashboardTodaysRevenue": "Today's Revenue",
   "dashboardPendingOrders": "Pending Orders",
@@ -91,18 +79,10 @@
   "dashboardNoPendingOrders": "No pending orders at the moment.",
   "dashboardFailedLoadOrders": "Failed to load orders",
   "dashboardOrderIdLabel": "Order #{id}",
-  "@dashboardOrderIdLabel": {
-    "placeholders": {"id": {"type": "String"}}
-  },
+  "@dashboardOrderIdLabel": {"placeholders": {"id": {"type": "String"}}},
   "dashboardOrderItemsSummary": "{count,plural, one{1 item} other{{count} items}} • {names}",
-  "@dashboardOrderItemsSummary": {
-    "placeholders": {
-      "count": {"type": "int"},
-      "names": {"type": "String"}
-    }
-  },
+  "@dashboardOrderItemsSummary": {"placeholders": {"count": {"type": "int"}, "names": {"type": "String"}}},
   "dashboardOrderAccepted": "Order accepted!",
-
   "settingsTitle": "Settings",
   "settingsLanguageTitle": "Language",
   "settingsNotificationsSection": "Notifications",
@@ -122,10 +102,7 @@
   "settingsPrivacyPolicy": "Privacy Policy",
   "settingsOpeningPrivacy": "Opening Privacy Policy…",
   "settingsFooter": "Lndry Partner • Version {version}\n© 2026 LNDRY Technologies Pvt. Ltd.",
-  "@settingsFooter": {
-    "placeholders": {"version": {"type": "String"}}
-  },
-
+  "@settingsFooter": {"placeholders": {"version": {"type": "String"}}},
   "routerExitAppTitle": "Exit Application?",
   "routerExitAppMessage": "Are you sure you want to exit Lndry Partner?",
   "routerPageNotFound": "Page not found",
@@ -136,7 +113,6 @@
   "navServices": "Services",
   "navAnalytics": "Analytics",
   "navProfile": "Profile",
-
   "orderStatusPaymentPending": "Payment Pending",
   "orderStatusPaymentFailed": "Payment Failed",
   "orderStatusWaitingForVendorConfirmation": "Waiting for Vendor Confirmation",
@@ -160,7 +136,6 @@
   "orderStatusAdminCancelled": "Cancelled",
   "orderStatusRefundPending": "Refund Pending",
   "orderStatusRefunded": "Refunded",
-
   "ordersPageTitle": "Operational Orders",
   "ordersTabPending": "Pending",
   "ordersTabActive": "Active",
@@ -192,7 +167,6 @@
   "@ordersErrorSnack": {"placeholders": {"error": {"type": "String"}}},
   "ordersStageUpdatedSnack": "Stage updated to {stage}",
   "@ordersStageUpdatedSnack": {"placeholders": {"stage": {"type": "String"}}},
-
   "orderDetailsPerKg": "Per kg",
   "orderDetailsPerSqFt": "Per sq ft",
   "orderDetailsPerItem": "Per item",
@@ -319,14 +293,12 @@
   "orderDetailsErrorLoading": "Error loading details: {error}",
   "@orderDetailsErrorLoading": {"placeholders": {"error": {"type": "String"}}},
   "orderDetailsOtherCategoryFallback": "Other",
-
   "serviceCategoryWash": "Wash",
   "serviceCategoryIron": "Iron",
   "serviceCategoryWashAndIron": "Wash & Iron",
   "serviceCategoryDryClean": "Dry Clean",
   "serviceCategoryFold": "Fold",
   "serviceCategoryPremium": "Premium",
-
   "slotsSunday": "Sunday",
   "slotsMonday": "Monday",
   "slotsTuesday": "Tuesday",
@@ -334,7 +306,6 @@
   "slotsThursday": "Thursday",
   "slotsFriday": "Friday",
   "slotsSaturday": "Saturday",
-
   "servicesStatusPendingReview": "Pending Review",
   "servicesStatusRejected": "Rejected",
   "servicesStatusLive": "Live",
@@ -378,7 +349,6 @@
   "servicesPriceAdjustedHeader": "Price adjusted by admin",
   "servicesYourPricePer": "Your price per {unit}",
   "@servicesYourPricePer": {"placeholders": {"unit": {"type": "String"}}},
-
   "pricingEnterPriceSnack": "Enter a price greater than ₹0 for every activated subcategory.",
   "pricingPageTitle": "Garment Pricing Rates",
   "pricingCreateServiceFirst": "Please create a laundry service offering first to configure custom pricing rates.",
@@ -395,7 +365,6 @@
   "pricingPricesSaved": "Prices saved",
   "pricingFailedToSavePrices": "Failed to save prices: {error}",
   "@pricingFailedToSavePrices": {"placeholders": {"error": {"type": "String"}}},
-
   "inventoryPageTitle": "Operational Supplies",
   "inventoryAddSupplyItemTitle": "Add Supply Item",
   "inventoryItemNameLabel": "Item Name",
@@ -414,7 +383,6 @@
   "@inventoryQuantityOfThreshold": {"placeholders": {"qty": {"type": "String"}, "threshold": {"type": "String"}, "unit": {"type": "String"}}},
   "inventoryOutBadge": "OUT",
   "inventoryLowBadge": "LOW",
-
   "slotsPageTitle": "Working Hours & Slots",
   "slotsCapacityRequestedSnack": "Capacity change requested — pending admin approval",
   "slotsFailedToUpdateCapacity": "Failed to update capacity: {error}",
@@ -461,7 +429,6 @@
   "@slotsOutsideWorkingHoursError": {"placeholders": {"open": {"type": "String"}, "close": {"type": "String"}}},
   "slotsOverlapError": "This slot overlaps with an existing slot: {start} - {end} on {day}.",
   "@slotsOverlapError": {"placeholders": {"start": {"type": "String"}, "end": {"type": "String"}, "day": {"type": "String"}}},
-
   "analyticsWeekSegment": "Week",
   "analyticsMonthSegment": "Month",
   "analyticsFailedToLoad": "Failed to load analytics",
@@ -483,7 +450,6 @@
   "analyticsSlaCustomerRetention": "SLA & Customer Retention",
   "analyticsOnTimeDelivery": "On-Time Delivery",
   "analyticsRepeatCustomers": "Repeat Customers",
-
   "employeesEditStaffTitle": "Edit Staff Member",
   "employeesInviteStaffTitle": "Invite Staff Member",
   "employeesFullNameLabel": "Full Name",
@@ -530,7 +496,6 @@
   "employeesPermissionsButton": "Permissions",
   "employeesFailedToLoad": "Failed to load employees: {error}",
   "@employeesFailedToLoad": {"placeholders": {"error": {"type": "String"}}},
-
   "riderManagementAddRiderTitle": "Add Captain",
   "riderManagementAddRiderSubtitle": "The captain logs in with this phone number, the same way you do.",
   "riderManagementFullNameHint": "e.g. Rahul Sen",
@@ -545,7 +510,6 @@
   "riderManagementEmptySubtitle": "Add your own delivery captains — they log in with their phone and only see their assigned pickups and deliveries.",
   "riderManagementFailedToLoad": "Failed to load captains: {error}",
   "@riderManagementFailedToLoad": {"placeholders": {"error": {"type": "String"}}},
-
   "riderMyJobsTitleWithVendor": "{vendor} — My Jobs",
   "@riderMyJobsTitleWithVendor": {"placeholders": {"vendor": {"type": "String"}}},
   "riderMyJobsTitle": "My Jobs",
@@ -556,7 +520,6 @@
   "riderPickupBadge": "PICKUP",
   "riderDeliveryBadge": "DELIVERY",
   "riderInProgressBadge": "IN PROGRESS",
-
   "riderOtpEnterCode": "Enter the 6-digit code",
   "riderOtpPickupConfirmedSnack": "Pickup confirmed",
   "riderOtpDeliveryConfirmedSnack": "Delivery confirmed",
@@ -564,7 +527,6 @@
   "riderConfirmPickupTitle": "Confirm Pickup",
   "riderConfirmDeliveryTitle": "Confirm Delivery",
   "riderOtpPrompt": "Ask the customer for the code shown in their app, then enter it below.",
-
   "riderNoLocationSnack": "No location available for this address",
   "riderCouldNotOpenMaps": "Could not open Google Maps",
   "riderCouldNotStartPickup": "Could not start pickup: {error}",
@@ -587,7 +549,6 @@
   "riderPickUpButton": "Pick Up",
   "riderMarkDeliveredButton": "Mark Delivered",
   "riderCancelPickupButton": "Cancel Pickup",
-
   "riderConfirmWeightCountTitle": "Confirm Weight & Count",
   "riderWeighRecountPrompt": "Weigh and recount the customer's items now — this corrects their rough estimate before pickup is confirmed.",
   "riderWeightAreaBasedHeader": "Weight / Area Based",
@@ -597,7 +558,6 @@
   "riderFailedSaveMeasurements": "Failed to save measurements: {error}",
   "@riderFailedSaveMeasurements": {"placeholders": {"error": {"type": "String"}}},
   "riderSaveContinueButton": "Save & Continue",
-
   "riderWeightBasedItemsLabel": "Weight-based items ({items})",
   "@riderWeightBasedItemsLabel": {"placeholders": {"items": {"type": "String"}}},
   "riderMaxPhotosPerItem": "Maximum {max} photos per item.",
@@ -609,7 +569,6 @@
   "riderPhotosCountLabel": "{count}/{max} photos · 1 required, rest optional",
   "@riderPhotosCountLabel": {"placeholders": {"count": {"type": "String"}, "max": {"type": "String"}}},
   "riderSaveButton": "Save",
-
   "riderCollectBalanceTitle": "Collect Balance",
   "riderBalanceDueLabel": "Balance Due",
   "riderPaymentMethodCod": "Payment method: Cash on Delivery",
@@ -622,14 +581,12 @@
   "riderConfirmCashCollectedButton": "Confirm {amount} Cash Collected",
   "@riderConfirmCashCollectedButton": {"placeholders": {"amount": {"type": "String"}}},
   "riderContinueButton": "Continue",
-
   "riderDeliveryPhotoTitle": "Delivery Photo",
   "riderOptionalPhotoPrompt": "Optionally photograph the handover as delivery proof. This step can be skipped.",
   "riderTakePhotoLabel": "Take Photo",
   "riderFailedSavePhoto": "Failed to save photo: {error}",
   "@riderFailedSavePhoto": {"placeholders": {"error": {"type": "String"}}},
   "riderSkipContinueButton": "Skip & Continue",
-
   "notificationsJustNow": "Just now",
   "notificationsMinsAgo": "{mins} mins ago",
   "@notificationsMinsAgo": {"placeholders": {"mins": {"type": "int"}}},
@@ -643,7 +600,6 @@
   "@notificationsFailedToLoad": {"placeholders": {"error": {"type": "String"}}},
   "notificationsEmptyTitle": "No Notifications Yet",
   "notificationsEmptySubtitle": "Operational push updates, payout alerts, and admin pricing notes will appear here.",
-
   "profileUpdatedSnack": "Profile updated successfully",
   "profileCropLogoTitle": "Crop Logo",
   "profileCropBannerTitle": "Crop Banner Image",
@@ -691,7 +647,6 @@
   "profileAboutLabel": "About LNDRY",
   "profileAboutSubtitle": "Version {version} • © 2026 LNDRY Technologies",
   "@profileAboutSubtitle": {"placeholders": {"version": {"type": "String"}}},
-
   "onboardingStepBusinessDetails": "Business Details",
   "onboardingStepOwnerBank": "Owner & Bank Details",
   "onboardingStepLocation": "Shop Location",
@@ -758,7 +713,6 @@
   "onboardingBackButton": "Back",
   "onboardingSubmitApplicationButton": "Submit Application",
   "onboardingNextButton": "Next",
-
   "helpFaq1Q": "How do I accept an order?",
   "helpFaq1A": "When a new order arrives, it appears in your Dashboard under \"New Incoming Orders\". Tap \"Accept\" to confirm it, or \"Reject\" if you are unable to fulfil it. Accepted orders move to the Active tab in Orders.",
   "helpFaq2Q": "How do payouts work?",
@@ -823,7 +777,6 @@
   "helpStatusReplied": "Replied",
   "helpStatusOpen": "Open",
   "helpStatusClosed": "Closed",
-
   "ticketYouLabel": "You",
   "ticketSupportTeamLabel": "Support Team",
   "ticketWaitingForReplyBanner": "Waiting for a reply from our support team. We usually respond within 24 hours.",
@@ -873,5 +826,7 @@
   "errorServerBusy": "The server is busy right now. Please try again in a moment.",
   "inventoryLoadFailed": "Couldn't load your supplies.",
   "inventoryEmptyTitle": "No supplies yet",
-  "inventoryEmptySubtitle": "Tap + to add your first supply item."
+  "inventoryEmptySubtitle": "Tap + to add your first supply item.",
+  "notifOffBannerMessage": "Notifications are turned off, so you may miss new orders and job offers.",
+  "notifOffBannerAction": "Turn on"
 }

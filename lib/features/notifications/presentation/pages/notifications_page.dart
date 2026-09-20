@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/design/design_system.dart';
+import '../../../../core/notifications/notification_router.dart';
+import '../../../../core/notifications/notifications_off_banner.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../models/models.dart';
 import '../../../../providers/notifications_provider.dart';
@@ -56,7 +58,14 @@ class NotificationsPage extends ConsumerWidget {
             ),
         ],
       ),
-      body: RefreshIndicator(
+      body: Column(
+        children: [
+          NotificationsOffBanner(
+            message: l10n.notifOffBannerMessage,
+            actionLabel: l10n.notifOffBannerAction,
+          ),
+          Expanded(
+            child: RefreshIndicator(
         onRefresh: () => ref.read(notificationsProvider.notifier).fetch(),
         color: AppColors.primary,
         child: notificationsAsync.when(
@@ -128,6 +137,8 @@ class NotificationsPage extends ConsumerWidget {
                       if (!item.isRead) {
                         ref.read(notificationsProvider.notifier).markRead(item.id);
                       }
+                      // Same guard + sign-in handling as a real push tap.
+                      ref.read(notificationRouterProvider).openRoute(item.deepLink);
                     },
                     child: Card(
                       elevation: 0,
@@ -207,6 +218,9 @@ class NotificationsPage extends ConsumerWidget {
             );
           },
         ),
+      ),
+          ),
+        ],
       ),
     );
   }

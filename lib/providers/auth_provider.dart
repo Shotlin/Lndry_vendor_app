@@ -1,7 +1,11 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
 import '../models/models.dart';
 import '../core/services/storage_service.dart';
 import '../core/services/splash_diag.dart';
@@ -491,10 +495,27 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // ── Logout ────────────────────────────────────────────────────────────────
 
   Future<void> logout() async {
+    await _tokenRefreshSub?.cancel();
+    _tokenRefreshSub = null;
+    // Detach this device while the session is still valid, then drop the FCM
+    // token so this phone stops receiving the signed-out person's notifications
+    // (a fresh token is issued for whoever signs in next — e.g. a captain and
+    // the owner sharing one phone).
     final deviceId = _storage.getString('device_id');
     if (deviceId != null && deviceId.isNotEmpty) {
+      String? token;
       try {
-        await _repo.unregisterDevice(deviceId);
+        token = await FirebaseMessaging.instance
+            .getToken()
+            .timeout(const Duration(seconds: 3));
+      } catch (_) {}
+      try {
+        await _repo.unregisterDevice(deviceId, fcmToken: token);
+      } catch (_) {}
+      try {
+        await FirebaseMessaging.instance
+            .deleteToken()
+            .timeout(const Duration(seconds: 3));
       } catch (_) {}
     }
     try {
@@ -529,17 +550,62 @@ class AuthNotifier extends StateNotifier<AuthState> {
     ]);
   }
 
-  /// Push-notification device registration — temporarily disabled at the
-  /// user's request (2026-09-16). The FCM calls this used to make (via
-  /// FirebaseMessaging.instance.requestPermission()/getToken(), then
-  /// _repo.registerDevice(...)) hung the splash screen indefinitely on
-  /// some devices even behind a 5s .timeout() guard, because
-  /// android/app/google-services.json is still a placeholder Firebase
-  /// project (see project memory: vendor app splash-hang bug). Re-enable
-  /// by restoring the previous implementation from git history alongside
-  /// Firebase.initializeApp() in main.dart, once a real Firebase project's
-  /// google-services.json is in place.
-  Future<void> _registerDeviceIfPossible() async {}
+  StreamSubscription<String>? _tokenRefreshSub;
+
+  /// Register / refresh this device's FCM token with the backend now (called
+  /// right after the person allows notifications). A signed-out person is
+  /// registered at login instead.
+  Future<void> syncPushToken() async {
+    if (state is AuthUnauthenticated || state is AuthInitial) return;
+    await _registerFcmToken();
+  }
+
+  /// Push-notification device registration. Fire-and-forget: login must never
+  /// wait on Firebase (the permission prompt can sit open for as long as the
+  /// user likes), and any failure just means no push on this device.
+  Future<void> _registerDeviceIfPossible() async {
+    unawaited(_registerFcmToken());
+  }
+
+  Future<void> _registerFcmToken() async {
+    try {
+      if (Firebase.apps.isEmpty) return;
+      final messaging = FirebaseMessaging.instance;
+      // Never prompt from here — the permission prompter owns that. Without
+      // permission there is nothing to deliver to, so wait until it is granted
+      // (it calls syncPushToken right after the person allows).
+      final settings = await messaging.getNotificationSettings();
+      if (settings.authorizationStatus != AuthorizationStatus.authorized &&
+          settings.authorizationStatus != AuthorizationStatus.provisional) {
+        return;
+      }
+      final token =
+          await messaging.getToken().timeout(const Duration(seconds: 15));
+      if (token == null || token.isEmpty) return;
+      await _sendFcmToken(token);
+      // Firebase rotates tokens; keep the backend's copy current.
+      _tokenRefreshSub ??= messaging.onTokenRefresh.listen(_sendFcmToken);
+    } catch (_) {
+      // Push is optional; never affects login.
+    }
+  }
+
+  Future<void> _sendFcmToken(String token) async {
+    try {
+      // Signed out: nothing to register (it is sent again at login).
+      if (state is AuthUnauthenticated || state is AuthInitial) return;
+      var deviceId = _storage.getString('device_id');
+      if (deviceId == null || deviceId.isEmpty) {
+        deviceId = const Uuid().v4();
+        await _storage.saveString('device_id', deviceId);
+      }
+      await _repo.registerDevice(
+        deviceId: deviceId,
+        platform: Platform.isIOS ? 'ios' : 'android',
+        fcmToken: token,
+      );
+    } catch (_) {}
+  }
 }
 
 // ── Providers ─────────────────────────────────────────────────────────────────

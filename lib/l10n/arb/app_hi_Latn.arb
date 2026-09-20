@@ -1,6 +1,5 @@
 {
   "@@locale": "hi_Latn",
-
   "commonOk": "OK",
   "commonCancel": "Cancel karein",
   "commonRetry": "Retry karein",
@@ -9,10 +8,8 @@
   "commonExit": "Exit karein",
   "commonCallCustomer": "Customer ko call karein",
   "commonCouldNotOpenDialer": "Phone dialer open nahi ho paya. Please phir try karein.",
-
   "splashAppName": "Lndry Partner",
   "splashTagline": "Partner Portal",
-
   "authWelcomeBack": "Welcome Back",
   "authLoginSubtitle": "Apna laundry business manage karne ke liye mobile number daalein",
   "authMobileNumberLabel": "Mobile Number",
@@ -31,7 +28,6 @@
   "authResendCountdownPrefix": "Code dobara bhejein in ",
   "authResendOtpButton": "OTP Dobara Bhejein",
   "authResendCountdownSeconds": "{seconds}s",
-
   "dashboardTodayClosedTitle": "Aaj closed mark kiya gaya hai",
   "dashboardTodayClosedMessage": "Aapke Working Hours schedule mein aaj non-working day set hai, isliye is switch se koi fark nahi padega — store customers ke liye band hi rahega. Aaj open karne ke liye Working Hours & Slots update karein.",
   "dashboardOpenWorkingHoursButton": "Working Hours Kholein",
@@ -71,7 +67,6 @@
   "dashboardOrderIdLabel": "Order #{id}",
   "dashboardOrderItemsSummary": "{count,plural, one{1 item} other{{count} items}} • {names}",
   "dashboardOrderAccepted": "Order accept ho gaya!",
-
   "settingsTitle": "Settings",
   "settingsLanguageTitle": "Language",
   "settingsNotificationsSection": "Notifications",
@@ -91,7 +86,6 @@
   "settingsPrivacyPolicy": "Privacy Policy",
   "settingsOpeningPrivacy": "Privacy Policy khul raha hai…",
   "settingsFooter": "Lndry Partner • Version {version}\n© 2026 LNDRY Technologies Pvt. Ltd.",
-
   "routerExitAppTitle": "App Band Karein?",
   "routerExitAppMessage": "Kya aap sach mein Lndry Partner se exit karna chahte hain?",
   "routerPageNotFound": "Page Nahi Mila",
@@ -102,7 +96,6 @@
   "navServices": "Services",
   "navAnalytics": "Analytics",
   "navProfile": "Profile",
-
   "orderStatusPaymentPending": "Payment Pending",
   "orderStatusPaymentFailed": "Payment Fail Ho Gaya",
   "orderStatusWaitingForVendorConfirmation": "Partner ki Confirmation ka Wait",
@@ -126,7 +119,6 @@
   "orderStatusAdminCancelled": "Cancel",
   "orderStatusRefundPending": "Refund Pending",
   "orderStatusRefunded": "Refund Ho Gaya",
-
   "ordersPageTitle": "Operational Orders",
   "ordersTabPending": "Pending",
   "ordersTabActive": "Active",
@@ -154,7 +146,6 @@
   "ordersOrderRejectedSnack": "Order reject ho gaya",
   "ordersErrorSnack": "Error: {error}",
   "ordersStageUpdatedSnack": "Stage update hokar {stage} ho gaya",
-
   "orderDetailsPerKg": "Per kg",
   "orderDetailsPerSqFt": "Per sq ft",
   "orderDetailsPerItem": "Per item",
@@ -270,14 +261,12 @@
   "orderDetailsResubmitButton": "Reconciliation Dobara Bhejein",
   "orderDetailsErrorLoading": "Details load karne mein error: {error}",
   "orderDetailsOtherCategoryFallback": "Other",
-
   "serviceCategoryWash": "Wash",
   "serviceCategoryIron": "Iron",
   "serviceCategoryWashAndIron": "Wash & Iron",
   "serviceCategoryDryClean": "Dry Clean",
   "serviceCategoryFold": "Fold",
   "serviceCategoryPremium": "Premium",
-
   "slotsSunday": "Sunday",
   "slotsMonday": "Monday",
   "slotsTuesday": "Tuesday",
@@ -285,7 +274,6 @@
   "slotsThursday": "Thursday",
   "slotsFriday": "Friday",
   "slotsSaturday": "Saturday",
-
   "servicesStatusPendingReview": "Pending Review",
   "servicesStatusRejected": "Rejected",
   "servicesStatusLive": "Live",
@@ -320,7 +308,6 @@
   "servicesDemoPriceReferenceOnly": "Demo price: ₹{price}/{unit} — sirf reference ke liye",
   "servicesPriceAdjustedHeader": "Admin ne price adjust kiya",
   "servicesYourPricePer": "Aapki price per {unit}",
-
   "pricingEnterPriceSnack": "Har activated subcategory ke liye ₹0 se zyada price daalein.",
   "pricingPageTitle": "Garment Pricing Rates",
   "pricingCreateServiceFirst": "Custom pricing rates set karne ke liye pehle ek laundry service banayein.",
@@ -332,7 +319,6 @@
   "pricingDemoPriceChargeWhatYouLike": "Demo price: ₹{price}/{unit} — aap jo chahein charge kar sakte hain",
   "pricingPricesSaved": "Prices save ho gayi",
   "pricingFailedToSavePrices": "Prices save karne mein fail: {error}",
-
   "inventoryPageTitle": "Operational Supplies",
   "inventoryAddSupplyItemTitle": "Supply Item Add Karein",
   "inventoryItemNameLabel": "Item Ka Naam",
@@ -349,7 +335,6 @@
   "inventoryQuantityOfThreshold": "{qty} / {threshold} {unit} (Min limit)",
   "inventoryOutBadge": "OUT",
   "inventoryLowBadge": "LOW",
-
   "slotsPageTitle": "Working Hours & Slots",
   "slotsCapacityRequestedSnack": "Capacity change ka request bheja gaya — admin approval pending",
   "slotsFailedToUpdateCapacity": "Capacity update karne mein fail: {error}",
@@ -388,7 +373,6 @@
   "slotsDayClosedError": "Working Hours ke tahat chuna gaya din band hai.",
   "slotsOutsideWorkingHoursError": "Slot ka time operational working hours ({open} se {close}) ke andar hona chahiye.",
   "slotsOverlapError": "Ye slot {day} ko existing slot {start} - {end} se overlap karta hai.",
-
   "analyticsWeekSegment": "Week",
   "analyticsMonthSegment": "Month",
   "analyticsFailedToLoad": "Analytics load nahi ho paya",
@@ -407,7 +391,6 @@
   "analyticsSlaCustomerRetention": "SLA & Customer Retention",
   "analyticsOnTimeDelivery": "On-Time Delivery",
   "analyticsRepeatCustomers": "Repeat Customers",
-
   "employeesEditStaffTitle": "Staff Member Edit Karein",
   "employeesInviteStaffTitle": "Staff Member Invite Karein",
   "employeesFullNameLabel": "Full Name",
@@ -450,7 +433,6 @@
   "employeesSavePasswordButton": "Password Save Karein",
   "employeesPermissionsButton": "Permissions",
   "employeesFailedToLoad": "Employees load nahi ho paaye: {error}",
-
   "riderManagementAddRiderTitle": "Captain Add Karein",
   "riderManagementAddRiderSubtitle": "Captain isi phone number se login karega, jaise aap karte hain.",
   "riderManagementFullNameHint": "Jaise: Rahul Sen",
@@ -463,7 +445,6 @@
   "riderManagementEmptyTitle": "Abhi Tak Koi Captain Nahi",
   "riderManagementEmptySubtitle": "Apne khud ke delivery captains add karein — wo apne phone se login karte hain aur sirf apni assigned pickups aur deliveries dekhte hain.",
   "riderManagementFailedToLoad": "Captains load nahi ho paaye: {error}",
-
   "riderMyJobsTitleWithVendor": "{vendor} — Mere Jobs",
   "riderMyJobsTitle": "Mere Jobs",
   "riderNoJobsTitle": "Abhi Koi Job Nahi",
@@ -472,7 +453,6 @@
   "riderPickupBadge": "PICKUP",
   "riderDeliveryBadge": "DELIVERY",
   "riderInProgressBadge": "IN PROGRESS",
-
   "riderOtpEnterCode": "6-digit code daalein",
   "riderOtpPickupConfirmedSnack": "Pickup confirm ho gaya",
   "riderOtpDeliveryConfirmedSnack": "Delivery confirm ho gayi",
@@ -480,7 +460,6 @@
   "riderConfirmPickupTitle": "Pickup Confirm Karein",
   "riderConfirmDeliveryTitle": "Delivery Confirm Karein",
   "riderOtpPrompt": "Customer se unke app mein dikha code puchein, phir neeche daalein.",
-
   "riderNoLocationSnack": "Is address ke liye koi location available nahi hai",
   "riderCouldNotOpenMaps": "Google Maps nahi khul saka",
   "riderCouldNotStartPickup": "Pickup shuru nahi ho saka: {error}",
@@ -499,7 +478,6 @@
   "riderPickUpButton": "Pick Up Karein",
   "riderMarkDeliveredButton": "Delivered Mark Karein",
   "riderCancelPickupButton": "Pickup Cancel Karein",
-
   "riderConfirmWeightCountTitle": "Weight & Count Confirm Karein",
   "riderWeighRecountPrompt": "Abhi customer ke items ko taulein aur ginein — ye pickup confirm hone se pehle unke andaze ko sahi karta hai.",
   "riderWeightAreaBasedHeader": "Weight / Area Based",
@@ -507,7 +485,6 @@
   "riderPieceBasedHeader": "Piece Based",
   "riderFailedSaveMeasurements": "Measurements save nahi ho paaye: {error}",
   "riderSaveContinueButton": "Save Karein & Continue Karein",
-
   "riderWeightBasedItemsLabel": "Weight-based items ({items})",
   "riderMaxPhotosPerItem": "Har item ke liye max {max} photos.",
   "riderFailedSavePhotos": "Photos save nahi ho payi: {error}",
@@ -515,7 +492,6 @@
   "riderPhotographEachItemPrompt": "Pickup se pehle har item ki photo lein — isse damage dispute hone par aap aur customer dono safe rehte hain.",
   "riderPhotosCountLabel": "{count}/{max} photos · 1 zaroori, baaki optional",
   "riderSaveButton": "Save Karein",
-
   "riderCollectBalanceTitle": "Balance Collect Karein",
   "riderBalanceDueLabel": "Balance Due",
   "riderPaymentMethodCod": "Payment method: Cash on Delivery",
@@ -526,13 +502,11 @@
   "riderFailedRecordCashCollection": "Cash collection record nahi ho saka: {error}",
   "riderConfirmCashCollectedButton": "{amount} Cash Collect Hone Ki Confirm Karein",
   "riderContinueButton": "Continue Karein",
-
   "riderDeliveryPhotoTitle": "Delivery Photo",
   "riderOptionalPhotoPrompt": "Optional taur par handover ki photo lein, delivery proof ke roop mein. Ye skip kiya ja sakta hai.",
   "riderTakePhotoLabel": "Photo Lein",
   "riderFailedSavePhoto": "Photo save nahi ho payi: {error}",
   "riderSkipContinueButton": "Skip Karein & Continue Karein",
-
   "notificationsJustNow": "Abhi abhi",
   "notificationsMinsAgo": "{mins} min pehle",
   "notificationsHoursAgo": "{hours,plural, one{1 ghanta pehle} other{{hours} ghante pehle}}",
@@ -542,7 +516,6 @@
   "notificationsFailedToLoad": "Notifications load nahi ho payin: {error}",
   "notificationsEmptyTitle": "Abhi tak koi notification nahi",
   "notificationsEmptySubtitle": "Operational push updates, payment alerts aur admin pricing notes yahan dikhenge.",
-
   "profileUpdatedSnack": "Profile successfully update ho gayi",
   "profileCropLogoTitle": "Logo Crop Karein",
   "profileCropBannerTitle": "Banner Image Crop Karein",
@@ -587,7 +560,6 @@
   "profileHelpSubtitle": "Hamari partner team se help lein",
   "profileAboutLabel": "LNDRY Ke Baare Mein",
   "profileAboutSubtitle": "Version {version} • © 2026 LNDRY Technologies",
-
   "onboardingStepBusinessDetails": "Business Details",
   "onboardingStepOwnerBank": "Owner & Bank Details",
   "onboardingStepLocation": "Shop Location",
@@ -650,7 +622,6 @@
   "onboardingBackButton": "Back",
   "onboardingSubmitApplicationButton": "Application Submit Karein",
   "onboardingNextButton": "Next",
-
   "helpFaq1Q": "Main order kaise accept karun?",
   "helpFaq1A": "Jab koi naya order aata hai, to ye aapke dashboard par \"New Incoming Orders\" ke under dikhta hai. Confirm karne ke liye \"Accept\" par tap karein, ya agar aap complete nahi kar sakte to \"Reject\" par tap karein. Accepted orders, Orders ke Active tab mein chale jaate hain.",
   "helpFaq2Q": "Payment kaise kaam karta hai?",
@@ -714,7 +685,6 @@
   "helpStatusReplied": "Replied",
   "helpStatusOpen": "Open",
   "helpStatusClosed": "Closed",
-
   "ticketYouLabel": "Aap",
   "ticketSupportTeamLabel": "Support Team",
   "ticketWaitingForReplyBanner": "Hamari support team ke reply ka wait hai. Hum usually 24 hours ke andar reply karte hain.",
@@ -762,5 +732,7 @@
   "errorServerBusy": "Server abhi busy hai. Kripya thodi der mein phir koshish karein.",
   "inventoryLoadFailed": "Aapki supplies load nahi ho saki.",
   "inventoryEmptyTitle": "Abhi koi supply nahi",
-  "inventoryEmptySubtitle": "Pehla supply item jodne ke liye + dabayein."
+  "inventoryEmptySubtitle": "Pehla supply item jodne ke liye + dabayein.",
+  "notifOffBannerMessage": "Notifications band hain, isliye aap naye orders aur job offers miss kar sakte hain.",
+  "notifOffBannerAction": "Chalu karein"
 }

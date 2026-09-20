@@ -2485,4 +2485,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inventoryEmptySubtitle => 'Tap + to add your first supply item.';
+
+  @override
+  String get notifOffBannerMessage =>
+      'Notifications are turned off, so you may miss new orders and job offers.';
+
+  @override
+  String get notifOffBannerAction => 'Turn on';
 }

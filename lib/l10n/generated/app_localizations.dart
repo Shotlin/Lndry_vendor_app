@@ -4473,6 +4473,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap + to add your first supply item.'**
   String get inventoryEmptySubtitle;
+
+  /// No description provided for @notifOffBannerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off, so you may miss new orders and job offers.'**
+  String get notifOffBannerMessage;
+
+  /// No description provided for @notifOffBannerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on'**
+  String get notifOffBannerAction;
 }
 
 class _AppLocalizationsDelegate

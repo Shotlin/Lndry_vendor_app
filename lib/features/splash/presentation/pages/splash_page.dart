@@ -32,21 +32,25 @@ class _SplashPageState extends ConsumerState<SplashPage> {
     });
   }
 
+  bool _navigating = false;
+
   void _checkNavigation() {
-    if (!_timerDone) return;
+    if (!_timerDone || _navigating) return;
     final state = ref.read(authProvider);
+    final String target;
     if (state is AuthAuthenticated) {
-      splashDiag('splash_navigate', {'to': 'dashboard'});
-      context.go(AppRoutes.dashboard);
+      target = AppRoutes.dashboard;
     } else if (state is AuthNeedsVendorApplication) {
-      splashDiag('splash_navigate', {'to': 'profileSetup'});
-      context.go(AppRoutes.profileSetup);
+      target = AppRoutes.profileSetup;
     } else if (state is AuthUnauthenticated || state is AuthError) {
-      splashDiag('splash_navigate', {'to': 'login'});
-      context.go(AppRoutes.login);
+      target = AppRoutes.login;
     } else {
       splashDiag('splash_still_waiting', {'state': state.runtimeType.toString()});
+      return;
     }
+    _navigating = true;
+    splashDiag('splash_navigate', {'to': target});
+    context.go(target);
   }
 
   @override
