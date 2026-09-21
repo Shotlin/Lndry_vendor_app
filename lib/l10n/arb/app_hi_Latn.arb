@@ -734,5 +734,15 @@
   "inventoryEmptyTitle": "Abhi koi supply nahi",
   "inventoryEmptySubtitle": "Pehla supply item jodne ke liye + dabayein.",
   "notifOffBannerMessage": "Notifications band hain, isliye aap naye orders aur job offers miss kar sakte hain.",
-  "notifOffBannerAction": "Chalu karein"
+  "notifOffBannerAction": "Chalu karein",
+  "ordersAssistedBadge": "Assisted Booking",
+  "ordersAssistedSummary": "Service chunna zaroori hai",
+  "ordersAssistedPriceTbd": "Evaluate hona baaki hai",
+  "orderDetailsAssistedTitle": "Assisted Booking / Service Chunna Zaroori",
+  "orderDetailsAssistedBody": "Customer ne \"Book With Expert Check\" chuna hai, isliye koi service ya price select nahi hui. Kapde aap tak pahunchne par unhein check karein aur \"Services Chunein\" se sahi services, quantity ya weight chunein. Processing shuru hone se pehle customer price approve karega.",
+  "orderDetailsAssistedChooseServices": "Services Chunein",
+  "orderDetailsAssistedNoServicesYet": "Abhi koi service select nahi hui. Kapde check karein aur services chunein.",
+  "orderDetailsAssistedSheetTitle": "Services Chunein",
+  "orderDetailsAssistedSheetSubtitle": "Har tarah ke kapde ke liye quantity ya weight ke saath ek service add karein. Processing continue hone se pehle yeh customer approval ke liye bheja jayega. Photos optional hain.",
+  "orderDetailsAssistedAddServiceRequired": "Approval ke liye bhejne se pehle kam se kam ek service add karein."
 }

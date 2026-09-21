@@ -2492,4 +2492,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notifOffBannerAction => 'Turn on';
+
+  @override
+  String get ordersAssistedBadge => 'Assisted Booking';
+
+  @override
+  String get ordersAssistedSummary => 'Service selection required';
+
+  @override
+  String get ordersAssistedPriceTbd => 'To be evaluated';
+
+  @override
+  String get orderDetailsAssistedTitle =>
+      'Assisted Booking / Service Selection Required';
+
+  @override
+  String get orderDetailsAssistedBody =>
+      'The customer chose \"Book With Expert Check\", so no services or price were selected. Once the garments reach you, inspect them and choose the right services with quantity or weight using \"Choose Services\". The customer approves the price before processing starts.';
+
+  @override
+  String get orderDetailsAssistedChooseServices => 'Choose Services';
+
+  @override
+  String get orderDetailsAssistedNoServicesYet =>
+      'No services selected yet. Inspect the garments and choose the services.';
+
+  @override
+  String get orderDetailsAssistedSheetTitle => 'Choose services';
+
+  @override
+  String get orderDetailsAssistedSheetSubtitle =>
+      'Add a service for each type of garment, with quantity or weight. This is sent to the customer for approval before processing continues. Photos are optional.';
+
+  @override
+  String get orderDetailsAssistedAddServiceRequired =>
+      'Add at least one service to send for approval.';
 }

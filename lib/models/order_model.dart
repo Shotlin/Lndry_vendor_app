@@ -278,6 +278,13 @@ class OrderModel with _$OrderModel {
     RiderAssignmentView? pickupAssignment,
     @JsonKey(includeFromJson: false, includeToJson: false)
     RiderAssignmentView? deliveryAssignment,
+    /// 'STANDARD' | 'ASSISTED'. An assisted order is a customer's "Book With
+    /// Expert Check": they chose no services, so the vendor picks them
+    /// (through Re-evaluate) once the garments arrive. Parsed manually in
+    /// `_parseOrder`, like the fields above.
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    @Default('STANDARD')
+    String bookingType,
   }) = _OrderModel;
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>

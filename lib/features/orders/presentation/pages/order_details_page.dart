@@ -69,6 +69,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
   /// required 1-3 photos, so there's no separate blanket note/photo field).
   bool get _hasAnyProblemReport =>
       _lineProblems.isNotEmpty || _newLineProblems.isNotEmpty;
+
+  /// Can this order be submitted for approval as things stand? A normal
+  /// re-evaluation needs at least one problem report as its evidence. An
+  /// assisted booking that has no services yet is different: the vendor is
+  /// *choosing* the services, not disputing anything, so it needs at least one
+  /// service added instead (evidence is optional).
+  bool _canSubmitReconciliation(OrderModel order) => order.awaitingServiceSelection
+      ? _newLineDrafts.isNotEmpty
+      : _hasAnyProblemReport;
   List<ReconciliationProblemType> _problemTypeCatalog = [];
   bool _problemTypeCatalogFetchAttempted = false;
   bool _isReconciling = false;
@@ -616,7 +625,9 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ],
       ),
     );
-    controller.dispose();
+    // The dialog is still animating out here; disposing the controller now
+    // would trip "used after being disposed" while its TextField is on screen.
+    Future<void>.delayed(const Duration(milliseconds: 500), controller.dispose);
     if (quantity == null) return;
 
     setSheetState(
@@ -628,9 +639,15 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
 
   Future<void> _submitReconciliation(OrderModel order) async {
     final l10n = AppLocalizations.of(context);
-    if (!_hasAnyProblemReport) {
+    if (!_canSubmitReconciliation(order)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.orderDetailsProblemReportRequired)),
+        SnackBar(
+          content: Text(
+            order.awaitingServiceSelection
+                ? l10n.orderDetailsAssistedAddServiceRequired
+                : l10n.orderDetailsProblemReportRequired,
+          ),
+        ),
       );
       return;
     }
@@ -790,14 +807,18 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        l10n.orderDetailsReconcileSheetTitle,
+                        order.awaitingServiceSelection
+                            ? l10n.orderDetailsAssistedSheetTitle
+                            : l10n.orderDetailsReconcileSheetTitle,
                         style: AppTypography.headlineMedium.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        l10n.orderDetailsReconcileSheetSubtitle,
+                        order.awaitingServiceSelection
+                            ? l10n.orderDetailsAssistedSheetSubtitle
+                            : l10n.orderDetailsReconcileSheetSubtitle,
                         style: AppTypography.bodySmall.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -1039,7 +1060,7 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       SizedBox(height: 20.h),
 
                       ElevatedButton(
-                        onPressed: (_isReconciling || !_hasAnyProblemReport)
+                        onPressed: (_isReconciling || !_canSubmitReconciliation(order))
                             ? null
                             : () => _submitReconciliation(order),
                         style: ElevatedButton.styleFrom(
@@ -1268,6 +1289,33 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                       ),
                       SizedBox(height: 16.h),
 
+                      // Assisted booking ("Book With Expert Check"): the
+                      // customer chose no services. Tells the vendor exactly
+                      // what is expected of them and how.
+                      if (order.awaitingServiceSelection &&
+                          order.status.isActive &&
+                          order.status != OrderStatus.reconciliationPending &&
+                          order.status != OrderStatus.waitingForVendorConfirmation) ...[
+                        _buildReconciliationBanner(
+                          icon: Icons.fact_check_outlined,
+                          color: AppColors.primary,
+                          title: l10n.orderDetailsAssistedTitle,
+                          body: l10n.orderDetailsAssistedBody,
+                        ),
+                        SizedBox(height: 16.h),
+                      ] else if (order.awaitingServiceSelection &&
+                          order.status == OrderStatus.waitingForVendorConfirmation) ...[
+                        // Not yet accepted: still label it, so the vendor knows
+                        // what they are accepting.
+                        _buildReconciliationBanner(
+                          icon: Icons.fact_check_outlined,
+                          color: AppColors.primary,
+                          title: l10n.orderDetailsAssistedTitle,
+                          body: l10n.orderDetailsAssistedBody,
+                        ),
+                        SizedBox(height: 16.h),
+                      ],
+
                       if (order.status ==
                           OrderStatus.reconciliationPending) ...[
                         _buildReconciliationBanner(
@@ -1422,24 +1470,56 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              l10n.orderDetailsGarmentItems,
-                              style: AppTypography.bodyLarge.copyWith(
-                                fontWeight: FontWeight.bold,
+                            // Expanded so a longer button label (Hindi /
+                            // Hinglish, or "Choose Services") can never push
+                            // the row past the screen edge.
+                            Expanded(
+                              child: Text(
+                                l10n.orderDetailsGarmentItems,
+                                style: AppTypography.bodyLarge.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             if (order.status == OrderStatus.receivedAtVendor &&
                                 ref.watch(myAccessProvider).can('orders.reevaluate'))
                               TextButton.icon(
                                 onPressed: () => _showReconcileSheet(order),
-                                icon: const Icon(Icons.scale_rounded, size: 16),
+                                icon: Icon(
+                                  order.awaitingServiceSelection
+                                      ? Icons.fact_check_outlined
+                                      : Icons.scale_rounded,
+                                  size: 16,
+                                ),
                                 label: Text(
-                                  l10n.orderDetailsReconcileCountButton,
+                                  order.awaitingServiceSelection
+                                      ? l10n.orderDetailsAssistedChooseServices
+                                      : l10n.orderDetailsReconcileCountButton,
                                 ),
                               ),
                           ],
                         ),
                         SizedBox(height: 8.h),
+                        if (order.awaitingServiceSelection)
+                          // Nothing chosen yet — don't show an empty list with
+                          // a ₹0 earnings breakdown that reads like a real bill.
+                          Container(
+                            padding: EdgeInsets.all(16.r),
+                            decoration: BoxDecoration(
+                              color: isDark
+                                  ? AppColors.darkSurface
+                                  : AppColors.white,
+                              borderRadius: BorderRadius.circular(16.r),
+                            ),
+                            child: Text(
+                              l10n.orderDetailsAssistedNoServicesYet,
+                              style: AppTypography.bodyMedium.copyWith(
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          )
+                        else
                         Container(
                           padding: EdgeInsets.all(16.r),
                           decoration: BoxDecoration(
@@ -2479,6 +2559,29 @@ class _OrderDetailsPageState extends ConsumerState<OrderDetailsPage> {
         ),
       );
     } else if (order.status == OrderStatus.receivedAtVendor) {
+      // Assisted booking with nothing chosen yet: processing can't start
+      // until the services are chosen and the customer approves them (the
+      // backend refuses it), so there is exactly one way forward here.
+      if (order.awaitingServiceSelection) {
+        if (!canReevaluate) return const SizedBox.shrink();
+        return Container(
+          color: isDark ? AppColors.darkSurface : AppColors.white,
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+          child: SizedBox(
+            height: 52.h,
+            child: ElevatedButton.icon(
+              onPressed: () => _showReconcileSheet(order),
+              icon: const Icon(Icons.fact_check_outlined),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: AppColors.white,
+                padding: EdgeInsets.symmetric(vertical: 14.h),
+              ),
+              label: Text(l10n.orderDetailsAssistedChooseServices),
+            ),
+          ),
+        );
+      }
       if (!canReevaluate && !canProcess) return const SizedBox.shrink();
       return Container(
         color: isDark ? AppColors.darkSurface : AppColors.white,

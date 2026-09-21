@@ -2499,6 +2499,40 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get notifOffBannerAction => 'चालू करें';
+
+  @override
+  String get ordersAssistedBadge => 'असिस्टेड बुकिंग';
+
+  @override
+  String get ordersAssistedSummary => 'सेवा चुनना ज़रूरी है';
+
+  @override
+  String get ordersAssistedPriceTbd => 'मूल्यांकन बाकी है';
+
+  @override
+  String get orderDetailsAssistedTitle => 'असिस्टेड बुकिंग / सेवा चुनना ज़रूरी';
+
+  @override
+  String get orderDetailsAssistedBody =>
+      'ग्राहक ने \"Book With Expert Check\" चुना है, इसलिए कोई सेवा या कीमत नहीं चुनी गई। कपड़े आप तक पहुँचने पर उन्हें जाँचें और \"सेवाएँ चुनें\" से सही सेवाएँ, मात्रा या वज़न चुनें। प्रोसेसिंग शुरू होने से पहले ग्राहक कीमत को मंज़ूरी देगा।';
+
+  @override
+  String get orderDetailsAssistedChooseServices => 'सेवाएँ चुनें';
+
+  @override
+  String get orderDetailsAssistedNoServicesYet =>
+      'अभी कोई सेवा नहीं चुनी गई। कपड़े जाँचें और सेवाएँ चुनें।';
+
+  @override
+  String get orderDetailsAssistedSheetTitle => 'सेवाएँ चुनें';
+
+  @override
+  String get orderDetailsAssistedSheetSubtitle =>
+      'हर तरह के कपड़े के लिए मात्रा या वज़न के साथ एक सेवा जोड़ें। प्रोसेसिंग जारी रहने से पहले यह ग्राहक की स्वीकृति के लिए भेजा जाएगा। फ़ोटो वैकल्पिक हैं।';
+
+  @override
+  String get orderDetailsAssistedAddServiceRequired =>
+      'स्वीकृति के लिए भेजने से पहले कम से कम एक सेवा जोड़ें।';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -5014,4 +5048,39 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get notifOffBannerAction => 'Chalu karein';
+
+  @override
+  String get ordersAssistedBadge => 'Assisted Booking';
+
+  @override
+  String get ordersAssistedSummary => 'Service chunna zaroori hai';
+
+  @override
+  String get ordersAssistedPriceTbd => 'Evaluate hona baaki hai';
+
+  @override
+  String get orderDetailsAssistedTitle =>
+      'Assisted Booking / Service Chunna Zaroori';
+
+  @override
+  String get orderDetailsAssistedBody =>
+      'Customer ne \"Book With Expert Check\" chuna hai, isliye koi service ya price select nahi hui. Kapde aap tak pahunchne par unhein check karein aur \"Services Chunein\" se sahi services, quantity ya weight chunein. Processing shuru hone se pehle customer price approve karega.';
+
+  @override
+  String get orderDetailsAssistedChooseServices => 'Services Chunein';
+
+  @override
+  String get orderDetailsAssistedNoServicesYet =>
+      'Abhi koi service select nahi hui. Kapde check karein aur services chunein.';
+
+  @override
+  String get orderDetailsAssistedSheetTitle => 'Services Chunein';
+
+  @override
+  String get orderDetailsAssistedSheetSubtitle =>
+      'Har tarah ke kapde ke liye quantity ya weight ke saath ek service add karein. Processing continue hone se pehle yeh customer approval ke liye bheja jayega. Photos optional hain.';
+
+  @override
+  String get orderDetailsAssistedAddServiceRequired =>
+      'Approval ke liye bhejne se pehle kam se kam ek service add karein.';
 }

@@ -828,5 +828,15 @@
   "inventoryEmptyTitle": "No supplies yet",
   "inventoryEmptySubtitle": "Tap + to add your first supply item.",
   "notifOffBannerMessage": "Notifications are turned off, so you may miss new orders and job offers.",
-  "notifOffBannerAction": "Turn on"
+  "notifOffBannerAction": "Turn on",
+  "ordersAssistedBadge": "Assisted Booking",
+  "ordersAssistedSummary": "Service selection required",
+  "ordersAssistedPriceTbd": "To be evaluated",
+  "orderDetailsAssistedTitle": "Assisted Booking / Service Selection Required",
+  "orderDetailsAssistedBody": "The customer chose \"Book With Expert Check\", so no services or price were selected. Once the garments reach you, inspect them and choose the right services with quantity or weight using \"Choose Services\". The customer approves the price before processing starts.",
+  "orderDetailsAssistedChooseServices": "Choose Services",
+  "orderDetailsAssistedNoServicesYet": "No services selected yet. Inspect the garments and choose the services.",
+  "orderDetailsAssistedSheetTitle": "Choose services",
+  "orderDetailsAssistedSheetSubtitle": "Add a service for each type of garment, with quantity or weight. This is sent to the customer for approval before processing continues. Photos are optional.",
+  "orderDetailsAssistedAddServiceRequired": "Add at least one service to send for approval."
 }

@@ -11,4 +11,11 @@ extension OrderDisplayExtension on OrderModel {
     final number = orderNumber.trim();
     return number.isNotEmpty ? number : '—';
   }
+
+  /// A customer's "Book With Expert Check" order.
+  bool get isAssisted => bookingType == 'ASSISTED';
+
+  /// Assisted and the vendor hasn't chosen the services yet — there are no
+  /// lines and no service price; only pickup/platform fees exist.
+  bool get awaitingServiceSelection => isAssisted && items.isEmpty;
 }

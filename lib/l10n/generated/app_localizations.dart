@@ -4485,6 +4485,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn on'**
   String get notifOffBannerAction;
+
+  /// No description provided for @ordersAssistedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Assisted Booking'**
+  String get ordersAssistedBadge;
+
+  /// No description provided for @ordersAssistedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Service selection required'**
+  String get ordersAssistedSummary;
+
+  /// No description provided for @ordersAssistedPriceTbd.
+  ///
+  /// In en, this message translates to:
+  /// **'To be evaluated'**
+  String get ordersAssistedPriceTbd;
+
+  /// No description provided for @orderDetailsAssistedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Assisted Booking / Service Selection Required'**
+  String get orderDetailsAssistedTitle;
+
+  /// No description provided for @orderDetailsAssistedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The customer chose \"Book With Expert Check\", so no services or price were selected. Once the garments reach you, inspect them and choose the right services with quantity or weight using \"Choose Services\". The customer approves the price before processing starts.'**
+  String get orderDetailsAssistedBody;
+
+  /// No description provided for @orderDetailsAssistedChooseServices.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Services'**
+  String get orderDetailsAssistedChooseServices;
+
+  /// No description provided for @orderDetailsAssistedNoServicesYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No services selected yet. Inspect the garments and choose the services.'**
+  String get orderDetailsAssistedNoServicesYet;
+
+  /// No description provided for @orderDetailsAssistedSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose services'**
+  String get orderDetailsAssistedSheetTitle;
+
+  /// No description provided for @orderDetailsAssistedSheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a service for each type of garment, with quantity or weight. This is sent to the customer for approval before processing continues. Photos are optional.'**
+  String get orderDetailsAssistedSheetSubtitle;
+
+  /// No description provided for @orderDetailsAssistedAddServiceRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one service to send for approval.'**
+  String get orderDetailsAssistedAddServiceRequired;
 }
 
 class _AppLocalizationsDelegate

@@ -734,5 +734,15 @@
   "inventoryEmptyTitle": "अभी कोई सप्लाई नहीं",
   "inventoryEmptySubtitle": "पहला सप्लाई आइटम जोड़ने के लिए + दबाएँ।",
   "notifOffBannerMessage": "सूचनाएँ बंद हैं, इसलिए आप नए ऑर्डर और जॉब ऑफ़र मिस कर सकते हैं।",
-  "notifOffBannerAction": "चालू करें"
+  "notifOffBannerAction": "चालू करें",
+  "ordersAssistedBadge": "असिस्टेड बुकिंग",
+  "ordersAssistedSummary": "सेवा चुनना ज़रूरी है",
+  "ordersAssistedPriceTbd": "मूल्यांकन बाकी है",
+  "orderDetailsAssistedTitle": "असिस्टेड बुकिंग / सेवा चुनना ज़रूरी",
+  "orderDetailsAssistedBody": "ग्राहक ने \"Book With Expert Check\" चुना है, इसलिए कोई सेवा या कीमत नहीं चुनी गई। कपड़े आप तक पहुँचने पर उन्हें जाँचें और \"सेवाएँ चुनें\" से सही सेवाएँ, मात्रा या वज़न चुनें। प्रोसेसिंग शुरू होने से पहले ग्राहक कीमत को मंज़ूरी देगा।",
+  "orderDetailsAssistedChooseServices": "सेवाएँ चुनें",
+  "orderDetailsAssistedNoServicesYet": "अभी कोई सेवा नहीं चुनी गई। कपड़े जाँचें और सेवाएँ चुनें।",
+  "orderDetailsAssistedSheetTitle": "सेवाएँ चुनें",
+  "orderDetailsAssistedSheetSubtitle": "हर तरह के कपड़े के लिए मात्रा या वज़न के साथ एक सेवा जोड़ें। प्रोसेसिंग जारी रहने से पहले यह ग्राहक की स्वीकृति के लिए भेजा जाएगा। फ़ोटो वैकल्पिक हैं।",
+  "orderDetailsAssistedAddServiceRequired": "स्वीकृति के लिए भेजने से पहले कम से कम एक सेवा जोड़ें।"
 }

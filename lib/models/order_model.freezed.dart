@@ -415,6 +415,13 @@ mixin _$OrderModel {
   RiderAssignmentView? get deliveryAssignment =>
       throw _privateConstructorUsedError;
 
+  /// 'STANDARD' | 'ASSISTED'. An assisted order is a customer's "Book With
+  /// Expert Check": they chose no services, so the vendor picks them
+  /// (through Re-evaluate) once the garments arrive. Parsed manually in
+  /// `_parseOrder`, like the fields above.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get bookingType => throw _privateConstructorUsedError;
+
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $OrderModelCopyWith<OrderModel> get copyWith =>
@@ -473,7 +480,9 @@ abstract class $OrderModelCopyWith<$Res> {
       @JsonKey(includeFromJson: false, includeToJson: false)
       RiderAssignmentView? pickupAssignment,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      RiderAssignmentView? deliveryAssignment});
+      RiderAssignmentView? deliveryAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      String bookingType});
 }
 
 /// @nodoc
@@ -532,6 +541,7 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
     Object? pendingReconciliation = freezed,
     Object? pickupAssignment = freezed,
     Object? deliveryAssignment = freezed,
+    Object? bookingType = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -706,6 +716,10 @@ class _$OrderModelCopyWithImpl<$Res, $Val extends OrderModel>
           ? _value.deliveryAssignment
           : deliveryAssignment // ignore: cast_nullable_to_non_nullable
               as RiderAssignmentView?,
+      bookingType: null == bookingType
+          ? _value.bookingType
+          : bookingType // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -764,7 +778,9 @@ abstract class _$$OrderModelImplCopyWith<$Res>
       @JsonKey(includeFromJson: false, includeToJson: false)
       RiderAssignmentView? pickupAssignment,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      RiderAssignmentView? deliveryAssignment});
+      RiderAssignmentView? deliveryAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      String bookingType});
 }
 
 /// @nodoc
@@ -821,6 +837,7 @@ class __$$OrderModelImplCopyWithImpl<$Res>
     Object? pendingReconciliation = freezed,
     Object? pickupAssignment = freezed,
     Object? deliveryAssignment = freezed,
+    Object? bookingType = null,
   }) {
     return _then(_$OrderModelImpl(
       id: null == id
@@ -995,6 +1012,10 @@ class __$$OrderModelImplCopyWithImpl<$Res>
           ? _value.deliveryAssignment
           : deliveryAssignment // ignore: cast_nullable_to_non_nullable
               as RiderAssignmentView?,
+      bookingType: null == bookingType
+          ? _value.bookingType
+          : bookingType // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -1048,7 +1069,9 @@ class _$OrderModelImpl implements _OrderModel {
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.pickupAssignment,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      this.deliveryAssignment})
+      this.deliveryAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.bookingType = 'STANDARD'})
       : _items = items;
 
   factory _$OrderModelImpl.fromJson(Map<String, dynamic> json) =>
@@ -1198,9 +1221,17 @@ class _$OrderModelImpl implements _OrderModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   final RiderAssignmentView? deliveryAssignment;
 
+  /// 'STANDARD' | 'ASSISTED'. An assisted order is a customer's "Book With
+  /// Expert Check": they chose no services, so the vendor picks them
+  /// (through Re-evaluate) once the garments arrive. Parsed manually in
+  /// `_parseOrder`, like the fields above.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final String bookingType;
+
   @override
   String toString() {
-    return 'OrderModel(id: $id, orderNumber: $orderNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, deliveryAddressText: $deliveryAddressText, vendorId: $vendorId, deliveryPartnerId: $deliveryPartnerId, items: $items, status: $status, subtotal: $subtotal, platformFee: $platformFee, gstAmount: $gstAmount, deliveryFee: $deliveryFee, handlingFee: $handlingFee, total: $total, vendorCommissionEnabled: $vendorCommissionEnabled, vendorCommissionType: $vendorCommissionType, vendorCommissionRate: $vendorCommissionRate, vendorCommissionAmount: $vendorCommissionAmount, vendorGstOnCommissionEnabled: $vendorGstOnCommissionEnabled, vendorGstRate: $vendorGstRate, vendorGstOnCommissionAmount: $vendorGstOnCommissionAmount, vendorPayoutAmount: $vendorPayoutAmount, paymentMethod: $paymentMethod, isPaid: $isPaid, pickupAddressId: $pickupAddressId, deliveryAddressId: $deliveryAddressId, scheduledPickupAt: $scheduledPickupAt, estimatedDeliveryAt: $estimatedDeliveryAt, pickedUpAt: $pickedUpAt, deliveredAt: $deliveredAt, cancellationReason: $cancellationReason, vendorRejectionReason: $vendorRejectionReason, customerNotes: $customerNotes, customerRating: $customerRating, deliveryRating: $deliveryRating, customerReview: $customerReview, createdAt: $createdAt, updatedAt: $updatedAt, pendingReconciliation: $pendingReconciliation, pickupAssignment: $pickupAssignment, deliveryAssignment: $deliveryAssignment)';
+    return 'OrderModel(id: $id, orderNumber: $orderNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, deliveryAddressText: $deliveryAddressText, vendorId: $vendorId, deliveryPartnerId: $deliveryPartnerId, items: $items, status: $status, subtotal: $subtotal, platformFee: $platformFee, gstAmount: $gstAmount, deliveryFee: $deliveryFee, handlingFee: $handlingFee, total: $total, vendorCommissionEnabled: $vendorCommissionEnabled, vendorCommissionType: $vendorCommissionType, vendorCommissionRate: $vendorCommissionRate, vendorCommissionAmount: $vendorCommissionAmount, vendorGstOnCommissionEnabled: $vendorGstOnCommissionEnabled, vendorGstRate: $vendorGstRate, vendorGstOnCommissionAmount: $vendorGstOnCommissionAmount, vendorPayoutAmount: $vendorPayoutAmount, paymentMethod: $paymentMethod, isPaid: $isPaid, pickupAddressId: $pickupAddressId, deliveryAddressId: $deliveryAddressId, scheduledPickupAt: $scheduledPickupAt, estimatedDeliveryAt: $estimatedDeliveryAt, pickedUpAt: $pickedUpAt, deliveredAt: $deliveredAt, cancellationReason: $cancellationReason, vendorRejectionReason: $vendorRejectionReason, customerNotes: $customerNotes, customerRating: $customerRating, deliveryRating: $deliveryRating, customerReview: $customerReview, createdAt: $createdAt, updatedAt: $updatedAt, pendingReconciliation: $pendingReconciliation, pickupAssignment: $pickupAssignment, deliveryAssignment: $deliveryAssignment, bookingType: $bookingType)';
   }
 
   @override
@@ -1283,7 +1314,8 @@ class _$OrderModelImpl implements _OrderModel {
             (identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt) &&
             (identical(other.pendingReconciliation, pendingReconciliation) || other.pendingReconciliation == pendingReconciliation) &&
             (identical(other.pickupAssignment, pickupAssignment) || other.pickupAssignment == pickupAssignment) &&
-            (identical(other.deliveryAssignment, deliveryAssignment) || other.deliveryAssignment == deliveryAssignment));
+            (identical(other.deliveryAssignment, deliveryAssignment) || other.deliveryAssignment == deliveryAssignment) &&
+            (identical(other.bookingType, bookingType) || other.bookingType == bookingType));
   }
 
   @JsonKey(ignore: true)
@@ -1332,7 +1364,8 @@ class _$OrderModelImpl implements _OrderModel {
         updatedAt,
         pendingReconciliation,
         pickupAssignment,
-        deliveryAssignment
+        deliveryAssignment,
+        bookingType
       ]);
 
   @JsonKey(ignore: true)
@@ -1396,7 +1429,9 @@ abstract class _OrderModel implements OrderModel {
       @JsonKey(includeFromJson: false, includeToJson: false)
       final RiderAssignmentView? pickupAssignment,
       @JsonKey(includeFromJson: false, includeToJson: false)
-      final RiderAssignmentView? deliveryAssignment}) = _$OrderModelImpl;
+      final RiderAssignmentView? deliveryAssignment,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final String bookingType}) = _$OrderModelImpl;
 
   factory _OrderModel.fromJson(Map<String, dynamic> json) =
       _$OrderModelImpl.fromJson;
@@ -1516,6 +1551,14 @@ abstract class _OrderModel implements OrderModel {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   RiderAssignmentView? get deliveryAssignment;
+  @override
+
+  /// 'STANDARD' | 'ASSISTED'. An assisted order is a customer's "Book With
+  /// Expert Check": they chose no services, so the vendor picks them
+  /// (through Re-evaluate) once the garments arrive. Parsed manually in
+  /// `_parseOrder`, like the fields above.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String get bookingType;
   @override
   @JsonKey(ignore: true)
   _$$OrderModelImplCopyWith<_$OrderModelImpl> get copyWith =>

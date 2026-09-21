@@ -1225,6 +1225,8 @@ class ApiVendorRepository implements VendorRepository {
         pendingReconciliation: _parsePendingReconciliation(json['latestReconciliation']),
         pickupAssignment: _parseRiderAssignment(json['pickupAssignment']),
         deliveryAssignment: _parseRiderAssignment(json['deliveryAssignment']),
+        bookingType: (json['booking_type'] as String? ?? json['bookingType'] as String? ?? 'STANDARD')
+            .toUpperCase(),
       );
 
   RiderAssignmentView? _parseRiderAssignment(dynamic raw) {

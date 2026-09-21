@@ -280,9 +280,39 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
               ),
               SizedBox(height: 8.h),
 
+              // Assisted booking ("Book With Expert Check"): the customer
+              // chose no services — this order needs the vendor to select them.
+              if (order.isAssisted) ...[
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 3.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6.r),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.fact_check_outlined, size: 13.r, color: AppColors.primary),
+                      SizedBox(width: 4.w),
+                      Text(
+                        l10n.ordersAssistedBadge,
+                        style: AppTypography.bodySmall.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                          fontSize: 10.sp,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8.h),
+              ],
+
               // Items summary
               Text(
-                l10n.dashboardOrderItemsSummary(order.items.length, order.items.map((i) => i.serviceName).join(", ")),
+                order.awaitingServiceSelection
+                    ? l10n.ordersAssistedSummary
+                    : l10n.dashboardOrderItemsSummary(order.items.length, order.items.map((i) => i.serviceName).join(", ")),
                 style: AppTypography.bodyMedium.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -307,9 +337,16 @@ class _OrdersPageState extends ConsumerState<OrdersPage> with SingleTickerProvid
                     ),
                   ),
                   SizedBox(width: 12.w),
+                  // Until the vendor has chosen the services there is no
+                  // service price — the only amount that exists is the fees.
                   Text(
-                    '₹${order.total.toStringAsFixed(2)}',
-                    style: AppTypography.bodyLarge.copyWith(
+                    order.awaitingServiceSelection
+                        ? l10n.ordersAssistedPriceTbd
+                        : '₹${order.total.toStringAsFixed(2)}',
+                    style: (order.awaitingServiceSelection
+                            ? AppTypography.bodySmall
+                            : AppTypography.bodyLarge)
+                        .copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppColors.primary,
                     ),
