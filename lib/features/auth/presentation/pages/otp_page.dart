@@ -143,55 +143,12 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                     ),
                     SizedBox(height: 24.h),
 
-                    // Dev-only: the backend echoes back the generated OTP
-                    // whenever it's not actually wired to a live SMS
-                    // provider (local/dev environments). Surface it here so
-                    // the code can be read off-screen, instead of waiting on
-                    // an SMS that will never arrive. Disappears automatically
-                    // once a real SMS provider is configured server-side,
-                    // since the backend then stops sending this field.
-                    if (authState is AuthOtpSent &&
-                        authState.devOtp != null &&
-                        authState.devOtp!.isNotEmpty) ...[
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(AppRadius.md.r),
-                          border: Border.all(
-                            color: AppColors.primary.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(Icons.info_outline_rounded, color: AppColors.primary, size: 20.r),
-                            SizedBox(width: 10.w),
-                            Expanded(
-                              child: Text.rich(
-                                TextSpan(
-                                  style: AppTypography.bodyMedium.copyWith(
-                                    color: isDark ? AppColors.white : AppColors.textBlack,
-                                  ),
-                                  children: [
-                                    TextSpan(text: l10n.authDemoOtpLabel),
-                                    TextSpan(
-                                      text: authState.devOtp,
-                                      style: AppTypography.bodyMedium.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.primary,
-                                        letterSpacing: 2,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 16.h),
-                    ],
+                    // The backend echoes back the generated OTP whenever it
+                    // isn't actually wired to a live SMS provider yet (this
+                    // includes the small Play Store review / demo-account
+                    // allow-list). Deliberately never shown as on-screen
+                    // text, so a demo-account login looks identical to a
+                    // real one.
 
                     // OTP Input Field
                     TextFormField(
