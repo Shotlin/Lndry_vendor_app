@@ -838,5 +838,6 @@
   "orderDetailsAssistedNoServicesYet": "No services selected yet. Inspect the garments and choose the services.",
   "orderDetailsAssistedSheetTitle": "Choose services",
   "orderDetailsAssistedSheetSubtitle": "Add a service for each type of garment, with quantity or weight. This is sent to the customer for approval before processing continues. Photos are optional.",
-  "orderDetailsAssistedAddServiceRequired": "Add at least one service to send for approval."
+  "orderDetailsAssistedAddServiceRequired": "Add at least one service to send for approval.",
+  "loginSessionEnded": "Your session has ended. Please log in again to continue."
 }

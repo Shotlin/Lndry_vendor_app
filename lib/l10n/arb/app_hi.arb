@@ -744,5 +744,6 @@
   "orderDetailsAssistedNoServicesYet": "अभी कोई सेवा नहीं चुनी गई। कपड़े जाँचें और सेवाएँ चुनें।",
   "orderDetailsAssistedSheetTitle": "सेवाएँ चुनें",
   "orderDetailsAssistedSheetSubtitle": "हर तरह के कपड़े के लिए मात्रा या वज़न के साथ एक सेवा जोड़ें। प्रोसेसिंग जारी रहने से पहले यह ग्राहक की स्वीकृति के लिए भेजा जाएगा। फ़ोटो वैकल्पिक हैं।",
-  "orderDetailsAssistedAddServiceRequired": "स्वीकृति के लिए भेजने से पहले कम से कम एक सेवा जोड़ें।"
+  "orderDetailsAssistedAddServiceRequired": "स्वीकृति के लिए भेजने से पहले कम से कम एक सेवा जोड़ें।",
+  "loginSessionEnded": "आपका सत्र समाप्त हो गया है। जारी रखने के लिए कृपया दोबारा लॉग इन करें।"
 }

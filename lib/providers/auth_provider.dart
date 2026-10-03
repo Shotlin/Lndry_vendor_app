@@ -265,10 +265,18 @@ class AuthNotifier extends StateNotifier<AuthState> {
         rethrow;
       }
     } catch (e) {
-      // Token refresh failed — clear everything and go to login.
+      // Token refresh or profile load failed — go to login.
       splashDiag('auth_restore_failed', {'error': e.toString()});
-      await _storage.clearSession();
-      await _clearVendorPrefs();
+      // Only a definite rejection (session expired / revoked) clears the
+      // login. No internet or a server hiccup keeps the saved session so the
+      // next launch restores it — a one-year login must survive a bad signal.
+      final status = e is DioException
+          ? e.response?.statusCode
+          : (e is ApiException ? e.statusCode : null);
+      if (status == 400 || status == 401 || status == 403) {
+        await _storage.clearSession();
+        await _clearVendorPrefs();
+      }
       state = const AuthUnauthenticated();
     }
   }
@@ -492,6 +500,28 @@ class AuthNotifier extends StateNotifier<AuthState> {
     );
   }
 
+  // ── Session expiry ────────────────────────────────────────────────────────
+
+  /// The backend no longer accepts this login and it can't be renewed. Clear
+  /// it and mark the person signed out; the router then moves any signed-in
+  /// screen to the login page and the login page explains what happened.
+  /// Does nothing when already signed out, so it is safe to call from several
+  /// failing requests at once.
+  Future<void> handleSessionExpired() async {
+    if (state is! AuthAuthenticated && state is! AuthNeedsVendorApplication) {
+      return;
+    }
+    await _tokenRefreshSub?.cancel();
+    _tokenRefreshSub = null;
+    onSessionExpired?.call();
+    await _storage.clearSession();
+    await _clearVendorPrefs();
+    state = const AuthUnauthenticated();
+  }
+
+  /// Set by [authProvider] so the login page can show a one-time notice.
+  void Function()? onSessionExpired;
+
   // ── Logout ────────────────────────────────────────────────────────────────
 
   Future<void> logout() async {
@@ -610,10 +640,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
 // ── Providers ─────────────────────────────────────────────────────────────────
 
+/// True after a session ended on its own (not by the person signing out); the
+/// login page shows a one-time "please log in again" notice and clears it.
+final sessionExpiredNoticeProvider = StateProvider<bool>((ref) => false);
+
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final repo = ref.watch(vendorRepositoryProvider);
   final storage = ref.watch(storageServiceProvider);
-  return AuthNotifier(repo, storage);
+  final notifier = AuthNotifier(repo, storage);
+  notifier.onSessionExpired =
+      () => ref.read(sessionExpiredNoticeProvider.notifier).state = true;
+  return notifier;
 });
 
 /// Convenience provider: returns the current authenticated vendor, or null.

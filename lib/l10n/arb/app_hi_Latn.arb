@@ -744,5 +744,6 @@
   "orderDetailsAssistedNoServicesYet": "Abhi koi service select nahi hui. Kapde check karein aur services chunein.",
   "orderDetailsAssistedSheetTitle": "Services Chunein",
   "orderDetailsAssistedSheetSubtitle": "Har tarah ke kapde ke liye quantity ya weight ke saath ek service add karein. Processing continue hone se pehle yeh customer approval ke liye bheja jayega. Photos optional hain.",
-  "orderDetailsAssistedAddServiceRequired": "Approval ke liye bhejne se pehle kam se kam ek service add karein."
+  "orderDetailsAssistedAddServiceRequired": "Approval ke liye bhejne se pehle kam se kam ek service add karein.",
+  "loginSessionEnded": "Aapka session khatam ho gaya hai. Aage badhne ke liye kripya dobara login karein."
 }

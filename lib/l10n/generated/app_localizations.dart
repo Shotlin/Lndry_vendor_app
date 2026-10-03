@@ -4545,6 +4545,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add at least one service to send for approval.'**
   String get orderDetailsAssistedAddServiceRequired;
+
+  /// No description provided for @loginSessionEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Please log in again to continue.'**
+  String get loginSessionEnded;
 }
 
 class _AppLocalizationsDelegate

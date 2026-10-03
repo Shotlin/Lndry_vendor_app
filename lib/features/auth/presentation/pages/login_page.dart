@@ -18,6 +18,21 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void initState() {
+    super.initState();
+    // Arrived here because the saved login ended on its own: say so once.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (ref.read(sessionExpiredNoticeProvider)) {
+        ref.read(sessionExpiredNoticeProvider.notifier).state = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.loginSessionEnded)),
+        );
+      }
+    });
+  }
+
+  @override
   void dispose() {
     _phoneController.dispose();
     super.dispose();

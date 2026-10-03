@@ -2527,4 +2527,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get orderDetailsAssistedAddServiceRequired =>
       'Add at least one service to send for approval.';
+
+  @override
+  String get loginSessionEnded =>
+      'Your session has ended. Please log in again to continue.';
 }

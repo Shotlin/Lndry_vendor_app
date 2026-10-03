@@ -2533,6 +2533,10 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get orderDetailsAssistedAddServiceRequired =>
       'स्वीकृति के लिए भेजने से पहले कम से कम एक सेवा जोड़ें।';
+
+  @override
+  String get loginSessionEnded =>
+      'आपका सत्र समाप्त हो गया है। जारी रखने के लिए कृपया दोबारा लॉग इन करें।';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -5083,4 +5087,8 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   @override
   String get orderDetailsAssistedAddServiceRequired =>
       'Approval ke liye bhejne se pehle kam se kam ek service add karein.';
+
+  @override
+  String get loginSessionEnded =>
+      'Aapka session khatam ho gaya hai. Aage badhne ke liye kripya dobara login karein.';
 }
