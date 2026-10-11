@@ -193,4 +193,21 @@ void main() {
       expect(m.mustFinishPosOnboarding, isFalse);
     });
   });
+
+  group('Book Order screen (/pos/book) follows the same rules as every POS page', () {
+    test('POS mode: allowed as it is', () {
+      final m = ready(VendorOffering.pos, done);
+      expect(handled(AppRoutes.posBook, m), isFalse);
+      final both = ready(VendorOffering.both, done, selected: AppMode.pos);
+      expect(handled(AppRoutes.posBook, both), isFalse);
+    });
+    test('Marketplace mode: sent back to the marketplace home', () {
+      expect(go(AppRoutes.posBook, ready(VendorOffering.marketplace, PosOnboardingStatus.notStarted)), AppRoutes.dashboard);
+      expect(go(AppRoutes.posBook, ready(VendorOffering.both, done, selected: AppMode.marketplace)), AppRoutes.dashboard);
+    });
+    test('a POS shop that has not finished setup cannot book', () {
+      expect(go(AppRoutes.posBook, ready(VendorOffering.pos, started, needsOnboarding: true)), AppRoutes.posOnboarding);
+    });
+    test('is a POS path', () => expect(isPosPath(AppRoutes.posBook), isTrue));
+  });
 }

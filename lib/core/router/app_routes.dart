@@ -48,6 +48,7 @@ abstract final class AppRoutes {
   // ── POS mode ──────────────────────────────────────────────────────────────
   static const String posOnboarding = '/pos/onboarding';
   static const String posHome = '/pos/home';
+  static const String posBook = '/pos/book';
   static const String posOrders = '/pos/orders';
   static const String posSearch = '/pos/search';
   static const String posExpense = '/pos/expense';
@@ -88,6 +89,7 @@ abstract final class AppRouteNames {
   static const String modeCheck = 'mode-check';
   static const String posOnboarding = 'pos-onboarding';
   static const String posHome = 'pos-home';
+  static const String posBook = 'pos-book';
   static const String posOrders = 'pos-orders';
   static const String posSearch = 'pos-search';
   static const String posExpense = 'pos-expense';
