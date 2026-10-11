@@ -3957,6 +3957,418 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posActionWhatsApp => 'व्हाट्सऐप';
+
+  @override
+  String get posExpTitle => 'खर्च';
+
+  @override
+  String get posExpToday => 'आज';
+
+  @override
+  String get posExpThisMonth => 'इस महीने';
+
+  @override
+  String posExpSpent(String amount) {
+    return 'खर्च: $amount';
+  }
+
+  @override
+  String get posExpAdd => 'खर्च जोड़ें';
+
+  @override
+  String get posExpEdit => 'खर्च बदलें';
+
+  @override
+  String get posExpCancel => 'खर्च रद्द करें';
+
+  @override
+  String get posExpEmpty =>
+      'इस अवधि में कोई खर्च नहीं। कुछ चुकाएँ तो \"खर्च जोड़ें\" दबाएँ।';
+
+  @override
+  String get posExpLoadError => 'खर्च नहीं खुल पाए।';
+
+  @override
+  String get posExpName => 'किस चीज़ का खर्च?';
+
+  @override
+  String get posExpNameHint => 'जैसे बिजली का बिल';
+
+  @override
+  String get posExpAmount => 'रकम (₹)';
+
+  @override
+  String get posExpCategory => 'खर्च का प्रकार';
+
+  @override
+  String get posExpMode => 'भुगतान का तरीका';
+
+  @override
+  String get posExpDate => 'तारीख';
+
+  @override
+  String get posExpNote => 'नोट (वैकल्पिक)';
+
+  @override
+  String get posExpReason => 'इसे क्यों बदल रहे हैं?';
+
+  @override
+  String get posExpCancelReason => 'इसे रद्द क्यों कर रहे हैं?';
+
+  @override
+  String get posExpSave => 'खर्च सेव करें';
+
+  @override
+  String get posExpSaved => 'खर्च सेव हो गया।';
+
+  @override
+  String get posExpCancelled => 'खर्च रद्द हो गया।';
+
+  @override
+  String get posExpCancelledTag => 'रद्द';
+
+  @override
+  String get posExpKeep => 'रहने दें';
+
+  @override
+  String get posExpNameRequired => 'लिखें कि खर्च किस चीज़ का था।';
+
+  @override
+  String get posExpAmountInvalid => '250 या 99.50 जैसी रकम लिखें।';
+
+  @override
+  String get posExpReasonRequired => 'कृपया कारण लिखें।';
+
+  @override
+  String posExpBy(String category, String mode) {
+    return '$category · $mode';
+  }
+
+  @override
+  String get posCatRent => 'किराया';
+
+  @override
+  String get posCatSalary => 'वेतन';
+
+  @override
+  String get posCatElectricity => 'बिजली';
+
+  @override
+  String get posCatWater => 'पानी';
+
+  @override
+  String get posCatDetergent => 'डिटर्जेंट और सामान';
+
+  @override
+  String get posCatTransport => 'ढुलाई/यात्रा';
+
+  @override
+  String get posCatRepair => 'मरम्मत';
+
+  @override
+  String get posCatTea => 'चाय-नाश्ता';
+
+  @override
+  String get posCatOther => 'अन्य';
+
+  @override
+  String get posExpModeCash => 'नकद';
+
+  @override
+  String get posExpModeUpi => 'यूपीआई';
+
+  @override
+  String get posExpModeBank => 'बैंक';
+
+  @override
+  String get posExpModeCard => 'कार्ड';
+
+  @override
+  String get posExpModeOther => 'अन्य';
+
+  @override
+  String get posDrawerTitle => 'कैश दराज';
+
+  @override
+  String get posDrawerClosed => 'कैश दराज बंद है। दिन शुरू करते समय खोलें।';
+
+  @override
+  String get posDrawerOpen => 'कैश दराज खोलें';
+
+  @override
+  String get posDrawerClose => 'कैश दराज बंद करें';
+
+  @override
+  String posDrawerOpenSince(String time) {
+    return '$time से खुला है';
+  }
+
+  @override
+  String get posDrawerOpening => 'शुरू में नकद';
+
+  @override
+  String get posDrawerIn => 'नकद आया';
+
+  @override
+  String get posDrawerOut => 'नकद गया';
+
+  @override
+  String get posDrawerShould => 'दराज में होना चाहिए';
+
+  @override
+  String get posDrawerOpeningQ => 'दराज में अभी कितना नकद है?';
+
+  @override
+  String get posDrawerOpenSave => 'दराज खोलें';
+
+  @override
+  String get posDrawerCounted => 'आपने गिना हुआ नकद (₹)';
+
+  @override
+  String posDrawerExpected(String amount) {
+    return 'होना चाहिए: $amount';
+  }
+
+  @override
+  String get posDrawerMatch => 'हिसाब मिल गया। कुछ कम नहीं है।';
+
+  @override
+  String posDrawerShort(String amount) {
+    return '$amount कम है।';
+  }
+
+  @override
+  String posDrawerExtra(String amount) {
+    return '$amount ज़्यादा है।';
+  }
+
+  @override
+  String get posDrawerWhy => 'फ़र्क क्यों है?';
+
+  @override
+  String get posDrawerApprover => 'किसने मंज़ूर किया (नाम)';
+
+  @override
+  String get posDrawerCloseSave => 'दराज बंद करें';
+
+  @override
+  String get posDrawerOpened => 'कैश दराज खुल गया।';
+
+  @override
+  String get posDrawerClosedOk => 'कैश दराज बंद हो गया।';
+
+  @override
+  String get posDrawerCountInvalid => 'गिना हुआ नकद लिखें, जैसे 1250।';
+
+  @override
+  String get posDrawerNeedsWhy =>
+      'लिखें कि फ़र्क क्यों है और किसने मंज़ूर किया।';
+
+  @override
+  String get posDrawerPast => 'पिछले दराज';
+
+  @override
+  String posDrawerPastLine(String counted, String diff) {
+    return 'गिना $counted · $diff';
+  }
+
+  @override
+  String get posDrawerDiffOk => 'हिसाब मिला';
+
+  @override
+  String posDrawerDiffShort(String amount) {
+    return '$amount कम';
+  }
+
+  @override
+  String posDrawerDiffExtra(String amount) {
+    return '$amount ज़्यादा';
+  }
+
+  @override
+  String get posMoneyNoAccess => 'इसके लिए दुकान के मालिक से अनुमति माँगें।';
+
+  @override
+  String get posRepTitle => 'रिपोर्ट';
+
+  @override
+  String get posRepToday => 'आज';
+
+  @override
+  String get posRep7Days => 'पिछले 7 दिन';
+
+  @override
+  String get posRepMonth => 'इस महीने';
+
+  @override
+  String get posRepCustom => 'तारीख चुनें';
+
+  @override
+  String posRepPeriod(String from, String to) {
+    return '$from से $to';
+  }
+
+  @override
+  String get posRepBilled => 'बिल बना';
+
+  @override
+  String get posRepBilledHint => 'बुक हुए ऑर्डर का कुल';
+
+  @override
+  String get posRepCollected => 'वसूला';
+
+  @override
+  String get posRepCollectedHint => 'इस अवधि में मिला पैसा';
+
+  @override
+  String get posRepDues => 'अभी वसूलना है';
+
+  @override
+  String posRepDuesHint(int count) {
+    return '$count ऑर्डर पूरे चुकाए नहीं';
+  }
+
+  @override
+  String get posRepSpent => 'खर्च हुआ';
+
+  @override
+  String posRepSpentHint(int count) {
+    return '$count खर्च';
+  }
+
+  @override
+  String get posRepNet => 'वसूला − खर्च';
+
+  @override
+  String get posRepOrders => 'ऑर्डर';
+
+  @override
+  String posRepOrdersCount(int count) {
+    return '$count ऑर्डर बुक हुए';
+  }
+
+  @override
+  String get posRepStBooked => 'बुक';
+
+  @override
+  String get posRepStProcess => 'प्रोसेस में';
+
+  @override
+  String get posRepStReady => 'तैयार';
+
+  @override
+  String get posRepStDelivered => 'डिलीवर';
+
+  @override
+  String get posRepStCancelled => 'रद्द';
+
+  @override
+  String get posRepPayMix => 'ग्राहकों ने कैसे चुकाया';
+
+  @override
+  String get posRepNoPayments => 'इस अवधि में कोई भुगतान नहीं।';
+
+  @override
+  String get posRepModeWallet => 'वॉलेट';
+
+  @override
+  String get posRepTopGarments => 'सबसे ज़्यादा बुक कपड़े';
+
+  @override
+  String posRepQty(String qty, String amount) {
+    return '$qty · $amount';
+  }
+
+  @override
+  String get posRepSpendBy => 'खर्च का प्रकार';
+
+  @override
+  String get posRepDaily => 'दिन-ब-दिन';
+
+  @override
+  String posRepDayLine(String billed, String collected, String spent) {
+    return 'बिल $billed · वसूला $collected · खर्च $spent';
+  }
+
+  @override
+  String get posRepExport => 'बिक्री फ़ाइल भेजें (CSV)';
+
+  @override
+  String get posRepExportHint =>
+      'Excel या Google Sheets में खुलती है। हर ऑर्डर की एक पंक्ति।';
+
+  @override
+  String get posRepExportFailed => 'फ़ाइल तैयार नहीं हो पाई।';
+
+  @override
+  String get posRepLoadError => 'रिपोर्ट नहीं खुल पाई।';
+
+  @override
+  String get posRepEmpty => 'इस अवधि में कोई ऑर्डर या खर्च नहीं।';
+
+  @override
+  String get posRepRangeTooLong => 'कृपया अधिकतम एक साल चुनें।';
+
+  @override
+  String get posRepTabSummary => 'सारांश';
+
+  @override
+  String get posRepTabInvoices => 'इनवॉइस';
+
+  @override
+  String get posRepTabCollection => 'वसूली';
+
+  @override
+  String get posRepTabExpense => 'खर्च';
+
+  @override
+  String get posRepTotalRevenue => 'कुल कमाई';
+
+  @override
+  String get posRepInvNo => 'इनवॉइस नं.';
+
+  @override
+  String get posRepAmount => 'रकम';
+
+  @override
+  String get posRepStatus => 'स्थिति';
+
+  @override
+  String posRepPage(int n) {
+    return 'पेज $n';
+  }
+
+  @override
+  String get posRepPrev => 'पिछला';
+
+  @override
+  String get posRepNext => 'अगला';
+
+  @override
+  String get posRepNoInvoices => 'इस अवधि में कोई इनवॉइस नहीं।';
+
+  @override
+  String get posRepInvoicesFailed => 'इनवॉइस नहीं खुल पाए।';
+
+  @override
+  String get posRepChartBilled => 'हर दिन का बिल';
+
+  @override
+  String get posRepChartCollected => 'हर दिन की वसूली';
+
+  @override
+  String get posRepChartSpent => 'हर दिन का खर्च';
+
+  @override
+  String posRepChartHigh(String amount, String date) {
+    return 'सबसे ज़्यादा: $amount, $date को';
+  }
+
+  @override
+  String get posRepChartNone => 'अभी दिखाने के लिए कुछ नहीं।';
+
+  @override
+  String get posCustProfile => 'प्रोफ़ाइल';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -7936,4 +8348,418 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posActionWhatsApp => 'WhatsApp';
+
+  @override
+  String get posExpTitle => 'Kharcha';
+
+  @override
+  String get posExpToday => 'Aaj';
+
+  @override
+  String get posExpThisMonth => 'Is mahine';
+
+  @override
+  String posExpSpent(String amount) {
+    return 'Kharcha: $amount';
+  }
+
+  @override
+  String get posExpAdd => 'Kharcha jodein';
+
+  @override
+  String get posExpEdit => 'Kharcha badlein';
+
+  @override
+  String get posExpCancel => 'Kharcha cancel karein';
+
+  @override
+  String get posExpEmpty =>
+      'Is period mein koi kharcha nahi. Kuch chukayein to \"Kharcha jodein\" dabayein.';
+
+  @override
+  String get posExpLoadError => 'Kharche load nahi ho paye.';
+
+  @override
+  String get posExpName => 'Kis cheez ka kharcha?';
+
+  @override
+  String get posExpNameHint => 'jaise bijli ka bill';
+
+  @override
+  String get posExpAmount => 'Rakam (₹)';
+
+  @override
+  String get posExpCategory => 'Kharche ka prakaar';
+
+  @override
+  String get posExpMode => 'Payment ka tareeka';
+
+  @override
+  String get posExpDate => 'Tareekh';
+
+  @override
+  String get posExpNote => 'Note (optional)';
+
+  @override
+  String get posExpReason => 'Ise kyun badal rahe hain?';
+
+  @override
+  String get posExpCancelReason => 'Ise cancel kyun kar rahe hain?';
+
+  @override
+  String get posExpSave => 'Kharcha save karein';
+
+  @override
+  String get posExpSaved => 'Kharcha save ho gaya.';
+
+  @override
+  String get posExpCancelled => 'Kharcha cancel ho gaya.';
+
+  @override
+  String get posExpCancelledTag => 'Cancelled';
+
+  @override
+  String get posExpKeep => 'Rehne dein';
+
+  @override
+  String get posExpNameRequired => 'Likhein ki kharcha kis cheez ka tha.';
+
+  @override
+  String get posExpAmountInvalid => '250 ya 99.50 jaisi rakam likhein.';
+
+  @override
+  String get posExpReasonRequired => 'Kripya kaaran likhein.';
+
+  @override
+  String posExpBy(String category, String mode) {
+    return '$category · $mode';
+  }
+
+  @override
+  String get posCatRent => 'Kiraya';
+
+  @override
+  String get posCatSalary => 'Salary';
+
+  @override
+  String get posCatElectricity => 'Bijli';
+
+  @override
+  String get posCatWater => 'Paani';
+
+  @override
+  String get posCatDetergent => 'Detergent aur saamaan';
+
+  @override
+  String get posCatTransport => 'Dhulai/yatra';
+
+  @override
+  String get posCatRepair => 'Marammat';
+
+  @override
+  String get posCatTea => 'Chai-nashta';
+
+  @override
+  String get posCatOther => 'Anya';
+
+  @override
+  String get posExpModeCash => 'Cash';
+
+  @override
+  String get posExpModeUpi => 'UPI';
+
+  @override
+  String get posExpModeBank => 'Bank';
+
+  @override
+  String get posExpModeCard => 'Card';
+
+  @override
+  String get posExpModeOther => 'Anya';
+
+  @override
+  String get posDrawerTitle => 'Cash drawer';
+
+  @override
+  String get posDrawerClosed =>
+      'Cash drawer band hai. Din shuru karte samay kholein.';
+
+  @override
+  String get posDrawerOpen => 'Cash drawer kholein';
+
+  @override
+  String get posDrawerClose => 'Cash drawer band karein';
+
+  @override
+  String posDrawerOpenSince(String time) {
+    return '$time se khula hai';
+  }
+
+  @override
+  String get posDrawerOpening => 'Shuru mein cash';
+
+  @override
+  String get posDrawerIn => 'Cash aaya';
+
+  @override
+  String get posDrawerOut => 'Cash gaya';
+
+  @override
+  String get posDrawerShould => 'Drawer mein hona chahiye';
+
+  @override
+  String get posDrawerOpeningQ => 'Drawer mein abhi kitna cash hai?';
+
+  @override
+  String get posDrawerOpenSave => 'Drawer kholein';
+
+  @override
+  String get posDrawerCounted => 'Aapne gina hua cash (₹)';
+
+  @override
+  String posDrawerExpected(String amount) {
+    return 'Hona chahiye: $amount';
+  }
+
+  @override
+  String get posDrawerMatch => 'Hisaab mil gaya. Kuch kam nahi hai.';
+
+  @override
+  String posDrawerShort(String amount) {
+    return '$amount kam hai.';
+  }
+
+  @override
+  String posDrawerExtra(String amount) {
+    return '$amount zyada hai.';
+  }
+
+  @override
+  String get posDrawerWhy => 'Farq kyun hai?';
+
+  @override
+  String get posDrawerApprover => 'Kisne manzoor kiya (naam)';
+
+  @override
+  String get posDrawerCloseSave => 'Drawer band karein';
+
+  @override
+  String get posDrawerOpened => 'Cash drawer khul gaya.';
+
+  @override
+  String get posDrawerClosedOk => 'Cash drawer band ho gaya.';
+
+  @override
+  String get posDrawerCountInvalid => 'Gina hua cash likhein, jaise 1250.';
+
+  @override
+  String get posDrawerNeedsWhy =>
+      'Likhein ki farq kyun hai aur kisne manzoor kiya.';
+
+  @override
+  String get posDrawerPast => 'Pichhle drawers';
+
+  @override
+  String posDrawerPastLine(String counted, String diff) {
+    return 'Gina $counted · $diff';
+  }
+
+  @override
+  String get posDrawerDiffOk => 'hisaab mila';
+
+  @override
+  String posDrawerDiffShort(String amount) {
+    return '$amount kam';
+  }
+
+  @override
+  String posDrawerDiffExtra(String amount) {
+    return '$amount zyada';
+  }
+
+  @override
+  String get posMoneyNoAccess =>
+      'Iske liye dukaan ke malik se permission maangein.';
+
+  @override
+  String get posRepTitle => 'Report';
+
+  @override
+  String get posRepToday => 'Aaj';
+
+  @override
+  String get posRep7Days => 'Pichhle 7 din';
+
+  @override
+  String get posRepMonth => 'Is mahine';
+
+  @override
+  String get posRepCustom => 'Tareekh chunein';
+
+  @override
+  String posRepPeriod(String from, String to) {
+    return '$from se $to';
+  }
+
+  @override
+  String get posRepBilled => 'Bill bana';
+
+  @override
+  String get posRepBilledHint => 'Book hue orders ka kul';
+
+  @override
+  String get posRepCollected => 'Vasoola';
+
+  @override
+  String get posRepCollectedHint => 'Is period mein mila paisa';
+
+  @override
+  String get posRepDues => 'Abhi vasoolna hai';
+
+  @override
+  String posRepDuesHint(int count) {
+    return '$count orders poore paid nahi';
+  }
+
+  @override
+  String get posRepSpent => 'Kharch hua';
+
+  @override
+  String posRepSpentHint(int count) {
+    return '$count kharche';
+  }
+
+  @override
+  String get posRepNet => 'Vasoola − kharch';
+
+  @override
+  String get posRepOrders => 'Orders';
+
+  @override
+  String posRepOrdersCount(int count) {
+    return '$count orders book hue';
+  }
+
+  @override
+  String get posRepStBooked => 'Booked';
+
+  @override
+  String get posRepStProcess => 'Process mein';
+
+  @override
+  String get posRepStReady => 'Ready';
+
+  @override
+  String get posRepStDelivered => 'Delivered';
+
+  @override
+  String get posRepStCancelled => 'Cancelled';
+
+  @override
+  String get posRepPayMix => 'Customers ne kaise chukaya';
+
+  @override
+  String get posRepNoPayments => 'Is period mein koi payment nahi.';
+
+  @override
+  String get posRepModeWallet => 'Wallet';
+
+  @override
+  String get posRepTopGarments => 'Sabse zyada book kapde';
+
+  @override
+  String posRepQty(String qty, String amount) {
+    return '$qty · $amount';
+  }
+
+  @override
+  String get posRepSpendBy => 'Kharche ka prakaar';
+
+  @override
+  String get posRepDaily => 'Din-ba-din';
+
+  @override
+  String posRepDayLine(String billed, String collected, String spent) {
+    return 'Bill $billed · Vasoola $collected · Kharch $spent';
+  }
+
+  @override
+  String get posRepExport => 'Sales file bhejein (CSV)';
+
+  @override
+  String get posRepExportHint =>
+      'Excel ya Google Sheets mein khulti hai. Har order ki ek line.';
+
+  @override
+  String get posRepExportFailed => 'File taiyaar nahi ho payi.';
+
+  @override
+  String get posRepLoadError => 'Report load nahi ho payi.';
+
+  @override
+  String get posRepEmpty => 'Is period mein koi order ya kharcha nahi.';
+
+  @override
+  String get posRepRangeTooLong => 'Kripya adhiktam ek saal chunein.';
+
+  @override
+  String get posRepTabSummary => 'Saaransh';
+
+  @override
+  String get posRepTabInvoices => 'Invoices';
+
+  @override
+  String get posRepTabCollection => 'Vasooli';
+
+  @override
+  String get posRepTabExpense => 'Kharche';
+
+  @override
+  String get posRepTotalRevenue => 'Kul kamaai';
+
+  @override
+  String get posRepInvNo => 'Invoice no.';
+
+  @override
+  String get posRepAmount => 'Rakam';
+
+  @override
+  String get posRepStatus => 'Sthiti';
+
+  @override
+  String posRepPage(int n) {
+    return 'Page $n';
+  }
+
+  @override
+  String get posRepPrev => 'Pichhla';
+
+  @override
+  String get posRepNext => 'Agla';
+
+  @override
+  String get posRepNoInvoices => 'Is period mein koi invoice nahi.';
+
+  @override
+  String get posRepInvoicesFailed => 'Invoices load nahi ho paye.';
+
+  @override
+  String get posRepChartBilled => 'Har din ka bill';
+
+  @override
+  String get posRepChartCollected => 'Har din ki vasooli';
+
+  @override
+  String get posRepChartSpent => 'Har din ka kharch';
+
+  @override
+  String posRepChartHigh(String amount, String date) {
+    return 'Sabse zyada: $amount, $date ko';
+  }
+
+  @override
+  String get posRepChartNone => 'Abhi dikhane ke liye kuch nahi.';
+
+  @override
+  String get posCustProfile => 'Profile';
 }

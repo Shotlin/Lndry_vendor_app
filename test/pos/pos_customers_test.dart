@@ -24,6 +24,34 @@ void main() {
       expect(find.text('CUSTOMER u-2'), findsOneWidget);
     });
 
+    testWidgets('A-Z: letter headers, the strip jumps to a letter, rows have labelled Call and Profile', (tester) async {
+      final counter = FakeCounterRepo()
+        ..customers = [
+          for (var i = 0; i < 12; i++) PosCustomer(id: 'a$i', name: 'Aa${String.fromCharCode(97 + i)}', phone: '90000000$i${i}'),
+          const PosCustomer(id: 'z1', name: 'Zoya Khan', phone: '9111111111'),
+          const PosCustomer(id: 'n1', name: '9 Number First', phone: '9222222222'),
+        ];
+      final p = await pumpPos(tester, const PosCustomersPage(), counter: counter);
+      expect(find.text('A'), findsWidgets);
+      expect(find.text('Zoya Khan'), findsNothing, reason: 'far down the list');
+      await tester.tap(find.widgetWithText(InkWell, 'Z').last);
+      await tester.pumpAndSettle();
+      expect(find.text('Zoya Khan'), findsOneWidget);
+      await tester.tap(find.text('Call').first);
+      await tester.pumpAndSettle();
+      expect(p.opened.single.scheme, 'tel');
+      await tester.tap(find.text('Profile').first);
+      await tester.pumpAndSettle();
+      expect(find.textContaining('CUSTOMER '), findsOneWidget);
+    });
+
+    test('letterOf', () {
+      expect(letterOf('asha'), 'A');
+      expect(letterOf('  bina'), 'B');
+      expect(letterOf('9 Number'), '#');
+      expect(letterOf(''), '#');
+    });
+
     testWidgets('search narrows the list; no match says so', (tester) async {
       final counter = FakeCounterRepo()..customers = [asha, bina];
       await pumpPos(tester, const PosCustomersPage(), counter: counter);

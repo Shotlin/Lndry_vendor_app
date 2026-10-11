@@ -9,6 +9,7 @@ import 'package:lndry_vendor_app/core/services/storage_service.dart';
 import 'package:lndry_vendor_app/features/pos/core/pos_providers.dart';
 import 'package:lndry_vendor_app/features/pos/core/pos_money_providers.dart';
 import 'package:lndry_vendor_app/features/pos/orders/orders_providers.dart';
+import 'package:lndry_vendor_app/features/pos/report/report_providers.dart';
 import 'package:lndry_vendor_app/features/pos/orders/pdf_viewer.dart';
 import 'package:lndry_vendor_app/l10n/generated/app_localizations.dart';
 import 'package:lndry_vendor_app/models/pos/app_mode_model.dart';
@@ -44,7 +45,8 @@ AppModeInfo shopInfo({String? plan, String? validTo, bool wallet = false}) =>
 
 class Pos {
   Pos(this.c, this.dashboard, this.catalogue, this.counter, this.storage,
-      this.router, this.orders, this.opened, this.extras, this.money);
+      this.router, this.orders, this.opened, this.extras, this.money, this.shared);
+  final List<({String name, String csv})> shared;
   final MoneyFakes money;
   final FakeOrdersRepo orders;
 
@@ -110,6 +112,7 @@ Future<Pos> pumpPos(
   final ord = orders ?? FakeOrdersRepo();
   final mf = money ?? MoneyFakes();
   final opened = <Uri>[];
+  final shared = <({String name, String csv})>[];
   final extras = <Object?>[];
   final c = ProviderContainer(overrides: [
     storageServiceProvider.overrideWithValue(storage),
@@ -130,6 +133,7 @@ Future<Pos> pumpPos(
     posCanViewOrdersProvider.overrideWithValue(canViewOrders),
     posCanProcessOrdersProvider.overrideWithValue(canProcessOrders),
     posCanAssignCaptainProvider.overrideWithValue(canAssign),
+    posCsvSharerProvider.overrideWithValue((name, csv) async => shared.add((name: name, csv: csv))),
     posUrlOpenerProvider.overrideWithValue((uri) async {
       opened.add(uri);
       return openerWorks;
@@ -202,7 +206,7 @@ Future<Pos> pumpPos(
     ),
   );
   if (settle) await tester.pumpAndSettle();
-  return Pos(c, d, cat, cnt, storage, router, ord, opened, extras, mf);
+  return Pos(c, d, cat, cnt, storage, router, ord, opened, extras, mf, shared);
 }
 
 /// A draft with a customer and one shirt, as the Book Order screen would have saved it.

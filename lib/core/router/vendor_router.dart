@@ -45,7 +45,9 @@ import '../../features/pos/core/pos_shell.dart';
 import '../../features/pos/core/pos_widgets.dart';
 import '../../features/pos/customers/customer_detail_page.dart';
 import '../../features/pos/customers/customers_page.dart';
+import '../../features/pos/expense/expense_page.dart';
 import '../../features/pos/home/pos_home_page.dart';
+import '../../features/pos/report/report_page.dart';
 import '../../features/pos/search/pos_search_page.dart';
 import '../../features/pos/onboarding/choose_product_page.dart';
 import '../../features/pos/onboarding/mode_check_page.dart';
@@ -431,14 +433,14 @@ final List<RouteBase> _vendorRoutes = [
         GoRoute(
           path: AppRoutes.posExpense,
           name: AppRouteNames.posExpense,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabExpense, icon: Icons.account_balance_wallet_rounded),
+          builder: (c, s) => const PosExpensePage(),
         ),
       ]),
       StatefulShellBranch(routes: [
         GoRoute(
           path: AppRoutes.posReport,
           name: AppRouteNames.posReport,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabReport, icon: Icons.insert_chart_rounded),
+          builder: (c, s) => const PosReportPage(),
         ),
       ]),
       StatefulShellBranch(routes: [

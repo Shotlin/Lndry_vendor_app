@@ -7145,6 +7145,756 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'WhatsApp'**
   String get posActionWhatsApp;
+
+  /// POS mode: posExpTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get posExpTitle;
+
+  /// POS mode: posExpToday
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get posExpToday;
+
+  /// POS mode: posExpThisMonth
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get posExpThisMonth;
+
+  /// POS mode: posExpSpent
+  ///
+  /// In en, this message translates to:
+  /// **'Spent: {amount}'**
+  String posExpSpent(String amount);
+
+  /// POS mode: posExpAdd
+  ///
+  /// In en, this message translates to:
+  /// **'Add Expense'**
+  String get posExpAdd;
+
+  /// POS mode: posExpEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit expense'**
+  String get posExpEdit;
+
+  /// POS mode: posExpCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel expense'**
+  String get posExpCancel;
+
+  /// POS mode: posExpEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No expenses in this period. Tap Add Expense when you pay for something.'**
+  String get posExpEmpty;
+
+  /// POS mode: posExpLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load expenses.'**
+  String get posExpLoadError;
+
+  /// POS mode: posExpName
+  ///
+  /// In en, this message translates to:
+  /// **'What was it for?'**
+  String get posExpName;
+
+  /// POS mode: posExpNameHint
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Electricity bill'**
+  String get posExpNameHint;
+
+  /// POS mode: posExpAmount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (₹)'**
+  String get posExpAmount;
+
+  /// POS mode: posExpCategory
+  ///
+  /// In en, this message translates to:
+  /// **'Type of expense'**
+  String get posExpCategory;
+
+  /// POS mode: posExpMode
+  ///
+  /// In en, this message translates to:
+  /// **'Paid by'**
+  String get posExpMode;
+
+  /// POS mode: posExpDate
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get posExpDate;
+
+  /// POS mode: posExpNote
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get posExpNote;
+
+  /// POS mode: posExpReason
+  ///
+  /// In en, this message translates to:
+  /// **'Why are you changing it?'**
+  String get posExpReason;
+
+  /// POS mode: posExpCancelReason
+  ///
+  /// In en, this message translates to:
+  /// **'Why is it cancelled?'**
+  String get posExpCancelReason;
+
+  /// POS mode: posExpSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save Expense'**
+  String get posExpSave;
+
+  /// POS mode: posExpSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Expense saved.'**
+  String get posExpSaved;
+
+  /// POS mode: posExpCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Expense cancelled.'**
+  String get posExpCancelled;
+
+  /// POS mode: posExpCancelledTag
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get posExpCancelledTag;
+
+  /// POS mode: posExpKeep
+  ///
+  /// In en, this message translates to:
+  /// **'Keep it'**
+  String get posExpKeep;
+
+  /// POS mode: posExpNameRequired
+  ///
+  /// In en, this message translates to:
+  /// **'Write what the expense was for.'**
+  String get posExpNameRequired;
+
+  /// POS mode: posExpAmountInvalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount like 250 or 99.50.'**
+  String get posExpAmountInvalid;
+
+  /// POS mode: posExpReasonRequired
+  ///
+  /// In en, this message translates to:
+  /// **'Please write a reason.'**
+  String get posExpReasonRequired;
+
+  /// POS mode: posExpBy
+  ///
+  /// In en, this message translates to:
+  /// **'{category} · {mode}'**
+  String posExpBy(String category, String mode);
+
+  /// POS mode: posCatRent
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get posCatRent;
+
+  /// POS mode: posCatSalary
+  ///
+  /// In en, this message translates to:
+  /// **'Salary'**
+  String get posCatSalary;
+
+  /// POS mode: posCatElectricity
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity'**
+  String get posCatElectricity;
+
+  /// POS mode: posCatWater
+  ///
+  /// In en, this message translates to:
+  /// **'Water'**
+  String get posCatWater;
+
+  /// POS mode: posCatDetergent
+  ///
+  /// In en, this message translates to:
+  /// **'Detergent & supplies'**
+  String get posCatDetergent;
+
+  /// POS mode: posCatTransport
+  ///
+  /// In en, this message translates to:
+  /// **'Transport'**
+  String get posCatTransport;
+
+  /// POS mode: posCatRepair
+  ///
+  /// In en, this message translates to:
+  /// **'Repair'**
+  String get posCatRepair;
+
+  /// POS mode: posCatTea
+  ///
+  /// In en, this message translates to:
+  /// **'Tea & snacks'**
+  String get posCatTea;
+
+  /// POS mode: posCatOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get posCatOther;
+
+  /// POS mode: posExpModeCash
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get posExpModeCash;
+
+  /// POS mode: posExpModeUpi
+  ///
+  /// In en, this message translates to:
+  /// **'UPI'**
+  String get posExpModeUpi;
+
+  /// POS mode: posExpModeBank
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get posExpModeBank;
+
+  /// POS mode: posExpModeCard
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get posExpModeCard;
+
+  /// POS mode: posExpModeOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get posExpModeOther;
+
+  /// POS mode: posDrawerTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Cash drawer'**
+  String get posDrawerTitle;
+
+  /// POS mode: posDrawerClosed
+  ///
+  /// In en, this message translates to:
+  /// **'The cash drawer is closed. Open it when you start the day.'**
+  String get posDrawerClosed;
+
+  /// POS mode: posDrawerOpen
+  ///
+  /// In en, this message translates to:
+  /// **'Open cash drawer'**
+  String get posDrawerOpen;
+
+  /// POS mode: posDrawerClose
+  ///
+  /// In en, this message translates to:
+  /// **'Close cash drawer'**
+  String get posDrawerClose;
+
+  /// POS mode: posDrawerOpenSince
+  ///
+  /// In en, this message translates to:
+  /// **'Open since {time}'**
+  String posDrawerOpenSince(String time);
+
+  /// POS mode: posDrawerOpening
+  ///
+  /// In en, this message translates to:
+  /// **'Cash you started with'**
+  String get posDrawerOpening;
+
+  /// POS mode: posDrawerIn
+  ///
+  /// In en, this message translates to:
+  /// **'Cash received'**
+  String get posDrawerIn;
+
+  /// POS mode: posDrawerOut
+  ///
+  /// In en, this message translates to:
+  /// **'Cash paid out'**
+  String get posDrawerOut;
+
+  /// POS mode: posDrawerShould
+  ///
+  /// In en, this message translates to:
+  /// **'Cash that should be in the drawer'**
+  String get posDrawerShould;
+
+  /// POS mode: posDrawerOpeningQ
+  ///
+  /// In en, this message translates to:
+  /// **'How much cash is in the drawer now?'**
+  String get posDrawerOpeningQ;
+
+  /// POS mode: posDrawerOpenSave
+  ///
+  /// In en, this message translates to:
+  /// **'Open drawer'**
+  String get posDrawerOpenSave;
+
+  /// POS mode: posDrawerCounted
+  ///
+  /// In en, this message translates to:
+  /// **'Cash you counted (₹)'**
+  String get posDrawerCounted;
+
+  /// POS mode: posDrawerExpected
+  ///
+  /// In en, this message translates to:
+  /// **'Should be: {amount}'**
+  String posDrawerExpected(String amount);
+
+  /// POS mode: posDrawerMatch
+  ///
+  /// In en, this message translates to:
+  /// **'It matches. Nothing is missing.'**
+  String get posDrawerMatch;
+
+  /// POS mode: posDrawerShort
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} less than it should be.'**
+  String posDrawerShort(String amount);
+
+  /// POS mode: posDrawerExtra
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} more than it should be.'**
+  String posDrawerExtra(String amount);
+
+  /// POS mode: posDrawerWhy
+  ///
+  /// In en, this message translates to:
+  /// **'Why is it different?'**
+  String get posDrawerWhy;
+
+  /// POS mode: posDrawerApprover
+  ///
+  /// In en, this message translates to:
+  /// **'Approved by (name)'**
+  String get posDrawerApprover;
+
+  /// POS mode: posDrawerCloseSave
+  ///
+  /// In en, this message translates to:
+  /// **'Close drawer'**
+  String get posDrawerCloseSave;
+
+  /// POS mode: posDrawerOpened
+  ///
+  /// In en, this message translates to:
+  /// **'Cash drawer opened.'**
+  String get posDrawerOpened;
+
+  /// POS mode: posDrawerClosedOk
+  ///
+  /// In en, this message translates to:
+  /// **'Cash drawer closed.'**
+  String get posDrawerClosedOk;
+
+  /// POS mode: posDrawerCountInvalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the cash you counted, like 1250.'**
+  String get posDrawerCountInvalid;
+
+  /// POS mode: posDrawerNeedsWhy
+  ///
+  /// In en, this message translates to:
+  /// **'Write why it is different and who approved it.'**
+  String get posDrawerNeedsWhy;
+
+  /// POS mode: posDrawerPast
+  ///
+  /// In en, this message translates to:
+  /// **'Earlier drawers'**
+  String get posDrawerPast;
+
+  /// POS mode: posDrawerPastLine
+  ///
+  /// In en, this message translates to:
+  /// **'Counted {counted} · {diff}'**
+  String posDrawerPastLine(String counted, String diff);
+
+  /// POS mode: posDrawerDiffOk
+  ///
+  /// In en, this message translates to:
+  /// **'matched'**
+  String get posDrawerDiffOk;
+
+  /// POS mode: posDrawerDiffShort
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} short'**
+  String posDrawerDiffShort(String amount);
+
+  /// POS mode: posDrawerDiffExtra
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} extra'**
+  String posDrawerDiffExtra(String amount);
+
+  /// POS mode: posMoneyNoAccess
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the shop owner to give you access to this.'**
+  String get posMoneyNoAccess;
+
+  /// POS mode: posRepTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get posRepTitle;
+
+  /// POS mode: posRepToday
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get posRepToday;
+
+  /// POS mode: posRep7Days
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get posRep7Days;
+
+  /// POS mode: posRepMonth
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get posRepMonth;
+
+  /// POS mode: posRepCustom
+  ///
+  /// In en, this message translates to:
+  /// **'Pick dates'**
+  String get posRepCustom;
+
+  /// POS mode: posRepPeriod
+  ///
+  /// In en, this message translates to:
+  /// **'{from} to {to}'**
+  String posRepPeriod(String from, String to);
+
+  /// POS mode: posRepBilled
+  ///
+  /// In en, this message translates to:
+  /// **'Billed'**
+  String get posRepBilled;
+
+  /// POS mode: posRepBilledHint
+  ///
+  /// In en, this message translates to:
+  /// **'Total of the orders booked'**
+  String get posRepBilledHint;
+
+  /// POS mode: posRepCollected
+  ///
+  /// In en, this message translates to:
+  /// **'Collected'**
+  String get posRepCollected;
+
+  /// POS mode: posRepCollectedHint
+  ///
+  /// In en, this message translates to:
+  /// **'Money received in this period'**
+  String get posRepCollectedHint;
+
+  /// POS mode: posRepDues
+  ///
+  /// In en, this message translates to:
+  /// **'Still to collect'**
+  String get posRepDues;
+
+  /// POS mode: posRepDuesHint
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders not fully paid'**
+  String posRepDuesHint(int count);
+
+  /// POS mode: posRepSpent
+  ///
+  /// In en, this message translates to:
+  /// **'Spent'**
+  String get posRepSpent;
+
+  /// POS mode: posRepSpentHint
+  ///
+  /// In en, this message translates to:
+  /// **'{count} expenses'**
+  String posRepSpentHint(int count);
+
+  /// POS mode: posRepNet
+  ///
+  /// In en, this message translates to:
+  /// **'Collected minus spent'**
+  String get posRepNet;
+
+  /// POS mode: posRepOrders
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get posRepOrders;
+
+  /// POS mode: posRepOrdersCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders booked'**
+  String posRepOrdersCount(int count);
+
+  /// POS mode: posRepStBooked
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get posRepStBooked;
+
+  /// POS mode: posRepStProcess
+  ///
+  /// In en, this message translates to:
+  /// **'In process'**
+  String get posRepStProcess;
+
+  /// POS mode: posRepStReady
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get posRepStReady;
+
+  /// POS mode: posRepStDelivered
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posRepStDelivered;
+
+  /// POS mode: posRepStCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get posRepStCancelled;
+
+  /// POS mode: posRepPayMix
+  ///
+  /// In en, this message translates to:
+  /// **'How customers paid'**
+  String get posRepPayMix;
+
+  /// POS mode: posRepNoPayments
+  ///
+  /// In en, this message translates to:
+  /// **'No payments in this period.'**
+  String get posRepNoPayments;
+
+  /// POS mode: posRepModeWallet
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get posRepModeWallet;
+
+  /// POS mode: posRepTopGarments
+  ///
+  /// In en, this message translates to:
+  /// **'Most booked garments'**
+  String get posRepTopGarments;
+
+  /// POS mode: posRepQty
+  ///
+  /// In en, this message translates to:
+  /// **'{qty} · {amount}'**
+  String posRepQty(String qty, String amount);
+
+  /// POS mode: posRepSpendBy
+  ///
+  /// In en, this message translates to:
+  /// **'Spending by type'**
+  String get posRepSpendBy;
+
+  /// POS mode: posRepDaily
+  ///
+  /// In en, this message translates to:
+  /// **'Day by day'**
+  String get posRepDaily;
+
+  /// POS mode: posRepDayLine
+  ///
+  /// In en, this message translates to:
+  /// **'Billed {billed} · Collected {collected} · Spent {spent}'**
+  String posRepDayLine(String billed, String collected, String spent);
+
+  /// POS mode: posRepExport
+  ///
+  /// In en, this message translates to:
+  /// **'Share sales file (CSV)'**
+  String get posRepExport;
+
+  /// POS mode: posRepExportHint
+  ///
+  /// In en, this message translates to:
+  /// **'Opens in Excel or Google Sheets. One row for each order.'**
+  String get posRepExportHint;
+
+  /// POS mode: posRepExportFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not prepare the file.'**
+  String get posRepExportFailed;
+
+  /// POS mode: posRepLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the report.'**
+  String get posRepLoadError;
+
+  /// POS mode: posRepEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No orders or expenses in this period.'**
+  String get posRepEmpty;
+
+  /// POS mode: posRepRangeTooLong
+  ///
+  /// In en, this message translates to:
+  /// **'Please pick at most one year.'**
+  String get posRepRangeTooLong;
+
+  /// POS mode: posRepTabSummary
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get posRepTabSummary;
+
+  /// POS mode: posRepTabInvoices
+  ///
+  /// In en, this message translates to:
+  /// **'Invoices'**
+  String get posRepTabInvoices;
+
+  /// POS mode: posRepTabCollection
+  ///
+  /// In en, this message translates to:
+  /// **'Collection'**
+  String get posRepTabCollection;
+
+  /// POS mode: posRepTabExpense
+  ///
+  /// In en, this message translates to:
+  /// **'Expenses'**
+  String get posRepTabExpense;
+
+  /// POS mode: posRepTotalRevenue
+  ///
+  /// In en, this message translates to:
+  /// **'Total revenue'**
+  String get posRepTotalRevenue;
+
+  /// POS mode: posRepInvNo
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice no.'**
+  String get posRepInvNo;
+
+  /// POS mode: posRepAmount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get posRepAmount;
+
+  /// POS mode: posRepStatus
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get posRepStatus;
+
+  /// POS mode: posRepPage
+  ///
+  /// In en, this message translates to:
+  /// **'Page {n}'**
+  String posRepPage(int n);
+
+  /// POS mode: posRepPrev
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get posRepPrev;
+
+  /// POS mode: posRepNext
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get posRepNext;
+
+  /// POS mode: posRepNoInvoices
+  ///
+  /// In en, this message translates to:
+  /// **'No invoices in this period.'**
+  String get posRepNoInvoices;
+
+  /// POS mode: posRepInvoicesFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the invoices.'**
+  String get posRepInvoicesFailed;
+
+  /// POS mode: posRepChartBilled
+  ///
+  /// In en, this message translates to:
+  /// **'Billed each day'**
+  String get posRepChartBilled;
+
+  /// POS mode: posRepChartCollected
+  ///
+  /// In en, this message translates to:
+  /// **'Collected each day'**
+  String get posRepChartCollected;
+
+  /// POS mode: posRepChartSpent
+  ///
+  /// In en, this message translates to:
+  /// **'Spent each day'**
+  String get posRepChartSpent;
+
+  /// POS mode: posRepChartHigh
+  ///
+  /// In en, this message translates to:
+  /// **'Highest: {amount} on {date}'**
+  String posRepChartHigh(String amount, String date);
+
+  /// POS mode: posRepChartNone
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to draw yet.'**
+  String get posRepChartNone;
+
+  /// POS mode: posCustProfile
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get posCustProfile;
 }
 
 class _AppLocalizationsDelegate
