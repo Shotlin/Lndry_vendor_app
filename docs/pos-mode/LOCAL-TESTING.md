@@ -61,6 +61,7 @@ flutter gen-l10n                      # after editing any .arb (generated files 
 flutter analyze lib test/pos          # see "Known baseline" below
 flutter test --no-pub                 # whole suite
 flutter test --no-pub test/pos        # POS tests only
+# Adding a package changes pubspec.lock; a newer SDK ALSO bumps SDK-pinned packages. Commit only the new entries (see PROGRESS.md, Environment notes).
 ```
 
 **Do not commit** `pubspec.lock` or `analysis_options.yaml` changes made by the tools: a newer Flutter rewrites
@@ -85,6 +86,14 @@ verifies results through the API (`README.md` there has the exact commands). Bac
 `TEST_BYPASS_OTP_PHONES=*` and `CORS_ORIGINS=http://localhost:8081`. The backend contract check
 `node ../Lndry_backend/scripts/pos-smoke.mjs` needs no browser at all.
 
+Phase 3: `node ../Lndry_backend/scripts/pos-smoke.mjs --lifecycle` adds the order-life contract (58 checks, no browser) and `npm run phase3` in `scripts/pos-web-e2e` the 39-check browser journey (details in that README).
+
 Gotchas (all hit in Phase 2): OTPs are rate-limited per phone (`redis-cli flushall` locally) so every run makes a new shop;
 the app sits on a splash for a few seconds; a test that "verifies" with a stale token reads the wrong shop — always check the
 phone inside the JWT matches the shop you drove.
+
+### Lessons from Phase 3 (things only a real browser or a nested navigator shows)
+* Pages inside the POS tab shell live in a **nested navigator**; `showDialog` uses the **root** one. Always pop a dialog with the dialog builder's own context
+  (`builder: (dialogContext) => … Navigator.of(dialogContext).pop(…)`), never the page's. Test it with a page hosted in its own `Navigator` (see `pos_orders_page_test.dart`, "inside the real tab shell").
+* Look at the accessibility tree (`scripts/pos-web-e2e` prints it): an `InkWell` alone is a "group", not a button; a checkbox next to a `Text` is an unnamed checkbox. Wrap the tap area in `Semantics(button: true, label: …, excludeSemantics: true)`.
+* Default test fonts are wider than real ones, so a widget test can pass while a Row squeezes a label on a real phone: assert the label's height (one line) in the test.

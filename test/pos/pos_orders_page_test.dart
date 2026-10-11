@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui' show CheckedState, SemanticsAction;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -194,7 +195,7 @@ void main() {
           reason: 'delivered AND paid');
       expect(find.text('Showing: All orders'), findsOneWidget);
       expect(find.byType(TabBar), findsNothing);
-      await t.tap(find.byTooltip('Clear filters'));
+      await t.tap(find.text('Clear filters').first);
       await t.pumpAndSettle();
       expect(find.byType(TabBar), findsOneWidget);
     });
@@ -300,6 +301,115 @@ void main() {
         find.text('You do not have permission to do this. Ask the shop owner.'),
         findsOneWidget);
     expect(find.text('LND-B1'), findsNothing);
+  });
+
+  testWidgets('coming back to the app re-reads the list from the server',
+      (t) async {
+    final repo = FakeOrdersRepo(orders: sample());
+    await open(t, repo: repo);
+    expect(find.text('LND-B1'), findsOneWidget);
+    final before = repo.listCalls.length;
+    repo.orders = [
+      ...sample(),
+      makeOrder(id: 'new', number: 'LND-NEW', status: 'BOOKED')
+    ];
+    t.binding.handleAppLifecycleStateChanged(AppLifecycleState.resumed);
+    await t.pumpAndSettle();
+    expect(repo.listCalls.length, greaterThan(before));
+    expect(find.text('LND-NEW'), findsOneWidget,
+        reason: 'an order booked on another device appears');
+  });
+
+  group(
+      'inside the real tab shell (the page sits in its own nested navigator, dialogs live on the root one)',
+      () {
+    /// The Orders tab hosts its page in a navigator of its own, like a StatefulShellBranch does.
+    Widget inShell({OrdersPreset? preset}) => Navigator(
+        onGenerateRoute: (_) => MaterialPageRoute<void>(
+            builder: (_) => PosOrdersPage(preset: preset)));
+
+    testWidgets(
+        'the bulk confirm moves the orders (a dialog popped with the wrong context used to close the page)',
+        (t) async {
+      final repo = FakeOrdersRepo(orders: sample());
+      await pumpPos(t, inShell(), orders: repo, size: const Size(390, 1800));
+      await t.tap(find.text('Select all'));
+      await t.pumpAndSettle();
+      await t.tap(find.text('Move to next step'));
+      await t.pumpAndSettle();
+      await t.tap(find.text('Move orders'));
+      await t.pumpAndSettle();
+      expect(repo.transitions, hasLength(2),
+          reason: 'both selected orders were sent');
+      expect(find.text('2 orders moved.'), findsOneWidget);
+      expect(find.text('2 selected'), findsNothing,
+          reason: 'nothing is selected any more');
+      expect(find.byType(TabBar), findsOneWidget,
+          reason: 'the Orders screen is still there');
+    });
+
+    testWidgets('"Not yet" closes only the dialog and keeps the selection',
+        (t) async {
+      final repo = FakeOrdersRepo(orders: sample());
+      await pumpPos(t, inShell(), orders: repo, size: const Size(390, 1800));
+      await t.tap(find.text('Select all'));
+      await t.pumpAndSettle();
+      await t.tap(find.text('Move to next step'));
+      await t.pumpAndSettle();
+      await t.tap(find.text('Not yet'));
+      await t.pumpAndSettle();
+      expect(repo.transitions, isEmpty);
+      expect(find.text('2 selected'), findsOneWidget);
+      expect(find.byType(TabBar), findsOneWidget);
+    });
+
+    testWidgets(
+        'the selection bar gives the count and the button the full width (the count must not wrap letter by letter)',
+        (t) async {
+      await pumpPos(t, inShell(),
+          orders: FakeOrdersRepo(orders: sample()), size: const Size(360, 800));
+      await t.tap(find.text('Select all'));
+      await t.pumpAndSettle();
+      expect(t.getSize(find.text('2 selected')).height, lessThan(24),
+          reason: 'one line');
+      expect(
+          t
+              .getSize(find.widgetWithText(FilledButton, 'Move to next step'))
+              .width,
+          greaterThan(300));
+      expect(t.takeException(), isNull);
+    });
+  });
+
+  testWidgets(
+      'screen reader: an order is ONE button with a spoken summary; Select all is a named checkbox; each order has its own',
+      (t) async {
+    final handle = t.ensureSemantics();
+    await open(t);
+    final card = t.getSemantics(find.bySemanticsLabel(
+        RegExp(r'^LND-B1, Asha Verma, Booked, ₹230, Balance ₹180$')));
+    final cardData = card.getSemanticsData();
+    expect(cardData.flagsCollection.isButton, isTrue,
+        reason: 'opening an order is a button, not an anonymous group');
+    expect(cardData.hasAction(SemanticsAction.tap), isTrue);
+    final all = t.getSemantics(find.bySemanticsLabel('Select all'));
+    final allData = all.getSemanticsData();
+    expect(allData.flagsCollection.isChecked != CheckedState.none, isTrue,
+        reason:
+            'it is a checkbox with a name, not an unnamed box beside a label');
+    expect(allData.flagsCollection.isChecked, CheckedState.isFalse);
+    expect(find.bySemanticsLabel('LND-B1'), findsWidgets,
+        reason: 'each order\'s own checkbox is named by its number');
+    await t.tap(find.text('Select all'));
+    await t.pumpAndSettle();
+    expect(
+        t
+            .getSemantics(find.bySemanticsLabel('Select all'))
+            .getSemanticsData()
+            .flagsCollection
+            .isChecked,
+        CheckedState.isTrue);
+    handle.dispose();
   });
 
   testWidgets('pull to refresh asks the server again', (t) async {
@@ -438,7 +548,7 @@ void main() {
       expect(find.text('Showing: Express orders'), findsOneWidget);
       expect(repo.listCalls.single.tile, 'expressOrders');
       expect(find.byType(TabBar), findsNothing);
-      await t.tap(find.byTooltip('Clear filters'));
+      await t.tap(find.text('Clear filters').first);
       await t.pumpAndSettle();
       expect(find.byType(TabBar), findsOneWidget);
       expect(repo.listCalls.last.tile, isNull);

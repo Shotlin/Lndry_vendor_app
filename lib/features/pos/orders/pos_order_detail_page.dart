@@ -67,16 +67,16 @@ class _PosOrderDetailPageState extends ConsumerState<PosOrderDetailPage>
           required String no}) =>
       showDialog<bool>(
         context: context,
-        builder: (_) => PosThemeScope(
+        builder: (dialogContext) => PosThemeScope(
           child: AlertDialog(
             title: Text(title),
             content: Text(body),
             actions: [
               TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
+                  onPressed: () => Navigator.of(dialogContext).pop(false),
                   child: Text(no)),
               FilledButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => Navigator.of(dialogContext).pop(true),
                   child: Text(yes)),
             ],
           ),
@@ -89,17 +89,17 @@ class _PosOrderDetailPageState extends ConsumerState<PosOrderDetailPage>
     final l10n = AppLocalizations.of(context);
     final choice = await showDialog<String>(
       context: context,
-      builder: (_) => PosThemeScope(
+      builder: (dialogContext) => PosThemeScope(
         child: AlertDialog(
           title: Text(l10n.posDeliverDueTitle(
               formatPaise(o.balancePaise, alwaysShowPaise: true))),
           content: Text(l10n.posDeliverDueBody),
           actions: [
             TextButton(
-                onPressed: () => Navigator.of(context).pop('deliver'),
+                onPressed: () => Navigator.of(dialogContext).pop('deliver'),
                 child: Text(l10n.posDeliverAnyway)),
             FilledButton(
-                onPressed: () => Navigator.of(context).pop('collect'),
+                onPressed: () => Navigator.of(dialogContext).pop('collect'),
                 child: Text(l10n.posCollectFirst)),
           ],
         ),

@@ -161,10 +161,6 @@ class ApiPosOrdersRepository implements PosOrdersRepository {
   }
 
   @override
-  Future<List<GarmentUnit>> listGarmentUnits(String orderId) async =>
-      _dataList(await _dio.get('/vendor/counter/garment-units', queryParameters: {'orderId': orderId})).whereType<Map<String, dynamic>>().map(GarmentUnit.fromJson).toList(growable: false);
-
-  @override
   Future<String?> createTagPrintJob(String orderId, List<String> garmentUnitIds) async {
     final data = _dataMap(await _dio.post('/vendor/print-jobs', data: {'orderId': orderId, 'documentType': 'GARMENT_TAG', 'garmentUnitIds': garmentUnitIds, 'status': 'PENDING'}));
     return data['id']?.toString();

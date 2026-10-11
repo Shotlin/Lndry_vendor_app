@@ -67,7 +67,6 @@ abstract class PosOrdersRepository {
   Future<({CounterOrder order, List<OrderPayment> payments})> collectPayment(String id, {required int amountPaise, required String mode, String? reference});
 
   Future<List<OrderCaptain>> listCaptains();
-  Future<List<GarmentUnit>> listGarmentUnits(String orderId);
 
   /// Logs that tags were printed / shared for an order (best effort — the print history is a record, not a gate).
   Future<String?> createTagPrintJob(String orderId, List<String> garmentUnitIds);

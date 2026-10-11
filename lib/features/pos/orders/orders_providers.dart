@@ -25,10 +25,6 @@ final posOrderDetailProvider = FutureProvider.autoDispose
 final posCaptainsProvider = FutureProvider.autoDispose<List<OrderCaptain>>(
     (ref) => ref.watch(posOrdersRepositoryProvider).listCaptains());
 
-final posOrderUnitsProvider = FutureProvider.autoDispose
-    .family<List<GarmentUnit>, String>((ref, id) =>
-        ref.watch(posOrdersRepositoryProvider).listGarmentUnits(id));
-
 class OrdersListState {
   const OrdersListState({
     this.items = const [],
@@ -256,7 +252,6 @@ class OrderActions {
 
   void _changed(String id) {
     _ref.invalidate(posOrderDetailProvider(id));
-    _ref.invalidate(posOrderUnitsProvider(id));
     _ref.invalidate(posOrdersListProvider);
     _ref.invalidate(posDashboardProvider);
   }

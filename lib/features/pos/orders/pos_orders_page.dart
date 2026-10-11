@@ -42,7 +42,7 @@ class PosOrdersPage extends ConsumerStatefulWidget {
 }
 
 class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabs =
       TabController(length: OrderTab.values.length, vsync: this)
         ..addListener(_onTab);
@@ -55,7 +55,17 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     if (widget.preset != null) _apply(widget.preset!);
+  }
+
+  /// Coming back to the app (after a call, WhatsApp, a payment app) shows the orders as they are now.
+  /// (The backend sends no live event for counter orders, so this and pull-to-refresh keep the list honest.)
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && mounted) {
+      unawaited(ref.read(posOrdersListProvider(_current).notifier).refresh());
+    }
   }
 
   @override
@@ -77,6 +87,7 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _debounce?.cancel();
     _tabs.dispose();
     _searchCtl.dispose();
@@ -130,9 +141,10 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
         chosen.any((o) => nextStepOf(o)?.kind == NextStepKind.markReady);
     final anyDue = chosen.any((o) =>
         nextStepOf(o)?.kind == NextStepKind.deliver && o.balancePaise > 0);
+    // The dialog lives on the ROOT navigator; this page sits in a tab's own navigator. Pop with the dialog's context.
     final ok = await showDialog<bool>(
       context: context,
-      builder: (_) => PosThemeScope(
+      builder: (dialogContext) => PosThemeScope(
         child: AlertDialog(
           title: Text(l10n.posBulkTitle(chosen.length)),
           content: Column(
@@ -151,10 +163,10 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
               ]),
           actions: [
             TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
+                onPressed: () => Navigator.of(dialogContext).pop(false),
                 child: Text(l10n.posNotYet)),
             FilledButton(
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => Navigator.of(dialogContext).pop(true),
                 child: Text(l10n.posBulkGo)),
           ],
         ),
@@ -242,22 +254,31 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
                       : l10n.posOrdFilter),
                 ),
                 if (canProcess && movable.isNotEmpty)
-                  InkWell(
+                  // One named checkbox for a screen reader ("Select all, checked"), a big tap target for everyone.
+                  Semantics(
+                    checked: current.selected.length == movable.length,
+                    label: l10n.posOrdSelectAll,
+                    excludeSemantics: true,
                     onTap: () => current.selected.length == movable.length
                         ? ctl.clearSelection()
                         : ctl.selectAll(),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(minHeight: 48),
-                      child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        Checkbox(
-                            value: current.selected.length == movable.length,
-                            onChanged: (_) =>
-                                current.selected.length == movable.length
-                                    ? ctl.clearSelection()
-                                    : ctl.selectAll()),
-                        Flexible(child: Text(l10n.posOrdSelectAll)),
-                        const SizedBox(width: 8),
-                      ]),
+                    child: InkWell(
+                      onTap: () => current.selected.length == movable.length
+                          ? ctl.clearSelection()
+                          : ctl.selectAll(),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(minHeight: 48),
+                        child: Row(mainAxisSize: MainAxisSize.min, children: [
+                          IgnorePointer(
+                            child: Checkbox(
+                                value:
+                                    current.selected.length == movable.length,
+                                onChanged: (_) {}),
+                          ),
+                          Flexible(child: Text(l10n.posOrdSelectAll)),
+                          const SizedBox(width: 8),
+                        ]),
+                      ),
                     ),
                   ),
               ],
@@ -266,13 +287,19 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
           if (_label != null || !_byTabs)
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
-              child: Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: InputChip(
-                  label: Text(l10n.posOrdFiltered(_label ?? _scopeText(l10n))),
-                  onDeleted: _clearAll,
-                  deleteButtonTooltipMessage: l10n.posOrdClearFilters,
-                ),
+              // A labelled button (not a chip's tiny "x"): easy to hit, and a screen reader announces it.
+              child: Wrap(
+                spacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Chip(
+                    label:
+                        Text(l10n.posOrdFiltered(_label ?? _scopeText(l10n))),
+                  ),
+                  TextButton(
+                      onPressed: _clearAll,
+                      child: Text(l10n.posOrdClearFilters)),
+                ],
               ),
             ),
           if (_byTabs)
@@ -310,20 +337,30 @@ class _PosOrdersPageState extends ConsumerState<PosOrdersPage>
                     border: Border(
                         top: BorderSide(
                             color: Theme.of(context).colorScheme.outline))),
-                child: Row(
+                // Stacked, not side by side: the count and one big button each get the full width of a small phone.
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                        child: Text(l10n.posOrdSelectedCount(selectedCount),
-                            style: Theme.of(context).textTheme.titleSmall)),
-                    FilledButton.icon(
-                      onPressed: current.bulkBusy ? null : _moveSelected,
-                      icon: current.bulkBusy
-                          ? const SizedBox(
-                              width: 18,
-                              height: 18,
-                              child: CircularProgressIndicator(strokeWidth: 2))
-                          : const Icon(Icons.fast_forward_rounded),
-                      label: Text(l10n.posOrdMoveNext),
+                    Semantics(
+                      liveRegion: true,
+                      child: Text(l10n.posOrdSelectedCount(selectedCount),
+                          style: Theme.of(context).textTheme.titleSmall),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 52,
+                      child: FilledButton.icon(
+                        onPressed: current.bulkBusy ? null : _moveSelected,
+                        icon: current.bulkBusy
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2))
+                            : const Icon(Icons.fast_forward_rounded),
+                        label: Text(l10n.posOrdMoveNext),
+                      ),
                     ),
                   ],
                 ),
@@ -454,6 +491,8 @@ class _OrdersList extends ConsumerWidget {
 }
 
 /// One order in the list: number, who, state, how much — tap to open, chevron to peek at the garments.
+/// The checkbox sits beside the open area (not inside it) so a screen reader finds three separate controls:
+/// select, open (one spoken summary), and show garments.
 class OrderCard extends StatefulWidget {
   const OrderCard(
       {required this.order,
@@ -480,138 +519,150 @@ class _OrderCardState extends State<OrderCard> {
     final scheme = Theme.of(context).colorScheme;
     final o = widget.order;
     final balance = o.balancePaise;
-    return Semantics(
-      container: true,
-      label:
-          '${o.orderNumber}, ${o.customer.displayName}, ${phaseLabel(l10n, o.phase)}, ${formatPaise(o.totalPaise)}',
-      child: Material(
-        color: scheme.surface,
+    final summary = [
+      o.orderNumber,
+      o.customer.displayName,
+      phaseLabel(l10n, o.phase),
+      formatPaise(o.totalPaise),
+      if (balance > 0 && o.status != 'CANCELLED')
+        l10n.posOrdBalanceDue(formatPaise(balance)),
+    ].join(', ');
+    return Material(
+      color: scheme.surface,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        child: Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                  color: widget.selected ? scheme.primary : scheme.outline,
-                  width: widget.selected ? 2 : 1)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        side: BorderSide(
+            color: widget.selected ? scheme.primary : scheme.outline,
+            width: widget.selected ? 2 : 1),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                borderRadius: BorderRadius.circular(14),
-                onTap: widget.onOpen,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 10, 12, 10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: 48,
-                        child: widget.onSelect == null
-                            ? null
-                            : Checkbox(
-                                value: widget.selected,
-                                onChanged: (_) => widget.onSelect!()),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(children: [
-                              Expanded(
-                                  child: Text(o.orderNumber,
-                                      style: text.titleMedium,
-                                      overflow: TextOverflow.ellipsis)),
-                              const SizedBox(width: 8),
-                              Flexible(child: OrderStatusChip(order: o)),
-                            ]),
-                            const SizedBox(height: 4),
-                            Text(
-                                '${o.customer.displayName}${o.customer.name.trim().isEmpty ? '' : ' · ${o.customer.phone}'}',
-                                style: text.bodyMedium,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis),
-                            const SizedBox(height: 8),
-                            Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
-                                crossAxisAlignment: WrapCrossAlignment.center,
-                                children: [
-                                  Text(formatPaise(o.totalPaise),
-                                      style: text.titleSmall),
-                                  if (o.status != 'CANCELLED')
-                                    PosStatusChip(
-                                        label: balance > 0
-                                            ? l10n.posOrdBalanceDue(
-                                                formatPaise(balance))
-                                            : paymentStatusLabel(
-                                                l10n, o.paymentStatus),
-                                        tone: toneOfPayment(o.paymentStatus)),
-                                  if (o.isExpress)
-                                    PosStatusChip(
-                                        label: l10n.posOrdExpress,
-                                        tone: PosTone.danger,
-                                        icon: Icons.bolt_rounded),
-                                  if (o.deliveryMode != DeliveryMode.walkIn)
-                                    PosStatusChip(
-                                        label: deliveryModeLabel(
-                                            l10n, o.deliveryMode),
-                                        tone: PosTone.neutral,
-                                        icon: o.deliveryMode ==
-                                                DeliveryMode.homeDelivery
-                                            ? Icons.local_shipping_rounded
-                                            : Icons.directions_walk_rounded),
-                                  if (!o.isClosed &&
-                                      o.expectedDeliveryDate != null)
-                                    Text(
-                                        l10n.posOrdDue(dateText(
-                                            context, o.expectedDeliveryDate)),
-                                        style: text.bodySmall),
-                                ]),
-                          ],
+              SizedBox(
+                width: 52,
+                child: widget.onSelect == null
+                    ? null
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Semantics(
+                          label: o.orderNumber,
+                          child: Checkbox(
+                              value: widget.selected,
+                              onChanged: (_) => widget.onSelect!()),
                         ),
                       ),
-                    ],
-                  ),
-                ),
               ),
-              InkWell(
-                onTap: () => setState(() => _open = !_open),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(minHeight: 40),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(children: [
-                      Text(l10n.posOrdItemsCount(o.pieceCount),
-                          style: text.labelLarge),
-                      const Spacer(),
-                      Icon(_open
-                          ? Icons.expand_less_rounded
-                          : Icons.expand_more_rounded),
-                    ]),
-                  ),
-                ),
-              ),
-              if (_open)
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                  child: Column(children: [
-                    for (final i in o.items)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 3),
-                        child: Row(children: [
-                          Expanded(
-                              child: Text(
-                                  '${i.name} · ${i.serviceName} × ${i.qtyText}',
-                                  style: text.bodyMedium)),
-                          Text(formatPaise(i.amountPaise),
-                              style: text.bodyMedium),
-                        ]),
+              Expanded(
+                child: Semantics(
+                  button: true,
+                  label: summary,
+                  excludeSemantics: true,
+                  onTap: widget.onOpen,
+                  child: InkWell(
+                    onTap: widget.onOpen,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 12, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(children: [
+                            Expanded(
+                                child: Text(o.orderNumber,
+                                    style: text.titleMedium,
+                                    overflow: TextOverflow.ellipsis)),
+                            const SizedBox(width: 8),
+                            Flexible(child: OrderStatusChip(order: o)),
+                          ]),
+                          const SizedBox(height: 4),
+                          Text(
+                              '${o.customer.displayName}${o.customer.name.trim().isEmpty ? '' : ' · ${o.customer.phone}'}',
+                              style: text.bodyMedium,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis),
+                          const SizedBox(height: 8),
+                          Wrap(
+                              spacing: 6,
+                              runSpacing: 6,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              children: [
+                                Text(formatPaise(o.totalPaise),
+                                    style: text.titleSmall),
+                                if (o.status != 'CANCELLED')
+                                  PosStatusChip(
+                                      label: balance > 0
+                                          ? l10n.posOrdBalanceDue(
+                                              formatPaise(balance))
+                                          : paymentStatusLabel(
+                                              l10n, o.paymentStatus),
+                                      tone: toneOfPayment(o.paymentStatus)),
+                                if (o.isExpress)
+                                  PosStatusChip(
+                                      label: l10n.posOrdExpress,
+                                      tone: PosTone.danger,
+                                      icon: Icons.bolt_rounded),
+                                if (o.deliveryMode != DeliveryMode.walkIn)
+                                  PosStatusChip(
+                                      label: deliveryModeLabel(
+                                          l10n, o.deliveryMode),
+                                      tone: PosTone.neutral,
+                                      icon: o.deliveryMode ==
+                                              DeliveryMode.homeDelivery
+                                          ? Icons.local_shipping_rounded
+                                          : Icons.directions_walk_rounded),
+                                if (!o.isClosed &&
+                                    o.expectedDeliveryDate != null)
+                                  Text(
+                                      l10n.posOrdDue(dateText(
+                                          context, o.expectedDeliveryDate)),
+                                      style: text.bodySmall),
+                              ]),
+                        ],
                       ),
-                  ]),
+                    ),
+                  ),
                 ),
+              ),
             ],
           ),
-        ),
+          InkWell(
+            onTap: () => setState(() => _open = !_open),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 44),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(children: [
+                  Text(l10n.posOrdItemsCount(o.pieceCount),
+                      style: text.labelLarge),
+                  const Spacer(),
+                  Icon(_open
+                      ? Icons.expand_less_rounded
+                      : Icons.expand_more_rounded),
+                ]),
+              ),
+            ),
+          ),
+          if (_open)
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+              child: Column(children: [
+                for (final i in o.items)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 3),
+                    child: Row(children: [
+                      Expanded(
+                          child: Text(
+                              '${i.name} · ${i.serviceName} × ${i.qtyText}',
+                              style: text.bodyMedium)),
+                      Text(formatPaise(i.amountPaise), style: text.bodyMedium),
+                    ]),
+                  ),
+              ]),
+            ),
+        ],
       ),
     );
   }

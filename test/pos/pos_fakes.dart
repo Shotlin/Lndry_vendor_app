@@ -502,9 +502,6 @@ class FakeOrdersRepo implements PosOrdersRepository {
   @override
   Future<List<OrderCaptain>> listCaptains() async => captains;
 
-  @override
-  Future<List<GarmentUnit>> listGarmentUnits(String orderId) async => units;
-
   final List<String> printJobs = [];
   @override
   Future<String?> createTagPrintJob(

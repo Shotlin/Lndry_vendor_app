@@ -179,14 +179,6 @@ void main() {
       expect(d.payments.single.amountPaise, 5000);
     });
 
-    test('garment units list', () async {
-      final t = make()
-        ..http.on('GET', '/vendor/counter/garment-units', 'order_units');
-      final u = await ApiPosOrdersRepository(t.dio).listGarmentUnits('o1');
-      expect(u.map((x) => x.state), ['ASSEMBLY', 'ASSEMBLY']);
-      expect(t.http.requests.single.queryParameters, {'orderId': 'o1'});
-    });
-
     test('an answer without an order is an error, not a blank screen',
         () async {
       final t = make()
