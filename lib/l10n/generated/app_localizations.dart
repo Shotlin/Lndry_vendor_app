@@ -5787,6 +5787,1100 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bill'**
   String get posBookBill;
+
+  /// POS mode: posOrdersTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get posOrdersTitle;
+
+  /// POS mode: posOrdTabBooked
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get posOrdTabBooked;
+
+  /// POS mode: posOrdTabInProcess
+  ///
+  /// In en, this message translates to:
+  /// **'In Process'**
+  String get posOrdTabInProcess;
+
+  /// POS mode: posOrdTabDone
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get posOrdTabDone;
+
+  /// POS mode: posOrdFilter
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get posOrdFilter;
+
+  /// POS mode: posOrdSelectAll
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get posOrdSelectAll;
+
+  /// POS mode: posOrdSelectedCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String posOrdSelectedCount(int count);
+
+  /// POS mode: posOrdMoveNext
+  ///
+  /// In en, this message translates to:
+  /// **'Move to next step'**
+  String get posOrdMoveNext;
+
+  /// POS mode: posOrdSearchHint
+  ///
+  /// In en, this message translates to:
+  /// **'Search name, phone or order no.'**
+  String get posOrdSearchHint;
+
+  /// POS mode: posOrdEmptyBooked
+  ///
+  /// In en, this message translates to:
+  /// **'No booked orders. Tap Book Order to add one.'**
+  String get posOrdEmptyBooked;
+
+  /// POS mode: posOrdEmptyInProcess
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is being processed right now.'**
+  String get posOrdEmptyInProcess;
+
+  /// POS mode: posOrdEmptyDone
+  ///
+  /// In en, this message translates to:
+  /// **'No orders are ready right now.'**
+  String get posOrdEmptyDone;
+
+  /// POS mode: posOrdEmptyFiltered
+  ///
+  /// In en, this message translates to:
+  /// **'No orders match. Clear the filter or the search.'**
+  String get posOrdEmptyFiltered;
+
+  /// POS mode: posOrdClearFilters
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get posOrdClearFilters;
+
+  /// POS mode: posOrdLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load the orders.'**
+  String get posOrdLoadError;
+
+  /// POS mode: posOrdLoadMoreError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load more. Tap to try again.'**
+  String get posOrdLoadMoreError;
+
+  /// POS mode: posOrdItemsCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 item} other{{count} items}}'**
+  String posOrdItemsCount(int count);
+
+  /// POS mode: posOrdBalanceDue
+  ///
+  /// In en, this message translates to:
+  /// **'Balance {amount}'**
+  String posOrdBalanceDue(String amount);
+
+  /// POS mode: posOrdDue
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String posOrdDue(String date);
+
+  /// POS mode: posOrdExpress
+  ///
+  /// In en, this message translates to:
+  /// **'Express'**
+  String get posOrdExpress;
+
+  /// POS mode: posOrdHomeDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Home Delivery'**
+  String get posOrdHomeDelivery;
+
+  /// POS mode: posOrdPickup
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get posOrdPickup;
+
+  /// POS mode: posOrdWalkIn
+  ///
+  /// In en, this message translates to:
+  /// **'At counter'**
+  String get posOrdWalkIn;
+
+  /// POS mode: posPayStatusPaid
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get posPayStatusPaid;
+
+  /// POS mode: posPayStatusPart
+  ///
+  /// In en, this message translates to:
+  /// **'Part paid'**
+  String get posPayStatusPart;
+
+  /// POS mode: posPayStatusUnpaid
+  ///
+  /// In en, this message translates to:
+  /// **'Unpaid'**
+  String get posPayStatusUnpaid;
+
+  /// POS mode: posPhaseBooked
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get posPhaseBooked;
+
+  /// POS mode: posPhaseProcessing
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get posPhaseProcessing;
+
+  /// POS mode: posPhaseReady
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get posPhaseReady;
+
+  /// POS mode: posPhaseOut
+  ///
+  /// In en, this message translates to:
+  /// **'Out for delivery'**
+  String get posPhaseOut;
+
+  /// POS mode: posPhaseDelivered
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posPhaseDelivered;
+
+  /// POS mode: posPhaseComplete
+  ///
+  /// In en, this message translates to:
+  /// **'Order Complete'**
+  String get posPhaseComplete;
+
+  /// POS mode: posPhaseCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get posPhaseCancelled;
+
+  /// POS mode: posFilterTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Filter orders'**
+  String get posFilterTitle;
+
+  /// POS mode: posFilterStatus
+  ///
+  /// In en, this message translates to:
+  /// **'Which orders'**
+  String get posFilterStatus;
+
+  /// POS mode: posFilterThisTab
+  ///
+  /// In en, this message translates to:
+  /// **'This tab'**
+  String get posFilterThisTab;
+
+  /// POS mode: posFilterAllOrders
+  ///
+  /// In en, this message translates to:
+  /// **'All orders'**
+  String get posFilterAllOrders;
+
+  /// POS mode: posFilterDeliveredOnly
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posFilterDeliveredOnly;
+
+  /// POS mode: posFilterCancelledOnly
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get posFilterCancelledOnly;
+
+  /// POS mode: posFilterDates
+  ///
+  /// In en, this message translates to:
+  /// **'Order date'**
+  String get posFilterDates;
+
+  /// POS mode: posFilterFrom
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get posFilterFrom;
+
+  /// POS mode: posFilterTo
+  ///
+  /// In en, this message translates to:
+  /// **'To'**
+  String get posFilterTo;
+
+  /// POS mode: posFilterAnyDate
+  ///
+  /// In en, this message translates to:
+  /// **'Any date'**
+  String get posFilterAnyDate;
+
+  /// POS mode: posFilterDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'How it reaches the customer'**
+  String get posFilterDelivery;
+
+  /// POS mode: posFilterAnyDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Any'**
+  String get posFilterAnyDelivery;
+
+  /// POS mode: posFilterExpressOnly
+  ///
+  /// In en, this message translates to:
+  /// **'Express only'**
+  String get posFilterExpressOnly;
+
+  /// POS mode: posFilterDueOnly
+  ///
+  /// In en, this message translates to:
+  /// **'Balance due only'**
+  String get posFilterDueOnly;
+
+  /// POS mode: posFilterApply
+  ///
+  /// In en, this message translates to:
+  /// **'Show orders'**
+  String get posFilterApply;
+
+  /// POS mode: posFilterReset
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get posFilterReset;
+
+  /// POS mode: posBulkTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Move {count} orders to the next step?'**
+  String posBulkTitle(int count);
+
+  /// POS mode: posBulkBody
+  ///
+  /// In en, this message translates to:
+  /// **'Each order moves one step: Booked → Processing → Ready → Delivered.'**
+  String get posBulkBody;
+
+  /// POS mode: posBulkReadyNote
+  ///
+  /// In en, this message translates to:
+  /// **'Orders whose garments were not scanned are marked ready anyway.'**
+  String get posBulkReadyNote;
+
+  /// POS mode: posBulkDueNote
+  ///
+  /// In en, this message translates to:
+  /// **'Orders with a balance due are NOT delivered here — open them one by one.'**
+  String get posBulkDueNote;
+
+  /// POS mode: posBulkGo
+  ///
+  /// In en, this message translates to:
+  /// **'Move orders'**
+  String get posBulkGo;
+
+  /// POS mode: posBulkDone
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders moved.'**
+  String posBulkDone(int count);
+
+  /// POS mode: posBulkPartial
+  ///
+  /// In en, this message translates to:
+  /// **'{moved} moved. {failed} need a closer look — open them one by one.'**
+  String posBulkPartial(int moved, int failed);
+
+  /// POS mode: posBulkNone
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing could be moved. Open the orders one by one.'**
+  String get posBulkNone;
+
+  /// POS mode: posBulkSkipDue
+  ///
+  /// In en, this message translates to:
+  /// **'{count} with a balance due were left for you to open.'**
+  String posBulkSkipDue(int count);
+
+  /// POS mode: posOrdDetailTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Order details'**
+  String get posOrdDetailTitle;
+
+  /// POS mode: posOrdCall
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get posOrdCall;
+
+  /// POS mode: posOrdCallFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the phone.'**
+  String get posOrdCallFailed;
+
+  /// POS mode: posNextStart
+  ///
+  /// In en, this message translates to:
+  /// **'Start Processing'**
+  String get posNextStart;
+
+  /// POS mode: posNextReady
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Ready'**
+  String get posNextReady;
+
+  /// POS mode: posNextSendOut
+  ///
+  /// In en, this message translates to:
+  /// **'Send for Delivery'**
+  String get posNextSendOut;
+
+  /// POS mode: posNextDeliver
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver Order'**
+  String get posNextDeliver;
+
+  /// POS mode: posOrdFinished
+  ///
+  /// In en, this message translates to:
+  /// **'This order is finished.'**
+  String get posOrdFinished;
+
+  /// POS mode: posOrdCancelledNote
+  ///
+  /// In en, this message translates to:
+  /// **'This order was cancelled.'**
+  String get posOrdCancelledNote;
+
+  /// POS mode: posReadyAnywayTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Garments not scanned yet'**
+  String get posReadyAnywayTitle;
+
+  /// POS mode: posReadyAnywayBody
+  ///
+  /// In en, this message translates to:
+  /// **'Some garments have not been scanned through processing. Mark the order ready anyway?'**
+  String get posReadyAnywayBody;
+
+  /// POS mode: posReadyAnywayYes
+  ///
+  /// In en, this message translates to:
+  /// **'Mark ready anyway'**
+  String get posReadyAnywayYes;
+
+  /// POS mode: posNotYet
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet'**
+  String get posNotYet;
+
+  /// POS mode: posDeliverDueTitle
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} is still due'**
+  String posDeliverDueTitle(String amount);
+
+  /// POS mode: posDeliverDueBody
+  ///
+  /// In en, this message translates to:
+  /// **'Collect the payment first, or deliver now and collect later.'**
+  String get posDeliverDueBody;
+
+  /// POS mode: posCollectFirst
+  ///
+  /// In en, this message translates to:
+  /// **'Collect payment first'**
+  String get posCollectFirst;
+
+  /// POS mode: posDeliverAnyway
+  ///
+  /// In en, this message translates to:
+  /// **'Deliver with balance due'**
+  String get posDeliverAnyway;
+
+  /// POS mode: posOrdMoved
+  ///
+  /// In en, this message translates to:
+  /// **'Order moved to {status}.'**
+  String posOrdMoved(String status);
+
+  /// POS mode: posOrdChanged
+  ///
+  /// In en, this message translates to:
+  /// **'This order was changed by someone else. It has been reloaded — please check and try again.'**
+  String get posOrdChanged;
+
+  /// POS mode: posProgressPercent
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% complete'**
+  String posProgressPercent(int percent);
+
+  /// POS mode: posStageBooked
+  ///
+  /// In en, this message translates to:
+  /// **'Booked'**
+  String get posStageBooked;
+
+  /// POS mode: posStageProcessed
+  ///
+  /// In en, this message translates to:
+  /// **'Processed'**
+  String get posStageProcessed;
+
+  /// POS mode: posStageDone
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get posStageDone;
+
+  /// POS mode: posStageDelivered
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posStageDelivered;
+
+  /// POS mode: posStageComplete
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get posStageComplete;
+
+  /// POS mode: posActionsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get posActionsTitle;
+
+  /// POS mode: posActPayNow
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get posActPayNow;
+
+  /// POS mode: posActInvoice
+  ///
+  /// In en, this message translates to:
+  /// **'View Invoice'**
+  String get posActInvoice;
+
+  /// POS mode: posActMiniInvoice
+  ///
+  /// In en, this message translates to:
+  /// **'Mini Invoice'**
+  String get posActMiniInvoice;
+
+  /// POS mode: posActTag
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get posActTag;
+
+  /// POS mode: posActEdit
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Order'**
+  String get posActEdit;
+
+  /// POS mode: posActCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Order'**
+  String get posActCancel;
+
+  /// POS mode: posActAssign
+  ///
+  /// In en, this message translates to:
+  /// **'Assign Captain'**
+  String get posActAssign;
+
+  /// POS mode: posInfoTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Order info'**
+  String get posInfoTitle;
+
+  /// POS mode: posInfoDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get posInfoDelivery;
+
+  /// POS mode: posInfoOrderNo
+  ///
+  /// In en, this message translates to:
+  /// **'Order no.'**
+  String get posInfoOrderNo;
+
+  /// POS mode: posInfoInvoiceAmount
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice amount'**
+  String get posInfoInvoiceAmount;
+
+  /// POS mode: posInfoPaid
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get posInfoPaid;
+
+  /// POS mode: posInfoBalance
+  ///
+  /// In en, this message translates to:
+  /// **'Balance'**
+  String get posInfoBalance;
+
+  /// POS mode: posInfoBookedOn
+  ///
+  /// In en, this message translates to:
+  /// **'Booked on'**
+  String get posInfoBookedOn;
+
+  /// POS mode: posInfoDeliveryDate
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery date'**
+  String get posInfoDeliveryDate;
+
+  /// POS mode: posInfoPickupCaptain
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup captain'**
+  String get posInfoPickupCaptain;
+
+  /// POS mode: posInfoDeliveryCaptain
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery captain'**
+  String get posInfoDeliveryCaptain;
+
+  /// POS mode: posInfoNotAssigned
+  ///
+  /// In en, this message translates to:
+  /// **'Not assigned'**
+  String get posInfoNotAssigned;
+
+  /// POS mode: posInfoNotes
+  ///
+  /// In en, this message translates to:
+  /// **'Remarks'**
+  String get posInfoNotes;
+
+  /// POS mode: posInfoCancelReason
+  ///
+  /// In en, this message translates to:
+  /// **'Reason for cancelling'**
+  String get posInfoCancelReason;
+
+  /// POS mode: posPaymentsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Payments received'**
+  String get posPaymentsTitle;
+
+  /// POS mode: posPaymentsNone
+  ///
+  /// In en, this message translates to:
+  /// **'No payment received yet.'**
+  String get posPaymentsNone;
+
+  /// POS mode: posModeCash
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get posModeCash;
+
+  /// POS mode: posModeOnline
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get posModeOnline;
+
+  /// POS mode: posModeCard
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get posModeCard;
+
+  /// POS mode: posModeBank
+  ///
+  /// In en, this message translates to:
+  /// **'Bank'**
+  String get posModeBank;
+
+  /// POS mode: posModeWallet
+  ///
+  /// In en, this message translates to:
+  /// **'Wallet'**
+  String get posModeWallet;
+
+  /// POS mode: posGarmentsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Garments'**
+  String get posGarmentsTitle;
+
+  /// POS mode: posGarmentsNone
+  ///
+  /// In en, this message translates to:
+  /// **'No garments on this order.'**
+  String get posGarmentsNone;
+
+  /// POS mode: posUnitReceived
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get posUnitReceived;
+
+  /// POS mode: posUnitProcessing
+  ///
+  /// In en, this message translates to:
+  /// **'In process'**
+  String get posUnitProcessing;
+
+  /// POS mode: posUnitReady
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get posUnitReady;
+
+  /// POS mode: posUnitOut
+  ///
+  /// In en, this message translates to:
+  /// **'Out'**
+  String get posUnitOut;
+
+  /// POS mode: posUnitDelivered
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posUnitDelivered;
+
+  /// POS mode: posUnitMissing
+  ///
+  /// In en, this message translates to:
+  /// **'Missing'**
+  String get posUnitMissing;
+
+  /// POS mode: posUnitCancelled
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get posUnitCancelled;
+
+  /// POS mode: posOrdLoadFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this order.'**
+  String get posOrdLoadFailed;
+
+  /// POS mode: posOrdLoadingHint
+  ///
+  /// In en, this message translates to:
+  /// **'Loading the order…'**
+  String get posOrdLoadingHint;
+
+  /// POS mode: posWhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get posWhatsApp;
+
+  /// POS mode: posWaOpenFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open WhatsApp.'**
+  String get posWaOpenFailed;
+
+  /// POS mode: posWaMessageDue
+  ///
+  /// In en, this message translates to:
+  /// **'Hello {name}, your order {number} is {status}. Total {total}, balance {balance}. Thank you! — {shop}'**
+  String posWaMessageDue(String name, String number, String status,
+      String total, String balance, String shop);
+
+  /// POS mode: posWaMessagePaid
+  ///
+  /// In en, this message translates to:
+  /// **'Hello {name}, your order {number} is {status}. Total {total}, fully paid. Thank you! — {shop}'**
+  String posWaMessagePaid(
+      String name, String number, String status, String total, String shop);
+
+  /// POS mode: posWaCustomerFallback
+  ///
+  /// In en, this message translates to:
+  /// **'there'**
+  String get posWaCustomerFallback;
+
+  /// POS mode: posPayTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Collect payment'**
+  String get posPayTitle;
+
+  /// POS mode: posPayBalance
+  ///
+  /// In en, this message translates to:
+  /// **'Balance to collect'**
+  String get posPayBalance;
+
+  /// POS mode: posPayAmount
+  ///
+  /// In en, this message translates to:
+  /// **'Amount (₹)'**
+  String get posPayAmount;
+
+  /// POS mode: posPayFull
+  ///
+  /// In en, this message translates to:
+  /// **'Full balance'**
+  String get posPayFull;
+
+  /// POS mode: posPayHow
+  ///
+  /// In en, this message translates to:
+  /// **'How is the customer paying?'**
+  String get posPayHow;
+
+  /// POS mode: posPayReference
+  ///
+  /// In en, this message translates to:
+  /// **'Reference (optional)'**
+  String get posPayReference;
+
+  /// POS mode: posPayReferenceHint
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. UPI transaction number'**
+  String get posPayReferenceHint;
+
+  /// POS mode: posPayCollect
+  ///
+  /// In en, this message translates to:
+  /// **'Collect {amount}'**
+  String posPayCollect(String amount);
+
+  /// POS mode: posPayErrZero
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount.'**
+  String get posPayErrZero;
+
+  /// POS mode: posPayErrOver
+  ///
+  /// In en, this message translates to:
+  /// **'It cannot be more than the balance {amount}.'**
+  String posPayErrOver(String amount);
+
+  /// POS mode: posPayDone
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} collected.'**
+  String posPayDone(String amount);
+
+  /// POS mode: posPayCheckFirst
+  ///
+  /// In en, this message translates to:
+  /// **'We could not confirm that payment. The order was reloaded — check the balance before collecting again.'**
+  String get posPayCheckFirst;
+
+  /// POS mode: posPayNothingDue
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is due on this order.'**
+  String get posPayNothingDue;
+
+  /// POS mode: posCancelTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel this order?'**
+  String get posCancelTitle;
+
+  /// POS mode: posCancelBody
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone.'**
+  String get posCancelBody;
+
+  /// POS mode: posCancelWhy
+  ///
+  /// In en, this message translates to:
+  /// **'Why is it being cancelled?'**
+  String get posCancelWhy;
+
+  /// POS mode: posCancelReasonMind
+  ///
+  /// In en, this message translates to:
+  /// **'Customer changed their mind'**
+  String get posCancelReasonMind;
+
+  /// POS mode: posCancelReasonMistake
+  ///
+  /// In en, this message translates to:
+  /// **'Booked by mistake'**
+  String get posCancelReasonMistake;
+
+  /// POS mode: posCancelReasonPrice
+  ///
+  /// In en, this message translates to:
+  /// **'Price problem'**
+  String get posCancelReasonPrice;
+
+  /// POS mode: posCancelReasonOther
+  ///
+  /// In en, this message translates to:
+  /// **'Other reason'**
+  String get posCancelReasonOther;
+
+  /// POS mode: posCancelOtherHint
+  ///
+  /// In en, this message translates to:
+  /// **'Write the reason (3 letters or more)'**
+  String get posCancelOtherHint;
+
+  /// POS mode: posCancelRefundNote
+  ///
+  /// In en, this message translates to:
+  /// **'If the customer already paid, give the money back yourself — the app does not refund.'**
+  String get posCancelRefundNote;
+
+  /// POS mode: posCancelConfirm
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Order'**
+  String get posCancelConfirm;
+
+  /// POS mode: posCancelKeep
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the order'**
+  String get posCancelKeep;
+
+  /// POS mode: posCancelDone
+  ///
+  /// In en, this message translates to:
+  /// **'Order cancelled.'**
+  String get posCancelDone;
+
+  /// POS mode: posEditTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Edit order'**
+  String get posEditTitle;
+
+  /// POS mode: posEditItemsNote
+  ///
+  /// In en, this message translates to:
+  /// **'To change the garments, cancel this order and book a new one.'**
+  String get posEditItemsNote;
+
+  /// POS mode: posEditSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get posEditSave;
+
+  /// POS mode: posEditSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Order updated.'**
+  String get posEditSaved;
+
+  /// POS mode: posEditNothing
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was changed.'**
+  String get posEditNothing;
+
+  /// POS mode: posAssignTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Assign captain'**
+  String get posAssignTitle;
+
+  /// POS mode: posAssignPickup
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup captain'**
+  String get posAssignPickup;
+
+  /// POS mode: posAssignDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery captain'**
+  String get posAssignDelivery;
+
+  /// POS mode: posAssignKeep
+  ///
+  /// In en, this message translates to:
+  /// **'Keep as it is'**
+  String get posAssignKeep;
+
+  /// POS mode: posAssignNone
+  ///
+  /// In en, this message translates to:
+  /// **'You have no captains yet. Add one in Settings → Team.'**
+  String get posAssignNone;
+
+  /// POS mode: posAssignSave
+  ///
+  /// In en, this message translates to:
+  /// **'Assign'**
+  String get posAssignSave;
+
+  /// POS mode: posAssignDone
+  ///
+  /// In en, this message translates to:
+  /// **'Captain assigned.'**
+  String get posAssignDone;
+
+  /// POS mode: posInvoiceTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice'**
+  String get posInvoiceTitle;
+
+  /// POS mode: posMiniTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Mini bill'**
+  String get posMiniTitle;
+
+  /// POS mode: posPaper58
+  ///
+  /// In en, this message translates to:
+  /// **'58 mm'**
+  String get posPaper58;
+
+  /// POS mode: posPaper80
+  ///
+  /// In en, this message translates to:
+  /// **'80 mm'**
+  String get posPaper80;
+
+  /// POS mode: posPaperLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Paper size'**
+  String get posPaperLabel;
+
+  /// POS mode: posInvoiceLater
+  ///
+  /// In en, this message translates to:
+  /// **'The invoice is created when the order is delivered. Use Mini Invoice for a bill now.'**
+  String get posInvoiceLater;
+
+  /// POS mode: posInvoiceOpenMini
+  ///
+  /// In en, this message translates to:
+  /// **'Open Mini Invoice'**
+  String get posInvoiceOpenMini;
+
+  /// POS mode: posInvoiceFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not prepare the bill.'**
+  String get posInvoiceFailed;
+
+  /// POS mode: posOk
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get posOk;
+
+  /// POS mode: posTagsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Garment tags'**
+  String get posTagsTitle;
+
+  /// POS mode: posTagsEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'This order has no tags.'**
+  String get posTagsEmpty;
+
+  /// POS mode: posTagsPrint
+  ///
+  /// In en, this message translates to:
+  /// **'Print or share tags'**
+  String get posTagsPrint;
+
+  /// POS mode: posTagsHint
+  ///
+  /// In en, this message translates to:
+  /// **'Stick one tag on each garment. The code is also written under each QR.'**
+  String get posTagsHint;
+
+  /// POS mode: posTagsPdfTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Tags for order {number}'**
+  String posTagsPdfTitle(String number);
+
+  /// POS mode: posTagsFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not prepare the tags.'**
+  String get posTagsFailed;
+
+  /// POS mode: posTileOpensOrders
+  ///
+  /// In en, this message translates to:
+  /// **'Opens the orders list'**
+  String get posTileOpensOrders;
+
+  /// POS mode: posOrdFiltered
+  ///
+  /// In en, this message translates to:
+  /// **'Showing: {what}'**
+  String posOrdFiltered(String what);
+
+  /// POS mode: posNoPermission
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to do this. Ask the shop owner.'**
+  String get posNoPermission;
 }
 
 class _AppLocalizationsDelegate

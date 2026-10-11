@@ -4,8 +4,8 @@
 > **Rule:** a box is ticked only when the work is done **and verified**. Unverified work is marked `(written, not run)`.
 
 **Branch (all repos):** `claude/laundry-vendor-pos-modes-bs0o61`
-**Last updated:** 2026-10-11 — Phase 2 ✅ (Phases 0–2 done)
-**Current phase:** 3 (⬜ not started)
+**Last updated:** 2026-10-11 — Phase 3 ✅ (Phases 0–3 done)
+**Current phase:** 4 (⬜ not started)
 
 ## Phase status
 
@@ -14,7 +14,7 @@
 | 0 | Planning, docs, slash commands | ✅ Done | 2026-10-10 | 2026-10-10 |
 | 1 | Foundation: modes + POS onboarding | ✅ Done | 2026-10-10 | 2026-10-11 |
 | 2 | Counter core: Home · Book Order · Customers · Price list | ✅ Done | 2026-10-11 | 2026-10-11 |
-| 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ⬜ Not started | — | — |
+| 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ✅ Done | 2026-10-11 | 2026-10-11 |
 | 4 | Money, Reports, Polish & Release | ⬜ Not started | — | — |
 
 Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Done met) · ⛔ blocked (reason in Blockers)
@@ -62,16 +62,16 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Do
 
 ## Phase 3 checklist (details: `docs/pos-mode/PHASE-3.md`)
 
-- [ ] 3A Models, `order_state.dart`, repositories
-- [ ] 3B-1 Orders list (tabs, filters, search, bulk next-step)
-- [ ] 3B-2 Order detail (timeline, quick actions, info, garments)
-- [ ] 3B-3 Pay Now sheet (cash/online/wallet)
-- [ ] 3B-4 Invoice + Mini invoice
-- [ ] 3B-5 Tags
-- [ ] 3B-6 Edit order / Cancel order / Assign captain
-- [ ] 3B-7 Permissions + resume/real-time refresh
-- [ ] 3C Tests + lifecycle contract script
-- [ ] 3D Definition of Done verified + pushed
+- [x] 3A Models, `order_state.dart`, repositories — plain Dart models, ONE place (`order_state.dart`) for status/payment → label/colour/next step; contract-tested on REAL captured responses (`test/pos/fixtures/order_*.json`)
+- [x] 3B-1 Orders list (tabs, filters, search, bulk next-step) — Booked/In Process/Done + "All / Delivered / Cancelled" in the filter; date range, delivery mode, express, balance due; debounced search; infinite scroll; pull-to-refresh; expandable cards; select-all + confirmed bulk move that **never** delivers with a balance due. Not done: "captain" filter (no server filter for it)
+- [x] 3B-2 Order detail (timeline, quick actions, info, garments) — customer, Call, status + payment chips, big next-step button (+ "Mark ready anyway" / "Deliver with balance due" questions), timeline with %, Quick Actions, info, payments, garments with tags, WhatsApp. Not done: **customer profile and wallet icons** (need the Phase 4 Customers screens)
+- [x] 3B-3 Pay Now sheet (cash/online/wallet) — Cash / Online / Card / Bank, balance + amount rules, reference, double-tap safe, re-reads the order. **Wallet is NOT offered** (see deviations)
+- [x] 3B-4 Invoice + Mini invoice — in-app viewer with Share + Print (`printing` package); A4 invoice after delivery, 58/80 mm mini bill any time until cancelled (new backend endpoint)
+- [x] 3B-5 Tags — list of garment tags + "Print or share tags" (one QR label per garment, drawn in the app from the server's tag codes) + print-job logging
+- [x] 3B-6 Edit order / Cancel order / Assign captain — Edit changes delivery date / mode / express / remarks (all the server allows; garments cannot be edited after booking); Cancel needs a reason; Assign picks pickup/delivery captain
+- [x] 3B-7 Permissions + resume/real-time refresh — actions hidden by `orders.view|process|assign_captain`; detail AND list re-read on app resume + pull-to-refresh. The backend emits **no** live event for counter orders, so there is no socket refresh
+- [x] 3C Tests + lifecycle contract script — `scripts/pos-smoke.mjs --lifecycle` (58 checks) + backend integration tests + 187 new Flutter tests + 39-check real-browser journey
+- [x] 3D Definition of Done verified + pushed (see Log)
 
 ## Phase 4 checklist (details: `docs/pos-mode/PHASE-4.md`)
 
@@ -100,8 +100,9 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 
 ## Environment notes
 
-- **Reproducible local test recipe (Postgres, Redis, backend, Flutter SDK): `docs/pos-mode/LOCAL-TESTING.md`.** The cloud sandbox is ephemeral; redo it at the start of a session that must run things.
+- **Reproducible local test recipe (Postgres, Redis, backend, Flutter SDK): `docs/pos-mode/LOCAL-TESTING.md`.** Real-browser journeys: `scripts/pos-web-e2e` (`npm run phase2`, `npm run phase3`). The cloud sandbox is ephemeral; redo it at the start of a session that must run things.
 - 2026-10-11: Flutter 3.47.7 was installed at `/root/sdk/flutter` (session-local). `flutter pub get/analyze` rewrite `pubspec.lock` and `analysis_options.yaml` — **never commit those two** (`git checkout --` them first).
+- 2026-10-11 (Phase 3): added two Flutter dependencies, `printing` ^5.15.1 (in-app PDF viewer with Share/Print) and `pdf` ^3.13.1 (QR tag labels). `pubspec.lock` contains **only the new entries** (barcode, bidi, pdf, pdf_widget_wrapper, printing, qr); the newer Flutter used here also bumps SDK-pinned packages — those bumps were left out on purpose. Run `flutter pub get` once on your side. **The Android/iOS build with `printing` was not run** (no emulator here).
 - Known pre-existing failures on untouched code: backend `tests/unit/step-up.test.js` + one auth test in `tests/integration/lndry-endpoints.test.js`; dashboard 3 `CustomerProfileDrawer` tests + 4 `any` lint errors; Flutter `test/widget_test.dart` smoke test; 626 analyzer infos in `lib`. None are caused by this initiative (each verified on the original commit).
 
 
@@ -110,6 +111,14 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 - Open product question (not blocking): a **POS-first user who later wants Marketplace** is not supported (a second shop would make login ambiguous) — handled by support/admin for now. Confirm if that is acceptable.
 
 ## Log (newest first)
+
+- 2026-10-11 — **Phase 3 closed ✅.**
+  Shipped — backend: `GET /vendor/counter/orders` gained `status=A,B` (tabs), `offset` (paging), `paymentDue=true` and `tile=…` (exactly the orders a Home tile counts: the tile definitions now live once in `home-tile-filters.js` and the dashboard counts with the same ones); `GET /vendor/counter/orders/:id/invoice` (issued A4 invoice after delivery; `format=mini&paper=58|80` bill via the new `mini-v1` template, any time except cancelled); docs in `Lndry_backend/docs/pos-order-lifecycle.md`. Flutter: Orders (tabs, search, filter sheet, paging, bulk move), Order detail (timeline, next step, Pay Now, Cancel, Edit, Assign captain, Call, WhatsApp, invoice / mini bill viewer, tags with QR labels), Home tiles + task rows that open the exact list, 182 l10n keys × en / hi / hi_Latn.
+  Verified (real): backend 6 new integration tests on real Postgres (mutation-checked; includes "every Home tile equals the list behind it"); `node scripts/pos-smoke.mjs --lifecycle` **58/58** against the live API (book → part-pay → overpay refused → skip refused → ready gated → delivery blocked while unpaid → pay → deliver → invoice PDFs → history → paging/tabs/cancel); full backend suite = only the 2 known failures; Flutter `test/pos` **449 tests** (from 262; 187 new, mutation-checked: stale list answers, bulk delivering with a balance, always-sending the override flag, paying more than the balance, the dialog/navigator bug below); contract tests on REAL captured responses; mini bills rendered to PNG and looked at; **release web build of the whole app in real Chromium against the real backend, 39/39 checks, run twice, every claim confirmed through the API** (Home tile → exact list, search, part payment ₹60 by UPI, Start Processing, "garments not scanned" question, "₹100 is still due" question, collect first, deliver, Order Complete, history, invoice + 58/80 mm bills from the server, WhatsApp link with the order text, cancel with reason, edit, assign captain, bulk move, Home numbers = database).
+  Bugs found by that verification and fixed: dialogs popped with the page's context, but dialogs live on the root navigator while the Orders tab has its own — "Move orders" closed the screen and moved nothing (only a nested-navigator test or the real browser shows this; test added); the bottom "N selected" bar squeezed its count into one letter per line and hid the button; a tappable `ExpansionTile` inside a coloured `Container` hid its ink (and asserts in debug); order cards and Select-all were not buttons/named checkboxes for a screen reader (now one labelled button per order, one named checkbox); filter chip "x" was not an actionable control (now a labelled **Clear filters** button); overflow in the filter row at large text and in the paper-size row; a spinner showed behind the "garments not scanned" question; WhatsApp links used `+` for spaces (now `%20`).
+  Decisions / deviations (please confirm): (1) **Wallet payment is not offered at Pay Now** — the backend's payment endpoint refuses `WALLET` and the OTP-confirmed redemption is wired only into booking; paying an existing order from the wallet would be new money logic (and a Phase 2 decision already kept it out of booking). (2) **Edit Order is a small sheet**, not the Book Order screen: the server only lets an open order change delivery date, mode, express and remarks. (3) Customer **profile / wallet icons** on the order header wait for the Phase 4 Customers screens. (4) **Staff permissions are enforced only in the app** for counter orders: the backend routes check "is a vendor, not a rider" but not `orders.process` etc. — so a staff member without the right is stopped by hidden buttons, not by the server. Changing that would change Epic desktop behaviour; logged for the Phase 4 security review. (5) Bulk "Move to next step" sends "mark ready anyway" for the Ready step (after a confirm that says so) but never delivers an order that still owes money. (6) A ready **home-delivery** order goes "Send for Delivery" → "Deliver Order"; any other goes straight to "Deliver Order". (7) Home tiles Booking/Delivery/Delivered/Revenue/Pending/Express/Pickups-to-assign/Deliveries-due/Deliveries-to-assign/Money-to-collect open their list; **Order requests** (LNDRY marketplace orders) opens nothing — there is no counter list behind it. (8) New dependencies `printing` + `pdf` (see Environment notes).
+  Not run / not verified: Epic desktop/website itself (reference-only; it calls the same endpoints) — so "same order on Epic and phone shows identical status" is **not checked by eye**; a phone or emulator (web build only) — so the **Android/iOS build with `printing`, the native PDF viewer, Share and Print were not run**, and the PDF *pages* were not looked at in the app (the web build's viewer needs a CDN the sandbox blocks; the server's PDFs were checked as real PDFs and the mini bills rendered to images); a real staff account on a device; Hindi screens by eye (strings are in; widget-tested for the Orders and detail screens); a thermal printer; Bluetooth printing (out of scope).
+  Next: Phase 4 (Search, Customers, Expense + cash drawer, Report, POS Settings, WhatsApp templates, offline-safe cart, accessibility audit, release). `ENFORCE_OFFERING` still OFF.
 
 - 2026-10-11 — **Phase 2 closed ✅.**
   Shipped: backend migration 153 (`delivery_mode`, `is_express`), counter book/update/list flags + filters, `data.home` dashboard tiles, malformed-customer-id 400 fix, `scripts/pos-smoke.mjs`; Flutter money helpers, models, repositories, POS Home, customer picker + Add Customer, Book Order (live server quote, draft persistence, idempotent save, charges/discounts/GST), Add Garment Price (inline create, edit existing), l10n (+130 keys × 3 languages), routes.

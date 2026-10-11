@@ -41,3 +41,9 @@ final posCustomerSearchProvider = FutureProvider.autoDispose.family<List<PosCust
 /// Whether this person may add or change prices. The server enforces it too; this only decides
 /// whether the buttons are shown (staff without catalogue rights never see "Add Garment Price").
 final posCanManageCatalogueProvider = Provider<bool>((ref) => ref.watch(myAccessProvider).can('catalogue.manage'));
+
+/// Staff only see and change orders if the owner granted it. The server decides what is *allowed*; these only decide
+/// what is *shown* (the counter routes do not check staff permissions yet — see PROGRESS.md, Phase 4 security review).
+final posCanViewOrdersProvider = Provider<bool>((ref) => ref.watch(myAccessProvider).can('orders.view'));
+final posCanProcessOrdersProvider = Provider<bool>((ref) => ref.watch(myAccessProvider).can('orders.process'));
+final posCanAssignCaptainProvider = Provider<bool>((ref) => ref.watch(myAccessProvider).can('orders.assign_captain'));

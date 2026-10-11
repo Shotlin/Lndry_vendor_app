@@ -22,6 +22,7 @@ flutter build web --release --no-web-resources-cdn \
 
 # 3. run the journey (installs the browser driver, playwright-core, into this folder only)
 cd scripts/pos-web-e2e && npm install && npm run phase2      # exit code 1 on any failed check
+npm run phase3                                               # the whole life of an order (Orders, detail, pay, deliver, invoice, cancel, edit, captain, bulk)
 ```
 
 Env: `API`, `WEB`, `OTP`, `CHROME` (path of a Chromium; the cloud image has `/opt/pw-browsers/chromium-*/chrome-linux/chrome`).
@@ -32,3 +33,7 @@ Notes learned the hard way
 * Filter chips are `checkbox` nodes, buttons are `button`; Flutter's dropdown **menus** are not in the accessibility tree — pick with the keyboard (`Enter`).
 * `getByRole('button', { name: 'Add' })` matches by substring: pass `exact: true` or you will press "Add Garment Price".
 * Tap the same screen position twice with `page.mouse.click` to test double-tap protection: a locator click waits for the element to be stable and cannot do it.
+* Phase 3 additions: the bottom bar's items are `tab`s (`getByRole('tab', { name: /^Order/ })`); screens opened with `push` (order detail, invoice) do **not** change the URL, so check the screen's content, not `page.url()`;
+  the **first** tap on a Flutter text field only wakes its native input — tap the box centre twice with `page.mouse.click` (Playwright's `click({ force: true })` never focuses it) and find a field that already holds text by role only (its name is no longer the hint);
+  `wa.me` is unreachable from the sandbox — `ctx.route('https://wa.me/**', …)` answers it so the popup's address can be read; every run needs a **new captain phone** (a phone can be a captain in one shop only);
+  the web build's PDF viewer downloads pdf.js from unpkg, which the sandbox blocks — it logs one page error at the invoice step and cannot draw the PDF (phones use native rendering).
