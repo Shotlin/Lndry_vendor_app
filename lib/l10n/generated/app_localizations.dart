@@ -7895,6 +7895,156 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get posCustProfile;
+
+  /// POS mode: posSetCustomers
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get posSetCustomers;
+
+  /// POS mode: posSetCustomersBody
+  ///
+  /// In en, this message translates to:
+  /// **'See everyone, call them, see what they owe.'**
+  String get posSetCustomersBody;
+
+  /// POS mode: posSetPrices
+  ///
+  /// In en, this message translates to:
+  /// **'Price list'**
+  String get posSetPrices;
+
+  /// POS mode: posSetPricesBody
+  ///
+  /// In en, this message translates to:
+  /// **'Add a garment or change a price.'**
+  String get posSetPricesBody;
+
+  /// POS mode: posSetRules
+  ///
+  /// In en, this message translates to:
+  /// **'Extra charges and discounts'**
+  String get posSetRules;
+
+  /// POS mode: posSetRulesBody
+  ///
+  /// In en, this message translates to:
+  /// **'The ones you can pick while booking.'**
+  String get posSetRulesBody;
+
+  /// POS mode: posSetRulesCharges
+  ///
+  /// In en, this message translates to:
+  /// **'Extra charges'**
+  String get posSetRulesCharges;
+
+  /// POS mode: posSetRulesDiscounts
+  ///
+  /// In en, this message translates to:
+  /// **'Discounts'**
+  String get posSetRulesDiscounts;
+
+  /// POS mode: posSetRulesNone
+  ///
+  /// In en, this message translates to:
+  /// **'None yet. They are added on the counter software or the website.'**
+  String get posSetRulesNone;
+
+  /// POS mode: posSetRuleFlat
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} flat'**
+  String posSetRuleFlat(String amount);
+
+  /// POS mode: posSetRulePercent
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% of the bill'**
+  String posSetRulePercent(String percent);
+
+  /// POS mode: posSetMessages
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp messages'**
+  String get posSetMessages;
+
+  /// POS mode: posSetMessagesBody
+  ///
+  /// In en, this message translates to:
+  /// **'The messages sent to customers.'**
+  String get posSetMessagesBody;
+
+  /// POS mode: posSetMessagesHint
+  ///
+  /// In en, this message translates to:
+  /// **'You can change these words on the counter software or the website. They show here too.'**
+  String get posSetMessagesHint;
+
+  /// POS mode: posSetTeam
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get posSetTeam;
+
+  /// POS mode: posSetTeamBody
+  ///
+  /// In en, this message translates to:
+  /// **'Who works in your shop.'**
+  String get posSetTeamBody;
+
+  /// POS mode: posSetTeamHint
+  ///
+  /// In en, this message translates to:
+  /// **'To add or remove people, use the counter software or the website.'**
+  String get posSetTeamHint;
+
+  /// POS mode: posSetRoleOwner
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get posSetRoleOwner;
+
+  /// POS mode: posSetRoleStaff
+  ///
+  /// In en, this message translates to:
+  /// **'Counter staff'**
+  String get posSetRoleStaff;
+
+  /// POS mode: posSetRoleRider
+  ///
+  /// In en, this message translates to:
+  /// **'Captain (pickup / delivery)'**
+  String get posSetRoleRider;
+
+  /// POS mode: posSetInactive
+  ///
+  /// In en, this message translates to:
+  /// **'Not active'**
+  String get posSetInactive;
+
+  /// POS mode: posSetLanguage
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get posSetLanguage;
+
+  /// POS mode: posSetLoadFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load this.'**
+  String get posSetLoadFailed;
+
+  /// POS mode: posSetSectionShop
+  ///
+  /// In en, this message translates to:
+  /// **'My shop'**
+  String get posSetSectionShop;
+
+  /// POS mode: posSetSectionApp
+  ///
+  /// In en, this message translates to:
+  /// **'This app'**
+  String get posSetSectionApp;
 }
 
 class _AppLocalizationsDelegate

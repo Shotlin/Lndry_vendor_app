@@ -4369,4 +4369,87 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get posCustProfile => 'Profile';
+
+  @override
+  String get posSetCustomers => 'Customers';
+
+  @override
+  String get posSetCustomersBody =>
+      'See everyone, call them, see what they owe.';
+
+  @override
+  String get posSetPrices => 'Price list';
+
+  @override
+  String get posSetPricesBody => 'Add a garment or change a price.';
+
+  @override
+  String get posSetRules => 'Extra charges and discounts';
+
+  @override
+  String get posSetRulesBody => 'The ones you can pick while booking.';
+
+  @override
+  String get posSetRulesCharges => 'Extra charges';
+
+  @override
+  String get posSetRulesDiscounts => 'Discounts';
+
+  @override
+  String get posSetRulesNone =>
+      'None yet. They are added on the counter software or the website.';
+
+  @override
+  String posSetRuleFlat(String amount) {
+    return '$amount flat';
+  }
+
+  @override
+  String posSetRulePercent(String percent) {
+    return '$percent% of the bill';
+  }
+
+  @override
+  String get posSetMessages => 'WhatsApp messages';
+
+  @override
+  String get posSetMessagesBody => 'The messages sent to customers.';
+
+  @override
+  String get posSetMessagesHint =>
+      'You can change these words on the counter software or the website. They show here too.';
+
+  @override
+  String get posSetTeam => 'Team';
+
+  @override
+  String get posSetTeamBody => 'Who works in your shop.';
+
+  @override
+  String get posSetTeamHint =>
+      'To add or remove people, use the counter software or the website.';
+
+  @override
+  String get posSetRoleOwner => 'Owner';
+
+  @override
+  String get posSetRoleStaff => 'Counter staff';
+
+  @override
+  String get posSetRoleRider => 'Captain (pickup / delivery)';
+
+  @override
+  String get posSetInactive => 'Not active';
+
+  @override
+  String get posSetLanguage => 'Language';
+
+  @override
+  String get posSetLoadFailed => 'Could not load this.';
+
+  @override
+  String get posSetSectionShop => 'My shop';
+
+  @override
+  String get posSetSectionApp => 'This app';
 }

@@ -4369,6 +4369,88 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posCustProfile => 'प्रोफ़ाइल';
+
+  @override
+  String get posSetCustomers => 'ग्राहक';
+
+  @override
+  String get posSetCustomersBody => 'सभी ग्राहक देखें, कॉल करें, बकाया देखें।';
+
+  @override
+  String get posSetPrices => 'दाम सूची';
+
+  @override
+  String get posSetPricesBody => 'कपड़ा जोड़ें या दाम बदलें।';
+
+  @override
+  String get posSetRules => 'अतिरिक्त शुल्क और छूट';
+
+  @override
+  String get posSetRulesBody => 'जो बुकिंग में चुन सकते हैं।';
+
+  @override
+  String get posSetRulesCharges => 'अतिरिक्त शुल्क';
+
+  @override
+  String get posSetRulesDiscounts => 'छूट';
+
+  @override
+  String get posSetRulesNone =>
+      'अभी कोई नहीं। ये काउंटर सॉफ़्टवेयर या वेबसाइट से जुड़ते हैं।';
+
+  @override
+  String posSetRuleFlat(String amount) {
+    return '$amount तय';
+  }
+
+  @override
+  String posSetRulePercent(String percent) {
+    return 'बिल का $percent%';
+  }
+
+  @override
+  String get posSetMessages => 'व्हाट्सऐप संदेश';
+
+  @override
+  String get posSetMessagesBody => 'ग्राहकों को भेजे जाने वाले संदेश।';
+
+  @override
+  String get posSetMessagesHint =>
+      'ये शब्द काउंटर सॉफ़्टवेयर या वेबसाइट पर बदल सकते हैं। यहाँ भी दिखेंगे।';
+
+  @override
+  String get posSetTeam => 'टीम';
+
+  @override
+  String get posSetTeamBody => 'आपकी दुकान में कौन काम करता है।';
+
+  @override
+  String get posSetTeamHint =>
+      'लोग जोड़ने या हटाने के लिए काउंटर सॉफ़्टवेयर या वेबसाइट इस्तेमाल करें।';
+
+  @override
+  String get posSetRoleOwner => 'मालिक';
+
+  @override
+  String get posSetRoleStaff => 'काउंटर स्टाफ़';
+
+  @override
+  String get posSetRoleRider => 'कैप्टन (पिकअप/डिलीवरी)';
+
+  @override
+  String get posSetInactive => 'सक्रिय नहीं';
+
+  @override
+  String get posSetLanguage => 'भाषा';
+
+  @override
+  String get posSetLoadFailed => 'यह नहीं खुल पाया।';
+
+  @override
+  String get posSetSectionShop => 'मेरी दुकान';
+
+  @override
+  String get posSetSectionApp => 'यह ऐप';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -8762,4 +8844,87 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posCustProfile => 'Profile';
+
+  @override
+  String get posSetCustomers => 'Customers';
+
+  @override
+  String get posSetCustomersBody =>
+      'Sabhi customers dekhein, call karein, baaki dekhein.';
+
+  @override
+  String get posSetPrices => 'Daam list';
+
+  @override
+  String get posSetPricesBody => 'Kapda jodein ya daam badlein.';
+
+  @override
+  String get posSetRules => 'Extra charges aur discount';
+
+  @override
+  String get posSetRulesBody => 'Jo booking mein chun sakte hain.';
+
+  @override
+  String get posSetRulesCharges => 'Extra charges';
+
+  @override
+  String get posSetRulesDiscounts => 'Discounts';
+
+  @override
+  String get posSetRulesNone =>
+      'Abhi koi nahi. Yeh counter software ya website se jude hain.';
+
+  @override
+  String posSetRuleFlat(String amount) {
+    return '$amount fixed';
+  }
+
+  @override
+  String posSetRulePercent(String percent) {
+    return 'Bill ka $percent%';
+  }
+
+  @override
+  String get posSetMessages => 'WhatsApp messages';
+
+  @override
+  String get posSetMessagesBody => 'Customers ko bheje jaane wale messages.';
+
+  @override
+  String get posSetMessagesHint =>
+      'Yeh shabd counter software ya website par badal sakte hain. Yahan bhi dikhenge.';
+
+  @override
+  String get posSetTeam => 'Team';
+
+  @override
+  String get posSetTeamBody => 'Aapki dukaan mein kaun kaam karta hai.';
+
+  @override
+  String get posSetTeamHint =>
+      'Log jodne ya hatane ke liye counter software ya website use karein.';
+
+  @override
+  String get posSetRoleOwner => 'Malik';
+
+  @override
+  String get posSetRoleStaff => 'Counter staff';
+
+  @override
+  String get posSetRoleRider => 'Captain (pickup/delivery)';
+
+  @override
+  String get posSetInactive => 'Active nahi';
+
+  @override
+  String get posSetLanguage => 'Bhasha';
+
+  @override
+  String get posSetLoadFailed => 'Yeh load nahi ho paya.';
+
+  @override
+  String get posSetSectionShop => 'Meri dukaan';
+
+  @override
+  String get posSetSectionApp => 'Yeh app';
 }
