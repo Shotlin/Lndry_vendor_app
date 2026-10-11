@@ -50,6 +50,14 @@ abstract final class AppRoutes {
   static const String posHome = '/pos/home';
   static const String posBook = '/pos/book';
   static const String posOrders = '/pos/orders';
+  static const String posOrderDetail = '/pos/orders/:id';
+  static const String posOrderInvoice = '/pos/orders/:id/invoice';
+  static const String posOrderMini = '/pos/orders/:id/mini';
+  static const String posOrderTags = '/pos/orders/:id/tags';
+  static String posOrderDetailPath(String id) => '/pos/orders/$id';
+  static String posOrderInvoicePath(String id) => '/pos/orders/$id/invoice';
+  static String posOrderMiniPath(String id) => '/pos/orders/$id/mini';
+  static String posOrderTagsPath(String id) => '/pos/orders/$id/tags';
   static const String posSearch = '/pos/search';
   static const String posExpense = '/pos/expense';
   static const String posReport = '/pos/report';
@@ -91,6 +99,10 @@ abstract final class AppRouteNames {
   static const String posHome = 'pos-home';
   static const String posBook = 'pos-book';
   static const String posOrders = 'pos-orders';
+  static const String posOrderDetail = 'pos-order-detail';
+  static const String posOrderInvoice = 'pos-order-invoice';
+  static const String posOrderMini = 'pos-order-mini';
+  static const String posOrderTags = 'pos-order-tags';
   static const String posSearch = 'pos-search';
   static const String posExpense = 'pos-expense';
   static const String posReport = 'pos-report';

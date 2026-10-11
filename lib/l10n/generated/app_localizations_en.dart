@@ -3195,4 +3195,610 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get posBookBill => 'Bill';
+
+  @override
+  String get posOrdersTitle => 'Orders';
+
+  @override
+  String get posOrdTabBooked => 'Booked';
+
+  @override
+  String get posOrdTabInProcess => 'In Process';
+
+  @override
+  String get posOrdTabDone => 'Done';
+
+  @override
+  String get posOrdFilter => 'Filter';
+
+  @override
+  String get posOrdSelectAll => 'Select all';
+
+  @override
+  String posOrdSelectedCount(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get posOrdMoveNext => 'Move to next step';
+
+  @override
+  String get posOrdSearchHint => 'Search name, phone or order no.';
+
+  @override
+  String get posOrdEmptyBooked =>
+      'No booked orders. Tap Book Order to add one.';
+
+  @override
+  String get posOrdEmptyInProcess => 'Nothing is being processed right now.';
+
+  @override
+  String get posOrdEmptyDone => 'No orders are ready right now.';
+
+  @override
+  String get posOrdEmptyFiltered =>
+      'No orders match. Clear the filter or the search.';
+
+  @override
+  String get posOrdClearFilters => 'Clear filters';
+
+  @override
+  String get posOrdLoadError => 'Could not load the orders.';
+
+  @override
+  String get posOrdLoadMoreError => 'Could not load more. Tap to try again.';
+
+  @override
+  String posOrdItemsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String posOrdBalanceDue(String amount) {
+    return 'Balance $amount';
+  }
+
+  @override
+  String posOrdDue(String date) {
+    return 'Due $date';
+  }
+
+  @override
+  String get posOrdExpress => 'Express';
+
+  @override
+  String get posOrdHomeDelivery => 'Home Delivery';
+
+  @override
+  String get posOrdPickup => 'Pickup';
+
+  @override
+  String get posOrdWalkIn => 'At counter';
+
+  @override
+  String get posPayStatusPaid => 'Paid';
+
+  @override
+  String get posPayStatusPart => 'Part paid';
+
+  @override
+  String get posPayStatusUnpaid => 'Unpaid';
+
+  @override
+  String get posPhaseBooked => 'Booked';
+
+  @override
+  String get posPhaseProcessing => 'Processing';
+
+  @override
+  String get posPhaseReady => 'Ready';
+
+  @override
+  String get posPhaseOut => 'Out for delivery';
+
+  @override
+  String get posPhaseDelivered => 'Delivered';
+
+  @override
+  String get posPhaseComplete => 'Order Complete';
+
+  @override
+  String get posPhaseCancelled => 'Cancelled';
+
+  @override
+  String get posFilterTitle => 'Filter orders';
+
+  @override
+  String get posFilterStatus => 'Which orders';
+
+  @override
+  String get posFilterThisTab => 'This tab';
+
+  @override
+  String get posFilterAllOrders => 'All orders';
+
+  @override
+  String get posFilterDeliveredOnly => 'Delivered';
+
+  @override
+  String get posFilterCancelledOnly => 'Cancelled';
+
+  @override
+  String get posFilterDates => 'Order date';
+
+  @override
+  String get posFilterFrom => 'From';
+
+  @override
+  String get posFilterTo => 'To';
+
+  @override
+  String get posFilterAnyDate => 'Any date';
+
+  @override
+  String get posFilterDelivery => 'How it reaches the customer';
+
+  @override
+  String get posFilterAnyDelivery => 'Any';
+
+  @override
+  String get posFilterExpressOnly => 'Express only';
+
+  @override
+  String get posFilterDueOnly => 'Balance due only';
+
+  @override
+  String get posFilterApply => 'Show orders';
+
+  @override
+  String get posFilterReset => 'Clear';
+
+  @override
+  String posBulkTitle(int count) {
+    return 'Move $count orders to the next step?';
+  }
+
+  @override
+  String get posBulkBody =>
+      'Each order moves one step: Booked → Processing → Ready → Delivered.';
+
+  @override
+  String get posBulkReadyNote =>
+      'Orders whose garments were not scanned are marked ready anyway.';
+
+  @override
+  String get posBulkDueNote =>
+      'Orders with a balance due are NOT delivered here — open them one by one.';
+
+  @override
+  String get posBulkGo => 'Move orders';
+
+  @override
+  String posBulkDone(int count) {
+    return '$count orders moved.';
+  }
+
+  @override
+  String posBulkPartial(int moved, int failed) {
+    return '$moved moved. $failed need a closer look — open them one by one.';
+  }
+
+  @override
+  String get posBulkNone =>
+      'Nothing could be moved. Open the orders one by one.';
+
+  @override
+  String posBulkSkipDue(int count) {
+    return '$count with a balance due were left for you to open.';
+  }
+
+  @override
+  String get posOrdDetailTitle => 'Order details';
+
+  @override
+  String get posOrdCall => 'Call';
+
+  @override
+  String get posOrdCallFailed => 'Could not open the phone.';
+
+  @override
+  String get posNextStart => 'Start Processing';
+
+  @override
+  String get posNextReady => 'Mark Ready';
+
+  @override
+  String get posNextSendOut => 'Send for Delivery';
+
+  @override
+  String get posNextDeliver => 'Deliver Order';
+
+  @override
+  String get posOrdFinished => 'This order is finished.';
+
+  @override
+  String get posOrdCancelledNote => 'This order was cancelled.';
+
+  @override
+  String get posReadyAnywayTitle => 'Garments not scanned yet';
+
+  @override
+  String get posReadyAnywayBody =>
+      'Some garments have not been scanned through processing. Mark the order ready anyway?';
+
+  @override
+  String get posReadyAnywayYes => 'Mark ready anyway';
+
+  @override
+  String get posNotYet => 'Not yet';
+
+  @override
+  String posDeliverDueTitle(String amount) {
+    return '$amount is still due';
+  }
+
+  @override
+  String get posDeliverDueBody =>
+      'Collect the payment first, or deliver now and collect later.';
+
+  @override
+  String get posCollectFirst => 'Collect payment first';
+
+  @override
+  String get posDeliverAnyway => 'Deliver with balance due';
+
+  @override
+  String posOrdMoved(String status) {
+    return 'Order moved to $status.';
+  }
+
+  @override
+  String get posOrdChanged =>
+      'This order was changed by someone else. It has been reloaded — please check and try again.';
+
+  @override
+  String posProgressPercent(int percent) {
+    return '$percent% complete';
+  }
+
+  @override
+  String get posStageBooked => 'Booked';
+
+  @override
+  String get posStageProcessed => 'Processed';
+
+  @override
+  String get posStageDone => 'Done';
+
+  @override
+  String get posStageDelivered => 'Delivered';
+
+  @override
+  String get posStageComplete => 'Complete';
+
+  @override
+  String get posActionsTitle => 'Quick actions';
+
+  @override
+  String get posActPayNow => 'Pay Now';
+
+  @override
+  String get posActInvoice => 'View Invoice';
+
+  @override
+  String get posActMiniInvoice => 'Mini Invoice';
+
+  @override
+  String get posActTag => 'Tags';
+
+  @override
+  String get posActEdit => 'Edit Order';
+
+  @override
+  String get posActCancel => 'Cancel Order';
+
+  @override
+  String get posActAssign => 'Assign Captain';
+
+  @override
+  String get posInfoTitle => 'Order info';
+
+  @override
+  String get posInfoDelivery => 'Delivery';
+
+  @override
+  String get posInfoOrderNo => 'Order no.';
+
+  @override
+  String get posInfoInvoiceAmount => 'Invoice amount';
+
+  @override
+  String get posInfoPaid => 'Paid';
+
+  @override
+  String get posInfoBalance => 'Balance';
+
+  @override
+  String get posInfoBookedOn => 'Booked on';
+
+  @override
+  String get posInfoDeliveryDate => 'Delivery date';
+
+  @override
+  String get posInfoPickupCaptain => 'Pickup captain';
+
+  @override
+  String get posInfoDeliveryCaptain => 'Delivery captain';
+
+  @override
+  String get posInfoNotAssigned => 'Not assigned';
+
+  @override
+  String get posInfoNotes => 'Remarks';
+
+  @override
+  String get posInfoCancelReason => 'Reason for cancelling';
+
+  @override
+  String get posPaymentsTitle => 'Payments received';
+
+  @override
+  String get posPaymentsNone => 'No payment received yet.';
+
+  @override
+  String get posModeCash => 'Cash';
+
+  @override
+  String get posModeOnline => 'Online';
+
+  @override
+  String get posModeCard => 'Card';
+
+  @override
+  String get posModeBank => 'Bank';
+
+  @override
+  String get posModeWallet => 'Wallet';
+
+  @override
+  String get posGarmentsTitle => 'Garments';
+
+  @override
+  String get posGarmentsNone => 'No garments on this order.';
+
+  @override
+  String get posUnitReceived => 'Received';
+
+  @override
+  String get posUnitProcessing => 'In process';
+
+  @override
+  String get posUnitReady => 'Ready';
+
+  @override
+  String get posUnitOut => 'Out';
+
+  @override
+  String get posUnitDelivered => 'Delivered';
+
+  @override
+  String get posUnitMissing => 'Missing';
+
+  @override
+  String get posUnitCancelled => 'Cancelled';
+
+  @override
+  String get posOrdLoadFailed => 'Could not load this order.';
+
+  @override
+  String get posOrdLoadingHint => 'Loading the order…';
+
+  @override
+  String get posWhatsApp => 'WhatsApp';
+
+  @override
+  String get posWaOpenFailed => 'Could not open WhatsApp.';
+
+  @override
+  String posWaMessageDue(String name, String number, String status,
+      String total, String balance, String shop) {
+    return 'Hello $name, your order $number is $status. Total $total, balance $balance. Thank you! — $shop';
+  }
+
+  @override
+  String posWaMessagePaid(
+      String name, String number, String status, String total, String shop) {
+    return 'Hello $name, your order $number is $status. Total $total, fully paid. Thank you! — $shop';
+  }
+
+  @override
+  String get posWaCustomerFallback => 'there';
+
+  @override
+  String get posPayTitle => 'Collect payment';
+
+  @override
+  String get posPayBalance => 'Balance to collect';
+
+  @override
+  String get posPayAmount => 'Amount (₹)';
+
+  @override
+  String get posPayFull => 'Full balance';
+
+  @override
+  String get posPayHow => 'How is the customer paying?';
+
+  @override
+  String get posPayReference => 'Reference (optional)';
+
+  @override
+  String get posPayReferenceHint => 'e.g. UPI transaction number';
+
+  @override
+  String posPayCollect(String amount) {
+    return 'Collect $amount';
+  }
+
+  @override
+  String get posPayErrZero => 'Enter an amount.';
+
+  @override
+  String posPayErrOver(String amount) {
+    return 'It cannot be more than the balance $amount.';
+  }
+
+  @override
+  String posPayDone(String amount) {
+    return '$amount collected.';
+  }
+
+  @override
+  String get posPayCheckFirst =>
+      'We could not confirm that payment. The order was reloaded — check the balance before collecting again.';
+
+  @override
+  String get posPayNothingDue => 'Nothing is due on this order.';
+
+  @override
+  String get posCancelTitle => 'Cancel this order?';
+
+  @override
+  String get posCancelBody => 'This cannot be undone.';
+
+  @override
+  String get posCancelWhy => 'Why is it being cancelled?';
+
+  @override
+  String get posCancelReasonMind => 'Customer changed their mind';
+
+  @override
+  String get posCancelReasonMistake => 'Booked by mistake';
+
+  @override
+  String get posCancelReasonPrice => 'Price problem';
+
+  @override
+  String get posCancelReasonOther => 'Other reason';
+
+  @override
+  String get posCancelOtherHint => 'Write the reason (3 letters or more)';
+
+  @override
+  String get posCancelRefundNote =>
+      'If the customer already paid, give the money back yourself — the app does not refund.';
+
+  @override
+  String get posCancelConfirm => 'Cancel Order';
+
+  @override
+  String get posCancelKeep => 'Keep the order';
+
+  @override
+  String get posCancelDone => 'Order cancelled.';
+
+  @override
+  String get posEditTitle => 'Edit order';
+
+  @override
+  String get posEditItemsNote =>
+      'To change the garments, cancel this order and book a new one.';
+
+  @override
+  String get posEditSave => 'Save changes';
+
+  @override
+  String get posEditSaved => 'Order updated.';
+
+  @override
+  String get posEditNothing => 'Nothing was changed.';
+
+  @override
+  String get posAssignTitle => 'Assign captain';
+
+  @override
+  String get posAssignPickup => 'Pickup captain';
+
+  @override
+  String get posAssignDelivery => 'Delivery captain';
+
+  @override
+  String get posAssignKeep => 'Keep as it is';
+
+  @override
+  String get posAssignNone =>
+      'You have no captains yet. Add one in Settings → Team.';
+
+  @override
+  String get posAssignSave => 'Assign';
+
+  @override
+  String get posAssignDone => 'Captain assigned.';
+
+  @override
+  String get posInvoiceTitle => 'Invoice';
+
+  @override
+  String get posMiniTitle => 'Mini bill';
+
+  @override
+  String get posPaper58 => '58 mm';
+
+  @override
+  String get posPaper80 => '80 mm';
+
+  @override
+  String get posPaperLabel => 'Paper size';
+
+  @override
+  String get posInvoiceLater =>
+      'The invoice is created when the order is delivered. Use Mini Invoice for a bill now.';
+
+  @override
+  String get posInvoiceOpenMini => 'Open Mini Invoice';
+
+  @override
+  String get posInvoiceFailed => 'Could not prepare the bill.';
+
+  @override
+  String get posOk => 'OK';
+
+  @override
+  String get posTagsTitle => 'Garment tags';
+
+  @override
+  String get posTagsEmpty => 'This order has no tags.';
+
+  @override
+  String get posTagsPrint => 'Print or share tags';
+
+  @override
+  String get posTagsHint =>
+      'Stick one tag on each garment. The code is also written under each QR.';
+
+  @override
+  String posTagsPdfTitle(String number) {
+    return 'Tags for order $number';
+  }
+
+  @override
+  String get posTagsFailed => 'Could not prepare the tags.';
+
+  @override
+  String get posTileOpensOrders => 'Opens the orders list';
+
+  @override
+  String posOrdFiltered(String what) {
+    return 'Showing: $what';
+  }
+
+  @override
+  String get posNoPermission =>
+      'You do not have permission to do this. Ask the shop owner.';
 }

@@ -42,10 +42,14 @@ import '../../features/pos/booking/book_order_page.dart';
 import '../../features/pos/core/pos_placeholder_page.dart';
 import '../../features/pos/core/pos_settings_page.dart';
 import '../../features/pos/core/pos_shell.dart';
+import '../../features/pos/core/pos_widgets.dart';
 import '../../features/pos/home/pos_home_page.dart';
 import '../../features/pos/onboarding/choose_product_page.dart';
 import '../../features/pos/onboarding/mode_check_page.dart';
 import '../../features/pos/onboarding/pos_onboarding_page.dart';
+import '../../features/pos/orders/bill_pages.dart';
+import '../../features/pos/orders/pos_order_detail_page.dart';
+import '../../features/pos/orders/pos_orders_page.dart';
 
 final dashboardNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dashboardNav');
 final ordersNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'ordersNav');
@@ -370,6 +374,26 @@ final List<RouteBase> _vendorRoutes = [
     name: AppRouteNames.posBook,
     pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: const BookOrderPage()),
   ),
+  GoRoute(
+    path: AppRoutes.posOrderDetail,
+    name: AppRouteNames.posOrderDetail,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: PosThemeScope(child: PosOrderDetailPage(orderId: s.pathParameters['id']!))),
+  ),
+  GoRoute(
+    path: AppRoutes.posOrderInvoice,
+    name: AppRouteNames.posOrderInvoice,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: BillPage(orderId: s.pathParameters['id']!, mini: false)),
+  ),
+  GoRoute(
+    path: AppRoutes.posOrderMini,
+    name: AppRouteNames.posOrderMini,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: BillPage(orderId: s.pathParameters['id']!, mini: true)),
+  ),
+  GoRoute(
+    path: AppRoutes.posOrderTags,
+    name: AppRouteNames.posOrderTags,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: TagsPage(orderId: s.pathParameters['id']!)),
+  ),
   StatefulShellRoute.indexedStack(
     builder: (_, __, shell) => PosShell(navigationShell: shell),
     branches: [
@@ -380,12 +404,7 @@ final List<RouteBase> _vendorRoutes = [
         GoRoute(
           path: AppRoutes.posOrders,
           name: AppRouteNames.posOrders,
-          builder: (c, s) => PosPlaceholderPage(
-            title: AppLocalizations.of(c).posTabOrder,
-            icon: Icons.assignment_rounded,
-            actionLabel: AppLocalizations.of(c).posActionBook,
-            onAction: () => c.push(AppRoutes.posBook),
-          ),
+          builder: (c, s) => PosOrdersPage(preset: s.extra is OrdersPreset ? s.extra as OrdersPreset : null),
         ),
       ]),
       StatefulShellBranch(routes: [

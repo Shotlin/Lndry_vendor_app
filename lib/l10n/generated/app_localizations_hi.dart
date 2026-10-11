@@ -3203,6 +3203,606 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posBookBill => 'बिल';
+
+  @override
+  String get posOrdersTitle => 'ऑर्डर';
+
+  @override
+  String get posOrdTabBooked => 'बुक';
+
+  @override
+  String get posOrdTabInProcess => 'प्रोसेस में';
+
+  @override
+  String get posOrdTabDone => 'तैयार';
+
+  @override
+  String get posOrdFilter => 'फ़िल्टर';
+
+  @override
+  String get posOrdSelectAll => 'सभी चुनें';
+
+  @override
+  String posOrdSelectedCount(int count) {
+    return '$count चुने गए';
+  }
+
+  @override
+  String get posOrdMoveNext => 'अगले चरण पर ले जाएँ';
+
+  @override
+  String get posOrdSearchHint => 'नाम, फ़ोन या ऑर्डर नंबर खोजें';
+
+  @override
+  String get posOrdEmptyBooked =>
+      'कोई बुक ऑर्डर नहीं। जोड़ने के लिए \"ऑर्डर बुक करें\" दबाएँ।';
+
+  @override
+  String get posOrdEmptyInProcess => 'अभी कुछ भी प्रोसेस में नहीं है।';
+
+  @override
+  String get posOrdEmptyDone => 'अभी कोई ऑर्डर तैयार नहीं है।';
+
+  @override
+  String get posOrdEmptyFiltered =>
+      'कोई ऑर्डर नहीं मिला। फ़िल्टर या खोज हटाएँ।';
+
+  @override
+  String get posOrdClearFilters => 'फ़िल्टर हटाएँ';
+
+  @override
+  String get posOrdLoadError => 'ऑर्डर लोड नहीं हो सके।';
+
+  @override
+  String get posOrdLoadMoreError =>
+      'और लोड नहीं हो सका। फिर कोशिश करने के लिए दबाएँ।';
+
+  @override
+  String posOrdItemsCount(int count) {
+    return '$count आइटम';
+  }
+
+  @override
+  String posOrdBalanceDue(String amount) {
+    return 'बकाया $amount';
+  }
+
+  @override
+  String posOrdDue(String date) {
+    return 'डिलीवरी $date';
+  }
+
+  @override
+  String get posOrdExpress => 'एक्सप्रेस';
+
+  @override
+  String get posOrdHomeDelivery => 'होम डिलीवरी';
+
+  @override
+  String get posOrdPickup => 'पिकअप';
+
+  @override
+  String get posOrdWalkIn => 'काउंटर पर';
+
+  @override
+  String get posPayStatusPaid => 'चुकता';
+
+  @override
+  String get posPayStatusPart => 'आंशिक भुगतान';
+
+  @override
+  String get posPayStatusUnpaid => 'बाकी';
+
+  @override
+  String get posPhaseBooked => 'बुक';
+
+  @override
+  String get posPhaseProcessing => 'प्रोसेस में';
+
+  @override
+  String get posPhaseReady => 'तैयार';
+
+  @override
+  String get posPhaseOut => 'डिलीवरी के लिए निकला';
+
+  @override
+  String get posPhaseDelivered => 'डिलीवर हो गया';
+
+  @override
+  String get posPhaseComplete => 'ऑर्डर पूरा';
+
+  @override
+  String get posPhaseCancelled => 'रद्द';
+
+  @override
+  String get posFilterTitle => 'ऑर्डर फ़िल्टर करें';
+
+  @override
+  String get posFilterStatus => 'कौन से ऑर्डर';
+
+  @override
+  String get posFilterThisTab => 'यह टैब';
+
+  @override
+  String get posFilterAllOrders => 'सभी ऑर्डर';
+
+  @override
+  String get posFilterDeliveredOnly => 'डिलीवर हुए';
+
+  @override
+  String get posFilterCancelledOnly => 'रद्द हुए';
+
+  @override
+  String get posFilterDates => 'ऑर्डर की तारीख़';
+
+  @override
+  String get posFilterFrom => 'से';
+
+  @override
+  String get posFilterTo => 'तक';
+
+  @override
+  String get posFilterAnyDate => 'कोई भी तारीख़';
+
+  @override
+  String get posFilterDelivery => 'ग्राहक तक कैसे पहुँचे';
+
+  @override
+  String get posFilterAnyDelivery => 'कोई भी';
+
+  @override
+  String get posFilterExpressOnly => 'सिर्फ़ एक्सप्रेस';
+
+  @override
+  String get posFilterDueOnly => 'सिर्फ़ बकाया वाले';
+
+  @override
+  String get posFilterApply => 'ऑर्डर दिखाएँ';
+
+  @override
+  String get posFilterReset => 'हटाएँ';
+
+  @override
+  String posBulkTitle(int count) {
+    return '$count ऑर्डर अगले चरण पर ले जाएँ?';
+  }
+
+  @override
+  String get posBulkBody =>
+      'हर ऑर्डर एक चरण आगे बढ़ेगा: बुक → प्रोसेस → तैयार → डिलीवर।';
+
+  @override
+  String get posBulkReadyNote =>
+      'जिन ऑर्डर के कपड़े स्कैन नहीं हुए, वे भी तैयार मान लिए जाएँगे।';
+
+  @override
+  String get posBulkDueNote =>
+      'जिन पर बकाया है वे यहाँ डिलीवर नहीं होंगे — उन्हें एक-एक करके खोलें।';
+
+  @override
+  String get posBulkGo => 'ऑर्डर आगे बढ़ाएँ';
+
+  @override
+  String posBulkDone(int count) {
+    return '$count ऑर्डर आगे बढ़ गए।';
+  }
+
+  @override
+  String posBulkPartial(int moved, int failed) {
+    return '$moved आगे बढ़े। $failed को देखना होगा — उन्हें एक-एक करके खोलें।';
+  }
+
+  @override
+  String get posBulkNone => 'कुछ भी आगे नहीं बढ़ सका। ऑर्डर एक-एक करके खोलें।';
+
+  @override
+  String posBulkSkipDue(int count) {
+    return 'बकाया वाले $count ऑर्डर आपके खोलने के लिए छोड़े गए।';
+  }
+
+  @override
+  String get posOrdDetailTitle => 'ऑर्डर की जानकारी';
+
+  @override
+  String get posOrdCall => 'कॉल';
+
+  @override
+  String get posOrdCallFailed => 'फ़ोन नहीं खुल सका।';
+
+  @override
+  String get posNextStart => 'प्रोसेस शुरू करें';
+
+  @override
+  String get posNextReady => 'तैयार करें';
+
+  @override
+  String get posNextSendOut => 'डिलीवरी पर भेजें';
+
+  @override
+  String get posNextDeliver => 'ऑर्डर डिलीवर करें';
+
+  @override
+  String get posOrdFinished => 'यह ऑर्डर पूरा हो चुका है।';
+
+  @override
+  String get posOrdCancelledNote => 'यह ऑर्डर रद्द हो गया था।';
+
+  @override
+  String get posReadyAnywayTitle => 'कपड़े अभी स्कैन नहीं हुए';
+
+  @override
+  String get posReadyAnywayBody =>
+      'कुछ कपड़े प्रोसेसिंग में स्कैन नहीं हुए हैं। फिर भी ऑर्डर तैयार करें?';
+
+  @override
+  String get posReadyAnywayYes => 'फिर भी तैयार करें';
+
+  @override
+  String get posNotYet => 'अभी नहीं';
+
+  @override
+  String posDeliverDueTitle(String amount) {
+    return '$amount बाकी है';
+  }
+
+  @override
+  String get posDeliverDueBody =>
+      'पहले भुगतान लें, या अभी डिलीवर करें और बाद में लें।';
+
+  @override
+  String get posCollectFirst => 'पहले भुगतान लें';
+
+  @override
+  String get posDeliverAnyway => 'बकाया के साथ डिलीवर करें';
+
+  @override
+  String posOrdMoved(String status) {
+    return 'ऑर्डर अब \"$status\" है।';
+  }
+
+  @override
+  String get posOrdChanged =>
+      'यह ऑर्डर किसी और ने बदल दिया। इसे दोबारा लोड कर दिया है — देखकर फिर कोशिश करें।';
+
+  @override
+  String posProgressPercent(int percent) {
+    return '$percent% पूरा';
+  }
+
+  @override
+  String get posStageBooked => 'बुक';
+
+  @override
+  String get posStageProcessed => 'प्रोसेस';
+
+  @override
+  String get posStageDone => 'तैयार';
+
+  @override
+  String get posStageDelivered => 'डिलीवर';
+
+  @override
+  String get posStageComplete => 'पूरा';
+
+  @override
+  String get posActionsTitle => 'तुरंत काम';
+
+  @override
+  String get posActPayNow => 'अभी भुगतान लें';
+
+  @override
+  String get posActInvoice => 'इनवॉइस देखें';
+
+  @override
+  String get posActMiniInvoice => 'मिनी इनवॉइस';
+
+  @override
+  String get posActTag => 'टैग';
+
+  @override
+  String get posActEdit => 'ऑर्डर बदलें';
+
+  @override
+  String get posActCancel => 'ऑर्डर रद्द करें';
+
+  @override
+  String get posActAssign => 'कैप्टन चुनें';
+
+  @override
+  String get posInfoTitle => 'ऑर्डर की जानकारी';
+
+  @override
+  String get posInfoDelivery => 'डिलीवरी';
+
+  @override
+  String get posInfoOrderNo => 'ऑर्डर नं.';
+
+  @override
+  String get posInfoInvoiceAmount => 'बिल की रकम';
+
+  @override
+  String get posInfoPaid => 'चुकता';
+
+  @override
+  String get posInfoBalance => 'बकाया';
+
+  @override
+  String get posInfoBookedOn => 'बुकिंग';
+
+  @override
+  String get posInfoDeliveryDate => 'डिलीवरी की तारीख़';
+
+  @override
+  String get posInfoPickupCaptain => 'पिकअप कैप्टन';
+
+  @override
+  String get posInfoDeliveryCaptain => 'डिलीवरी कैप्टन';
+
+  @override
+  String get posInfoNotAssigned => 'चुना नहीं गया';
+
+  @override
+  String get posInfoNotes => 'टिप्पणी';
+
+  @override
+  String get posInfoCancelReason => 'रद्द करने का कारण';
+
+  @override
+  String get posPaymentsTitle => 'मिले भुगतान';
+
+  @override
+  String get posPaymentsNone => 'अभी तक कोई भुगतान नहीं मिला।';
+
+  @override
+  String get posModeCash => 'नकद';
+
+  @override
+  String get posModeOnline => 'ऑनलाइन';
+
+  @override
+  String get posModeCard => 'कार्ड';
+
+  @override
+  String get posModeBank => 'बैंक';
+
+  @override
+  String get posModeWallet => 'वॉलेट';
+
+  @override
+  String get posGarmentsTitle => 'कपड़े';
+
+  @override
+  String get posGarmentsNone => 'इस ऑर्डर में कोई कपड़ा नहीं।';
+
+  @override
+  String get posUnitReceived => 'मिला';
+
+  @override
+  String get posUnitProcessing => 'प्रोसेस में';
+
+  @override
+  String get posUnitReady => 'तैयार';
+
+  @override
+  String get posUnitOut => 'निकला';
+
+  @override
+  String get posUnitDelivered => 'डिलीवर';
+
+  @override
+  String get posUnitMissing => 'गुम';
+
+  @override
+  String get posUnitCancelled => 'रद्द';
+
+  @override
+  String get posOrdLoadFailed => 'यह ऑर्डर लोड नहीं हो सका।';
+
+  @override
+  String get posOrdLoadingHint => 'ऑर्डर लोड हो रहा है…';
+
+  @override
+  String get posWhatsApp => 'व्हाट्सऐप';
+
+  @override
+  String get posWaOpenFailed => 'व्हाट्सऐप नहीं खुल सका।';
+
+  @override
+  String posWaMessageDue(String name, String number, String status,
+      String total, String balance, String shop) {
+    return 'नमस्ते $name, आपका ऑर्डर $number \"$status\" है। कुल $total, बकाया $balance। धन्यवाद! — $shop';
+  }
+
+  @override
+  String posWaMessagePaid(
+      String name, String number, String status, String total, String shop) {
+    return 'नमस्ते $name, आपका ऑर्डर $number \"$status\" है। कुल $total, पूरा भुगतान हो चुका है। धन्यवाद! — $shop';
+  }
+
+  @override
+  String get posWaCustomerFallback => 'जी';
+
+  @override
+  String get posPayTitle => 'भुगतान लें';
+
+  @override
+  String get posPayBalance => 'लेने के लिए बकाया';
+
+  @override
+  String get posPayAmount => 'रकम (₹)';
+
+  @override
+  String get posPayFull => 'पूरा बकाया';
+
+  @override
+  String get posPayHow => 'ग्राहक कैसे भुगतान कर रहा है?';
+
+  @override
+  String get posPayReference => 'रेफ़रेंस (ज़रूरी नहीं)';
+
+  @override
+  String get posPayReferenceHint => 'जैसे UPI ट्रांज़ैक्शन नंबर';
+
+  @override
+  String posPayCollect(String amount) {
+    return '$amount लें';
+  }
+
+  @override
+  String get posPayErrZero => 'रकम डालें।';
+
+  @override
+  String posPayErrOver(String amount) {
+    return 'यह बकाया $amount से ज़्यादा नहीं हो सकता।';
+  }
+
+  @override
+  String posPayDone(String amount) {
+    return '$amount मिल गए।';
+  }
+
+  @override
+  String get posPayCheckFirst =>
+      'भुगतान की पुष्टि नहीं हो सकी। ऑर्डर दोबारा लोड किया है — दोबारा लेने से पहले बकाया देखें।';
+
+  @override
+  String get posPayNothingDue => 'इस ऑर्डर पर कुछ बकाया नहीं।';
+
+  @override
+  String get posCancelTitle => 'यह ऑर्डर रद्द करें?';
+
+  @override
+  String get posCancelBody => 'इसे वापस नहीं किया जा सकता।';
+
+  @override
+  String get posCancelWhy => 'रद्द क्यों कर रहे हैं?';
+
+  @override
+  String get posCancelReasonMind => 'ग्राहक ने मन बदल लिया';
+
+  @override
+  String get posCancelReasonMistake => 'गलती से बुक हुआ';
+
+  @override
+  String get posCancelReasonPrice => 'दाम की दिक्कत';
+
+  @override
+  String get posCancelReasonOther => 'कोई और कारण';
+
+  @override
+  String get posCancelOtherHint => 'कारण लिखें (कम से कम 3 अक्षर)';
+
+  @override
+  String get posCancelRefundNote =>
+      'अगर ग्राहक पहले ही भुगतान कर चुका है, तो पैसे खुद लौटाएँ — ऐप रिफ़ंड नहीं करता।';
+
+  @override
+  String get posCancelConfirm => 'ऑर्डर रद्द करें';
+
+  @override
+  String get posCancelKeep => 'ऑर्डर रखें';
+
+  @override
+  String get posCancelDone => 'ऑर्डर रद्द हो गया।';
+
+  @override
+  String get posEditTitle => 'ऑर्डर बदलें';
+
+  @override
+  String get posEditItemsNote =>
+      'कपड़े बदलने के लिए यह ऑर्डर रद्द करके नया बुक करें।';
+
+  @override
+  String get posEditSave => 'बदलाव सहेजें';
+
+  @override
+  String get posEditSaved => 'ऑर्डर बदल गया।';
+
+  @override
+  String get posEditNothing => 'कुछ नहीं बदला।';
+
+  @override
+  String get posAssignTitle => 'कैप्टन चुनें';
+
+  @override
+  String get posAssignPickup => 'पिकअप कैप्टन';
+
+  @override
+  String get posAssignDelivery => 'डिलीवरी कैप्टन';
+
+  @override
+  String get posAssignKeep => 'जैसा है वैसा रखें';
+
+  @override
+  String get posAssignNone =>
+      'अभी कोई कैप्टन नहीं है। सेटिंग → टीम में जोड़ें।';
+
+  @override
+  String get posAssignSave => 'चुनें';
+
+  @override
+  String get posAssignDone => 'कैप्टन चुन लिया गया।';
+
+  @override
+  String get posInvoiceTitle => 'इनवॉइस';
+
+  @override
+  String get posMiniTitle => 'मिनी बिल';
+
+  @override
+  String get posPaper58 => '58 मिमी';
+
+  @override
+  String get posPaper80 => '80 मिमी';
+
+  @override
+  String get posPaperLabel => 'काग़ज़ का साइज़';
+
+  @override
+  String get posInvoiceLater =>
+      'इनवॉइस ऑर्डर डिलीवर होने पर बनता है। अभी बिल के लिए \"मिनी इनवॉइस\" इस्तेमाल करें।';
+
+  @override
+  String get posInvoiceOpenMini => 'मिनी इनवॉइस खोलें';
+
+  @override
+  String get posInvoiceFailed => 'बिल तैयार नहीं हो सका।';
+
+  @override
+  String get posOk => 'ठीक है';
+
+  @override
+  String get posTagsTitle => 'कपड़ों के टैग';
+
+  @override
+  String get posTagsEmpty => 'इस ऑर्डर के कोई टैग नहीं हैं।';
+
+  @override
+  String get posTagsPrint => 'टैग प्रिंट या शेयर करें';
+
+  @override
+  String get posTagsHint =>
+      'हर कपड़े पर एक टैग लगाएँ। हर QR के नीचे कोड भी लिखा है।';
+
+  @override
+  String posTagsPdfTitle(String number) {
+    return 'ऑर्डर $number के टैग';
+  }
+
+  @override
+  String get posTagsFailed => 'टैग तैयार नहीं हो सके।';
+
+  @override
+  String get posTileOpensOrders => 'ऑर्डर सूची खुलती है';
+
+  @override
+  String posOrdFiltered(String what) {
+    return 'दिखा रहे हैं: $what';
+  }
+
+  @override
+  String get posNoPermission =>
+      'आपको यह करने की अनुमति नहीं है। दुकान के मालिक से पूछें।';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -6425,4 +7025,605 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posBookBill => 'Bill';
+
+  @override
+  String get posOrdersTitle => 'Orders';
+
+  @override
+  String get posOrdTabBooked => 'Booked';
+
+  @override
+  String get posOrdTabInProcess => 'In Process';
+
+  @override
+  String get posOrdTabDone => 'Done';
+
+  @override
+  String get posOrdFilter => 'Filter';
+
+  @override
+  String get posOrdSelectAll => 'Sab chunein';
+
+  @override
+  String posOrdSelectedCount(int count) {
+    return '$count chune gaye';
+  }
+
+  @override
+  String get posOrdMoveNext => 'Agle step par le jaayein';
+
+  @override
+  String get posOrdSearchHint => 'Naam, phone ya order no. khojein';
+
+  @override
+  String get posOrdEmptyBooked =>
+      'Koi booked order nahi. Jodne ke liye \"Order book karein\" dabayein.';
+
+  @override
+  String get posOrdEmptyInProcess => 'Abhi kuch bhi process mein nahi hai.';
+
+  @override
+  String get posOrdEmptyDone => 'Abhi koi order ready nahi hai.';
+
+  @override
+  String get posOrdEmptyFiltered =>
+      'Koi order nahi mila. Filter ya search hataayein.';
+
+  @override
+  String get posOrdClearFilters => 'Filter hataayein';
+
+  @override
+  String get posOrdLoadError => 'Orders load nahi ho sake.';
+
+  @override
+  String get posOrdLoadMoreError =>
+      'Aur load nahi ho saka. Phir koshish ke liye dabayein.';
+
+  @override
+  String posOrdItemsCount(int count) {
+    return '$count items';
+  }
+
+  @override
+  String posOrdBalanceDue(String amount) {
+    return 'Baaki $amount';
+  }
+
+  @override
+  String posOrdDue(String date) {
+    return 'Delivery $date';
+  }
+
+  @override
+  String get posOrdExpress => 'Express';
+
+  @override
+  String get posOrdHomeDelivery => 'Home Delivery';
+
+  @override
+  String get posOrdPickup => 'Pickup';
+
+  @override
+  String get posOrdWalkIn => 'Counter par';
+
+  @override
+  String get posPayStatusPaid => 'Paid';
+
+  @override
+  String get posPayStatusPart => 'Part paid';
+
+  @override
+  String get posPayStatusUnpaid => 'Unpaid';
+
+  @override
+  String get posPhaseBooked => 'Booked';
+
+  @override
+  String get posPhaseProcessing => 'Processing';
+
+  @override
+  String get posPhaseReady => 'Ready';
+
+  @override
+  String get posPhaseOut => 'Delivery ke liye nikla';
+
+  @override
+  String get posPhaseDelivered => 'Delivered';
+
+  @override
+  String get posPhaseComplete => 'Order Complete';
+
+  @override
+  String get posPhaseCancelled => 'Cancelled';
+
+  @override
+  String get posFilterTitle => 'Orders filter karein';
+
+  @override
+  String get posFilterStatus => 'Kaun se orders';
+
+  @override
+  String get posFilterThisTab => 'Yeh tab';
+
+  @override
+  String get posFilterAllOrders => 'Sab orders';
+
+  @override
+  String get posFilterDeliveredOnly => 'Delivered';
+
+  @override
+  String get posFilterCancelledOnly => 'Cancelled';
+
+  @override
+  String get posFilterDates => 'Order ki date';
+
+  @override
+  String get posFilterFrom => 'Se';
+
+  @override
+  String get posFilterTo => 'Tak';
+
+  @override
+  String get posFilterAnyDate => 'Koi bhi date';
+
+  @override
+  String get posFilterDelivery => 'Customer tak kaise pahunche';
+
+  @override
+  String get posFilterAnyDelivery => 'Koi bhi';
+
+  @override
+  String get posFilterExpressOnly => 'Sirf express';
+
+  @override
+  String get posFilterDueOnly => 'Sirf baaki wale';
+
+  @override
+  String get posFilterApply => 'Orders dikhayein';
+
+  @override
+  String get posFilterReset => 'Hataayein';
+
+  @override
+  String posBulkTitle(int count) {
+    return '$count orders agle step par le jaayein?';
+  }
+
+  @override
+  String get posBulkBody =>
+      'Har order ek step aage badhega: Booked → Processing → Ready → Delivered.';
+
+  @override
+  String get posBulkReadyNote =>
+      'Jin orders ke kapde scan nahi hue, woh bhi ready maan liye jaayenge.';
+
+  @override
+  String get posBulkDueNote =>
+      'Jin par baaki hai woh yahan deliver nahi honge — unhe ek-ek karke kholein.';
+
+  @override
+  String get posBulkGo => 'Orders aage badhayein';
+
+  @override
+  String posBulkDone(int count) {
+    return '$count orders aage badh gaye.';
+  }
+
+  @override
+  String posBulkPartial(int moved, int failed) {
+    return '$moved aage badhe. $failed ko dekhna hoga — unhe ek-ek karke kholein.';
+  }
+
+  @override
+  String get posBulkNone =>
+      'Kuch bhi aage nahi badh saka. Orders ek-ek karke kholein.';
+
+  @override
+  String posBulkSkipDue(int count) {
+    return 'Baaki wale $count orders aapke kholne ke liye chhode gaye.';
+  }
+
+  @override
+  String get posOrdDetailTitle => 'Order ki jaankari';
+
+  @override
+  String get posOrdCall => 'Call';
+
+  @override
+  String get posOrdCallFailed => 'Phone nahi khul saka.';
+
+  @override
+  String get posNextStart => 'Processing shuru karein';
+
+  @override
+  String get posNextReady => 'Ready karein';
+
+  @override
+  String get posNextSendOut => 'Delivery par bhejein';
+
+  @override
+  String get posNextDeliver => 'Order deliver karein';
+
+  @override
+  String get posOrdFinished => 'Yeh order poora ho chuka hai.';
+
+  @override
+  String get posOrdCancelledNote => 'Yeh order cancel ho gaya tha.';
+
+  @override
+  String get posReadyAnywayTitle => 'Kapde abhi scan nahi hue';
+
+  @override
+  String get posReadyAnywayBody =>
+      'Kuch kapde processing mein scan nahi hue hain. Phir bhi order ready karein?';
+
+  @override
+  String get posReadyAnywayYes => 'Phir bhi ready karein';
+
+  @override
+  String get posNotYet => 'Abhi nahi';
+
+  @override
+  String posDeliverDueTitle(String amount) {
+    return '$amount abhi baaki hai';
+  }
+
+  @override
+  String get posDeliverDueBody =>
+      'Pehle payment lein, ya abhi deliver karein aur baad mein lein.';
+
+  @override
+  String get posCollectFirst => 'Pehle payment lein';
+
+  @override
+  String get posDeliverAnyway => 'Baaki ke saath deliver karein';
+
+  @override
+  String posOrdMoved(String status) {
+    return 'Order ab \"$status\" hai.';
+  }
+
+  @override
+  String get posOrdChanged =>
+      'Yeh order kisi aur ne badal diya. Ise dobara load kar diya hai — dekhkar phir koshish karein.';
+
+  @override
+  String posProgressPercent(int percent) {
+    return '$percent% poora';
+  }
+
+  @override
+  String get posStageBooked => 'Booked';
+
+  @override
+  String get posStageProcessed => 'Processed';
+
+  @override
+  String get posStageDone => 'Done';
+
+  @override
+  String get posStageDelivered => 'Delivered';
+
+  @override
+  String get posStageComplete => 'Complete';
+
+  @override
+  String get posActionsTitle => 'Turant kaam';
+
+  @override
+  String get posActPayNow => 'Pay Now';
+
+  @override
+  String get posActInvoice => 'Invoice dekhein';
+
+  @override
+  String get posActMiniInvoice => 'Mini Invoice';
+
+  @override
+  String get posActTag => 'Tags';
+
+  @override
+  String get posActEdit => 'Order badlein';
+
+  @override
+  String get posActCancel => 'Order cancel karein';
+
+  @override
+  String get posActAssign => 'Captain chunein';
+
+  @override
+  String get posInfoTitle => 'Order info';
+
+  @override
+  String get posInfoDelivery => 'Delivery';
+
+  @override
+  String get posInfoOrderNo => 'Order no.';
+
+  @override
+  String get posInfoInvoiceAmount => 'Bill ki raqam';
+
+  @override
+  String get posInfoPaid => 'Paid';
+
+  @override
+  String get posInfoBalance => 'Baaki';
+
+  @override
+  String get posInfoBookedOn => 'Booking';
+
+  @override
+  String get posInfoDeliveryDate => 'Delivery ki date';
+
+  @override
+  String get posInfoPickupCaptain => 'Pickup captain';
+
+  @override
+  String get posInfoDeliveryCaptain => 'Delivery captain';
+
+  @override
+  String get posInfoNotAssigned => 'Chuna nahi gaya';
+
+  @override
+  String get posInfoNotes => 'Remarks';
+
+  @override
+  String get posInfoCancelReason => 'Cancel karne ka kaaran';
+
+  @override
+  String get posPaymentsTitle => 'Mile payments';
+
+  @override
+  String get posPaymentsNone => 'Abhi tak koi payment nahi mila.';
+
+  @override
+  String get posModeCash => 'Cash';
+
+  @override
+  String get posModeOnline => 'Online';
+
+  @override
+  String get posModeCard => 'Card';
+
+  @override
+  String get posModeBank => 'Bank';
+
+  @override
+  String get posModeWallet => 'Wallet';
+
+  @override
+  String get posGarmentsTitle => 'Kapde';
+
+  @override
+  String get posGarmentsNone => 'Is order mein koi kapda nahi.';
+
+  @override
+  String get posUnitReceived => 'Mila';
+
+  @override
+  String get posUnitProcessing => 'Process mein';
+
+  @override
+  String get posUnitReady => 'Ready';
+
+  @override
+  String get posUnitOut => 'Nikla';
+
+  @override
+  String get posUnitDelivered => 'Delivered';
+
+  @override
+  String get posUnitMissing => 'Gum';
+
+  @override
+  String get posUnitCancelled => 'Cancelled';
+
+  @override
+  String get posOrdLoadFailed => 'Yeh order load nahi ho saka.';
+
+  @override
+  String get posOrdLoadingHint => 'Order load ho raha hai…';
+
+  @override
+  String get posWhatsApp => 'WhatsApp';
+
+  @override
+  String get posWaOpenFailed => 'WhatsApp nahi khul saka.';
+
+  @override
+  String posWaMessageDue(String name, String number, String status,
+      String total, String balance, String shop) {
+    return 'Namaste $name, aapka order $number \"$status\" hai. Kul $total, baaki $balance. Dhanyavaad! — $shop';
+  }
+
+  @override
+  String posWaMessagePaid(
+      String name, String number, String status, String total, String shop) {
+    return 'Namaste $name, aapka order $number \"$status\" hai. Kul $total, poora payment ho chuka hai. Dhanyavaad! — $shop';
+  }
+
+  @override
+  String get posWaCustomerFallback => 'ji';
+
+  @override
+  String get posPayTitle => 'Payment lein';
+
+  @override
+  String get posPayBalance => 'Lene ke liye baaki';
+
+  @override
+  String get posPayAmount => 'Raqam (₹)';
+
+  @override
+  String get posPayFull => 'Poora baaki';
+
+  @override
+  String get posPayHow => 'Customer kaise payment kar raha hai?';
+
+  @override
+  String get posPayReference => 'Reference (optional)';
+
+  @override
+  String get posPayReferenceHint => 'jaise UPI transaction number';
+
+  @override
+  String posPayCollect(String amount) {
+    return '$amount lein';
+  }
+
+  @override
+  String get posPayErrZero => 'Raqam daalein.';
+
+  @override
+  String posPayErrOver(String amount) {
+    return 'Yeh baaki $amount se zyada nahi ho sakta.';
+  }
+
+  @override
+  String posPayDone(String amount) {
+    return '$amount mil gaye.';
+  }
+
+  @override
+  String get posPayCheckFirst =>
+      'Payment ki pushti nahi ho saki. Order dobara load kiya hai — dobara lene se pehle baaki dekhein.';
+
+  @override
+  String get posPayNothingDue => 'Is order par kuch baaki nahi.';
+
+  @override
+  String get posCancelTitle => 'Yeh order cancel karein?';
+
+  @override
+  String get posCancelBody => 'Ise wapas nahi kiya ja sakta.';
+
+  @override
+  String get posCancelWhy => 'Cancel kyon kar rahe hain?';
+
+  @override
+  String get posCancelReasonMind => 'Customer ne mann badal liya';
+
+  @override
+  String get posCancelReasonMistake => 'Galti se book hua';
+
+  @override
+  String get posCancelReasonPrice => 'Daam ki dikkat';
+
+  @override
+  String get posCancelReasonOther => 'Koi aur kaaran';
+
+  @override
+  String get posCancelOtherHint => 'Kaaran likhein (kam se kam 3 akshar)';
+
+  @override
+  String get posCancelRefundNote =>
+      'Agar customer pehle hi payment kar chuka hai, to paise khud lautayein — app refund nahi karta.';
+
+  @override
+  String get posCancelConfirm => 'Order cancel karein';
+
+  @override
+  String get posCancelKeep => 'Order rakhein';
+
+  @override
+  String get posCancelDone => 'Order cancel ho gaya.';
+
+  @override
+  String get posEditTitle => 'Order badlein';
+
+  @override
+  String get posEditItemsNote =>
+      'Kapde badalne ke liye yeh order cancel karke naya book karein.';
+
+  @override
+  String get posEditSave => 'Badlav save karein';
+
+  @override
+  String get posEditSaved => 'Order update ho gaya.';
+
+  @override
+  String get posEditNothing => 'Kuch nahi badla.';
+
+  @override
+  String get posAssignTitle => 'Captain chunein';
+
+  @override
+  String get posAssignPickup => 'Pickup captain';
+
+  @override
+  String get posAssignDelivery => 'Delivery captain';
+
+  @override
+  String get posAssignKeep => 'Jaisa hai waisa rakhein';
+
+  @override
+  String get posAssignNone =>
+      'Abhi koi captain nahi hai. Settings → Team mein jodein.';
+
+  @override
+  String get posAssignSave => 'Chunein';
+
+  @override
+  String get posAssignDone => 'Captain chun liya gaya.';
+
+  @override
+  String get posInvoiceTitle => 'Invoice';
+
+  @override
+  String get posMiniTitle => 'Mini bill';
+
+  @override
+  String get posPaper58 => '58 mm';
+
+  @override
+  String get posPaper80 => '80 mm';
+
+  @override
+  String get posPaperLabel => 'Paper size';
+
+  @override
+  String get posInvoiceLater =>
+      'Invoice order deliver hone par banta hai. Abhi bill ke liye \"Mini Invoice\" use karein.';
+
+  @override
+  String get posInvoiceOpenMini => 'Mini Invoice kholein';
+
+  @override
+  String get posInvoiceFailed => 'Bill taiyaar nahi ho saka.';
+
+  @override
+  String get posOk => 'OK';
+
+  @override
+  String get posTagsTitle => 'Kapdon ke tags';
+
+  @override
+  String get posTagsEmpty => 'Is order ke koi tags nahi hain.';
+
+  @override
+  String get posTagsPrint => 'Tags print ya share karein';
+
+  @override
+  String get posTagsHint =>
+      'Har kapde par ek tag lagayein. Har QR ke neeche code bhi likha hai.';
+
+  @override
+  String posTagsPdfTitle(String number) {
+    return 'Order $number ke tags';
+  }
+
+  @override
+  String get posTagsFailed => 'Tags taiyaar nahi ho sake.';
+
+  @override
+  String get posTileOpensOrders => 'Orders list khulti hai';
+
+  @override
+  String posOrdFiltered(String what) {
+    return 'Dikha rahe hain: $what';
+  }
+
+  @override
+  String get posNoPermission =>
+      'Aapko yeh karne ki permission nahi hai. Shop owner se poochein.';
 }

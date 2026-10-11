@@ -1,0 +1,1 @@
+{"success":false,"message":"An order that is booked cannot move to delivered","code":"INVALID_TRANSITION","error":{"code":"INVALID_TRANSITION","message":"An order that is booked cannot move to delivered"}}
