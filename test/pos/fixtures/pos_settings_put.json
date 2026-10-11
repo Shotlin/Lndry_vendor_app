@@ -1,0 +1,17 @@
+{
+ "success": true,
+ "message": "Setting saved",
+ "data": {
+  "setting": {
+   "key": "message-templates",
+   "value": [
+    {
+     "id": "booked",
+     "text": "Hi {name}"
+    }
+   ],
+   "version": 1,
+   "updatedAt": "2026-10-11T05:34:43.066Z"
+  }
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "success": true,
+ "message": "Search results fetched",
+ "data": {
+  "customers": [
+   {
+    "id": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "name": "Asha Rao",
+    "phone": "9811122233"
+   }
+  ],
+  "orders": [],
+  "garmentUnits": []
+ }
+}

@@ -3801,4 +3801,158 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get posNoPermission =>
       'You do not have permission to do this. Ask the shop owner.';
+
+  @override
+  String get posSearchHint => 'Order no., customer name, phone or tag';
+
+  @override
+  String get posSearchStart => 'Type at least 2 letters or numbers to search.';
+
+  @override
+  String get posSearchRecent => 'Recent searches';
+
+  @override
+  String get posSearchClearRecent => 'Clear';
+
+  @override
+  String posSearchNone(String q) {
+    return 'Nothing found for \"$q\". Check the spelling or try the phone number.';
+  }
+
+  @override
+  String get posSearchFailed => 'Could not search right now.';
+
+  @override
+  String get posSearchCustomers => 'Customers';
+
+  @override
+  String get posSearchOrders => 'Orders';
+
+  @override
+  String get posSearchTags => 'Garment tags';
+
+  @override
+  String get posSearchAllCustomers => 'All customers';
+
+  @override
+  String posSearchOrderLine(String total, String date) {
+    return '$total · $date';
+  }
+
+  @override
+  String posSearchTagLine(String code, String state) {
+    return 'Tag $code · $state';
+  }
+
+  @override
+  String get posCustTitle => 'Customers';
+
+  @override
+  String get posCustSearchHint => 'Search by name or phone';
+
+  @override
+  String get posCustEmpty =>
+      'No customers yet. Book an order or add a customer.';
+
+  @override
+  String posCustNoMatch(String q) {
+    return 'No customer matches \"$q\".';
+  }
+
+  @override
+  String get posCustLoadError => 'Could not load customers.';
+
+  @override
+  String posCustOrdersCount(int count, String spent) {
+    return '$count orders · $spent';
+  }
+
+  @override
+  String get posCustNewCustomer => 'New customer';
+
+  @override
+  String get posCustDuesTitle => 'To collect';
+
+  @override
+  String get posCustNoDues => 'Nothing is due. All paid.';
+
+  @override
+  String posCustDueOrder(String number) {
+    return 'Order $number';
+  }
+
+  @override
+  String get posCustCollect => 'Collect dues';
+
+  @override
+  String get posCustCollectHint => 'Choose an order to collect its balance.';
+
+  @override
+  String get posCustHistory => 'Order history';
+
+  @override
+  String get posCustNoOrders => 'No orders yet.';
+
+  @override
+  String get posCustNotes => 'Notes';
+
+  @override
+  String get posCustAddresses => 'Addresses';
+
+  @override
+  String get posCustCall => 'Call';
+
+  @override
+  String get posCustWhatsApp => 'WhatsApp';
+
+  @override
+  String get posCustBook => 'Book order';
+
+  @override
+  String get posCustNotFound => 'This customer was not found.';
+
+  @override
+  String posCustOwes(String amount) {
+    return 'Owes $amount';
+  }
+
+  @override
+  String posWaSheetTitle(String name) {
+    return 'Message $name';
+  }
+
+  @override
+  String get posWaOpenChat => 'Just open the chat';
+
+  @override
+  String get posWaOpenChatBody => 'A short hello. You can type anything.';
+
+  @override
+  String posWaHello(String name, String shop) {
+    return 'Hello $name, this is $shop.';
+  }
+
+  @override
+  String posWaForOrder(String number) {
+    return 'About order $number';
+  }
+
+  @override
+  String get posWaNoOrder =>
+      'This customer has no order yet, so only a plain chat is possible.';
+
+  @override
+  String get posWaPaymentDue => 'Payment reminder';
+
+  @override
+  String get posWaPaymentDueBody => 'Shows the balance still to pay.';
+
+  @override
+  String get posWaTemplatesFailed => 'Could not load your saved messages.';
+
+  @override
+  String get posWaPickCustomer => 'Who do you want to message?';
+
+  @override
+  String get posActionWhatsApp => 'WhatsApp';
 }

@@ -1,0 +1,56 @@
+{
+ "success": true,
+ "message": "POS report fetched",
+ "data": {
+  "from": "2026-10-11",
+  "to": "2026-10-11",
+  "days": 1,
+  "orderCount": 2,
+  "revenuePaise": 32000,
+  "collectionPaise": 16000,
+  "duesPaise": 16000,
+  "duesOrderCount": 1,
+  "expensesPaise": 28000,
+  "expenseCount": 2,
+  "netPaise": -12000,
+  "ordersByStatus": {
+   "booked": 2,
+   "inProcess": 0,
+   "ready": 0,
+   "delivered": 0,
+   "cancelled": 0
+  },
+  "paymentMix": {
+   "cashPaise": 16000,
+   "upiPaise": 0,
+   "cardPaise": 0,
+   "bankPaise": 0,
+   "walletPaise": 0
+  },
+  "expenseByCategory": [
+   {
+    "category": "UTILITIES",
+    "totalPaise": 25000
+   },
+   {
+    "category": "TEA",
+    "totalPaise": 3000
+   }
+  ],
+  "topGarments": [
+   {
+    "name": "Shirt",
+    "qty": 4,
+    "revenuePaise": 32000
+   }
+  ],
+  "daily": [
+   {
+    "date": "2026-10-11",
+    "revenuePaise": 32000,
+    "collectionPaise": 16000,
+    "expensesPaise": 28000
+   }
+  ]
+ }
+}

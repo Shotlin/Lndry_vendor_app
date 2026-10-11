@@ -1,0 +1,57 @@
+{
+ "success": true,
+ "message": "Customer ledger statement fetched",
+ "data": {
+  "balancePaise": 16000,
+  "entries": [
+   {
+    "id": "e3276b87-ad8e-4eac-bd64-59a58637db2a",
+    "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+    "customerUserId": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "customerName": null,
+    "customerPhone": null,
+    "entryType": "PAYMENT_CREDIT",
+    "debitPaise": 0,
+    "creditPaise": 16000,
+    "referenceType": "store_order",
+    "referenceId": "c94eddd8-fa5d-48bf-86a9-cb2cbe1460f8",
+    "reason": "Payment for LND-261011-DR0A",
+    "entryDate": "2026-10-11T00:00:00.000Z",
+    "createdBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+    "createdAt": "2026-10-11T05:34:42.819Z"
+   },
+   {
+    "id": "ba9a8245-6107-4e9e-86de-7674fa4a0bf3",
+    "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+    "customerUserId": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "customerName": null,
+    "customerPhone": null,
+    "entryType": "INVOICE_DEBIT",
+    "debitPaise": 16000,
+    "creditPaise": 0,
+    "referenceType": "store_order",
+    "referenceId": "c94eddd8-fa5d-48bf-86a9-cb2cbe1460f8",
+    "reason": "Counter order LND-261011-DR0A",
+    "entryDate": "2026-10-11T00:00:00.000Z",
+    "createdBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+    "createdAt": "2026-10-11T05:34:42.816Z"
+   },
+   {
+    "id": "4c7a5182-f4fd-4d1f-b031-4ac5a7a2d36c",
+    "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+    "customerUserId": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "customerName": null,
+    "customerPhone": null,
+    "entryType": "INVOICE_DEBIT",
+    "debitPaise": 16000,
+    "creditPaise": 0,
+    "referenceType": "store_order",
+    "referenceId": "587e757d-9e15-4d4c-8e02-cd972cde2d56",
+    "reason": "Counter order LND-261011-8Q72",
+    "entryDate": "2026-10-11T00:00:00.000Z",
+    "createdBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+    "createdAt": "2026-10-11T05:34:42.775Z"
+   }
+  ]
+ }
+}

@@ -1,0 +1,14 @@
+{
+ "success": true,
+ "message": "Success",
+ "data": [
+  {
+   "id": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+   "name": "Asha Rao",
+   "phone": "9811122233",
+   "lastOrderAt": "2026-10-11T05:34:42.801Z",
+   "orderCount": 2,
+   "spentPaise": 32000
+  }
+ ]
+}

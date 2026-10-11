@@ -6881,6 +6881,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You do not have permission to do this. Ask the shop owner.'**
   String get posNoPermission;
+
+  /// POS mode: posSearchHint
+  ///
+  /// In en, this message translates to:
+  /// **'Order no., customer name, phone or tag'**
+  String get posSearchHint;
+
+  /// POS mode: posSearchStart
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least 2 letters or numbers to search.'**
+  String get posSearchStart;
+
+  /// POS mode: posSearchRecent
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get posSearchRecent;
+
+  /// POS mode: posSearchClearRecent
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get posSearchClearRecent;
+
+  /// POS mode: posSearchNone
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found for \"{q}\". Check the spelling or try the phone number.'**
+  String posSearchNone(String q);
+
+  /// POS mode: posSearchFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not search right now.'**
+  String get posSearchFailed;
+
+  /// POS mode: posSearchCustomers
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get posSearchCustomers;
+
+  /// POS mode: posSearchOrders
+  ///
+  /// In en, this message translates to:
+  /// **'Orders'**
+  String get posSearchOrders;
+
+  /// POS mode: posSearchTags
+  ///
+  /// In en, this message translates to:
+  /// **'Garment tags'**
+  String get posSearchTags;
+
+  /// POS mode: posSearchAllCustomers
+  ///
+  /// In en, this message translates to:
+  /// **'All customers'**
+  String get posSearchAllCustomers;
+
+  /// POS mode: posSearchOrderLine
+  ///
+  /// In en, this message translates to:
+  /// **'{total} · {date}'**
+  String posSearchOrderLine(String total, String date);
+
+  /// POS mode: posSearchTagLine
+  ///
+  /// In en, this message translates to:
+  /// **'Tag {code} · {state}'**
+  String posSearchTagLine(String code, String state);
+
+  /// POS mode: posCustTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Customers'**
+  String get posCustTitle;
+
+  /// POS mode: posCustSearchHint
+  ///
+  /// In en, this message translates to:
+  /// **'Search by name or phone'**
+  String get posCustSearchHint;
+
+  /// POS mode: posCustEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No customers yet. Book an order or add a customer.'**
+  String get posCustEmpty;
+
+  /// POS mode: posCustNoMatch
+  ///
+  /// In en, this message translates to:
+  /// **'No customer matches \"{q}\".'**
+  String posCustNoMatch(String q);
+
+  /// POS mode: posCustLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load customers.'**
+  String get posCustLoadError;
+
+  /// POS mode: posCustOrdersCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders · {spent}'**
+  String posCustOrdersCount(int count, String spent);
+
+  /// POS mode: posCustNewCustomer
+  ///
+  /// In en, this message translates to:
+  /// **'New customer'**
+  String get posCustNewCustomer;
+
+  /// POS mode: posCustDuesTitle
+  ///
+  /// In en, this message translates to:
+  /// **'To collect'**
+  String get posCustDuesTitle;
+
+  /// POS mode: posCustNoDues
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing is due. All paid.'**
+  String get posCustNoDues;
+
+  /// POS mode: posCustDueOrder
+  ///
+  /// In en, this message translates to:
+  /// **'Order {number}'**
+  String posCustDueOrder(String number);
+
+  /// POS mode: posCustCollect
+  ///
+  /// In en, this message translates to:
+  /// **'Collect dues'**
+  String get posCustCollect;
+
+  /// POS mode: posCustCollectHint
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an order to collect its balance.'**
+  String get posCustCollectHint;
+
+  /// POS mode: posCustHistory
+  ///
+  /// In en, this message translates to:
+  /// **'Order history'**
+  String get posCustHistory;
+
+  /// POS mode: posCustNoOrders
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet.'**
+  String get posCustNoOrders;
+
+  /// POS mode: posCustNotes
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get posCustNotes;
+
+  /// POS mode: posCustAddresses
+  ///
+  /// In en, this message translates to:
+  /// **'Addresses'**
+  String get posCustAddresses;
+
+  /// POS mode: posCustCall
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get posCustCall;
+
+  /// POS mode: posCustWhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get posCustWhatsApp;
+
+  /// POS mode: posCustBook
+  ///
+  /// In en, this message translates to:
+  /// **'Book order'**
+  String get posCustBook;
+
+  /// POS mode: posCustNotFound
+  ///
+  /// In en, this message translates to:
+  /// **'This customer was not found.'**
+  String get posCustNotFound;
+
+  /// POS mode: posCustOwes
+  ///
+  /// In en, this message translates to:
+  /// **'Owes {amount}'**
+  String posCustOwes(String amount);
+
+  /// POS mode: posWaSheetTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Message {name}'**
+  String posWaSheetTitle(String name);
+
+  /// POS mode: posWaOpenChat
+  ///
+  /// In en, this message translates to:
+  /// **'Just open the chat'**
+  String get posWaOpenChat;
+
+  /// POS mode: posWaOpenChatBody
+  ///
+  /// In en, this message translates to:
+  /// **'A short hello. You can type anything.'**
+  String get posWaOpenChatBody;
+
+  /// POS mode: posWaHello
+  ///
+  /// In en, this message translates to:
+  /// **'Hello {name}, this is {shop}.'**
+  String posWaHello(String name, String shop);
+
+  /// POS mode: posWaForOrder
+  ///
+  /// In en, this message translates to:
+  /// **'About order {number}'**
+  String posWaForOrder(String number);
+
+  /// POS mode: posWaNoOrder
+  ///
+  /// In en, this message translates to:
+  /// **'This customer has no order yet, so only a plain chat is possible.'**
+  String get posWaNoOrder;
+
+  /// POS mode: posWaPaymentDue
+  ///
+  /// In en, this message translates to:
+  /// **'Payment reminder'**
+  String get posWaPaymentDue;
+
+  /// POS mode: posWaPaymentDueBody
+  ///
+  /// In en, this message translates to:
+  /// **'Shows the balance still to pay.'**
+  String get posWaPaymentDueBody;
+
+  /// POS mode: posWaTemplatesFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your saved messages.'**
+  String get posWaTemplatesFailed;
+
+  /// POS mode: posWaPickCustomer
+  ///
+  /// In en, this message translates to:
+  /// **'Who do you want to message?'**
+  String get posWaPickCustomer;
+
+  /// POS mode: posActionWhatsApp
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get posActionWhatsApp;
 }
 
 class _AppLocalizationsDelegate

@@ -175,3 +175,27 @@ String percentFromBps(int bps) {
   final frac = rest.toString().padLeft(2, '0').replaceFirst(RegExp(r'0$'), '');
   return '$whole.$frac';
 }
+
+/// A short plain sentence with an icon and a tone (words always present, colour only supports them).
+class PosNote extends StatelessWidget {
+  const PosNote({required this.icon, required this.text, super.key, this.tone = PosTone.neutral});
+  final IconData icon;
+  final String text;
+  final PosTone tone;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = posToneColors(context, tone);
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(color: c.bg, borderRadius: BorderRadius.circular(PosTheme.radius), border: Border.all(color: c.fg.withValues(alpha: 0.4))),
+      child: Row(
+        children: [
+          Icon(icon, color: c.fg),
+          const SizedBox(width: 10),
+          Expanded(child: Text(text, style: Theme.of(context).textTheme.titleSmall?.copyWith(color: c.fg))),
+        ],
+      ),
+    );
+  }
+}

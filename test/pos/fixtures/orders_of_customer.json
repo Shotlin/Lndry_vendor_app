@@ -1,0 +1,120 @@
+{
+ "success": true,
+ "message": "Success",
+ "data": [
+  {
+   "id": "c94eddd8-fa5d-48bf-86a9-cb2cbe1460f8",
+   "orderNumber": "LND-261011-DR0A",
+   "customer": {
+    "id": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "name": "Asha Rao",
+    "phone": "9811122233"
+   },
+   "items": [
+    {
+     "qty": 2,
+     "name": "Shirt",
+     "unit": "piece",
+     "garmentId": "4bd26079-31f0-4462-9fea-edb2e2cad305",
+     "ratePaise": 8000,
+     "serviceId": "4e0dad01-e2fc-45de-9304-53528414f1c7",
+     "amountPaise": 16000,
+     "serviceName": "Dry Cleaning",
+     "categoryName": "Men's Wear",
+     "garmentTypeId": null,
+     "vendorServiceId": null
+    }
+   ],
+   "subtotalPaise": 16000,
+   "chargesPaise": 0,
+   "discountsPaise": 0,
+   "taxRateBps": 0,
+   "taxPaise": 0,
+   "totalPaise": 16000,
+   "priceBreakdown": {
+    "tax": null,
+    "charges": [],
+    "discounts": []
+   },
+   "paymentMode": "CASH",
+   "amountPaidPaise": 16000,
+   "paymentStatus": "PAID",
+   "paymentReference": null,
+   "walletAmountPaise": 0,
+   "status": "BOOKED",
+   "version": 0,
+   "source": "COUNTER",
+   "orderDate": "2026-10-11",
+   "expectedDeliveryDate": "2026-10-11",
+   "fulfillmentMode": null,
+   "deliveryMode": "WALK_IN",
+   "isExpress": false,
+   "deliveryAddress": null,
+   "serviceZone": null,
+   "notes": null,
+   "photoPath": null,
+   "cancelReason": null,
+   "pickupRider": null,
+   "deliveryRider": null,
+   "placedAt": "2026-10-11T05:34:42.801Z",
+   "updatedAt": "2026-10-11T05:34:42.801Z"
+  },
+  {
+   "id": "587e757d-9e15-4d4c-8e02-cd972cde2d56",
+   "orderNumber": "LND-261011-8Q72",
+   "customer": {
+    "id": "82e37a7b-f022-43e5-b43a-94f8b44d87a3",
+    "name": "Asha Rao",
+    "phone": "9811122233"
+   },
+   "items": [
+    {
+     "qty": 2,
+     "name": "Shirt",
+     "unit": "piece",
+     "garmentId": "4bd26079-31f0-4462-9fea-edb2e2cad305",
+     "ratePaise": 8000,
+     "serviceId": "4e0dad01-e2fc-45de-9304-53528414f1c7",
+     "amountPaise": 16000,
+     "serviceName": "Dry Cleaning",
+     "categoryName": "Men's Wear",
+     "garmentTypeId": null,
+     "vendorServiceId": null
+    }
+   ],
+   "subtotalPaise": 16000,
+   "chargesPaise": 0,
+   "discountsPaise": 0,
+   "taxRateBps": 0,
+   "taxPaise": 0,
+   "totalPaise": 16000,
+   "priceBreakdown": {
+    "tax": null,
+    "charges": [],
+    "discounts": []
+   },
+   "paymentMode": null,
+   "amountPaidPaise": 0,
+   "paymentStatus": "UNPAID",
+   "paymentReference": null,
+   "walletAmountPaise": 0,
+   "status": "BOOKED",
+   "version": 0,
+   "source": "COUNTER",
+   "orderDate": "2026-10-11",
+   "expectedDeliveryDate": "2026-10-11",
+   "fulfillmentMode": null,
+   "deliveryMode": "WALK_IN",
+   "isExpress": false,
+   "deliveryAddress": null,
+   "serviceZone": null,
+   "notes": null,
+   "photoPath": null,
+   "cancelReason": null,
+   "pickupRider": null,
+   "deliveryRider": null,
+   "placedAt": "2026-10-11T05:34:42.761Z",
+   "updatedAt": "2026-10-11T05:34:42.761Z"
+  }
+ ]
+}

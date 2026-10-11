@@ -3803,6 +3803,160 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get posNoPermission =>
       'आपको यह करने की अनुमति नहीं है। दुकान के मालिक से पूछें।';
+
+  @override
+  String get posSearchHint => 'ऑर्डर नं., ग्राहक का नाम, फ़ोन या टैग';
+
+  @override
+  String get posSearchStart => 'खोजने के लिए कम से कम 2 अक्षर या अंक लिखें।';
+
+  @override
+  String get posSearchRecent => 'हाल की खोजें';
+
+  @override
+  String get posSearchClearRecent => 'हटाएँ';
+
+  @override
+  String posSearchNone(String q) {
+    return '\"$q\" के लिए कुछ नहीं मिला। वर्तनी जाँचें या फ़ोन नंबर आज़माएँ।';
+  }
+
+  @override
+  String get posSearchFailed => 'अभी खोज नहीं हो पाई।';
+
+  @override
+  String get posSearchCustomers => 'ग्राहक';
+
+  @override
+  String get posSearchOrders => 'ऑर्डर';
+
+  @override
+  String get posSearchTags => 'कपड़े के टैग';
+
+  @override
+  String get posSearchAllCustomers => 'सभी ग्राहक';
+
+  @override
+  String posSearchOrderLine(String total, String date) {
+    return '$total · $date';
+  }
+
+  @override
+  String posSearchTagLine(String code, String state) {
+    return 'टैग $code · $state';
+  }
+
+  @override
+  String get posCustTitle => 'ग्राहक';
+
+  @override
+  String get posCustSearchHint => 'नाम या फ़ोन से खोजें';
+
+  @override
+  String get posCustEmpty =>
+      'अभी कोई ग्राहक नहीं। ऑर्डर बुक करें या ग्राहक जोड़ें।';
+
+  @override
+  String posCustNoMatch(String q) {
+    return '\"$q\" से कोई ग्राहक नहीं मिला।';
+  }
+
+  @override
+  String get posCustLoadError => 'ग्राहक नहीं खुल पाए।';
+
+  @override
+  String posCustOrdersCount(int count, String spent) {
+    return '$count ऑर्डर · $spent';
+  }
+
+  @override
+  String get posCustNewCustomer => 'नया ग्राहक';
+
+  @override
+  String get posCustDuesTitle => 'वसूलना है';
+
+  @override
+  String get posCustNoDues => 'कुछ बकाया नहीं। सब चुकता।';
+
+  @override
+  String posCustDueOrder(String number) {
+    return 'ऑर्डर $number';
+  }
+
+  @override
+  String get posCustCollect => 'बकाया वसूलें';
+
+  @override
+  String get posCustCollectHint => 'बैलेंस वसूलने के लिए ऑर्डर चुनें।';
+
+  @override
+  String get posCustHistory => 'ऑर्डर का इतिहास';
+
+  @override
+  String get posCustNoOrders => 'अभी कोई ऑर्डर नहीं।';
+
+  @override
+  String get posCustNotes => 'नोट्स';
+
+  @override
+  String get posCustAddresses => 'पते';
+
+  @override
+  String get posCustCall => 'कॉल करें';
+
+  @override
+  String get posCustWhatsApp => 'व्हाट्सऐप';
+
+  @override
+  String get posCustBook => 'ऑर्डर बुक करें';
+
+  @override
+  String get posCustNotFound => 'यह ग्राहक नहीं मिला।';
+
+  @override
+  String posCustOwes(String amount) {
+    return 'बकाया $amount';
+  }
+
+  @override
+  String posWaSheetTitle(String name) {
+    return '$name को संदेश भेजें';
+  }
+
+  @override
+  String get posWaOpenChat => 'सिर्फ़ चैट खोलें';
+
+  @override
+  String get posWaOpenChatBody => 'एक छोटा नमस्ते। आप कुछ भी लिख सकते हैं।';
+
+  @override
+  String posWaHello(String name, String shop) {
+    return 'नमस्ते $name, मैं $shop से बोल रहा/रही हूँ।';
+  }
+
+  @override
+  String posWaForOrder(String number) {
+    return 'ऑर्डर $number के बारे में';
+  }
+
+  @override
+  String get posWaNoOrder =>
+      'इस ग्राहक का अभी कोई ऑर्डर नहीं, इसलिए सिर्फ़ सादी चैट खुल सकती है।';
+
+  @override
+  String get posWaPaymentDue => 'भुगतान की याद दिलाएँ';
+
+  @override
+  String get posWaPaymentDueBody => 'बकाया रकम दिखाता है।';
+
+  @override
+  String get posWaTemplatesFailed => 'आपके सेव किए संदेश नहीं खुल पाए।';
+
+  @override
+  String get posWaPickCustomer => 'किसे संदेश भेजना है?';
+
+  @override
+  String get posActionWhatsApp => 'व्हाट्सऐप';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -7626,4 +7780,160 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   @override
   String get posNoPermission =>
       'Aapko yeh karne ki permission nahi hai. Shop owner se poochein.';
+
+  @override
+  String get posSearchHint => 'Order no., customer ka naam, phone ya tag';
+
+  @override
+  String get posSearchStart =>
+      'Khojne ke liye kam se kam 2 akshar ya ank likhein.';
+
+  @override
+  String get posSearchRecent => 'Haal ki khojein';
+
+  @override
+  String get posSearchClearRecent => 'Hatayein';
+
+  @override
+  String posSearchNone(String q) {
+    return '\"$q\" ke liye kuch nahi mila. Spelling check karein ya phone number try karein.';
+  }
+
+  @override
+  String get posSearchFailed => 'Abhi search nahi ho paya.';
+
+  @override
+  String get posSearchCustomers => 'Customers';
+
+  @override
+  String get posSearchOrders => 'Orders';
+
+  @override
+  String get posSearchTags => 'Kapde ke tags';
+
+  @override
+  String get posSearchAllCustomers => 'Sabhi customers';
+
+  @override
+  String posSearchOrderLine(String total, String date) {
+    return '$total · $date';
+  }
+
+  @override
+  String posSearchTagLine(String code, String state) {
+    return 'Tag $code · $state';
+  }
+
+  @override
+  String get posCustTitle => 'Customers';
+
+  @override
+  String get posCustSearchHint => 'Naam ya phone se khojein';
+
+  @override
+  String get posCustEmpty =>
+      'Abhi koi customer nahi. Order book karein ya customer jodein.';
+
+  @override
+  String posCustNoMatch(String q) {
+    return '\"$q\" se koi customer nahi mila.';
+  }
+
+  @override
+  String get posCustLoadError => 'Customers load nahi ho paye.';
+
+  @override
+  String posCustOrdersCount(int count, String spent) {
+    return '$count orders · $spent';
+  }
+
+  @override
+  String get posCustNewCustomer => 'Naya customer';
+
+  @override
+  String get posCustDuesTitle => 'Vasoolna hai';
+
+  @override
+  String get posCustNoDues => 'Kuch baaki nahi. Sab paid.';
+
+  @override
+  String posCustDueOrder(String number) {
+    return 'Order $number';
+  }
+
+  @override
+  String get posCustCollect => 'Baaki vasoolein';
+
+  @override
+  String get posCustCollectHint => 'Balance vasoolne ke liye order chunein.';
+
+  @override
+  String get posCustHistory => 'Order history';
+
+  @override
+  String get posCustNoOrders => 'Abhi koi order nahi.';
+
+  @override
+  String get posCustNotes => 'Notes';
+
+  @override
+  String get posCustAddresses => 'Pate';
+
+  @override
+  String get posCustCall => 'Call karein';
+
+  @override
+  String get posCustWhatsApp => 'WhatsApp';
+
+  @override
+  String get posCustBook => 'Order book karein';
+
+  @override
+  String get posCustNotFound => 'Yeh customer nahi mila.';
+
+  @override
+  String posCustOwes(String amount) {
+    return 'Baaki $amount';
+  }
+
+  @override
+  String posWaSheetTitle(String name) {
+    return '$name ko message bhejein';
+  }
+
+  @override
+  String get posWaOpenChat => 'Sirf chat kholein';
+
+  @override
+  String get posWaOpenChatBody =>
+      'Ek chhota namaste. Aap kuch bhi likh sakte hain.';
+
+  @override
+  String posWaHello(String name, String shop) {
+    return 'Namaste $name, main $shop se bol raha/rahi hoon.';
+  }
+
+  @override
+  String posWaForOrder(String number) {
+    return 'Order $number ke baare mein';
+  }
+
+  @override
+  String get posWaNoOrder =>
+      'Is customer ka abhi koi order nahi, isliye sirf saadi chat khul sakti hai.';
+
+  @override
+  String get posWaPaymentDue => 'Payment ki yaad dilayein';
+
+  @override
+  String get posWaPaymentDueBody => 'Baaki rakam dikhata hai.';
+
+  @override
+  String get posWaTemplatesFailed => 'Aapke saved messages load nahi ho paye.';
+
+  @override
+  String get posWaPickCustomer => 'Kisko message bhejna hai?';
+
+  @override
+  String get posActionWhatsApp => 'WhatsApp';
 }
