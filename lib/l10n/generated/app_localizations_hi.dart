@@ -3908,9 +3908,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get posCustWhatsApp => 'व्हाट्सऐप';
 
   @override
-  String get posCustBook => 'ऑर्डर बुक करें';
-
-  @override
   String get posCustNotFound => 'यह ग्राहक नहीं मिला।';
 
   @override
@@ -3951,9 +3948,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posWaTemplatesFailed => 'आपके सेव किए संदेश नहीं खुल पाए।';
-
-  @override
-  String get posWaPickCustomer => 'किसे संदेश भेजना है?';
 
   @override
   String get posActionWhatsApp => 'व्हाट्सऐप';
@@ -8380,9 +8374,6 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   String get posCustWhatsApp => 'WhatsApp';
 
   @override
-  String get posCustBook => 'Order book karein';
-
-  @override
   String get posCustNotFound => 'Yeh customer nahi mila.';
 
   @override
@@ -8424,9 +8415,6 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posWaTemplatesFailed => 'Aapke saved messages load nahi ho paye.';
-
-  @override
-  String get posWaPickCustomer => 'Kisko message bhejna hai?';
 
   @override
   String get posActionWhatsApp => 'WhatsApp';

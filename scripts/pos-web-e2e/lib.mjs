@@ -56,9 +56,10 @@ export async function open(page, url = WEB) {
   await page.waitForTimeout(1200)
 }
 
-/** Everything a screen reader would hear right now: text content and labels of every accessibility node. */
+/** Everything a screen reader would hear right now: text content and labels of every accessibility node
+ *  (headings are rendered as real <header>/<hN> elements by newer Flutter builds, so they are read too). */
 export const heard = (page) =>
-  page.evaluate(() => [...document.querySelectorAll('flt-semantics')].map((n) => `${n.textContent || ''} ${n.getAttribute('aria-label') || ''}`).join(' '))
+  page.evaluate(() => [...document.querySelectorAll('flt-semantics, flt-semantics header, flt-semantics h1, flt-semantics h2, flt-semantics h3')].map((n) => `${n.textContent || ''} ${n.getAttribute('aria-label') || ''}`).join(' '))
 
 export async function waitFor(page, re, seconds = 30) {
   for (let i = 0; i < seconds; i++) {

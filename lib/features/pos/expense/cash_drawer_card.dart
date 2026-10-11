@@ -39,7 +39,7 @@ class CashDrawerCard extends ConsumerWidget {
               Row(children: [
                 const Icon(Icons.point_of_sale_rounded),
                 const SizedBox(width: 8),
-                Expanded(child: Semantics(header: true, child: Text(l10n.posDrawerTitle, style: text.titleMedium))),
+                Expanded(child: Text(l10n.posDrawerTitle, style: text.titleMedium)),
               ]),
               const SizedBox(height: 8),
               if (s == null) ...[

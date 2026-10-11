@@ -7062,12 +7062,6 @@ abstract class AppLocalizations {
   /// **'WhatsApp'**
   String get posCustWhatsApp;
 
-  /// POS mode: posCustBook
-  ///
-  /// In en, this message translates to:
-  /// **'Book order'**
-  String get posCustBook;
-
   /// POS mode: posCustNotFound
   ///
   /// In en, this message translates to:
@@ -7133,12 +7127,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load your saved messages.'**
   String get posWaTemplatesFailed;
-
-  /// POS mode: posWaPickCustomer
-  ///
-  /// In en, this message translates to:
-  /// **'Who do you want to message?'**
-  String get posWaPickCustomer;
 
   /// POS mode: posActionWhatsApp
   ///

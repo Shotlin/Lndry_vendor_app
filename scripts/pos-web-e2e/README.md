@@ -22,6 +22,7 @@ flutter build web --release --no-web-resources-cdn \
 
 # 3. run the journey (installs the browser driver, playwright-core, into this folder only)
 cd scripts/pos-web-e2e && npm install && npm run phase2      # exit code 1 on any failed check
+npm run phase4                                               # Search, Customers, Expense + cash drawer, Report, Settings, WhatsApp (31 checks)
 npm run phase3                                               # the whole life of an order (Orders, detail, pay, deliver, invoice, cancel, edit, captain, bulk)
 ```
 
@@ -37,3 +38,6 @@ Notes learned the hard way
   the **first** tap on a Flutter text field only wakes its native input — tap the box centre twice with `page.mouse.click` (Playwright's `click({ force: true })` never focuses it) and find a field that already holds text by role only (its name is no longer the hint);
   `wa.me` is unreachable from the sandbox — `ctx.route('https://wa.me/**', …)` answers it so the popup's address can be read; every run needs a **new captain phone** (a phone can be a captain in one shop only);
   the web build's PDF viewer downloads pdf.js from unpkg, which the sandbox blocks — it logs one page error at the invoice step and cannot draw the PDF (phones use native rendering).
+
+* Phase 4: newer Flutter builds render headings as real `<header>` elements — `heard()` reads those too. Choice chips are `checkbox` nodes (`getByRole('checkbox', { name })`). A card that holds a heading is merged into ONE node, so do not mark headings inside cards.
+* Phone numbers are global accounts: a customer phone reused by another run shows the **shop's own** typed name only since the 'own name per shop' backend fix.

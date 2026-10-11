@@ -16,7 +16,8 @@ import 'add_customer_sheet.dart';
 
 /// Every customer the shop has dealt with: search by name or phone, tap for the profile and what they owe.
 class PosCustomersPage extends ConsumerStatefulWidget {
-  const PosCustomersPage({super.key, this.debounce = const Duration(milliseconds: 300)});
+  const PosCustomersPage(
+      {super.key, this.debounce = const Duration(milliseconds: 300)});
   final Duration debounce;
 
   @override
@@ -57,7 +58,8 @@ class _PosCustomersPageState extends ConsumerState<PosCustomersPage> {
         onPressed: () async {
           final c = await showAddCustomerSheet(context);
           if (c != null && context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.posCustomerAdded(c.displayName))));
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.posCustomerAdded(c.displayName))));
             ref.invalidate(posCustomerSearchProvider);
             context.push(AppRoutes.posCustomerPath(c.id));
           }
@@ -71,7 +73,9 @@ class _PosCustomersPageState extends ConsumerState<PosCustomersPage> {
               controller: _box,
               onChanged: _onChanged,
               textInputAction: TextInputAction.search,
-              decoration: InputDecoration(hintText: l10n.posCustSearchHint, prefixIcon: const Icon(Icons.search_rounded)),
+              decoration: InputDecoration(
+                  hintText: l10n.posCustSearchHint,
+                  prefixIcon: const Icon(Icons.search_rounded)),
             ),
           ),
           Expanded(
@@ -86,18 +90,26 @@ class _PosCustomersPageState extends ConsumerState<PosCustomersPage> {
               },
               child: async.when(
                 loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, _) => ListView(padding: const EdgeInsets.all(16), children: [
+                error: (e, _) =>
+                    ListView(padding: const EdgeInsets.all(16), children: [
                   PosErrorNote(
                     message: '${l10n.posCustLoadError}\n${friendlyError(e)}',
-                    onRetry: () => ref.invalidate(posCustomerSearchProvider(_query)),
+                    onRetry: () =>
+                        ref.invalidate(posCustomerSearchProvider(_query)),
                     retryLabel: l10n.posRetry,
                   ),
                 ]),
                 data: (list) => list.isEmpty
                     ? ListView(padding: const EdgeInsets.all(32), children: [
-                        Icon(Icons.people_outline_rounded, size: 56, color: scheme.onSurfaceVariant),
+                        Icon(Icons.people_outline_rounded,
+                            size: 56, color: scheme.onSurfaceVariant),
                         const SizedBox(height: 12),
-                        Text(_query.isEmpty ? l10n.posCustEmpty : l10n.posCustNoMatch(_query), textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyLarge),
+                        Text(
+                            _query.isEmpty
+                                ? l10n.posCustEmpty
+                                : l10n.posCustNoMatch(_query),
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge),
                       ])
                     : _AlphaList(customers: list, showIndex: _query.isEmpty),
               ),
@@ -108,7 +120,6 @@ class _PosCustomersPageState extends ConsumerState<PosCustomersPage> {
     );
   }
 }
-
 
 /// "A" for Asha, "#" for anything that does not start with a letter.
 String letterOf(String name) {
@@ -151,7 +162,8 @@ class _AlphaListState extends State<_AlphaList> {
   }
 
   List<_Row> _rows() {
-    final sorted = [...widget.customers]..sort((a, b) => a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
+    final sorted = [...widget.customers]..sort((a, b) =>
+        a.displayName.toLowerCase().compareTo(b.displayName.toLowerCase()));
     final rows = <_Row>[];
     String? last;
     for (final c in sorted) {
@@ -200,7 +212,12 @@ class _AlphaListState extends State<_AlphaList> {
                   alignment: AlignmentDirectional.centerStart,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   color: scheme.primaryContainer,
-                  child: Semantics(header: true, child: Text(r.letter, style: text.titleMedium?.copyWith(color: scheme.primary, fontWeight: FontWeight.w800))),
+                  child: Semantics(
+                      header: true,
+                      child: Text(r.letter,
+                          style: text.titleMedium?.copyWith(
+                              color: scheme.primary,
+                              fontWeight: FontWeight.w800))),
                 );
               }
               final c = (r as _Cust).customer;
@@ -212,7 +229,35 @@ class _AlphaListState extends State<_AlphaList> {
           SizedBox(
             width: 28,
             child: LayoutBuilder(builder: (context, box) {
-              const letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','#'];
+              const letters = [
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                'G',
+                'H',
+                'I',
+                'J',
+                'K',
+                'L',
+                'M',
+                'N',
+                'O',
+                'P',
+                'Q',
+                'R',
+                'S',
+                'T',
+                'U',
+                'V',
+                'W',
+                'X',
+                'Y',
+                'Z',
+                '#'
+              ];
               final h = (box.maxHeight / letters.length).clamp(14.0, 34.0);
               return SingleChildScrollView(
                 child: Column(children: [
@@ -224,9 +269,23 @@ class _AlphaListState extends State<_AlphaList> {
                       excludeSemantics: true,
                       child: InkWell(
                         onTap: present.contains(l)
-                            ? () => _scroll.animateTo(offsetOf(l).clamp(0.0, _scroll.position.maxScrollExtent), duration: const Duration(milliseconds: 250), curve: Curves.easeOut)
+                            ? () => _scroll.animateTo(
+                                offsetOf(l).clamp(
+                                    0.0, _scroll.position.maxScrollExtent),
+                                duration: const Duration(milliseconds: 250),
+                                curve: Curves.easeOut)
                             : null,
-                        child: SizedBox(height: h, width: 28, child: Center(child: Text(l, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: present.contains(l) ? scheme.primary : scheme.outline)))),
+                        child: SizedBox(
+                            height: h,
+                            width: 28,
+                            child: Center(
+                                child: Text(l,
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w800,
+                                        color: present.contains(l)
+                                            ? scheme.primary
+                                            : scheme.outline)))),
                       ),
                     ),
                 ]),
@@ -248,7 +307,8 @@ class _CustomerRow extends ConsumerWidget {
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
     final c = customer;
-    Widget action(IconData icon, String label, VoidCallback? onTap) => Semantics(
+    Widget action(IconData icon, String label, VoidCallback? onTap) =>
+        Semantics(
           button: true,
           label: label,
           excludeSemantics: true,
@@ -257,40 +317,79 @@ class _CustomerRow extends ConsumerWidget {
             borderRadius: BorderRadius.circular(10),
             child: ConstrainedBox(
               constraints: const BoxConstraints(minWidth: 52, minHeight: 52),
-              child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(icon, color: onTap == null ? scheme.outline : scheme.primary),
-                Text(label, style: text.labelSmall?.copyWith(color: scheme.primary), maxLines: 1, overflow: TextOverflow.ellipsis),
-              ]),
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(icon,
+                        color: onTap == null ? scheme.outline : scheme.primary),
+                    Text(label,
+                        style: text.labelSmall?.copyWith(color: scheme.primary),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis),
+                  ]),
             ),
           ),
         );
     return Container(
-      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: scheme.outline))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: scheme.outline))),
       padding: const EdgeInsetsDirectional.only(start: 12, end: 4),
       child: Row(children: [
         Expanded(
-          child: InkWell(
-            onTap: () => context.push(AppRoutes.posCustomerPath(c.id)),
-            child: Row(children: [
-              CircleAvatar(
-                backgroundColor: scheme.primaryContainer,
-                child: Icon(Icons.person_rounded, color: scheme.primary),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(c.displayName.trim(), style: text.titleMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  Text([c.phone, if (c.orderCount != null) l10n.posCustOrdersCount(c.orderCount!, formatPaise(c.spentPaise))].where((e) => e.isNotEmpty).join(' · '), style: text.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis),
-                ]),
-              ),
-            ]),
+          child: Semantics(
+            button: true,
+            label: [c.displayName.trim(), c.phone]
+                .where((e) => e.isNotEmpty)
+                .join(', '),
+            excludeSemantics: true,
+            child: InkWell(
+              onTap: () => context.push(AppRoutes.posCustomerPath(c.id)),
+              child: Row(children: [
+                CircleAvatar(
+                  backgroundColor: scheme.primaryContainer,
+                  child: Icon(Icons.person_rounded, color: scheme.primary),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(c.displayName.trim(),
+                            style: text.titleMedium,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
+                        Text(
+                            [
+                              c.phone,
+                              if (c.orderCount != null)
+                                l10n.posCustOrdersCount(
+                                    c.orderCount!, formatPaise(c.spentPaise))
+                            ].where((e) => e.isNotEmpty).join(' · '),
+                            style: text.bodySmall,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
+                      ]),
+                ),
+              ]),
+            ),
           ),
         ),
-        action(Icons.call_rounded, l10n.posCustCall, c.phone.isEmpty ? null : () async {
-          final ok = await ref.read(posUrlOpenerProvider)(Uri(scheme: 'tel', path: c.phone));
-          if (!ok && context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l10n.posOrdCallFailed)));
-        }),
-        action(Icons.person_rounded, l10n.posCustProfile, () => context.push(AppRoutes.posCustomerPath(c.id))),
+        action(
+            Icons.call_rounded,
+            l10n.posCustCall,
+            c.phone.isEmpty
+                ? null
+                : () async {
+                    final ok = await ref.read(posUrlOpenerProvider)(
+                        Uri(scheme: 'tel', path: c.phone));
+                    if (!ok && context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(l10n.posOrdCallFailed)));
+                    }
+                  }),
+        action(Icons.person_rounded, l10n.posCustProfile,
+            () => context.push(AppRoutes.posCustomerPath(c.id))),
       ]),
     );
   }

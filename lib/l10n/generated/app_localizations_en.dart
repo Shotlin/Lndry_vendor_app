@@ -3906,9 +3906,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get posCustWhatsApp => 'WhatsApp';
 
   @override
-  String get posCustBook => 'Book order';
-
-  @override
   String get posCustNotFound => 'This customer was not found.';
 
   @override
@@ -3949,9 +3946,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get posWaTemplatesFailed => 'Could not load your saved messages.';
-
-  @override
-  String get posWaPickCustomer => 'Who do you want to message?';
 
   @override
   String get posActionWhatsApp => 'WhatsApp';
