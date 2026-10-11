@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../design/design_system.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../providers/app_mode_provider.dart';
 import '../../providers/auth_provider.dart';
+import 'mode_redirect.dart';
 
 // ── Page imports ──────────────────────────────────────────────────────────────
 
@@ -36,6 +38,13 @@ import '../../features/notifications/presentation/pages/notifications_page.dart'
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/help/presentation/pages/help_page.dart';
+import '../../features/pos/core/pos_home_page.dart';
+import '../../features/pos/core/pos_placeholder_page.dart';
+import '../../features/pos/core/pos_settings_page.dart';
+import '../../features/pos/core/pos_shell.dart';
+import '../../features/pos/onboarding/choose_product_page.dart';
+import '../../features/pos/onboarding/mode_check_page.dart';
+import '../../features/pos/onboarding/pos_onboarding_page.dart';
 
 final dashboardNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'dashboardNav');
 final ordersNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'ordersNav');
@@ -95,6 +104,10 @@ final vendorRouterProvider = Provider<GoRouter>((ref) {
     // Re-check the current screen when the owner changes this user's access.
     ..listen<MyAccess>(myAccessProvider, (_, __) {
       refreshListenable.value++;
+    })
+    // Re-check the current screen when the vendor's allowed modes or chosen mode change.
+    ..listen<AppModeState>(appModeProvider, (_, __) {
+      refreshListenable.value++;
     });
 
   return GoRouter(
@@ -107,6 +120,7 @@ final vendorRouterProvider = Provider<GoRouter>((ref) {
       state,
       ref.read(authProvider),
       ref.read(myAccessProvider),
+      appMode: ref.read(appModeProvider),
     ),
     errorBuilder: (context, state) => _ErrorPage(error: state.error),
     routes: _vendorRoutes,
@@ -157,16 +171,19 @@ String? vendorRedirectForTest(
   BuildContext context,
   GoRouterState state,
   AuthState authState,
-  MyAccess access,
-) =>
-    _vendorRedirect(context, state, authState, access);
+  MyAccess access, {
+  AppModeState? appMode,
+}) =>
+    _vendorRedirect(context, state, authState, access, appMode: appMode);
 
 String? _vendorRedirect(
   BuildContext context,
   GoRouterState state,
   AuthState authState,
-  MyAccess access,
-) {
+  MyAccess access, {
+  // null = POS mode rules switched off: exactly the behaviour before POS mode existed.
+  AppModeState? appMode,
+}) {
   final path = state.uri.path;
   final returnTo = state.uri.queryParameters['returnTo'];
 
@@ -194,6 +211,9 @@ String? _vendorRedirect(
   final isAuthenticatedOnlyPath =
       isProtectedPath ||
       path == AppRoutes.profileSetup ||
+      path == AppRoutes.chooseProduct ||
+      path == AppRoutes.modeCheck ||
+      isPosPath(path) ||
       _isCaptainWorkflowPath(path) ||
       path == AppRoutes.riderManagement;
 
@@ -224,6 +244,11 @@ String? _vendorRedirect(
   }
 
   if (authState is AuthNeedsVendorApplication) {
+    // A brand-new user first picks Marketplace or POS; Marketplace continues into the application wizard.
+    if (appMode != null) {
+      final d = newUserRedirect(path: path, mode: appMode);
+      return d.to;
+    }
     if (path == AppRoutes.profileSetup) return null;
     return AppRoutes.profileSetup;
   }
@@ -253,6 +278,13 @@ String? _vendorRedirect(
     // fixable before this only by force-closing and reopening the app.
     if (_isCaptainWorkflowPath(path)) {
       return AppRoutes.dashboard;
+    }
+
+    // Which UI this vendor is in (Marketplace or POS) — decided by the backend's allowed modes and
+    // the choice made on this device. Skipped entirely when POS rules are off (appMode == null).
+    if (appMode != null) {
+      final d = modeRedirect(path: path, mode: appMode, safeReturnTo: _safeReturnTo(returnTo));
+      if (d.handled) return d.to;
     }
 
     // Only redirect from auth pages.
@@ -314,6 +346,62 @@ final List<RouteBase> _vendorRoutes = [
     name: AppRouteNames.profileSetup,
     pageBuilder: (c, s) => _slideTransition(
         context: c, state: s, child: const VendorApplicationPage()),
+  ),
+
+  // ── Mode selection & POS (see docs/pos-mode) ─────────────────────────────────
+  GoRoute(
+    path: AppRoutes.chooseProduct,
+    name: AppRouteNames.chooseProduct,
+    pageBuilder: (c, s) => _fadeTransition(context: c, state: s, child: const ChooseProductPage()),
+  ),
+  GoRoute(
+    path: AppRoutes.modeCheck,
+    name: AppRouteNames.modeCheck,
+    pageBuilder: (c, s) => _fadeTransition(context: c, state: s, child: const ModeCheckPage()),
+  ),
+  GoRoute(
+    path: AppRoutes.posOnboarding,
+    name: AppRouteNames.posOnboarding,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: const PosOnboardingPage()),
+  ),
+  StatefulShellRoute.indexedStack(
+    builder: (_, __, shell) => PosShell(navigationShell: shell),
+    branches: [
+      StatefulShellBranch(routes: [
+        GoRoute(path: AppRoutes.posHome, name: AppRouteNames.posHome, builder: (c, s) => const PosHomePage()),
+      ]),
+      StatefulShellBranch(routes: [
+        GoRoute(
+          path: AppRoutes.posOrders,
+          name: AppRouteNames.posOrders,
+          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabOrder, icon: Icons.assignment_rounded),
+        ),
+      ]),
+      StatefulShellBranch(routes: [
+        GoRoute(
+          path: AppRoutes.posSearch,
+          name: AppRouteNames.posSearch,
+          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabSearch, icon: Icons.search_rounded),
+        ),
+      ]),
+      StatefulShellBranch(routes: [
+        GoRoute(
+          path: AppRoutes.posExpense,
+          name: AppRouteNames.posExpense,
+          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabExpense, icon: Icons.account_balance_wallet_rounded),
+        ),
+      ]),
+      StatefulShellBranch(routes: [
+        GoRoute(
+          path: AppRoutes.posReport,
+          name: AppRouteNames.posReport,
+          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabReport, icon: Icons.insert_chart_rounded),
+        ),
+      ]),
+      StatefulShellBranch(routes: [
+        GoRoute(path: AppRoutes.posSettings, name: AppRouteNames.posSettings, builder: (c, s) => const PosSettingsPage()),
+      ]),
+    ],
   ),
 
   // ── Dashboard (StatefulShellRoute with bottom nav) ───────────────────────────

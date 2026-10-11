@@ -6,6 +6,7 @@ import '../../../../core/design/design_system.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../providers/locale_provider.dart';
+import '../../../pos/mode/mode_switch_section.dart';
 
 const _hinglishLocale = Locale.fromSubtags(languageCode: 'hi', scriptCode: 'Latn');
 
@@ -49,6 +50,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
       body: ListView(
         padding: EdgeInsets.all(16.r),
         children: [
+          // ── App mode (Marketplace / POS) — renders nothing unless it applies ──
+          const ModeSwitchSection(),
+
           // ── Language ──────────────────────────────────────────────────────
           _buildSectionHeader(l10n.settingsLanguageTitle),
           _buildSettingsCard([
