@@ -4,15 +4,15 @@
 > **Rule:** a box is ticked only when the work is done **and verified**. Unverified work is marked `(written, not run)`.
 
 **Branch (all repos):** `claude/laundry-vendor-pos-modes-bs0o61`
-**Last updated:** 2026-10-11 — Phase 1 built and verified locally; **not pushed** (GitHub App has no access to the repos — see Blockers)
-**Current phase:** 1 (🟡 only the push is left; then Phase 2)
+**Last updated:** 2026-10-11 — Phase 1 ✅ (merged to `main` via PR #1 in all three repos)
+**Current phase:** 2 (⬜ not started)
 
 ## Phase status
 
 | Phase | Name | Status | Started | Completed |
 |---|---|---|---|---|
 | 0 | Planning, docs, slash commands | ✅ Done | 2026-10-10 | 2026-10-10 |
-| 1 | Foundation: modes + POS onboarding | 🟡 Built & verified; push blocked | 2026-10-10 | — |
+| 1 | Foundation: modes + POS onboarding | ✅ Done | 2026-10-10 | 2026-10-11 |
 | 2 | Counter core: Home · Book Order · Customers · Price list | ⬜ Not started | — | — |
 | 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ⬜ Not started | — | — |
 | 4 | Money, Reports, Polish & Release | ⬜ Not started | — | — |
@@ -42,7 +42,7 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Do
 - [x] 1C-9 l10n en/hi/hi_Latn — 79 keys × en / hi / hi_Latn
 - [x] 1C-10 Flutter tests (provider, router matrix, onboarding validation, widgets) — 147 tests in `test/pos`
 - [x] 1D-a Definition of Done verified (see Log)
-- [ ] 1D-b **Push** every touched repo (blocked: GitHub 403) — run `/pos-handoff` once access is fixed, then mark Phase 1 ✅
+- [x] 1D-b Push every touched repo — Phase 1 commits are on `origin/main` (PR #1 merged in backend, dashboard, vendor app)
 
 ## Phase 2 checklist (details: `docs/pos-mode/PHASE-2.md`)
 
@@ -107,10 +107,11 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 
 ## Blockers / open questions
 
-- **GitHub push is refused (403): "Claude doesn't have GitHub access to Shotlin/<repo>".** Fix: connect/reinstall the Claude GitHub App for the `Shotlin` org at https://claude.ai/connect-github (an org owner installs it at https://github.com/apps/claude/installations/select_target). Local commits exist on branch `claude/laundry-vendor-pos-modes-bs0o61` in `Lndry_backend`, `Lndry_dashboard_frontend` and `Lndry_vendor_app`.
 - Open product question (not blocking): a **POS-first user who later wants Marketplace** is not supported (a second shop would make login ambiguous) — handled by support/admin for now. Confirm if that is acceptable.
 
 ## Log (newest first)
+
+- 2026-10-11 — **Phase 1 closed ✅.** Verified `origin/main` of backend, dashboard and vendor app contains the Phase 1 commits (merge of PR #1); working branches have no diff against it, so the earlier GitHub 403 is resolved. No new code. Cloud session branch is `ccr-a5ba173a-i2kisn` (session-assigned) instead of `claude/laundry-vendor-pos-modes-bs0o61`. Flutter SDK not re-installed this session (nothing re-run). Next: Phase 2.
 
 - 2026-10-11 — **Phase 1 built and verified; push blocked.**
   Shipped: backend migration 152 + `vendor-app-mode` module + admin endpoint + flagged guard (+docs); dashboard "App access" control + list badge; Flutter POS theme, modes provider, router rules, choice screen, 4-step wizard, POS shell with 6 tabs, Settings mode switch (marketplace + POS), 79 l10n keys in 3 languages.
