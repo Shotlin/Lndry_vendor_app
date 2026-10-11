@@ -385,6 +385,19 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
+  /// A signed-in user with no shop just had a POS-only shop created for them. The access token issued
+  /// at login carries no shop, so renew it, remember the owner role and load the new profile.
+  Future<void> adoptNewVendorSession({String shopRole = 'VENDOR_OWNER'}) async {
+    final pair = await _repo.refreshTokens();
+    await _storage.saveSecure(AppConstants.keyAccessToken, pair.accessToken);
+    await _storage.saveSecure(AppConstants.keyRefreshToken, pair.refreshToken);
+    await _saveShopRole(shopRole, const []);
+    final vendor = await _repo.getProfile();
+    await _saveVendorPrefs(vendor);
+    await _registerDeviceIfPossible();
+    state = AuthAuthenticated(_mergeAuthPhone(vendor), shopRole: shopRole, permissions: const []);
+  }
+
   /// Clears a transient error back to unauthenticated.
   void clearError() {
     if (state is AuthError) {
