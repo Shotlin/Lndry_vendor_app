@@ -2793,6 +2793,416 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posSettingsShop => 'दुकान';
+
+  @override
+  String get posHomeToday => 'आज';
+
+  @override
+  String get posTileRevenue => 'आज की कमाई';
+
+  @override
+  String get posTileCollection => 'वसूली';
+
+  @override
+  String get posTileOrderRequests => 'ऑर्डर रिक्वेस्ट';
+
+  @override
+  String get posTileWashingToStore => 'धुलाई से स्टोर';
+
+  @override
+  String get posTileBooking => 'बुकिंग';
+
+  @override
+  String get posTileDelivery => 'डिलीवरी';
+
+  @override
+  String get posTileDelivered => 'डिलीवर हुए';
+
+  @override
+  String get posTilePending => 'बाकी ऑर्डर';
+
+  @override
+  String get posQuickActions => 'जल्दी करें';
+
+  @override
+  String get posActionBook => 'ऑर्डर बुक करें';
+
+  @override
+  String get posActionAddCustomer => 'ग्राहक जोड़ें';
+
+  @override
+  String get posActionAddPrice => 'कपड़े का रेट जोड़ें';
+
+  @override
+  String get posTasksTitle => 'करने के काम';
+
+  @override
+  String get posTaskUnassignedPickups => 'पिकअप के लिए कैप्टन चुनें';
+
+  @override
+  String get posTaskUpcomingDeliveries => 'डिलीवरी का समय आ गया';
+
+  @override
+  String get posTaskUnassignedDeliveries => 'डिलीवरी के लिए कैप्टन चुनें';
+
+  @override
+  String get posTaskExpress => 'एक्सप्रेस ऑर्डर';
+
+  @override
+  String get posTaskOrderRequests => 'ऑर्डर रिक्वेस्ट';
+
+  @override
+  String get posTaskCollectionDue => 'वसूलने वाली रकम';
+
+  @override
+  String get posPlanTitle => 'आपका प्लान';
+
+  @override
+  String posPlanValidTo(String date) {
+    return '$date तक मान्य';
+  }
+
+  @override
+  String get posHomeLoadError => 'आज के आंकड़े नहीं आ सके।';
+
+  @override
+  String get posRetry => 'फिर कोशिश करें';
+
+  @override
+  String get posHomeEmpty =>
+      'अभी कोई ऑर्डर नहीं। शुरू करने के लिए ऑर्डर बुक करें दबाएं।';
+
+  @override
+  String get posCancel => 'रद्द करें';
+
+  @override
+  String get posCustomerPick => 'ग्राहक चुनें';
+
+  @override
+  String get posCustomerSearchHint => 'नाम या फ़ोन से खोजें';
+
+  @override
+  String get posCustomerRecent => 'हाल के ग्राहक';
+
+  @override
+  String get posCustomerNone => 'कोई ग्राहक नहीं मिला।';
+
+  @override
+  String get posCustomerAddNew => 'नया ग्राहक जोड़ें';
+
+  @override
+  String posCustomerAddWithPhone(String phone) {
+    return '$phone को नया ग्राहक जोड़ें';
+  }
+
+  @override
+  String get posCustomerLoadError => 'ग्राहक नहीं आ सके।';
+
+  @override
+  String posCustomerOrderCount(int count) {
+    return '$count ऑर्डर';
+  }
+
+  @override
+  String get posAddCustomerTitle => 'ग्राहक जोड़ें';
+
+  @override
+  String get posCustomerName => 'ग्राहक का नाम';
+
+  @override
+  String get posCustomerPhone => 'मोबाइल नंबर (10 अंक)';
+
+  @override
+  String get posErrCustomerName => 'ग्राहक का नाम लिखें';
+
+  @override
+  String get posErrCustomerPhone => '10 अंकों का मोबाइल नंबर लिखें';
+
+  @override
+  String posCustomerAdded(String name) {
+    return '$name जुड़ गए';
+  }
+
+  @override
+  String get posBookTitle => 'ऑर्डर बुक करें';
+
+  @override
+  String get posBookCustomer => 'ग्राहक';
+
+  @override
+  String get posBookDeliveryDate => 'डिलीवरी की तारीख';
+
+  @override
+  String get posBookHomeDelivery => 'घर पर डिलीवरी';
+
+  @override
+  String get posBookPickup => 'पिकअप';
+
+  @override
+  String get posBookExpress => 'एक्सप्रेस';
+
+  @override
+  String get posBookService => 'सर्विस';
+
+  @override
+  String get posBookCategory => 'श्रेणी';
+
+  @override
+  String get posBookAll => 'सभी';
+
+  @override
+  String get posBookSearchGarment => 'कपड़ा खोजें';
+
+  @override
+  String get posBookNoServices =>
+      'आपकी रेट लिस्ट में अभी कोई सर्विस नहीं है। पहले कपड़े का रेट जोड़ें।';
+
+  @override
+  String get posBookNoGarments => 'इस सर्विस के लिए रेट वाला कोई कपड़ा नहीं।';
+
+  @override
+  String posBookNoMatch(String query) {
+    return '\"$query\" से कोई कपड़ा नहीं मिला।';
+  }
+
+  @override
+  String get posBookCatalogueError => 'आपकी रेट लिस्ट नहीं आ सकी।';
+
+  @override
+  String get posBookSelected => 'चुने हुए कपड़े';
+
+  @override
+  String get posBookCartEmpty => 'जोड़ने के लिए ऊपर कपड़े पर दबाएं।';
+
+  @override
+  String posBookAddOne(String name) {
+    return 'एक $name और जोड़ें';
+  }
+
+  @override
+  String posBookRemoveOne(String name) {
+    return 'एक $name कम करें';
+  }
+
+  @override
+  String posBookRemoveLine(String name) {
+    return '$name हटाएं';
+  }
+
+  @override
+  String get posBookChangePrice => 'रेट बदलें';
+
+  @override
+  String get posBookItems => 'कुल पीस';
+
+  @override
+  String get posBookCharge => 'चार्ज';
+
+  @override
+  String get posBookDiscount => 'छूट';
+
+  @override
+  String get posBookTax => 'टैक्स';
+
+  @override
+  String posBookTaxPercent(String percent) {
+    return 'टैक्स ($percent%)';
+  }
+
+  @override
+  String get posBookGrandTotal => 'कुल रकम';
+
+  @override
+  String get posBookCalculating => 'हिसाब लगा रहे हैं…';
+
+  @override
+  String get posBookQuoteError => 'रकम नहीं मिल सकी।';
+
+  @override
+  String get posBookExtras => 'चार्ज, छूट और GST';
+
+  @override
+  String get posBookChargesLabel => 'चार्ज';
+
+  @override
+  String get posBookDiscountsLabel => 'छूट';
+
+  @override
+  String get posBookGstLabel => 'GST';
+
+  @override
+  String get posBookNoGst => 'GST नहीं';
+
+  @override
+  String get posBookPayment => 'भुगतान';
+
+  @override
+  String get posPayCash => 'नकद';
+
+  @override
+  String get posPayOnline => 'ऑनलाइन';
+
+  @override
+  String get posPayLater => 'बाद में';
+
+  @override
+  String get posPayNowNote => 'पूरी रकम अभी मिल रही है।';
+
+  @override
+  String get posPayLaterNote => 'अभी भुगतान नहीं। बाद में लें।';
+
+  @override
+  String get posBookRemarks => 'टिप्पणी (वैकल्पिक)';
+
+  @override
+  String get posBookSave => 'ऑर्डर सेव करें';
+
+  @override
+  String get posBookSaving => 'सेव हो रहा है…';
+
+  @override
+  String get posBookNeedCustomer => 'सेव करने के लिए ग्राहक चुनें।';
+
+  @override
+  String get posBookNeedGarment => 'कम से कम एक कपड़ा जोड़ें।';
+
+  @override
+  String get posBookWaitPrice => 'रकम का इंतज़ार…';
+
+  @override
+  String get posBookSavedTitle => 'ऑर्डर सेव हो गया';
+
+  @override
+  String posBookSavedBody(String number, String name) {
+    return '$name का ऑर्डर $number';
+  }
+
+  @override
+  String get posBookSavedTotal => 'कुल';
+
+  @override
+  String get posBookSavedPaid => 'मिले';
+
+  @override
+  String get posBookSavedBalance => 'लेना बाकी';
+
+  @override
+  String get posBookViewOrder => 'ऑर्डर देखें';
+
+  @override
+  String get posBookAnother => 'एक और बुक करें';
+
+  @override
+  String get posBookClear => 'साफ़ करें';
+
+  @override
+  String get posBookClearTitle => 'यह ऑर्डर साफ़ करें?';
+
+  @override
+  String get posBookClearBody => 'ग्राहक और कपड़े हट जाएंगे।';
+
+  @override
+  String get posBookDraftRestored =>
+      'आपका पिछला बिना सेव किया ऑर्डर वापस आ गया।';
+
+  @override
+  String posBookDropped(int count) {
+    return '$count कपड़े हटा दिए गए क्योंकि उनका रेट अब आपकी लिस्ट में नहीं है।';
+  }
+
+  @override
+  String get posAddPriceTitle => 'कपड़े का रेट जोड़ें';
+
+  @override
+  String get posEditPriceTitle => 'रेट बदलें';
+
+  @override
+  String get posPriceGarment => 'कपड़ा';
+
+  @override
+  String get posPriceCategory => 'श्रेणी';
+
+  @override
+  String get posPriceService => 'सर्विस';
+
+  @override
+  String get posPriceUnit => 'इकाई';
+
+  @override
+  String get posPriceRate => 'रेट (₹)';
+
+  @override
+  String get posPriceAdd => 'जोड़ें';
+
+  @override
+  String get posPriceSave => 'रेट सेव करें';
+
+  @override
+  String get posPricePickOne => 'चुनें…';
+
+  @override
+  String get posPriceNone => 'कोई नहीं';
+
+  @override
+  String get posPriceNewGarment => 'नया कपड़ा';
+
+  @override
+  String get posPriceNewCategory => 'नई श्रेणी';
+
+  @override
+  String get posPriceNewService => 'नई सर्विस';
+
+  @override
+  String get posPriceCreateHint => 'नाम';
+
+  @override
+  String get posPriceCreate => 'बनाएं';
+
+  @override
+  String get posPriceCreateTooltip => 'नया बनाएं';
+
+  @override
+  String get posPriceErrGarment => 'कपड़ा चुनें';
+
+  @override
+  String get posPriceErrService => 'सर्विस चुनें';
+
+  @override
+  String get posPriceErrRate => 'रेट लिखें, जैसे 80 या 80.50';
+
+  @override
+  String get posPriceErrName => 'नाम लिखें';
+
+  @override
+  String get posPriceSaved => 'रेट सेव हो गया';
+
+  @override
+  String posPriceCurrent(String price) {
+    return 'अभी का रेट $price';
+  }
+
+  @override
+  String get posUnitPiece => 'पीस';
+
+  @override
+  String get posUnitKg => 'किलो';
+
+  @override
+  String get posUnitPair => 'जोड़ी';
+
+  @override
+  String get posUnitSqft => 'वर्ग फ़ुट';
+
+  @override
+  String get posBookSubtotal => 'रकम';
+
+  @override
+  String posBookQtySemantics(String name, int qty) {
+    return '$name, मात्रा $qty';
+  }
+
+  @override
+  String get posBookBill => 'बिल';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -5604,4 +6014,415 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posSettingsShop => 'Dukaan';
+
+  @override
+  String get posHomeToday => 'Aaj';
+
+  @override
+  String get posTileRevenue => 'Aaj ki kamai';
+
+  @override
+  String get posTileCollection => 'Vasooli';
+
+  @override
+  String get posTileOrderRequests => 'Order request';
+
+  @override
+  String get posTileWashingToStore => 'Dhulai se store';
+
+  @override
+  String get posTileBooking => 'Booking';
+
+  @override
+  String get posTileDelivery => 'Delivery';
+
+  @override
+  String get posTileDelivered => 'Deliver hue';
+
+  @override
+  String get posTilePending => 'Baaki order';
+
+  @override
+  String get posQuickActions => 'Jaldi karein';
+
+  @override
+  String get posActionBook => 'Order book karein';
+
+  @override
+  String get posActionAddCustomer => 'Customer jodein';
+
+  @override
+  String get posActionAddPrice => 'Kapde ka rate jodein';
+
+  @override
+  String get posTasksTitle => 'Karne ke kaam';
+
+  @override
+  String get posTaskUnassignedPickups => 'Pickup ke liye captain chunein';
+
+  @override
+  String get posTaskUpcomingDeliveries => 'Delivery ka time aa gaya';
+
+  @override
+  String get posTaskUnassignedDeliveries => 'Delivery ke liye captain chunein';
+
+  @override
+  String get posTaskExpress => 'Express order';
+
+  @override
+  String get posTaskOrderRequests => 'Order request';
+
+  @override
+  String get posTaskCollectionDue => 'Vasoolne wali rakam';
+
+  @override
+  String get posPlanTitle => 'Aapka plan';
+
+  @override
+  String posPlanValidTo(String date) {
+    return '$date tak valid';
+  }
+
+  @override
+  String get posHomeLoadError => 'Aaj ke aankde nahi aa sake.';
+
+  @override
+  String get posRetry => 'Phir koshish karein';
+
+  @override
+  String get posHomeEmpty =>
+      'Abhi koi order nahi. Shuru karne ke liye Order book karein dabayein.';
+
+  @override
+  String get posCancel => 'Cancel';
+
+  @override
+  String get posCustomerPick => 'Customer chunein';
+
+  @override
+  String get posCustomerSearchHint => 'Naam ya phone se khojein';
+
+  @override
+  String get posCustomerRecent => 'Haal ke customer';
+
+  @override
+  String get posCustomerNone => 'Koi customer nahi mila.';
+
+  @override
+  String get posCustomerAddNew => 'Naya customer jodein';
+
+  @override
+  String posCustomerAddWithPhone(String phone) {
+    return '$phone ko naya customer jodein';
+  }
+
+  @override
+  String get posCustomerLoadError => 'Customer nahi aa sake.';
+
+  @override
+  String posCustomerOrderCount(int count) {
+    return '$count order';
+  }
+
+  @override
+  String get posAddCustomerTitle => 'Customer jodein';
+
+  @override
+  String get posCustomerName => 'Customer ka naam';
+
+  @override
+  String get posCustomerPhone => 'Mobile number (10 digit)';
+
+  @override
+  String get posErrCustomerName => 'Customer ka naam likhein';
+
+  @override
+  String get posErrCustomerPhone => '10 digit ka mobile number likhein';
+
+  @override
+  String posCustomerAdded(String name) {
+    return '$name jud gaye';
+  }
+
+  @override
+  String get posBookTitle => 'Order book karein';
+
+  @override
+  String get posBookCustomer => 'Customer';
+
+  @override
+  String get posBookDeliveryDate => 'Delivery ki tarikh';
+
+  @override
+  String get posBookHomeDelivery => 'Ghar par delivery';
+
+  @override
+  String get posBookPickup => 'Pickup';
+
+  @override
+  String get posBookExpress => 'Express';
+
+  @override
+  String get posBookService => 'Service';
+
+  @override
+  String get posBookCategory => 'Category';
+
+  @override
+  String get posBookAll => 'Sabhi';
+
+  @override
+  String get posBookSearchGarment => 'Kapda khojein';
+
+  @override
+  String get posBookNoServices =>
+      'Aapki rate list mein abhi koi service nahi hai. Pehle kapde ka rate jodein.';
+
+  @override
+  String get posBookNoGarments =>
+      'Is service ke liye rate wala koi kapda nahi.';
+
+  @override
+  String posBookNoMatch(String query) {
+    return '\"$query\" se koi kapda nahi mila.';
+  }
+
+  @override
+  String get posBookCatalogueError => 'Aapki rate list nahi aa saki.';
+
+  @override
+  String get posBookSelected => 'Chune hue kapde';
+
+  @override
+  String get posBookCartEmpty => 'Jodne ke liye upar kapde par dabayein.';
+
+  @override
+  String posBookAddOne(String name) {
+    return 'Ek $name aur jodein';
+  }
+
+  @override
+  String posBookRemoveOne(String name) {
+    return 'Ek $name kam karein';
+  }
+
+  @override
+  String posBookRemoveLine(String name) {
+    return '$name hatayein';
+  }
+
+  @override
+  String get posBookChangePrice => 'Rate badlein';
+
+  @override
+  String get posBookItems => 'Kul piece';
+
+  @override
+  String get posBookCharge => 'Charge';
+
+  @override
+  String get posBookDiscount => 'Chhoot';
+
+  @override
+  String get posBookTax => 'Tax';
+
+  @override
+  String posBookTaxPercent(String percent) {
+    return 'Tax ($percent%)';
+  }
+
+  @override
+  String get posBookGrandTotal => 'Kul rakam';
+
+  @override
+  String get posBookCalculating => 'Hisaab laga rahe hain…';
+
+  @override
+  String get posBookQuoteError => 'Rakam nahi mil saki.';
+
+  @override
+  String get posBookExtras => 'Charge, chhoot aur GST';
+
+  @override
+  String get posBookChargesLabel => 'Charges';
+
+  @override
+  String get posBookDiscountsLabel => 'Discounts';
+
+  @override
+  String get posBookGstLabel => 'GST';
+
+  @override
+  String get posBookNoGst => 'GST nahi';
+
+  @override
+  String get posBookPayment => 'Payment';
+
+  @override
+  String get posPayCash => 'Cash';
+
+  @override
+  String get posPayOnline => 'Online';
+
+  @override
+  String get posPayLater => 'Baad mein';
+
+  @override
+  String get posPayNowNote => 'Poori rakam abhi mil rahi hai.';
+
+  @override
+  String get posPayLaterNote => 'Abhi payment nahi. Baad mein lein.';
+
+  @override
+  String get posBookRemarks => 'Remarks (optional)';
+
+  @override
+  String get posBookSave => 'Order save karein';
+
+  @override
+  String get posBookSaving => 'Save ho raha hai…';
+
+  @override
+  String get posBookNeedCustomer => 'Save karne ke liye customer chunein.';
+
+  @override
+  String get posBookNeedGarment => 'Kam se kam ek kapda jodein.';
+
+  @override
+  String get posBookWaitPrice => 'Rakam ka intezaar…';
+
+  @override
+  String get posBookSavedTitle => 'Order save ho gaya';
+
+  @override
+  String posBookSavedBody(String number, String name) {
+    return '$name ka order $number';
+  }
+
+  @override
+  String get posBookSavedTotal => 'Kul';
+
+  @override
+  String get posBookSavedPaid => 'Mile';
+
+  @override
+  String get posBookSavedBalance => 'Lena baaki';
+
+  @override
+  String get posBookViewOrder => 'Order dekhein';
+
+  @override
+  String get posBookAnother => 'Ek aur book karein';
+
+  @override
+  String get posBookClear => 'Saaf karein';
+
+  @override
+  String get posBookClearTitle => 'Yeh order saaf karein?';
+
+  @override
+  String get posBookClearBody => 'Customer aur kapde hat jayenge.';
+
+  @override
+  String get posBookDraftRestored =>
+      'Aapka pichla bina save kiya order wapas aa gaya.';
+
+  @override
+  String posBookDropped(int count) {
+    return '$count kapde hata diye gaye kyunki unka rate ab aapki list mein nahi hai.';
+  }
+
+  @override
+  String get posAddPriceTitle => 'Kapde ka rate jodein';
+
+  @override
+  String get posEditPriceTitle => 'Rate badlein';
+
+  @override
+  String get posPriceGarment => 'Kapda';
+
+  @override
+  String get posPriceCategory => 'Category';
+
+  @override
+  String get posPriceService => 'Service';
+
+  @override
+  String get posPriceUnit => 'Unit';
+
+  @override
+  String get posPriceRate => 'Rate (₹)';
+
+  @override
+  String get posPriceAdd => 'Jodein';
+
+  @override
+  String get posPriceSave => 'Rate save karein';
+
+  @override
+  String get posPricePickOne => 'Chunein…';
+
+  @override
+  String get posPriceNone => 'Koi nahi';
+
+  @override
+  String get posPriceNewGarment => 'Naya kapda';
+
+  @override
+  String get posPriceNewCategory => 'Nayi category';
+
+  @override
+  String get posPriceNewService => 'Nayi service';
+
+  @override
+  String get posPriceCreateHint => 'Naam';
+
+  @override
+  String get posPriceCreate => 'Banayein';
+
+  @override
+  String get posPriceCreateTooltip => 'Naya banayein';
+
+  @override
+  String get posPriceErrGarment => 'Kapda chunein';
+
+  @override
+  String get posPriceErrService => 'Service chunein';
+
+  @override
+  String get posPriceErrRate => 'Rate likhein, jaise 80 ya 80.50';
+
+  @override
+  String get posPriceErrName => 'Naam likhein';
+
+  @override
+  String get posPriceSaved => 'Rate save ho gaya';
+
+  @override
+  String posPriceCurrent(String price) {
+    return 'Abhi ka rate $price';
+  }
+
+  @override
+  String get posUnitPiece => 'Piece';
+
+  @override
+  String get posUnitKg => 'Kilo';
+
+  @override
+  String get posUnitPair => 'Jodi';
+
+  @override
+  String get posUnitSqft => 'Square foot';
+
+  @override
+  String get posBookSubtotal => 'Rakam';
+
+  @override
+  String posBookQtySemantics(String name, int qty) {
+    return '$name, matra $qty';
+  }
+
+  @override
+  String get posBookBill => 'Bill';
 }

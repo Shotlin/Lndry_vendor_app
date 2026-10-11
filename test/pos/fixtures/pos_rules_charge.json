@@ -1,0 +1,1 @@
+{"success":true,"message":"Adjustment rules fetched","data":[{"id":"3e6751f7-aefc-42ff-839d-d4bd2792f89f","vendorId":"030bb871-6f17-4fa7-bd74-d4b6d205fa36","kind":"CHARGE","name":"Express charge","type":"PERCENTAGE","flatAmountPaise":null,"percentageBps":1000,"description":null,"active":true,"createdAt":"2026-10-11T02:01:36.774Z","updatedAt":"2026-10-11T02:01:36.774Z"}]}

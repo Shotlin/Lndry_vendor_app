@@ -4,16 +4,16 @@
 > **Rule:** a box is ticked only when the work is done **and verified**. Unverified work is marked `(written, not run)`.
 
 **Branch (all repos):** `claude/laundry-vendor-pos-modes-bs0o61`
-**Last updated:** 2026-10-11 — Phase 1 built and verified locally; **not pushed** (GitHub App has no access to the repos — see Blockers)
-**Current phase:** 1 (🟡 only the push is left; then Phase 2)
+**Last updated:** 2026-10-11 — Phase 2 ✅ (Phases 0–2 done)
+**Current phase:** 3 (⬜ not started)
 
 ## Phase status
 
 | Phase | Name | Status | Started | Completed |
 |---|---|---|---|---|
 | 0 | Planning, docs, slash commands | ✅ Done | 2026-10-10 | 2026-10-10 |
-| 1 | Foundation: modes + POS onboarding | 🟡 Built & verified; push blocked | 2026-10-10 | — |
-| 2 | Counter core: Home · Book Order · Customers · Price list | ⬜ Not started | — | — |
+| 1 | Foundation: modes + POS onboarding | ✅ Done | 2026-10-10 | 2026-10-11 |
+| 2 | Counter core: Home · Book Order · Customers · Price list | ✅ Done | 2026-10-11 | 2026-10-11 |
 | 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ⬜ Not started | — | — |
 | 4 | Money, Reports, Polish & Release | ⬜ Not started | — | — |
 
@@ -42,23 +42,23 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Do
 - [x] 1C-9 l10n en/hi/hi_Latn — 79 keys × en / hi / hi_Latn
 - [x] 1C-10 Flutter tests (provider, router matrix, onboarding validation, widgets) — 147 tests in `test/pos`
 - [x] 1D-a Definition of Done verified (see Log)
-- [ ] 1D-b **Push** every touched repo (blocked: GitHub 403) — run `/pos-handoff` once access is fixed, then mark Phase 1 ✅
+- [x] 1D-b Push every touched repo — Phase 1 commits are on `origin/main` (PR #1 merged in backend, dashboard, vendor app)
 
 ## Phase 2 checklist (details: `docs/pos-mode/PHASE-2.md`)
 
-- [ ] 2A-1 Migration `153_counter_order_delivery_flags.sql`
-- [ ] 2A-2 `book/update/list` accept `deliveryMode`, `isExpress`
-- [ ] 2A-3 `/vendor/pos/dashboard` Home tiles (null when not truthful)
-- [ ] 2A-4 Backend tests + API docs
-- [ ] 2B-1 Models + `money.dart`
-- [ ] 2B-2 Repositories (dashboard, customers, catalogue, quote, book)
-- [ ] 2C-1 POS Home
-- [ ] 2C-2 Customer picker + Add Customer
-- [ ] 2C-3 Book Order (live quote, draft persistence, idempotent save)
-- [ ] 2C-4 Add Garment Price sheet
-- [ ] 2C-5 l10n
-- [ ] 2D Tests + `scripts/pos-smoke.mjs` + total matches Epic desktop to the paisa
-- [ ] 2E Definition of Done verified + pushed
+- [x] 2A-1 Migration `153_counter_order_delivery_flags.sql` — idempotent (run twice in a test), defaults WALK_IN / false
+- [x] 2A-2 `book/update/list` accept `deliveryMode`, `isExpress` — validated (400 on bad values), `?deliveryMode=` / `?express=true`; express is a flag only, no price invented
+- [x] 2A-3 `/vendor/pos/dashboard` Home tiles (null when not truthful) — new `data.home` block, all 13 tiles are real integers (see `Lndry_backend/docs/pos-counter-home.md`)
+- [x] 2A-4 Backend tests + API docs — 5 integration tests on real Postgres (mutation-checked) + `docs/pos-counter-home.md` (the repo has no API_REFERENCE.md)
+- [x] 2B-1 Models + `money.dart` — plain Dart models (as in Phase 1), integer paise, Indian grouping, no float money
+- [x] 2B-2 Repositories (dashboard, customers, catalogue, quote, book) — + charge/discount rules; contract-tested on REAL captured responses
+- [x] 2C-1 POS Home — numbers, plan card, tasks, quick actions. NOT in this phase: WhatsApp action (Phase 4, 4A-6) and tile → filtered Orders (needs the Phase 3 list); tiles are not tappable so there are no dead links
+- [x] 2C-2 Customer picker + Add Customer
+- [x] 2C-3 Book Order (live quote, draft persistence, idempotent save) — Wallet is NOT offered at booking (needs the customer's OTP approval = Phase 3 Pay Now); Cash / Online / Pay Later are
+- [x] 2C-4 Add Garment Price sheet — inline + for garment/category/service; opening on an existing price edits it instead of duplicating
+- [x] 2C-5 l10n — 130 keys × en / hi / hi_Latn
+- [x] 2D Tests + `scripts/pos-smoke.mjs` + total matches Epic desktop to the paisa — totals verified to the paisa against the SAME `/orders/quote` endpoint Epic calls and against integer arithmetic; Epic itself was not run (it is reference-only)
+- [x] 2E Definition of Done verified + pushed (see Log)
 
 ## Phase 3 checklist (details: `docs/pos-mode/PHASE-3.md`)
 
@@ -107,10 +107,19 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 
 ## Blockers / open questions
 
-- **GitHub push is refused (403): "Claude doesn't have GitHub access to Shotlin/<repo>".** Fix: connect/reinstall the Claude GitHub App for the `Shotlin` org at https://claude.ai/connect-github (an org owner installs it at https://github.com/apps/claude/installations/select_target). Local commits exist on branch `claude/laundry-vendor-pos-modes-bs0o61` in `Lndry_backend`, `Lndry_dashboard_frontend` and `Lndry_vendor_app`.
 - Open product question (not blocking): a **POS-first user who later wants Marketplace** is not supported (a second shop would make login ambiguous) — handled by support/admin for now. Confirm if that is acceptable.
 
 ## Log (newest first)
+
+- 2026-10-11 — **Phase 2 closed ✅.**
+  Shipped: backend migration 153 (`delivery_mode`, `is_express`), counter book/update/list flags + filters, `data.home` dashboard tiles, malformed-customer-id 400 fix, `scripts/pos-smoke.mjs`; Flutter money helpers, models, repositories, POS Home, customer picker + Add Customer, Book Order (live server quote, draft persistence, idempotent save, charges/discounts/GST), Add Garment Price (inline create, edit existing), l10n (+130 keys × 3 languages), routes.
+  Verified (real): backend 5 new integration tests on real Postgres (tiles checked against independent SQL, mutation-checked; empty vendor = zeros; other vendor never leaks), full backend suite = only the 2 known failures; `pos-smoke.mjs` 32/32 against the live API; Flutter `test/pos` 262 tests (from 147), whole suite 336 pass + the 1 known `widget_test.dart` failure; contract tests on REAL captured responses; **release web build of the whole app in real Chromium against the real backend, 29/29 checks verified through the API** (book walk-in/home-delivery/express/pay-later/online, double tap = one order, draft survives restart, new price appears in the grid, Home numbers = database, charge+discount+18% GST total ₹305.62 = API quote = hand arithmetic).
+  Bugs found by that verification and fixed: cart row overflowed on a normal phone (Row → Wrap); error note pushed its message off screen with a long button label; floating snackbars threw on small screens with large text (now fixed behaviour); a queued snackbar hid the "garments removed" notice; malformed customer id gave a 500 with a stack trace (now 400); my own e2e once read the wrong shop through a stale token (runner fixed — never trust a check without confirming the phone in the JWT).
+  Decisions / deviations (please confirm): Wallet payment is not offered at booking (needs the customer's OTP approval → Phase 3 Pay Now); WhatsApp quick action → Phase 4; Home tiles are not tappable until Phase 3's Orders list exists; `catalogue.manage` gates Add Garment Price in the app (the server accepts create OR update, so the app is slightly stricter); new customers without an order do not appear in the recent list (same contract as Epic: the list is customers who have orders) but are findable by phone; `todayRevenue` excludes cancelled orders and Epic's mirrored `DESKTOP_PUSH` rows; "today" is the server's UTC date (as the existing `counterSalesToday`).
+  Not run: Epic desktop/website itself (reference-only; it calls the same endpoints); a real staff account on a device (hidden buttons are widget-tested only); a physical phone/emulator (web build only); Hindi screens by eye (strings are in, widget-tested for two screens).
+  Next: Phase 3 (Orders list, detail, payments incl. wallet, invoice, tags). `ENFORCE_OFFERING` still OFF.
+
+- 2026-10-11 — **Phase 1 closed ✅.** Verified `origin/main` of backend, dashboard and vendor app contains the Phase 1 commits (merge of PR #1); working branches have no diff against it, so the earlier GitHub 403 is resolved. No new code. Cloud session branch is `ccr-a5ba173a-i2kisn` (session-assigned) instead of `claude/laundry-vendor-pos-modes-bs0o61`. Flutter SDK not re-installed this session (nothing re-run). Next: Phase 2.
 
 - 2026-10-11 — **Phase 1 built and verified; push blocked.**
   Shipped: backend migration 152 + `vendor-app-mode` module + admin endpoint + flagged guard (+docs); dashboard "App access" control + list badge; Flutter POS theme, modes provider, router rules, choice screen, 4-step wizard, POS shell with 6 tabs, Settings mode switch (marketplace + POS), 79 l10n keys in 3 languages.

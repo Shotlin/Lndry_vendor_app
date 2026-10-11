@@ -1,0 +1,305 @@
+{
+ "success": true,
+ "message": "Success",
+ "data": {
+  "categories": [
+   {
+    "id": "b55e33a9-af23-4c78-9263-d8c9a798809a",
+    "parentId": null,
+    "name": "Men's Wear",
+    "color": null,
+    "imageUrl": null,
+    "sortOrder": 0,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "f7f0a7cd-ce9a-475f-9866-290fb8c1c669",
+    "parentId": null,
+    "name": "Women's Wear",
+    "color": null,
+    "imageUrl": null,
+    "sortOrder": 1,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "890ce92b-b43c-4649-8d66-4a39597ef753",
+    "parentId": null,
+    "name": "Household",
+    "color": null,
+    "imageUrl": null,
+    "sortOrder": 2,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   }
+  ],
+  "services": [
+   {
+    "id": "8bbd81ce-5db7-45a9-9352-51338f3854ec",
+    "name": "Dry Cleaning",
+    "description": "",
+    "imageUrl": null,
+    "units": [
+     "Piece",
+     "Kilogram",
+     "Pair",
+     "Square Foot"
+    ],
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "4a59528e-f7a9-4bfc-894f-c7f1d1bad4c4",
+    "name": "Steam Iron",
+    "description": "",
+    "imageUrl": null,
+    "units": [
+     "Piece",
+     "Kilogram",
+     "Pair",
+     "Square Foot"
+    ],
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "8d2811ac-5a3a-49c1-8004-27851c6068de",
+    "name": "Wash & Fold",
+    "description": "",
+    "imageUrl": null,
+    "units": [
+     "Piece",
+     "Kilogram",
+     "Pair",
+     "Square Foot"
+    ],
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "7fa848ff-8d33-4b97-8f2f-71dacf76ded3",
+    "name": "Wash & Steam Iron",
+    "description": "",
+    "imageUrl": null,
+    "units": [
+     "Piece",
+     "Kilogram",
+     "Pair",
+     "Square Foot"
+    ],
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   }
+  ],
+  "garments": [
+   {
+    "id": "71efb003-0ccf-4a16-9109-b964310ccfad",
+    "categoryId": "890ce92b-b43c-4649-8d66-4a39597ef753",
+    "name": "Bed Sheet (Single)",
+    "code": "",
+    "unit": "piece",
+    "imageUrl": null,
+    "hsn": "",
+    "gstRate": 0,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "8923d2c5-e066-4019-9596-8bd45dc790d7",
+    "categoryId": "890ce92b-b43c-4649-8d66-4a39597ef753",
+    "name": "Blanket (Single)",
+    "code": "",
+    "unit": "piece",
+    "imageUrl": null,
+    "hsn": "",
+    "gstRate": 0,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "91080948-66b7-480d-982d-fb2bc10eda31",
+    "categoryId": "b55e33a9-af23-4c78-9263-d8c9a798809a",
+    "name": "Shirt",
+    "code": "",
+    "unit": "piece",
+    "imageUrl": null,
+    "hsn": "",
+    "gstRate": 0,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "a045ff8e-837a-450d-8490-1f4320a2b990",
+    "categoryId": "b55e33a9-af23-4c78-9263-d8c9a798809a",
+    "name": "T-Shirt",
+    "code": "",
+    "unit": "piece",
+    "imageUrl": null,
+    "hsn": "",
+    "gstRate": 0,
+    "active": true,
+    "source": "POS",
+    "locallyEdited": false,
+    "marketplaceMissing": false
+   }
+  ],
+  "prices": [
+   {
+    "id": "ebd27845-cdd8-45b5-b529-65382249ca2a",
+    "garmentId": "91080948-66b7-480d-982d-fb2bc10eda31",
+    "serviceId": "8bbd81ce-5db7-45a9-9352-51338f3854ec",
+    "customerUserId": null,
+    "ratePaise": 8000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "8ad04a43-9455-4f20-8bb0-92494f606edd",
+    "garmentId": "91080948-66b7-480d-982d-fb2bc10eda31",
+    "serviceId": "8d2811ac-5a3a-49c1-8004-27851c6068de",
+    "customerUserId": null,
+    "ratePaise": 3000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "d45aea57-7916-47ef-89d3-7796e0c86caa",
+    "garmentId": "91080948-66b7-480d-982d-fb2bc10eda31",
+    "serviceId": "7fa848ff-8d33-4b97-8f2f-71dacf76ded3",
+    "customerUserId": null,
+    "ratePaise": 4000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "aabd9f9e-bc11-4550-93de-3b63864f2e5e",
+    "garmentId": "91080948-66b7-480d-982d-fb2bc10eda31",
+    "serviceId": "4a59528e-f7a9-4bfc-894f-c7f1d1bad4c4",
+    "customerUserId": null,
+    "ratePaise": 1500,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "c2afa6a9-fb84-4582-821c-1da39883256f",
+    "garmentId": "a045ff8e-837a-450d-8490-1f4320a2b990",
+    "serviceId": "8bbd81ce-5db7-45a9-9352-51338f3854ec",
+    "customerUserId": null,
+    "ratePaise": 7000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "64642982-649a-4003-af6e-0d6982bd9792",
+    "garmentId": "a045ff8e-837a-450d-8490-1f4320a2b990",
+    "serviceId": "8d2811ac-5a3a-49c1-8004-27851c6068de",
+    "customerUserId": null,
+    "ratePaise": 2500,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "e934a93c-ec27-40f4-a932-1b23e643d743",
+    "garmentId": "a045ff8e-837a-450d-8490-1f4320a2b990",
+    "serviceId": "7fa848ff-8d33-4b97-8f2f-71dacf76ded3",
+    "customerUserId": null,
+    "ratePaise": 3500,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "2cc1e18d-d8ab-4a1c-8dce-c184859f64de",
+    "garmentId": "a045ff8e-837a-450d-8490-1f4320a2b990",
+    "serviceId": "4a59528e-f7a9-4bfc-894f-c7f1d1bad4c4",
+    "customerUserId": null,
+    "ratePaise": 1200,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "2b2dc1f7-c8ba-4d2e-918a-1405d4f9c5de",
+    "garmentId": "71efb003-0ccf-4a16-9109-b964310ccfad",
+    "serviceId": "8bbd81ce-5db7-45a9-9352-51338f3854ec",
+    "customerUserId": null,
+    "ratePaise": 15000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "c71632fa-ef55-4120-9f94-4428152b4468",
+    "garmentId": "71efb003-0ccf-4a16-9109-b964310ccfad",
+    "serviceId": "8d2811ac-5a3a-49c1-8004-27851c6068de",
+    "customerUserId": null,
+    "ratePaise": 5000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   },
+   {
+    "id": "4ebebd24-5ba9-4803-bea3-07e21ac0dfe4",
+    "garmentId": "8923d2c5-e066-4019-9596-8bd45dc790d7",
+    "serviceId": "8bbd81ce-5db7-45a9-9352-51338f3854ec",
+    "customerUserId": null,
+    "ratePaise": 30000,
+    "active": true,
+    "source": "POS",
+    "marketplaceRatePaise": null,
+    "priceOverridden": false,
+    "marketplaceMissing": false
+   }
+  ],
+  "taxRules": [],
+  "lastSyncedAt": "2026-10-11T01:59:27.641Z",
+  "sync": null
+ }
+}

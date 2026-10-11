@@ -77,3 +77,14 @@ analyzer has just modified `analysis_options.yaml` (the pop will refuse).
 * `fixtures/*.json`: REAL backend responses (re-capture with the curl recipe above if the API changes).
 * Router tests run the app's real `vendorRedirectForTest(..., appMode:)` against placeholder screens.
 * Mutation-check new tests: break the rule under test, confirm tests fail, restore.
+
+## 4. Real-browser journeys (whole app, real backend)
+
+`scripts/pos-web-e2e/` runs the release **web** build of the full Vendor App in Chromium against the local backend and
+verifies results through the API (`README.md` there has the exact commands). Backend side: `.env` needs
+`TEST_BYPASS_OTP_PHONES=*` and `CORS_ORIGINS=http://localhost:8081`. The backend contract check
+`node ../Lndry_backend/scripts/pos-smoke.mjs` needs no browser at all.
+
+Gotchas (all hit in Phase 2): OTPs are rate-limited per phone (`redis-cli flushall` locally) so every run makes a new shop;
+the app sits on a splash for a few seconds; a test that "verifies" with a stale token reads the wrong shop — always check the
+phone inside the JWT matches the shop you drove.

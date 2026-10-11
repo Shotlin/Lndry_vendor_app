@@ -5025,6 +5025,768 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Shop'**
   String get posSettingsShop;
+
+  /// POS mode: posHomeToday
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get posHomeToday;
+
+  /// POS mode: posTileRevenue
+  ///
+  /// In en, this message translates to:
+  /// **'Today Revenue'**
+  String get posTileRevenue;
+
+  /// POS mode: posTileCollection
+  ///
+  /// In en, this message translates to:
+  /// **'Collection'**
+  String get posTileCollection;
+
+  /// POS mode: posTileOrderRequests
+  ///
+  /// In en, this message translates to:
+  /// **'Order Request'**
+  String get posTileOrderRequests;
+
+  /// POS mode: posTileWashingToStore
+  ///
+  /// In en, this message translates to:
+  /// **'Washing to Store'**
+  String get posTileWashingToStore;
+
+  /// POS mode: posTileBooking
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get posTileBooking;
+
+  /// POS mode: posTileDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery'**
+  String get posTileDelivery;
+
+  /// POS mode: posTileDelivered
+  ///
+  /// In en, this message translates to:
+  /// **'Delivered'**
+  String get posTileDelivered;
+
+  /// POS mode: posTilePending
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Orders'**
+  String get posTilePending;
+
+  /// POS mode: posQuickActions
+  ///
+  /// In en, this message translates to:
+  /// **'Quick actions'**
+  String get posQuickActions;
+
+  /// POS mode: posActionBook
+  ///
+  /// In en, this message translates to:
+  /// **'Book Order'**
+  String get posActionBook;
+
+  /// POS mode: posActionAddCustomer
+  ///
+  /// In en, this message translates to:
+  /// **'Add Customer'**
+  String get posActionAddCustomer;
+
+  /// POS mode: posActionAddPrice
+  ///
+  /// In en, this message translates to:
+  /// **'Add Garment Price'**
+  String get posActionAddPrice;
+
+  /// POS mode: posTasksTitle
+  ///
+  /// In en, this message translates to:
+  /// **'To do'**
+  String get posTasksTitle;
+
+  /// POS mode: posTaskUnassignedPickups
+  ///
+  /// In en, this message translates to:
+  /// **'Pickups to assign'**
+  String get posTaskUnassignedPickups;
+
+  /// POS mode: posTaskUpcomingDeliveries
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries due'**
+  String get posTaskUpcomingDeliveries;
+
+  /// POS mode: posTaskUnassignedDeliveries
+  ///
+  /// In en, this message translates to:
+  /// **'Deliveries to assign'**
+  String get posTaskUnassignedDeliveries;
+
+  /// POS mode: posTaskExpress
+  ///
+  /// In en, this message translates to:
+  /// **'Express orders'**
+  String get posTaskExpress;
+
+  /// POS mode: posTaskOrderRequests
+  ///
+  /// In en, this message translates to:
+  /// **'Order requests'**
+  String get posTaskOrderRequests;
+
+  /// POS mode: posTaskCollectionDue
+  ///
+  /// In en, this message translates to:
+  /// **'Money to collect'**
+  String get posTaskCollectionDue;
+
+  /// POS mode: posPlanTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your plan'**
+  String get posPlanTitle;
+
+  /// POS mode: posPlanValidTo
+  ///
+  /// In en, this message translates to:
+  /// **'Valid till {date}'**
+  String posPlanValidTo(String date);
+
+  /// POS mode: posHomeLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load today\'s numbers.'**
+  String get posHomeLoadError;
+
+  /// POS mode: posRetry
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get posRetry;
+
+  /// POS mode: posHomeEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'No orders yet. Tap Book Order to start.'**
+  String get posHomeEmpty;
+
+  /// POS mode: posCancel
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get posCancel;
+
+  /// POS mode: posCustomerPick
+  ///
+  /// In en, this message translates to:
+  /// **'Choose customer'**
+  String get posCustomerPick;
+
+  /// POS mode: posCustomerSearchHint
+  ///
+  /// In en, this message translates to:
+  /// **'Search name or phone'**
+  String get posCustomerSearchHint;
+
+  /// POS mode: posCustomerRecent
+  ///
+  /// In en, this message translates to:
+  /// **'Recent customers'**
+  String get posCustomerRecent;
+
+  /// POS mode: posCustomerNone
+  ///
+  /// In en, this message translates to:
+  /// **'No customer found.'**
+  String get posCustomerNone;
+
+  /// POS mode: posCustomerAddNew
+  ///
+  /// In en, this message translates to:
+  /// **'Add new customer'**
+  String get posCustomerAddNew;
+
+  /// POS mode: posCustomerAddWithPhone
+  ///
+  /// In en, this message translates to:
+  /// **'Add {phone} as a new customer'**
+  String posCustomerAddWithPhone(String phone);
+
+  /// POS mode: posCustomerLoadError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load customers.'**
+  String get posCustomerLoadError;
+
+  /// POS mode: posCustomerOrderCount
+  ///
+  /// In en, this message translates to:
+  /// **'{count} orders'**
+  String posCustomerOrderCount(int count);
+
+  /// POS mode: posAddCustomerTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add customer'**
+  String get posAddCustomerTitle;
+
+  /// POS mode: posCustomerName
+  ///
+  /// In en, this message translates to:
+  /// **'Customer name'**
+  String get posCustomerName;
+
+  /// POS mode: posCustomerPhone
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile number (10 digits)'**
+  String get posCustomerPhone;
+
+  /// POS mode: posErrCustomerName
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the customer\'s name'**
+  String get posErrCustomerName;
+
+  /// POS mode: posErrCustomerPhone
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a 10-digit mobile number'**
+  String get posErrCustomerPhone;
+
+  /// POS mode: posCustomerAdded
+  ///
+  /// In en, this message translates to:
+  /// **'{name} added'**
+  String posCustomerAdded(String name);
+
+  /// POS mode: posBookTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Book Order'**
+  String get posBookTitle;
+
+  /// POS mode: posBookCustomer
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get posBookCustomer;
+
+  /// POS mode: posBookDeliveryDate
+  ///
+  /// In en, this message translates to:
+  /// **'Delivery date'**
+  String get posBookDeliveryDate;
+
+  /// POS mode: posBookHomeDelivery
+  ///
+  /// In en, this message translates to:
+  /// **'Home Delivery'**
+  String get posBookHomeDelivery;
+
+  /// POS mode: posBookPickup
+  ///
+  /// In en, this message translates to:
+  /// **'Pickup'**
+  String get posBookPickup;
+
+  /// POS mode: posBookExpress
+  ///
+  /// In en, this message translates to:
+  /// **'Express'**
+  String get posBookExpress;
+
+  /// POS mode: posBookService
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get posBookService;
+
+  /// POS mode: posBookCategory
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get posBookCategory;
+
+  /// POS mode: posBookAll
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get posBookAll;
+
+  /// POS mode: posBookSearchGarment
+  ///
+  /// In en, this message translates to:
+  /// **'Search garment'**
+  String get posBookSearchGarment;
+
+  /// POS mode: posBookNoServices
+  ///
+  /// In en, this message translates to:
+  /// **'Your price list has no services yet. Add a garment price first.'**
+  String get posBookNoServices;
+
+  /// POS mode: posBookNoGarments
+  ///
+  /// In en, this message translates to:
+  /// **'No garments with a price for this service.'**
+  String get posBookNoGarments;
+
+  /// POS mode: posBookNoMatch
+  ///
+  /// In en, this message translates to:
+  /// **'No garment matches \"{query}\".'**
+  String posBookNoMatch(String query);
+
+  /// POS mode: posBookCatalogueError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load your price list.'**
+  String get posBookCatalogueError;
+
+  /// POS mode: posBookSelected
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Garments'**
+  String get posBookSelected;
+
+  /// POS mode: posBookCartEmpty
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a garment above to add it.'**
+  String get posBookCartEmpty;
+
+  /// POS mode: posBookAddOne
+  ///
+  /// In en, this message translates to:
+  /// **'Add one {name}'**
+  String posBookAddOne(String name);
+
+  /// POS mode: posBookRemoveOne
+  ///
+  /// In en, this message translates to:
+  /// **'Remove one {name}'**
+  String posBookRemoveOne(String name);
+
+  /// POS mode: posBookRemoveLine
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name}'**
+  String posBookRemoveLine(String name);
+
+  /// POS mode: posBookChangePrice
+  ///
+  /// In en, this message translates to:
+  /// **'Change price'**
+  String get posBookChangePrice;
+
+  /// POS mode: posBookItems
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get posBookItems;
+
+  /// POS mode: posBookCharge
+  ///
+  /// In en, this message translates to:
+  /// **'Charge'**
+  String get posBookCharge;
+
+  /// POS mode: posBookDiscount
+  ///
+  /// In en, this message translates to:
+  /// **'Discount'**
+  String get posBookDiscount;
+
+  /// POS mode: posBookTax
+  ///
+  /// In en, this message translates to:
+  /// **'Tax'**
+  String get posBookTax;
+
+  /// POS mode: posBookTaxPercent
+  ///
+  /// In en, this message translates to:
+  /// **'Tax ({percent}%)'**
+  String posBookTaxPercent(String percent);
+
+  /// POS mode: posBookGrandTotal
+  ///
+  /// In en, this message translates to:
+  /// **'Grand Total'**
+  String get posBookGrandTotal;
+
+  /// POS mode: posBookCalculating
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating…'**
+  String get posBookCalculating;
+
+  /// POS mode: posBookQuoteError
+  ///
+  /// In en, this message translates to:
+  /// **'Could not get the price.'**
+  String get posBookQuoteError;
+
+  /// POS mode: posBookExtras
+  ///
+  /// In en, this message translates to:
+  /// **'Charges, discount & GST'**
+  String get posBookExtras;
+
+  /// POS mode: posBookChargesLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Charges'**
+  String get posBookChargesLabel;
+
+  /// POS mode: posBookDiscountsLabel
+  ///
+  /// In en, this message translates to:
+  /// **'Discounts'**
+  String get posBookDiscountsLabel;
+
+  /// POS mode: posBookGstLabel
+  ///
+  /// In en, this message translates to:
+  /// **'GST'**
+  String get posBookGstLabel;
+
+  /// POS mode: posBookNoGst
+  ///
+  /// In en, this message translates to:
+  /// **'No GST'**
+  String get posBookNoGst;
+
+  /// POS mode: posBookPayment
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get posBookPayment;
+
+  /// POS mode: posPayCash
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get posPayCash;
+
+  /// POS mode: posPayOnline
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get posPayOnline;
+
+  /// POS mode: posPayLater
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Later'**
+  String get posPayLater;
+
+  /// POS mode: posPayNowNote
+  ///
+  /// In en, this message translates to:
+  /// **'The full amount is received now.'**
+  String get posPayNowNote;
+
+  /// POS mode: posPayLaterNote
+  ///
+  /// In en, this message translates to:
+  /// **'No payment now. Collect it later.'**
+  String get posPayLaterNote;
+
+  /// POS mode: posBookRemarks
+  ///
+  /// In en, this message translates to:
+  /// **'Remarks (optional)'**
+  String get posBookRemarks;
+
+  /// POS mode: posBookSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save Order'**
+  String get posBookSave;
+
+  /// POS mode: posBookSaving
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get posBookSaving;
+
+  /// POS mode: posBookNeedCustomer
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a customer to save.'**
+  String get posBookNeedCustomer;
+
+  /// POS mode: posBookNeedGarment
+  ///
+  /// In en, this message translates to:
+  /// **'Add at least one garment.'**
+  String get posBookNeedGarment;
+
+  /// POS mode: posBookWaitPrice
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the price…'**
+  String get posBookWaitPrice;
+
+  /// POS mode: posBookSavedTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Order saved'**
+  String get posBookSavedTitle;
+
+  /// POS mode: posBookSavedBody
+  ///
+  /// In en, this message translates to:
+  /// **'Order {number} for {name}'**
+  String posBookSavedBody(String number, String name);
+
+  /// POS mode: posBookSavedTotal
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get posBookSavedTotal;
+
+  /// POS mode: posBookSavedPaid
+  ///
+  /// In en, this message translates to:
+  /// **'Paid'**
+  String get posBookSavedPaid;
+
+  /// POS mode: posBookSavedBalance
+  ///
+  /// In en, this message translates to:
+  /// **'To collect'**
+  String get posBookSavedBalance;
+
+  /// POS mode: posBookViewOrder
+  ///
+  /// In en, this message translates to:
+  /// **'View Order'**
+  String get posBookViewOrder;
+
+  /// POS mode: posBookAnother
+  ///
+  /// In en, this message translates to:
+  /// **'Book Another'**
+  String get posBookAnother;
+
+  /// POS mode: posBookClear
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get posBookClear;
+
+  /// POS mode: posBookClearTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Clear this order?'**
+  String get posBookClearTitle;
+
+  /// POS mode: posBookClearBody
+  ///
+  /// In en, this message translates to:
+  /// **'The customer and garments will be removed.'**
+  String get posBookClearBody;
+
+  /// POS mode: posBookDraftRestored
+  ///
+  /// In en, this message translates to:
+  /// **'Your last unsaved order was restored.'**
+  String get posBookDraftRestored;
+
+  /// POS mode: posBookDropped
+  ///
+  /// In en, this message translates to:
+  /// **'{count} garments were removed because their price is no longer in your list.'**
+  String posBookDropped(int count);
+
+  /// POS mode: posAddPriceTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add Garment Price'**
+  String get posAddPriceTitle;
+
+  /// POS mode: posEditPriceTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Change price'**
+  String get posEditPriceTitle;
+
+  /// POS mode: posPriceGarment
+  ///
+  /// In en, this message translates to:
+  /// **'Garment'**
+  String get posPriceGarment;
+
+  /// POS mode: posPriceCategory
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get posPriceCategory;
+
+  /// POS mode: posPriceService
+  ///
+  /// In en, this message translates to:
+  /// **'Service'**
+  String get posPriceService;
+
+  /// POS mode: posPriceUnit
+  ///
+  /// In en, this message translates to:
+  /// **'Unit'**
+  String get posPriceUnit;
+
+  /// POS mode: posPriceRate
+  ///
+  /// In en, this message translates to:
+  /// **'Price (₹)'**
+  String get posPriceRate;
+
+  /// POS mode: posPriceAdd
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get posPriceAdd;
+
+  /// POS mode: posPriceSave
+  ///
+  /// In en, this message translates to:
+  /// **'Save price'**
+  String get posPriceSave;
+
+  /// POS mode: posPricePickOne
+  ///
+  /// In en, this message translates to:
+  /// **'Choose…'**
+  String get posPricePickOne;
+
+  /// POS mode: posPriceNone
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get posPriceNone;
+
+  /// POS mode: posPriceNewGarment
+  ///
+  /// In en, this message translates to:
+  /// **'New garment'**
+  String get posPriceNewGarment;
+
+  /// POS mode: posPriceNewCategory
+  ///
+  /// In en, this message translates to:
+  /// **'New category'**
+  String get posPriceNewCategory;
+
+  /// POS mode: posPriceNewService
+  ///
+  /// In en, this message translates to:
+  /// **'New service'**
+  String get posPriceNewService;
+
+  /// POS mode: posPriceCreateHint
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get posPriceCreateHint;
+
+  /// POS mode: posPriceCreate
+  ///
+  /// In en, this message translates to:
+  /// **'Create'**
+  String get posPriceCreate;
+
+  /// POS mode: posPriceCreateTooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Create new'**
+  String get posPriceCreateTooltip;
+
+  /// POS mode: posPriceErrGarment
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a garment'**
+  String get posPriceErrGarment;
+
+  /// POS mode: posPriceErrService
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a service'**
+  String get posPriceErrService;
+
+  /// POS mode: posPriceErrRate
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a price like 80 or 80.50'**
+  String get posPriceErrRate;
+
+  /// POS mode: posPriceErrName
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a name'**
+  String get posPriceErrName;
+
+  /// POS mode: posPriceSaved
+  ///
+  /// In en, this message translates to:
+  /// **'Price saved'**
+  String get posPriceSaved;
+
+  /// POS mode: posPriceCurrent
+  ///
+  /// In en, this message translates to:
+  /// **'Current price {price}'**
+  String posPriceCurrent(String price);
+
+  /// POS mode: posUnitPiece
+  ///
+  /// In en, this message translates to:
+  /// **'Piece'**
+  String get posUnitPiece;
+
+  /// POS mode: posUnitKg
+  ///
+  /// In en, this message translates to:
+  /// **'Kilogram'**
+  String get posUnitKg;
+
+  /// POS mode: posUnitPair
+  ///
+  /// In en, this message translates to:
+  /// **'Pair'**
+  String get posUnitPair;
+
+  /// POS mode: posUnitSqft
+  ///
+  /// In en, this message translates to:
+  /// **'Square foot'**
+  String get posUnitSqft;
+
+  /// POS mode: posBookSubtotal
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get posBookSubtotal;
+
+  /// POS mode: posBookQtySemantics
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, quantity {qty}'**
+  String posBookQtySemantics(String name, int qty);
+
+  /// POS mode: posBookBill
+  ///
+  /// In en, this message translates to:
+  /// **'Bill'**
+  String get posBookBill;
 }
 
 class _AppLocalizationsDelegate

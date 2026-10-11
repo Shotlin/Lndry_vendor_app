@@ -38,10 +38,11 @@ import '../../features/notifications/presentation/pages/notifications_page.dart'
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/help/presentation/pages/help_page.dart';
-import '../../features/pos/core/pos_home_page.dart';
+import '../../features/pos/booking/book_order_page.dart';
 import '../../features/pos/core/pos_placeholder_page.dart';
 import '../../features/pos/core/pos_settings_page.dart';
 import '../../features/pos/core/pos_shell.dart';
+import '../../features/pos/home/pos_home_page.dart';
 import '../../features/pos/onboarding/choose_product_page.dart';
 import '../../features/pos/onboarding/mode_check_page.dart';
 import '../../features/pos/onboarding/pos_onboarding_page.dart';
@@ -364,6 +365,11 @@ final List<RouteBase> _vendorRoutes = [
     name: AppRouteNames.posOnboarding,
     pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: const PosOnboardingPage()),
   ),
+  GoRoute(
+    path: AppRoutes.posBook,
+    name: AppRouteNames.posBook,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: const BookOrderPage()),
+  ),
   StatefulShellRoute.indexedStack(
     builder: (_, __, shell) => PosShell(navigationShell: shell),
     branches: [
@@ -374,7 +380,12 @@ final List<RouteBase> _vendorRoutes = [
         GoRoute(
           path: AppRoutes.posOrders,
           name: AppRouteNames.posOrders,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabOrder, icon: Icons.assignment_rounded),
+          builder: (c, s) => PosPlaceholderPage(
+            title: AppLocalizations.of(c).posTabOrder,
+            icon: Icons.assignment_rounded,
+            actionLabel: AppLocalizations.of(c).posActionBook,
+            onAction: () => c.push(AppRoutes.posBook),
+          ),
         ),
       ]),
       StatefulShellBranch(routes: [

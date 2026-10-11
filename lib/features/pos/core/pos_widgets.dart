@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'pos_colors.dart';
 import 'pos_theme.dart';
 
 /// Gives every POS screen the Epic-violet theme, in light or dark to match the device setting.
@@ -114,14 +115,63 @@ class PosErrorNote extends StatelessWidget {
         borderRadius: BorderRadius.circular(PosTheme.radius),
         border: Border.all(color: scheme.error),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Icon(Icons.error_outline_rounded, color: scheme.error),
-          const SizedBox(width: 10),
-          Expanded(child: Text(message, style: TextStyle(color: scheme.onSurface))),
-          if (onRetry != null && retryLabel != null) TextButton(onPressed: onRetry, child: Text(retryLabel!)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.error_outline_rounded, color: scheme.error),
+              const SizedBox(width: 10),
+              Expanded(child: Text(message, style: TextStyle(color: scheme.onSurface))),
+            ],
+          ),
+          // On its own line so a long label (or large text) can never push the message off screen.
+          if (onRetry != null && retryLabel != null) Align(alignment: AlignmentDirectional.centerEnd, child: TextButton(onPressed: onRetry, child: Text(retryLabel!))),
         ],
       ),
     );
   }
+}
+
+/// Meaning of a colour. Always paired with a word or icon — colour alone never carries meaning.
+enum PosTone { neutral, success, attention, danger }
+
+/// Text/icon colour and background for [tone], readable (>= 4.5:1 for words) in light and dark.
+({Color fg, Color bg}) posToneColors(BuildContext context, PosTone tone) {
+  final dark = Theme.of(context).brightness == Brightness.dark;
+  final scheme = Theme.of(context).colorScheme;
+  switch (tone) {
+    case PosTone.success:
+      return dark ? (fg: PosColors.darkSuccess, bg: PosColors.darkRaised) : (fg: PosColors.success, bg: PosColors.successWash);
+    case PosTone.attention:
+      return dark ? (fg: PosColors.darkAttention, bg: PosColors.darkRaised) : (fg: PosColors.attentionText, bg: PosColors.attentionWash);
+    case PosTone.danger:
+      return dark ? (fg: scheme.error, bg: PosColors.darkRaised) : (fg: PosColors.dangerText, bg: PosColors.dangerWash);
+    case PosTone.neutral:
+      return (fg: scheme.onSurfaceVariant, bg: scheme.surfaceContainerHighest);
+  }
+}
+
+/// A grey rounded block shown while numbers load.
+class PosSkeleton extends StatelessWidget {
+  const PosSkeleton({super.key, this.height = 16, this.width});
+  final double height;
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainerHighest, borderRadius: BorderRadius.circular(8)),
+      );
+}
+
+/// "10" for 1000 bps, "7.5" for 750, "2.25" for 225 — integer maths only.
+String percentFromBps(int bps) {
+  final whole = bps ~/ 100;
+  final rest = bps % 100;
+  if (rest == 0) return '$whole';
+  final frac = rest.toString().padLeft(2, '0').replaceFirst(RegExp(r'0$'), '');
+  return '$whole.$frac';
 }

@@ -2787,4 +2787,412 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get posSettingsShop => 'Shop';
+
+  @override
+  String get posHomeToday => 'Today';
+
+  @override
+  String get posTileRevenue => 'Today Revenue';
+
+  @override
+  String get posTileCollection => 'Collection';
+
+  @override
+  String get posTileOrderRequests => 'Order Request';
+
+  @override
+  String get posTileWashingToStore => 'Washing to Store';
+
+  @override
+  String get posTileBooking => 'Booking';
+
+  @override
+  String get posTileDelivery => 'Delivery';
+
+  @override
+  String get posTileDelivered => 'Delivered';
+
+  @override
+  String get posTilePending => 'Pending Orders';
+
+  @override
+  String get posQuickActions => 'Quick actions';
+
+  @override
+  String get posActionBook => 'Book Order';
+
+  @override
+  String get posActionAddCustomer => 'Add Customer';
+
+  @override
+  String get posActionAddPrice => 'Add Garment Price';
+
+  @override
+  String get posTasksTitle => 'To do';
+
+  @override
+  String get posTaskUnassignedPickups => 'Pickups to assign';
+
+  @override
+  String get posTaskUpcomingDeliveries => 'Deliveries due';
+
+  @override
+  String get posTaskUnassignedDeliveries => 'Deliveries to assign';
+
+  @override
+  String get posTaskExpress => 'Express orders';
+
+  @override
+  String get posTaskOrderRequests => 'Order requests';
+
+  @override
+  String get posTaskCollectionDue => 'Money to collect';
+
+  @override
+  String get posPlanTitle => 'Your plan';
+
+  @override
+  String posPlanValidTo(String date) {
+    return 'Valid till $date';
+  }
+
+  @override
+  String get posHomeLoadError => 'Could not load today\'s numbers.';
+
+  @override
+  String get posRetry => 'Try again';
+
+  @override
+  String get posHomeEmpty => 'No orders yet. Tap Book Order to start.';
+
+  @override
+  String get posCancel => 'Cancel';
+
+  @override
+  String get posCustomerPick => 'Choose customer';
+
+  @override
+  String get posCustomerSearchHint => 'Search name or phone';
+
+  @override
+  String get posCustomerRecent => 'Recent customers';
+
+  @override
+  String get posCustomerNone => 'No customer found.';
+
+  @override
+  String get posCustomerAddNew => 'Add new customer';
+
+  @override
+  String posCustomerAddWithPhone(String phone) {
+    return 'Add $phone as a new customer';
+  }
+
+  @override
+  String get posCustomerLoadError => 'Could not load customers.';
+
+  @override
+  String posCustomerOrderCount(int count) {
+    return '$count orders';
+  }
+
+  @override
+  String get posAddCustomerTitle => 'Add customer';
+
+  @override
+  String get posCustomerName => 'Customer name';
+
+  @override
+  String get posCustomerPhone => 'Mobile number (10 digits)';
+
+  @override
+  String get posErrCustomerName => 'Enter the customer\'s name';
+
+  @override
+  String get posErrCustomerPhone => 'Enter a 10-digit mobile number';
+
+  @override
+  String posCustomerAdded(String name) {
+    return '$name added';
+  }
+
+  @override
+  String get posBookTitle => 'Book Order';
+
+  @override
+  String get posBookCustomer => 'Customer';
+
+  @override
+  String get posBookDeliveryDate => 'Delivery date';
+
+  @override
+  String get posBookHomeDelivery => 'Home Delivery';
+
+  @override
+  String get posBookPickup => 'Pickup';
+
+  @override
+  String get posBookExpress => 'Express';
+
+  @override
+  String get posBookService => 'Service';
+
+  @override
+  String get posBookCategory => 'Category';
+
+  @override
+  String get posBookAll => 'All';
+
+  @override
+  String get posBookSearchGarment => 'Search garment';
+
+  @override
+  String get posBookNoServices =>
+      'Your price list has no services yet. Add a garment price first.';
+
+  @override
+  String get posBookNoGarments => 'No garments with a price for this service.';
+
+  @override
+  String posBookNoMatch(String query) {
+    return 'No garment matches \"$query\".';
+  }
+
+  @override
+  String get posBookCatalogueError => 'Could not load your price list.';
+
+  @override
+  String get posBookSelected => 'Selected Garments';
+
+  @override
+  String get posBookCartEmpty => 'Tap a garment above to add it.';
+
+  @override
+  String posBookAddOne(String name) {
+    return 'Add one $name';
+  }
+
+  @override
+  String posBookRemoveOne(String name) {
+    return 'Remove one $name';
+  }
+
+  @override
+  String posBookRemoveLine(String name) {
+    return 'Remove $name';
+  }
+
+  @override
+  String get posBookChangePrice => 'Change price';
+
+  @override
+  String get posBookItems => 'Items';
+
+  @override
+  String get posBookCharge => 'Charge';
+
+  @override
+  String get posBookDiscount => 'Discount';
+
+  @override
+  String get posBookTax => 'Tax';
+
+  @override
+  String posBookTaxPercent(String percent) {
+    return 'Tax ($percent%)';
+  }
+
+  @override
+  String get posBookGrandTotal => 'Grand Total';
+
+  @override
+  String get posBookCalculating => 'Calculating…';
+
+  @override
+  String get posBookQuoteError => 'Could not get the price.';
+
+  @override
+  String get posBookExtras => 'Charges, discount & GST';
+
+  @override
+  String get posBookChargesLabel => 'Charges';
+
+  @override
+  String get posBookDiscountsLabel => 'Discounts';
+
+  @override
+  String get posBookGstLabel => 'GST';
+
+  @override
+  String get posBookNoGst => 'No GST';
+
+  @override
+  String get posBookPayment => 'Payment';
+
+  @override
+  String get posPayCash => 'Cash';
+
+  @override
+  String get posPayOnline => 'Online';
+
+  @override
+  String get posPayLater => 'Pay Later';
+
+  @override
+  String get posPayNowNote => 'The full amount is received now.';
+
+  @override
+  String get posPayLaterNote => 'No payment now. Collect it later.';
+
+  @override
+  String get posBookRemarks => 'Remarks (optional)';
+
+  @override
+  String get posBookSave => 'Save Order';
+
+  @override
+  String get posBookSaving => 'Saving…';
+
+  @override
+  String get posBookNeedCustomer => 'Choose a customer to save.';
+
+  @override
+  String get posBookNeedGarment => 'Add at least one garment.';
+
+  @override
+  String get posBookWaitPrice => 'Waiting for the price…';
+
+  @override
+  String get posBookSavedTitle => 'Order saved';
+
+  @override
+  String posBookSavedBody(String number, String name) {
+    return 'Order $number for $name';
+  }
+
+  @override
+  String get posBookSavedTotal => 'Total';
+
+  @override
+  String get posBookSavedPaid => 'Paid';
+
+  @override
+  String get posBookSavedBalance => 'To collect';
+
+  @override
+  String get posBookViewOrder => 'View Order';
+
+  @override
+  String get posBookAnother => 'Book Another';
+
+  @override
+  String get posBookClear => 'Clear';
+
+  @override
+  String get posBookClearTitle => 'Clear this order?';
+
+  @override
+  String get posBookClearBody => 'The customer and garments will be removed.';
+
+  @override
+  String get posBookDraftRestored => 'Your last unsaved order was restored.';
+
+  @override
+  String posBookDropped(int count) {
+    return '$count garments were removed because their price is no longer in your list.';
+  }
+
+  @override
+  String get posAddPriceTitle => 'Add Garment Price';
+
+  @override
+  String get posEditPriceTitle => 'Change price';
+
+  @override
+  String get posPriceGarment => 'Garment';
+
+  @override
+  String get posPriceCategory => 'Category';
+
+  @override
+  String get posPriceService => 'Service';
+
+  @override
+  String get posPriceUnit => 'Unit';
+
+  @override
+  String get posPriceRate => 'Price (₹)';
+
+  @override
+  String get posPriceAdd => 'Add';
+
+  @override
+  String get posPriceSave => 'Save price';
+
+  @override
+  String get posPricePickOne => 'Choose…';
+
+  @override
+  String get posPriceNone => 'None';
+
+  @override
+  String get posPriceNewGarment => 'New garment';
+
+  @override
+  String get posPriceNewCategory => 'New category';
+
+  @override
+  String get posPriceNewService => 'New service';
+
+  @override
+  String get posPriceCreateHint => 'Name';
+
+  @override
+  String get posPriceCreate => 'Create';
+
+  @override
+  String get posPriceCreateTooltip => 'Create new';
+
+  @override
+  String get posPriceErrGarment => 'Choose a garment';
+
+  @override
+  String get posPriceErrService => 'Choose a service';
+
+  @override
+  String get posPriceErrRate => 'Enter a price like 80 or 80.50';
+
+  @override
+  String get posPriceErrName => 'Enter a name';
+
+  @override
+  String get posPriceSaved => 'Price saved';
+
+  @override
+  String posPriceCurrent(String price) {
+    return 'Current price $price';
+  }
+
+  @override
+  String get posUnitPiece => 'Piece';
+
+  @override
+  String get posUnitKg => 'Kilogram';
+
+  @override
+  String get posUnitPair => 'Pair';
+
+  @override
+  String get posUnitSqft => 'Square foot';
+
+  @override
+  String get posBookSubtotal => 'Amount';
+
+  @override
+  String posBookQtySemantics(String name, int qty) {
+    return '$name, quantity $qty';
+  }
+
+  @override
+  String get posBookBill => 'Bill';
 }
