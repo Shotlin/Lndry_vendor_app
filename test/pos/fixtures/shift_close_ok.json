@@ -1,0 +1,23 @@
+{
+ "success": true,
+ "message": "Cash shift closed",
+ "data": {
+  "id": "6ade7c5a-e402-46d1-8306-fab72663a912",
+  "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+  "register": "Main counter",
+  "status": "CLOSED",
+  "businessDate": "2026-10-11T00:00:00.000Z",
+  "openingCashPaise": 50000,
+  "openedBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+  "openedAt": "2026-10-11T05:34:42.843Z",
+  "note": null,
+  "countedCashPaise": 25000,
+  "expectedCashPaise": 25000,
+  "variancePaise": 0,
+  "varianceApprovedBy": null,
+  "closeNote": null,
+  "closedBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+  "closedAt": "2026-10-11T05:34:42.911Z",
+  "createdAt": "2026-10-11T05:34:42.843Z"
+ }
+}

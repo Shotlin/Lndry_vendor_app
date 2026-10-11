@@ -1,0 +1,25 @@
+{
+ "success": true,
+ "message": "Staff list fetched",
+ "data": {
+  "staff": [
+   {
+    "id": "d7699476-8713-4542-b2c1-3e5d4114660f",
+    "user_id": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+    "vendor_id": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+    "role": "VENDOR_OWNER",
+    "permissions": [],
+    "is_active": true,
+    "invited_by": null,
+    "created_at": "2026-10-11T05:34:42.433Z",
+    "updated_at": "2026-10-11T05:34:42.433Z",
+    "user_name": null,
+    "user_email": null,
+    "user_phone": "9822686872"
+   }
+  ],
+  "total": 1,
+  "page": 1,
+  "limit": 20
+ }
+}

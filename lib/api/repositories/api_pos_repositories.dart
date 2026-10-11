@@ -7,9 +7,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/network/network.dart';
 import '../../models/pos/pos_catalogue_model.dart';
 import '../../models/pos/pos_counter_order_model.dart';
+import '../../models/pos/pos_customer_detail_model.dart';
 import '../../models/pos/pos_customer_model.dart';
 import '../../models/pos/pos_dashboard_model.dart';
+import '../../models/pos/pos_money_model.dart';
 import '../../models/pos/pos_order_model.dart';
+import '../../models/pos/pos_search_model.dart';
+import '../../models/pos/pos_settings_model.dart';
 import '../../repositories/abstract/pos_repositories.dart';
 
 /// Reads `{ success, message, data }` and returns `data`. Anything else is an unexpected answer.
@@ -208,3 +212,113 @@ final posCatalogueRepositoryProvider = Provider<PosCatalogueRepository>((ref) =>
 final posCounterRepositoryProvider = Provider<PosCounterRepository>((ref) => ApiPosCounterRepository(ref.watch(dioClientProvider)));
 
 final posOrdersRepositoryProvider = Provider<PosOrdersRepository>((ref) => ApiPosOrdersRepository(ref.watch(dioClientProvider)));
+
+
+class ApiPosSearchRepository implements PosSearchRepository {
+  ApiPosSearchRepository(this._dio);
+  final Dio _dio;
+
+  @override
+  Future<PosSearchResults> search(String query) async => PosSearchResults.fromJson(_dataMap(await _dio.get('/vendor/pos/search', queryParameters: {'q': query.trim()})));
+}
+
+class ApiPosCustomersRepository implements PosCustomersRepository {
+  ApiPosCustomersRepository(this._dio);
+  final Dio _dio;
+
+  @override
+  Future<PosCustomerDetail> detail(String customerId) async {
+    try {
+      return PosCustomerDetail.fromJson(_dataMap(await _dio.get('/vendor/counter/customers/${Uri.encodeComponent(customerId)}')));
+    } on FormatException {
+      throw const ApiException(message: 'Unexpected answer from the server');
+    }
+  }
+}
+
+class ApiPosExpenseRepository implements PosExpenseRepository {
+  ApiPosExpenseRepository(this._dio);
+  final Dio _dio;
+
+  @override
+  Future<List<PosExpense>> listExpenses({required String from, required String to, int limit = 100}) async =>
+      _dataList(await _dio.get('/vendor/expenses', queryParameters: {'from': from, 'to': to, 'limit': limit})).whereType<Map<String, dynamic>>().map(PosExpense.fromJson).toList(growable: false);
+
+  @override
+  Future<PosExpense> createExpense(ExpenseDraft draft) async => PosExpense.fromJson(_dataMap(await _dio.post('/vendor/expenses', data: draft.toJson())));
+
+  @override
+  Future<PosExpense> updateExpense(String id, ExpenseDraft draft, {required String reason}) async =>
+      PosExpense.fromJson(_dataMap(await _dio.put('/vendor/expenses/${Uri.encodeComponent(id)}', data: {...draft.toJson(), 'reason': reason.trim()})));
+
+  @override
+  Future<PosExpense> cancelExpense(String id, {required String reason}) async =>
+      PosExpense.fromJson(_dataMap(await _dio.post('/vendor/expenses/${Uri.encodeComponent(id)}/cancel', data: {'reason': reason.trim()})));
+
+  @override
+  Future<CashShift?> currentShift() async {
+    final body = (await _dio.get<dynamic>('/vendor/cash-shifts/current')).data;
+    final data = body is Map<String, dynamic> ? body['data'] : null;
+    return data is Map<String, dynamic> ? CashShift.fromJson(data) : null;
+  }
+
+  @override
+  Future<CashShift> openShift({required int openingCashPaise, String? note}) async =>
+      CashShift.fromJson(_dataMap(await _dio.post('/vendor/cash-shifts/open', data: {'openingCashPaise': openingCashPaise, if ((note ?? '').trim().isNotEmpty) 'note': note!.trim()})));
+
+  @override
+  Future<CashShift> closeShift(String id, {required int countedCashPaise, String? note, String? approvedBy}) async =>
+      CashShift.fromJson(_dataMap(await _dio.post('/vendor/cash-shifts/${Uri.encodeComponent(id)}/close', data: {
+        'countedCashPaise': countedCashPaise,
+        if ((note ?? '').trim().isNotEmpty) 'note': note!.trim(),
+        if ((approvedBy ?? '').trim().isNotEmpty) ...{'supervisorApproved': true, 'supervisorActor': approvedBy!.trim()},
+      })));
+
+  @override
+  Future<List<CashShift>> listShifts({int limit = 10}) async =>
+      _dataList(await _dio.get('/vendor/cash-shifts', queryParameters: {'limit': limit})).whereType<Map<String, dynamic>>().map(CashShift.fromJson).toList(growable: false);
+}
+
+class ApiPosReportRepository implements PosReportRepository {
+  ApiPosReportRepository(this._dio);
+  final Dio _dio;
+
+  @override
+  Future<PosReport> report({required String from, required String to}) async => PosReport.fromJson(_dataMap(await _dio.get('/vendor/pos/report', queryParameters: {'from': from, 'to': to})));
+
+  @override
+  Future<String> exportCsv({required String from, required String to}) async {
+    final resp = await _dio.get<List<int>>('/vendor/pos/counter-sales/export', queryParameters: {'from': from, 'to': to}, options: Options(responseType: ResponseType.bytes));
+    final text = utf8.decode(resp.data ?? const <int>[], allowMalformed: true);
+    if (!text.startsWith('Order Number,')) throw const ApiException(message: 'Unexpected answer from the server');
+    return text;
+  }
+}
+
+class ApiPosSettingsRepository implements PosSettingsRepository {
+  ApiPosSettingsRepository(this._dio);
+  final Dio _dio;
+
+  @override
+  Future<List<MessageTemplate>> messageTemplates() async {
+    final settings = _part(_dataMap(await _dio.get('/vendor/pos-settings')), 'settings');
+    final saved = settings['message-templates'];
+    final value = saved is Map<String, dynamic> ? saved['value'] : null;
+    if (value is! List) return kDefaultMessageTemplates;
+    final list = value.whereType<Map<String, dynamic>>().map(MessageTemplate.fromJson).where((t) => t.key.isNotEmpty && t.body.trim().isNotEmpty).toList(growable: false);
+    return list.isEmpty ? kDefaultMessageTemplates : list;
+  }
+
+  @override
+  Future<List<PosStaffMember>> staff() async {
+    final staff = _dataMap(await _dio.get('/vendor/employees', queryParameters: {'limit': 100}))['staff'];
+    if (staff is! List) throw const ApiException(message: 'Unexpected answer from the server');
+    return staff.whereType<Map<String, dynamic>>().map(PosStaffMember.fromJson).toList(growable: false);
+  }
+}
+
+final posSearchRepositoryProvider = Provider<PosSearchRepository>((ref) => ApiPosSearchRepository(ref.watch(dioClientProvider)));
+final posCustomersRepositoryProvider = Provider<PosCustomersRepository>((ref) => ApiPosCustomersRepository(ref.watch(dioClientProvider)));
+final posExpenseRepositoryProvider = Provider<PosExpenseRepository>((ref) => ApiPosExpenseRepository(ref.watch(dioClientProvider)));
+final posReportRepositoryProvider = Provider<PosReportRepository>((ref) => ApiPosReportRepository(ref.watch(dioClientProvider)));
+final posSettingsRepositoryProvider = Provider<PosSettingsRepository>((ref) => ApiPosSettingsRepository(ref.watch(dioClientProvider)));

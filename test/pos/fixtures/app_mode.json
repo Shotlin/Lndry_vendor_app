@@ -1,0 +1,24 @@
+{
+ "success": true,
+ "message": "Success",
+ "data": {
+  "appMode": {
+   "hasVendor": true,
+   "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+   "shopName": "Fixture Shop",
+   "offering": "POS",
+   "posOnboardingStatus": "COMPLETED",
+   "posPlanName": null,
+   "posValidTo": null,
+   "allowedModes": [
+    "POS"
+   ],
+   "needsPosOnboarding": false,
+   "canStartPos": false,
+   "vendorType": "STANDARD",
+   "appSync": false,
+   "walletAccess": false,
+   "role": "VENDOR_OWNER"
+  }
+ }
+}

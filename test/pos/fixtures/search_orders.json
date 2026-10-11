@@ -1,0 +1,22 @@
+{
+ "success": true,
+ "message": "Search results fetched",
+ "data": {
+  "customers": [],
+  "orders": [
+   {
+    "id": "c94eddd8-fa5d-48bf-86a9-cb2cbe1460f8",
+    "orderNumber": "LND-261011-DR0A",
+    "totalPaise": 16000,
+    "placedAt": "2026-10-11T05:34:42.801Z"
+   },
+   {
+    "id": "587e757d-9e15-4d4c-8e02-cd972cde2d56",
+    "orderNumber": "LND-261011-8Q72",
+    "totalPaise": 16000,
+    "placedAt": "2026-10-11T05:34:42.761Z"
+   }
+  ],
+  "garmentUnits": []
+ }
+}

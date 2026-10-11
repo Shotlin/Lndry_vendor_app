@@ -1,0 +1,22 @@
+{
+ "success": false,
+ "message": "Validation error",
+ "code": "VALIDATION_ERROR",
+ "errors": [
+  {
+   "field": "q",
+   "message": "must NOT have fewer than 2 characters"
+  }
+ ],
+ "error": {
+  "code": "VALIDATION_ERROR",
+  "message": "Validation error",
+  "field_errors": [
+   {
+    "field": "q",
+    "message": "must NOT have fewer than 2 characters"
+   }
+  ],
+  "request_id": "req-s"
+ }
+}

@@ -4,8 +4,8 @@
 > **Rule:** a box is ticked only when the work is done **and verified**. Unverified work is marked `(written, not run)`.
 
 **Branch (all repos):** `claude/laundry-vendor-pos-modes-bs0o61`
-**Last updated:** 2026-10-11 — Phase 3 ✅ (Phases 0–3 done)
-**Current phase:** 4 (⬜ not started)
+**Last updated:** 2026-10-11 — Phase 4 🟡 (features built and verified in a real browser; release, device QA and a few items pending)
+**Current phase:** 4 (🟡 in progress)
 
 ## Phase status
 
@@ -15,7 +15,7 @@
 | 1 | Foundation: modes + POS onboarding | ✅ Done | 2026-10-10 | 2026-10-11 |
 | 2 | Counter core: Home · Book Order · Customers · Price list | ✅ Done | 2026-10-11 | 2026-10-11 |
 | 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ✅ Done | 2026-10-11 | 2026-10-11 |
-| 4 | Money, Reports, Polish & Release | ⬜ Not started | — | — |
+| 4 | Money, Reports, Polish & Release | 🟡 In progress | 2026-10-11 | — |
 
 Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Done met) · ⛔ blocked (reason in Blockers)
 
@@ -75,24 +75,24 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Do
 
 ## Phase 4 checklist (details: `docs/pos-mode/PHASE-4.md`)
 
-- [ ] 4A-1 Search tab
-- [ ] 4A-2 Customers list/detail/dues
-- [ ] 4A-3 Expense tab + cash drawer
-- [ ] 4A-4 Report tab + CSV export
-- [ ] 4A-5 POS Settings (full)
-- [ ] 4A-6 WhatsApp quick action + templates
-- [ ] 4A-7 Notifications deep-links
-- [ ] 4B-1 Offline-safe cart + save retry
-- [ ] 4B-2 Session/permission/offering-revoked edge cases
-- [ ] 4B-3 Performance pass
-- [ ] 4B-4 Accessibility + "child-simple" audit
-- [ ] 4B-5 Localization completeness
-- [ ] 4B-6 Security review
-- [ ] 4B-7 Docs (README, user guide, API reference)
-- [ ] 4C-1 `ENFORCE_OFFERING` rollout decision (user approval)
-- [ ] 4C-2 Release build + App Releases upload
-- [ ] 4D Device QA checklist + integration test + regression
-- [ ] 4E Definition of Done verified + pushed
+- [x] 4A-1 Search tab — one box over `/vendor/pos/search` (orders by number, customers by name/phone, garment tags), debounce + stale-answer guard, recent searches (per shop, "Clear"), tap → order / profile. **Not done: camera QR/barcode scan** (optional in the plan; no scanner dependency added)
+- [x] 4A-2 Customers — list **A–Z with a letter strip**, labelled **Call** / **Profile** on every row, search, add; profile with Call / WhatsApp, "To collect" (sum of the server's per-order balances; tap an order → Pay Now), history, notes, addresses. Delete icon of the reference is **not built** (the backend has no customer delete)
+- [x] 4A-3 Expense + cash drawer — add / edit / cancel (reason required), exact paise, types + modes, today / this month; drawer open / close with the server's expected cash and a required reason + approver on any difference; earlier drawers. **Not done: photo attachment** (the API takes a URL; there is no upload endpoint)
+- [x] 4A-4 Report — tabs Summary / **Invoices** (total revenue, paged invoice table with Paid / Part paid / Unpaid words, line chart) / Collection (payment mix + chart) / Expenses (by type + chart); Today / 7 days / month / custom dates; **CSV share** (new dependency `share_plus`; **the native share sheet was not run**). Backend: new `GET /vendor/pos/report` reconciled to raw SQL
+- [~] 4A-5 POS Settings — customers, price list (Add Garment Price incl. new garment), extra charges + discounts (read-only), WhatsApp messages (read-only, same setting as Epic), team (read-only), language (en / हिन्दी / Hinglish), app mode, log out. **Not done: editing shop / GST / UPI / printer / order series, adding staff, help page, dark mode** (dark mode is disabled app-wide)
+- [x] 4A-6 WhatsApp — Home quick action: customer → message sheet (plain chat, payment reminder, Epic's four saved messages) filled from the server's order; `wa.me`, no Business API
+- [ ] 4A-7 Notifications deep-links — not started
+- [~] 4B-1 Offline-safe cart + save retry — draft survives restart and the same `Idempotency-Key` is reused until the cart changes (Phase 2), so a manual retry never double-books. **Not done: automatic background retry queue**
+- [~] 4B-2 Session / permission / offering-revoked edge cases — Phase 1 routing clamps a revoked mode; staff access refreshes; money screens hide for staff without the right. Not exercised on a device
+- [ ] 4B-3 Performance pass — not measured (no device)
+- [~] 4B-4 Accessibility + "child-simple" audit — every new screen widget-tested at 1.6× text on 360×640; labelled icon + word buttons; chips are real checkboxes; customer rows are real buttons; the primary button of tall sheets is pinned; real-browser accessibility tree checked. Contrast tokens from Phase 1. **No screen reader on a device**
+- [~] 4B-5 Localization — every new string in en / hi / hi_Latn (grep for hard-coded strings in the new folders: none). Hindi screens not viewed by eye
+- [~] 4B-6 Security — CSV cells that start with `= + - @` are made safe; **fixed a cross-shop name leak** (see Log); recent searches (names/phones) are stored on the device per shop and can be cleared, not cleared at logout; staff rights for counter routes are still enforced only in the app (server gap, Phase 3 note)
+- [x] 4B-7 Docs — README (modes), `docs/pos-mode/USER-GUIDE.md`, backend `docs/pos-report.md`, e2e README
+- [ ] 4C-1 `ENFORCE_OFFERING` rollout — **waits for your approval; flag stays OFF**
+- [ ] 4C-2 Release build + App Releases upload — **blocked: no Android SDK / signing here.** Run `flutter build apk --release --dart-define=FLAVOR=production` on your machine
+- [~] 4D Tests / QA — 613 Flutter tests pass (only the known `widget_test.dart` smoke failure); backend suite = only the 2 known failures; real-browser journeys phase2 29/29, phase3 39/39, **phase4 31/31**. **Not done: `integration_test`, the device QA checklist, marketplace regression on a device**
+- [ ] 4E Definition of Done — **not met** (see "Not done" items above); phase stays 🟡
 
 ## Decisions (confirmed by user)
 
@@ -111,6 +111,13 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 - Open product question (not blocking): a **POS-first user who later wants Marketplace** is not supported (a second shop would make login ambiguous) — handled by support/admin for now. Confirm if that is acceptable.
 
 ## Log (newest first)
+
+- 2026-10-11 — **Phase 4 built, not closed (🟡).**
+  Shipped — backend: `GET /vendor/pos/report` (revenue, collection by mode, dues, expenses, status counts, top garments, per-day series; counter orders only), CSV export now = exactly the orders the report counts + formula-safe cells, **counter orders / search / export now show THIS shop's name for a customer** (they showed the global account name, so a second shop saw the first shop's name — found by the Phase 3 browser journey failing; integration test, mutation-checked). Flutter: Search, Customers (A–Z), Customer profile with dues, Expense + cash drawer, Report (4 tabs, charts, CSV share), POS Settings, WhatsApp sheet, ~190 new l10n keys × 3 languages, 150 new tests.
+  Verified (real): backend `pos-report` integration tests vs independent SQL (mutation-checked); full backend suite = only the 2 known failures; Flutter 613 pass; release **web** build in real Chromium against the real backend: phase2 29/29, phase3 39/39 (after the name fix), phase4 31/31 — drawer opened/closed and an expense added/cancelled through the screens and read back from the API; Report numbers equal the API (and the API equals hand arithmetic).
+  Bugs found by real runs and fixed: the Add Expense / Close drawer buttons scrolled off a phone screen (now pinned); a card holding a heading read as one heading; customer rows were not buttons for a screen reader; the cross-shop name leak above.
+  Decisions (please confirm): (1) the permission list has no finance right, so **Expense + cash drawer follow "process orders"** and **Report follows "analytics"**; (2) customer **delete** from the reference is not offered (no backend); (3) WhatsApp messages are read from Epic's `message-templates` setting and **not editable here**, so the two never disagree; (4) the reference screenshots are blue — kept the Epic violet theme as the plan says; layout ideas (A–Z strip, Invoice table + chart, report tabs) are used.
+  Not run / not done: Android/iOS build, native share sheet, a real phone, Hindi by eye, camera scan, photo attachment, notification deep-links, automatic retry queue, performance numbers, integration_test, device QA checklist, `ENFORCE_OFFERING` (needs your approval), release upload. Epic desktop/website itself was not run (reference-only; the backend changes are additive except that its order list now shows the shop's own customer name).
 
 - 2026-10-11 — **Phase 3 closed ✅.**
   Shipped — backend: `GET /vendor/counter/orders` gained `status=A,B` (tabs), `offset` (paging), `paymentDue=true` and `tile=…` (exactly the orders a Home tile counts: the tile definitions now live once in `home-tile-filters.js` and the dashboard counts with the same ones); `GET /vendor/counter/orders/:id/invoice` (issued A4 invoice after delivery; `format=mini&paper=58|80` bill via the new `mini-v1` template, any time except cancelled); docs in `Lndry_backend/docs/pos-order-lifecycle.md`. Flutter: Orders (tabs, search, filter sheet, paging, bulk move), Order detail (timeline, next step, Pay Now, Cancel, Edit, Assign captain, Call, WhatsApp, invoice / mini bill viewer, tags with QR labels), Home tiles + task rows that open the exact list, 182 l10n keys × en / hi / hi_Latn.

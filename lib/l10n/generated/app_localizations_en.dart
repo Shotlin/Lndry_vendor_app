@@ -3801,4 +3801,649 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get posNoPermission =>
       'You do not have permission to do this. Ask the shop owner.';
+
+  @override
+  String get posSearchHint => 'Order no., customer name, phone or tag';
+
+  @override
+  String get posSearchStart => 'Type at least 2 letters or numbers to search.';
+
+  @override
+  String get posSearchRecent => 'Recent searches';
+
+  @override
+  String get posSearchClearRecent => 'Clear';
+
+  @override
+  String posSearchNone(String q) {
+    return 'Nothing found for \"$q\". Check the spelling or try the phone number.';
+  }
+
+  @override
+  String get posSearchFailed => 'Could not search right now.';
+
+  @override
+  String get posSearchCustomers => 'Customers';
+
+  @override
+  String get posSearchOrders => 'Orders';
+
+  @override
+  String get posSearchTags => 'Garment tags';
+
+  @override
+  String get posSearchAllCustomers => 'All customers';
+
+  @override
+  String posSearchOrderLine(String total, String date) {
+    return '$total · $date';
+  }
+
+  @override
+  String posSearchTagLine(String code, String state) {
+    return 'Tag $code · $state';
+  }
+
+  @override
+  String get posCustTitle => 'Customers';
+
+  @override
+  String get posCustSearchHint => 'Search by name or phone';
+
+  @override
+  String get posCustEmpty =>
+      'No customers yet. Book an order or add a customer.';
+
+  @override
+  String posCustNoMatch(String q) {
+    return 'No customer matches \"$q\".';
+  }
+
+  @override
+  String get posCustLoadError => 'Could not load customers.';
+
+  @override
+  String posCustOrdersCount(int count, String spent) {
+    return '$count orders · $spent';
+  }
+
+  @override
+  String get posCustNewCustomer => 'New customer';
+
+  @override
+  String get posCustDuesTitle => 'To collect';
+
+  @override
+  String get posCustNoDues => 'Nothing is due. All paid.';
+
+  @override
+  String posCustDueOrder(String number) {
+    return 'Order $number';
+  }
+
+  @override
+  String get posCustCollect => 'Collect dues';
+
+  @override
+  String get posCustCollectHint => 'Choose an order to collect its balance.';
+
+  @override
+  String get posCustHistory => 'Order history';
+
+  @override
+  String get posCustNoOrders => 'No orders yet.';
+
+  @override
+  String get posCustNotes => 'Notes';
+
+  @override
+  String get posCustAddresses => 'Addresses';
+
+  @override
+  String get posCustCall => 'Call';
+
+  @override
+  String get posCustWhatsApp => 'WhatsApp';
+
+  @override
+  String get posCustNotFound => 'This customer was not found.';
+
+  @override
+  String posCustOwes(String amount) {
+    return 'Owes $amount';
+  }
+
+  @override
+  String posWaSheetTitle(String name) {
+    return 'Message $name';
+  }
+
+  @override
+  String get posWaOpenChat => 'Just open the chat';
+
+  @override
+  String get posWaOpenChatBody => 'A short hello. You can type anything.';
+
+  @override
+  String posWaHello(String name, String shop) {
+    return 'Hello $name, this is $shop.';
+  }
+
+  @override
+  String posWaForOrder(String number) {
+    return 'About order $number';
+  }
+
+  @override
+  String get posWaNoOrder =>
+      'This customer has no order yet, so only a plain chat is possible.';
+
+  @override
+  String get posWaPaymentDue => 'Payment reminder';
+
+  @override
+  String get posWaPaymentDueBody => 'Shows the balance still to pay.';
+
+  @override
+  String get posWaTemplatesFailed => 'Could not load your saved messages.';
+
+  @override
+  String get posActionWhatsApp => 'WhatsApp';
+
+  @override
+  String get posExpTitle => 'Expense';
+
+  @override
+  String get posExpToday => 'Today';
+
+  @override
+  String get posExpThisMonth => 'This month';
+
+  @override
+  String posExpSpent(String amount) {
+    return 'Spent: $amount';
+  }
+
+  @override
+  String get posExpAdd => 'Add Expense';
+
+  @override
+  String get posExpEdit => 'Edit expense';
+
+  @override
+  String get posExpCancel => 'Cancel expense';
+
+  @override
+  String get posExpEmpty =>
+      'No expenses in this period. Tap Add Expense when you pay for something.';
+
+  @override
+  String get posExpLoadError => 'Could not load expenses.';
+
+  @override
+  String get posExpName => 'What was it for?';
+
+  @override
+  String get posExpNameHint => 'e.g. Electricity bill';
+
+  @override
+  String get posExpAmount => 'Amount (₹)';
+
+  @override
+  String get posExpCategory => 'Type of expense';
+
+  @override
+  String get posExpMode => 'Paid by';
+
+  @override
+  String get posExpDate => 'Date';
+
+  @override
+  String get posExpNote => 'Note (optional)';
+
+  @override
+  String get posExpReason => 'Why are you changing it?';
+
+  @override
+  String get posExpCancelReason => 'Why is it cancelled?';
+
+  @override
+  String get posExpSave => 'Save Expense';
+
+  @override
+  String get posExpSaved => 'Expense saved.';
+
+  @override
+  String get posExpCancelled => 'Expense cancelled.';
+
+  @override
+  String get posExpCancelledTag => 'Cancelled';
+
+  @override
+  String get posExpKeep => 'Keep it';
+
+  @override
+  String get posExpNameRequired => 'Write what the expense was for.';
+
+  @override
+  String get posExpAmountInvalid => 'Enter an amount like 250 or 99.50.';
+
+  @override
+  String get posExpReasonRequired => 'Please write a reason.';
+
+  @override
+  String posExpBy(String category, String mode) {
+    return '$category · $mode';
+  }
+
+  @override
+  String get posCatRent => 'Rent';
+
+  @override
+  String get posCatSalary => 'Salary';
+
+  @override
+  String get posCatElectricity => 'Electricity';
+
+  @override
+  String get posCatWater => 'Water';
+
+  @override
+  String get posCatDetergent => 'Detergent & supplies';
+
+  @override
+  String get posCatTransport => 'Transport';
+
+  @override
+  String get posCatRepair => 'Repair';
+
+  @override
+  String get posCatTea => 'Tea & snacks';
+
+  @override
+  String get posCatOther => 'Other';
+
+  @override
+  String get posExpModeCash => 'Cash';
+
+  @override
+  String get posExpModeUpi => 'UPI';
+
+  @override
+  String get posExpModeBank => 'Bank';
+
+  @override
+  String get posExpModeCard => 'Card';
+
+  @override
+  String get posExpModeOther => 'Other';
+
+  @override
+  String get posDrawerTitle => 'Cash drawer';
+
+  @override
+  String get posDrawerClosed =>
+      'The cash drawer is closed. Open it when you start the day.';
+
+  @override
+  String get posDrawerOpen => 'Open cash drawer';
+
+  @override
+  String get posDrawerClose => 'Close cash drawer';
+
+  @override
+  String posDrawerOpenSince(String time) {
+    return 'Open since $time';
+  }
+
+  @override
+  String get posDrawerOpening => 'Cash you started with';
+
+  @override
+  String get posDrawerIn => 'Cash received';
+
+  @override
+  String get posDrawerOut => 'Cash paid out';
+
+  @override
+  String get posDrawerShould => 'Cash that should be in the drawer';
+
+  @override
+  String get posDrawerOpeningQ => 'How much cash is in the drawer now?';
+
+  @override
+  String get posDrawerOpenSave => 'Open drawer';
+
+  @override
+  String get posDrawerCounted => 'Cash you counted (₹)';
+
+  @override
+  String posDrawerExpected(String amount) {
+    return 'Should be: $amount';
+  }
+
+  @override
+  String get posDrawerMatch => 'It matches. Nothing is missing.';
+
+  @override
+  String posDrawerShort(String amount) {
+    return '$amount less than it should be.';
+  }
+
+  @override
+  String posDrawerExtra(String amount) {
+    return '$amount more than it should be.';
+  }
+
+  @override
+  String get posDrawerWhy => 'Why is it different?';
+
+  @override
+  String get posDrawerApprover => 'Approved by (name)';
+
+  @override
+  String get posDrawerCloseSave => 'Close drawer';
+
+  @override
+  String get posDrawerOpened => 'Cash drawer opened.';
+
+  @override
+  String get posDrawerClosedOk => 'Cash drawer closed.';
+
+  @override
+  String get posDrawerCountInvalid => 'Enter the cash you counted, like 1250.';
+
+  @override
+  String get posDrawerNeedsWhy =>
+      'Write why it is different and who approved it.';
+
+  @override
+  String get posDrawerPast => 'Earlier drawers';
+
+  @override
+  String posDrawerPastLine(String counted, String diff) {
+    return 'Counted $counted · $diff';
+  }
+
+  @override
+  String get posDrawerDiffOk => 'matched';
+
+  @override
+  String posDrawerDiffShort(String amount) {
+    return '$amount short';
+  }
+
+  @override
+  String posDrawerDiffExtra(String amount) {
+    return '$amount extra';
+  }
+
+  @override
+  String get posMoneyNoAccess =>
+      'Ask the shop owner to give you access to this.';
+
+  @override
+  String get posRepTitle => 'Report';
+
+  @override
+  String get posRepToday => 'Today';
+
+  @override
+  String get posRep7Days => 'Last 7 days';
+
+  @override
+  String get posRepMonth => 'This month';
+
+  @override
+  String get posRepCustom => 'Pick dates';
+
+  @override
+  String posRepPeriod(String from, String to) {
+    return '$from to $to';
+  }
+
+  @override
+  String get posRepBilled => 'Billed';
+
+  @override
+  String get posRepBilledHint => 'Total of the orders booked';
+
+  @override
+  String get posRepCollected => 'Collected';
+
+  @override
+  String get posRepCollectedHint => 'Money received in this period';
+
+  @override
+  String get posRepDues => 'Still to collect';
+
+  @override
+  String posRepDuesHint(int count) {
+    return '$count orders not fully paid';
+  }
+
+  @override
+  String get posRepSpent => 'Spent';
+
+  @override
+  String posRepSpentHint(int count) {
+    return '$count expenses';
+  }
+
+  @override
+  String get posRepNet => 'Collected minus spent';
+
+  @override
+  String get posRepOrders => 'Orders';
+
+  @override
+  String posRepOrdersCount(int count) {
+    return '$count orders booked';
+  }
+
+  @override
+  String get posRepStBooked => 'Booked';
+
+  @override
+  String get posRepStProcess => 'In process';
+
+  @override
+  String get posRepStReady => 'Ready';
+
+  @override
+  String get posRepStDelivered => 'Delivered';
+
+  @override
+  String get posRepStCancelled => 'Cancelled';
+
+  @override
+  String get posRepPayMix => 'How customers paid';
+
+  @override
+  String get posRepNoPayments => 'No payments in this period.';
+
+  @override
+  String get posRepModeWallet => 'Wallet';
+
+  @override
+  String get posRepTopGarments => 'Most booked garments';
+
+  @override
+  String posRepQty(String qty, String amount) {
+    return '$qty · $amount';
+  }
+
+  @override
+  String get posRepSpendBy => 'Spending by type';
+
+  @override
+  String get posRepDaily => 'Day by day';
+
+  @override
+  String posRepDayLine(String billed, String collected, String spent) {
+    return 'Billed $billed · Collected $collected · Spent $spent';
+  }
+
+  @override
+  String get posRepExport => 'Share sales file (CSV)';
+
+  @override
+  String get posRepExportHint =>
+      'Opens in Excel or Google Sheets. One row for each order.';
+
+  @override
+  String get posRepExportFailed => 'Could not prepare the file.';
+
+  @override
+  String get posRepLoadError => 'Could not load the report.';
+
+  @override
+  String get posRepEmpty => 'No orders or expenses in this period.';
+
+  @override
+  String get posRepRangeTooLong => 'Please pick at most one year.';
+
+  @override
+  String get posRepTabSummary => 'Summary';
+
+  @override
+  String get posRepTabInvoices => 'Invoices';
+
+  @override
+  String get posRepTabCollection => 'Collection';
+
+  @override
+  String get posRepTabExpense => 'Expenses';
+
+  @override
+  String get posRepTotalRevenue => 'Total revenue';
+
+  @override
+  String get posRepInvNo => 'Invoice no.';
+
+  @override
+  String get posRepAmount => 'Amount';
+
+  @override
+  String get posRepStatus => 'Status';
+
+  @override
+  String posRepPage(int n) {
+    return 'Page $n';
+  }
+
+  @override
+  String get posRepPrev => 'Previous';
+
+  @override
+  String get posRepNext => 'Next';
+
+  @override
+  String get posRepNoInvoices => 'No invoices in this period.';
+
+  @override
+  String get posRepInvoicesFailed => 'Could not load the invoices.';
+
+  @override
+  String get posRepChartBilled => 'Billed each day';
+
+  @override
+  String get posRepChartCollected => 'Collected each day';
+
+  @override
+  String get posRepChartSpent => 'Spent each day';
+
+  @override
+  String posRepChartHigh(String amount, String date) {
+    return 'Highest: $amount on $date';
+  }
+
+  @override
+  String get posRepChartNone => 'Nothing to draw yet.';
+
+  @override
+  String get posCustProfile => 'Profile';
+
+  @override
+  String get posSetCustomers => 'Customers';
+
+  @override
+  String get posSetCustomersBody =>
+      'See everyone, call them, see what they owe.';
+
+  @override
+  String get posSetPrices => 'Price list';
+
+  @override
+  String get posSetPricesBody => 'Add a garment or change a price.';
+
+  @override
+  String get posSetRules => 'Extra charges and discounts';
+
+  @override
+  String get posSetRulesBody => 'The ones you can pick while booking.';
+
+  @override
+  String get posSetRulesCharges => 'Extra charges';
+
+  @override
+  String get posSetRulesDiscounts => 'Discounts';
+
+  @override
+  String get posSetRulesNone =>
+      'None yet. They are added on the counter software or the website.';
+
+  @override
+  String posSetRuleFlat(String amount) {
+    return '$amount flat';
+  }
+
+  @override
+  String posSetRulePercent(String percent) {
+    return '$percent% of the bill';
+  }
+
+  @override
+  String get posSetMessages => 'WhatsApp messages';
+
+  @override
+  String get posSetMessagesBody => 'The messages sent to customers.';
+
+  @override
+  String get posSetMessagesHint =>
+      'You can change these words on the counter software or the website. They show here too.';
+
+  @override
+  String get posSetTeam => 'Team';
+
+  @override
+  String get posSetTeamBody => 'Who works in your shop.';
+
+  @override
+  String get posSetTeamHint =>
+      'To add or remove people, use the counter software or the website.';
+
+  @override
+  String get posSetRoleOwner => 'Owner';
+
+  @override
+  String get posSetRoleStaff => 'Counter staff';
+
+  @override
+  String get posSetRoleRider => 'Captain (pickup / delivery)';
+
+  @override
+  String get posSetInactive => 'Not active';
+
+  @override
+  String get posSetLanguage => 'Language';
+
+  @override
+  String get posSetLoadFailed => 'Could not load this.';
+
+  @override
+  String get posSetSectionShop => 'My shop';
+
+  @override
+  String get posSetSectionApp => 'This app';
 }

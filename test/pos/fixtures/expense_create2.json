@@ -1,0 +1,25 @@
+{
+ "success": true,
+ "message": "Expense recorded",
+ "data": {
+  "id": "4e4bac03-5d29-4075-bc2c-bf3facf62427",
+  "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+  "expenseName": "Tea",
+  "expenseDate": "2026-10-11T00:00:00.000Z",
+  "amountPaise": 3000,
+  "category": "TEA",
+  "paymentReceiver": null,
+  "invoiceNumber": null,
+  "isTaxPaid": false,
+  "paymentMode": "UPI",
+  "cashShiftId": null,
+  "notes": null,
+  "attachmentUrl": null,
+  "status": "PAID",
+  "cancellationReason": null,
+  "editReason": null,
+  "createdBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+  "createdAt": "2026-10-11T05:34:42.864Z",
+  "updatedAt": "2026-10-11T05:34:42.864Z"
+ }
+}

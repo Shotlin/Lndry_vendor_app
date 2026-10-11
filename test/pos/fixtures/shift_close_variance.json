@@ -1,0 +1,9 @@
+{
+ "success": false,
+ "message": "A non-zero cash variance requires supervisor approval",
+ "code": "VARIANCE_APPROVAL_REQUIRED",
+ "error": {
+  "code": "VARIANCE_APPROVAL_REQUIRED",
+  "message": "A non-zero cash variance requires supervisor approval"
+ }
+}

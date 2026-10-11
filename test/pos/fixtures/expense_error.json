@@ -1,0 +1,9 @@
+{
+ "success": false,
+ "message": "expenseName is required",
+ "code": "VALIDATION_ERROR",
+ "error": {
+  "code": "VALIDATION_ERROR",
+  "message": "expenseName is required"
+ }
+}

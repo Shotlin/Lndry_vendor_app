@@ -43,7 +43,12 @@ import '../../features/pos/core/pos_placeholder_page.dart';
 import '../../features/pos/core/pos_settings_page.dart';
 import '../../features/pos/core/pos_shell.dart';
 import '../../features/pos/core/pos_widgets.dart';
+import '../../features/pos/customers/customer_detail_page.dart';
+import '../../features/pos/customers/customers_page.dart';
+import '../../features/pos/expense/expense_page.dart';
 import '../../features/pos/home/pos_home_page.dart';
+import '../../features/pos/report/report_page.dart';
+import '../../features/pos/search/pos_search_page.dart';
 import '../../features/pos/onboarding/choose_product_page.dart';
 import '../../features/pos/onboarding/mode_check_page.dart';
 import '../../features/pos/onboarding/pos_onboarding_page.dart';
@@ -394,6 +399,16 @@ final List<RouteBase> _vendorRoutes = [
     name: AppRouteNames.posOrderTags,
     pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: TagsPage(orderId: s.pathParameters['id']!)),
   ),
+  GoRoute(
+    path: AppRoutes.posCustomers,
+    name: AppRouteNames.posCustomers,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: const PosThemeScope(child: PosCustomersPage())),
+  ),
+  GoRoute(
+    path: AppRoutes.posCustomer,
+    name: AppRouteNames.posCustomer,
+    pageBuilder: (c, s) => _slideTransition(context: c, state: s, child: PosThemeScope(child: PosCustomerDetailPage(customerId: s.pathParameters['id']!))),
+  ),
   StatefulShellRoute.indexedStack(
     builder: (_, __, shell) => PosShell(navigationShell: shell),
     branches: [
@@ -411,21 +426,21 @@ final List<RouteBase> _vendorRoutes = [
         GoRoute(
           path: AppRoutes.posSearch,
           name: AppRouteNames.posSearch,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabSearch, icon: Icons.search_rounded),
+          builder: (c, s) => const PosSearchPage(),
         ),
       ]),
       StatefulShellBranch(routes: [
         GoRoute(
           path: AppRoutes.posExpense,
           name: AppRouteNames.posExpense,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabExpense, icon: Icons.account_balance_wallet_rounded),
+          builder: (c, s) => const PosExpensePage(),
         ),
       ]),
       StatefulShellBranch(routes: [
         GoRoute(
           path: AppRoutes.posReport,
           name: AppRouteNames.posReport,
-          builder: (c, s) => PosPlaceholderPage(title: AppLocalizations.of(c).posTabReport, icon: Icons.insert_chart_rounded),
+          builder: (c, s) => const PosReportPage(),
         ),
       ]),
       StatefulShellBranch(routes: [

@@ -1,0 +1,25 @@
+{
+ "success": true,
+ "message": "Expense recorded",
+ "data": {
+  "id": "a678c6bc-ebc7-4310-a9ae-43d7eb81bf7f",
+  "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+  "expenseName": "Electricity bill",
+  "expenseDate": "2026-10-11T00:00:00.000Z",
+  "amountPaise": 25000,
+  "category": "UTILITIES",
+  "paymentReceiver": null,
+  "invoiceNumber": null,
+  "isTaxPaid": false,
+  "paymentMode": "CASH",
+  "cashShiftId": null,
+  "notes": "October",
+  "attachmentUrl": null,
+  "status": "PAID",
+  "cancellationReason": null,
+  "editReason": null,
+  "createdBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+  "createdAt": "2026-10-11T05:34:42.855Z",
+  "updatedAt": "2026-10-11T05:34:42.855Z"
+ }
+}

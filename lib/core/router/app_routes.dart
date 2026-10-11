@@ -58,6 +58,9 @@ abstract final class AppRoutes {
   static String posOrderInvoicePath(String id) => '/pos/orders/$id/invoice';
   static String posOrderMiniPath(String id) => '/pos/orders/$id/mini';
   static String posOrderTagsPath(String id) => '/pos/orders/$id/tags';
+  static const String posCustomers = '/pos/customers';
+  static const String posCustomer = '/pos/customers/:id';
+  static String posCustomerPath(String id) => '/pos/customers/${Uri.encodeComponent(id)}';
   static const String posSearch = '/pos/search';
   static const String posExpense = '/pos/expense';
   static const String posReport = '/pos/report';
@@ -103,6 +106,8 @@ abstract final class AppRouteNames {
   static const String posOrderInvoice = 'pos-order-invoice';
   static const String posOrderMini = 'pos-order-mini';
   static const String posOrderTags = 'pos-order-tags';
+  static const String posCustomers = 'pos-customers';
+  static const String posCustomer = 'pos-customer';
   static const String posSearch = 'pos-search';
   static const String posExpense = 'pos-expense';
   static const String posReport = 'pos-report';

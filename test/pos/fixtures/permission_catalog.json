@@ -1,0 +1,124 @@
+{
+ "success": true,
+ "message": "Permission catalog fetched",
+ "data": {
+  "modules": [
+   {
+    "key": "orders",
+    "label": "Orders",
+    "items": [
+     {
+      "key": "orders.view",
+      "label": "View orders",
+      "permissions": [
+       "shop_orders.view"
+      ]
+     },
+     {
+      "key": "orders.accept_reject",
+      "label": "Accept / reject new orders",
+      "permissions": [
+       "shop_orders.accept_reject"
+      ]
+     },
+     {
+      "key": "orders.process",
+      "label": "Processing & status updates",
+      "permissions": [
+       "shop_orders.update_status"
+      ]
+     },
+     {
+      "key": "orders.reevaluate",
+      "label": "Re-evaluation",
+      "permissions": [
+       "shop_orders.reevaluate"
+      ]
+     },
+     {
+      "key": "orders.assign_captain",
+      "label": "Assign / broadcast to captains",
+      "permissions": [
+       "shop_orders.assign_rider"
+      ]
+     }
+    ]
+   },
+   {
+    "key": "catalogue",
+    "label": "Catalogue & pricing",
+    "items": [
+     {
+      "key": "catalogue.view",
+      "label": "View services & pricing",
+      "permissions": [
+       "vendor_services.view"
+      ]
+     },
+     {
+      "key": "catalogue.manage",
+      "label": "Manage services & pricing",
+      "permissions": [
+       "vendor_services.create",
+       "vendor_services.update",
+       "vendor_services.delete"
+      ]
+     }
+    ]
+   },
+   {
+    "key": "inventory",
+    "label": "Inventory",
+    "items": [
+     {
+      "key": "inventory.view",
+      "label": "View inventory",
+      "permissions": [
+       "vendor_inventory.view"
+      ]
+     },
+     {
+      "key": "inventory.manage",
+      "label": "Manage inventory",
+      "permissions": [
+       "vendor_inventory.manage"
+      ]
+     }
+    ]
+   },
+   {
+    "key": "slots",
+    "label": "Pickup slots",
+    "items": [
+     {
+      "key": "slots.view",
+      "label": "View pickup slots",
+      "permissions": [
+       "vendor_slots.view"
+      ]
+     },
+     {
+      "key": "slots.manage",
+      "label": "Manage pickup slots & capacity",
+      "permissions": [
+       "vendor_slots.manage"
+      ]
+     }
+    ]
+   },
+   {
+    "key": "analytics",
+    "label": "Analytics",
+    "items": [
+     {
+      "key": "analytics.view",
+      "label": "View analytics",
+      "permissions": [
+       "shop_reports.view"
+      ]
+     }
+    ]
+   }
+  ]
+ }
+}

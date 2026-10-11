@@ -3,6 +3,12 @@
   "private": true,
   "type": "module",
   "description": "Real-browser journeys for the Vendor App's POS mode (not part of the Flutter app)",
-  "scripts": { "phase2": "node phase2.mjs", "phase3": "node phase3.mjs" },
-  "dependencies": { "playwright-core": "1.56.1" }
+  "scripts": {
+    "phase2": "node phase2.mjs",
+    "phase3": "node phase3.mjs",
+    "phase4": "node phase4.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.56.1"
+  }
 }

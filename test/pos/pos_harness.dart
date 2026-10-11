@@ -7,7 +7,9 @@ import 'package:lndry_vendor_app/api/repositories/api_pos_repositories.dart';
 import 'package:lndry_vendor_app/core/router/app_routes.dart';
 import 'package:lndry_vendor_app/core/services/storage_service.dart';
 import 'package:lndry_vendor_app/features/pos/core/pos_providers.dart';
+import 'package:lndry_vendor_app/features/pos/core/pos_money_providers.dart';
 import 'package:lndry_vendor_app/features/pos/orders/orders_providers.dart';
+import 'package:lndry_vendor_app/features/pos/report/report_providers.dart';
 import 'package:lndry_vendor_app/features/pos/orders/pdf_viewer.dart';
 import 'package:lndry_vendor_app/l10n/generated/app_localizations.dart';
 import 'package:lndry_vendor_app/models/pos/app_mode_model.dart';
@@ -16,6 +18,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'fakes.dart';
 import 'pos_fakes.dart';
+import 'pos_money_fakes.dart';
 
 /// An [AppModeNotifier] that already knows the shop (no network, no sign-in).
 class FixedAppMode extends AppModeNotifier {
@@ -42,7 +45,9 @@ AppModeInfo shopInfo({String? plan, String? validTo, bool wallet = false}) =>
 
 class Pos {
   Pos(this.c, this.dashboard, this.catalogue, this.counter, this.storage,
-      this.router, this.orders, this.opened, this.extras);
+      this.router, this.orders, this.opened, this.extras, this.money, this.shared);
+  final List<({String name, String csv})> shared;
+  final MoneyFakes money;
   final FakeOrdersRepo orders;
 
   /// Links the app asked the phone to open (tel:, wa.me).
@@ -58,6 +63,21 @@ class Pos {
   final GoRouter router;
 }
 
+/// The Phase 4 repositories (search, customers, expenses, report, settings) a test can script.
+class MoneyFakes {
+  MoneyFakes({FakeSearchRepo? search, FakeCustomersRepo? customers, FakeExpenseRepo? expense, FakeReportRepo? report, FakeSettingsRepo? settings})
+      : search = search ?? FakeSearchRepo(),
+        customers = customers ?? FakeCustomersRepo(),
+        expense = expense ?? FakeExpenseRepo(),
+        report = report ?? FakeReportRepo(),
+        settings = settings ?? FakeSettingsRepo();
+  final FakeSearchRepo search;
+  final FakeCustomersRepo customers;
+  final FakeExpenseRepo expense;
+  final FakeReportRepo report;
+  final FakeSettingsRepo settings;
+}
+
 /// Pumps [page] inside a POS-themed app with fake repositories. Routes to Book/Orders show a marker text.
 Future<Pos> pumpPos(
   WidgetTester tester,
@@ -66,6 +86,9 @@ Future<Pos> pumpPos(
   FakeCatalogueRepo? catalogue,
   FakeCounterRepo? counter,
   FakeOrdersRepo? orders,
+  MoneyFakes? money,
+  bool canUseCash = true,
+  bool canSeeReport = true,
   bool canManage = true,
   bool canViewOrders = true,
   bool canProcessOrders = true,
@@ -87,7 +110,9 @@ Future<Pos> pumpPos(
   final cat = catalogue ?? FakeCatalogueRepo();
   final cnt = counter ?? FakeCounterRepo();
   final ord = orders ?? FakeOrdersRepo();
+  final mf = money ?? MoneyFakes();
   final opened = <Uri>[];
+  final shared = <({String name, String csv})>[];
   final extras = <Object?>[];
   final c = ProviderContainer(overrides: [
     storageServiceProvider.overrideWithValue(storage),
@@ -98,9 +123,17 @@ Future<Pos> pumpPos(
     posCounterRepositoryProvider.overrideWithValue(cnt),
     posCanManageCatalogueProvider.overrideWithValue(canManage),
     posOrdersRepositoryProvider.overrideWithValue(ord),
+    posSearchRepositoryProvider.overrideWithValue(mf.search),
+    posCustomersRepositoryProvider.overrideWithValue(mf.customers),
+    posExpenseRepositoryProvider.overrideWithValue(mf.expense),
+    posReportRepositoryProvider.overrideWithValue(mf.report),
+    posSettingsRepositoryProvider.overrideWithValue(mf.settings),
+    posCanUseCashProvider.overrideWithValue(canUseCash),
+    posCanSeeReportProvider.overrideWithValue(canSeeReport),
     posCanViewOrdersProvider.overrideWithValue(canViewOrders),
     posCanProcessOrdersProvider.overrideWithValue(canProcessOrders),
     posCanAssignCaptainProvider.overrideWithValue(canAssign),
+    posCsvSharerProvider.overrideWithValue((name, csv) async => shared.add((name: name, csv: csv))),
     posUrlOpenerProvider.overrideWithValue((uri) async {
       opened.add(uri);
       return openerWorks;
@@ -140,6 +173,13 @@ Future<Pos> pumpPos(
           builder: (_, s) =>
               Scaffold(body: Text('MINI ${s.pathParameters['id']}'))),
       GoRoute(
+          path: AppRoutes.posCustomers,
+          builder: (_, __) => const Scaffold(body: Text('CUSTOMERS SCREEN'))),
+      GoRoute(
+          path: AppRoutes.posCustomer,
+          builder: (_, s) =>
+              Scaffold(body: Text('CUSTOMER ${s.pathParameters['id']}'))),
+      GoRoute(
           path: AppRoutes.posOrderTags,
           builder: (_, s) =>
               Scaffold(body: Text('TAGS ${s.pathParameters['id']}'))),
@@ -166,7 +206,7 @@ Future<Pos> pumpPos(
     ),
   );
   if (settle) await tester.pumpAndSettle();
-  return Pos(c, d, cat, cnt, storage, router, ord, opened, extras);
+  return Pos(c, d, cat, cnt, storage, router, ord, opened, extras, mf, shared);
 }
 
 /// A draft with a customer and one shirt, as the Book Order screen would have saved it.

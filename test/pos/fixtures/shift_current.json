@@ -1,0 +1,27 @@
+{
+ "success": true,
+ "message": "Open cash shift fetched",
+ "data": {
+  "id": "6ade7c5a-e402-46d1-8306-fab72663a912",
+  "vendorId": "cc954c84-0f7f-4f65-afe7-5009902a5b92",
+  "register": "Main counter",
+  "status": "OPEN",
+  "businessDate": "2026-10-11T00:00:00.000Z",
+  "openingCashPaise": 50000,
+  "openedBy": "1b09b2bd-e49c-4f7e-b8cf-0d2a1aea2c23",
+  "openedAt": "2026-10-11T05:34:42.843Z",
+  "note": null,
+  "countedCashPaise": null,
+  "expectedCashPaise": 25000,
+  "variancePaise": null,
+  "varianceApprovedBy": null,
+  "closeNote": null,
+  "closedBy": null,
+  "closedAt": null,
+  "createdAt": "2026-10-11T05:34:42.843Z",
+  "collectionsPaise": 0,
+  "expensesPaise": 25000,
+  "collectionCount": 0,
+  "expenseCount": 1
+ }
+}

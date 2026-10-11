@@ -17,6 +17,7 @@ import '../customers/add_customer_sheet.dart';
 import '../orders/order_filter_sheet.dart';
 import '../orders/order_state.dart';
 import '../orders/pos_orders_page.dart';
+import '../whatsapp/whatsapp_sheet.dart';
 
 /// POS Home: today's numbers, what needs doing, and the three things done most (book, add customer,
 /// add price). Booking never waits for the numbers: the button is always there.
@@ -67,6 +68,14 @@ class PosHomePage extends ConsumerWidget {
             const SizedBox(height: 8),
             Row(
               children: [
+                Expanded(
+                  child: _ActionTile(
+                    icon: Icons.chat_rounded,
+                    label: l10n.posActionWhatsApp,
+                    onTap: () => startWhatsAppFlow(context, ref),
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: _ActionTile(
                     icon: Icons.person_add_alt_1_rounded,

@@ -2,9 +2,13 @@ import 'dart:typed_data';
 
 import '../../models/pos/pos_catalogue_model.dart';
 import '../../models/pos/pos_counter_order_model.dart';
+import '../../models/pos/pos_customer_detail_model.dart';
 import '../../models/pos/pos_customer_model.dart';
 import '../../models/pos/pos_dashboard_model.dart';
+import '../../models/pos/pos_money_model.dart';
 import '../../models/pos/pos_order_model.dart';
+import '../../models/pos/pos_search_model.dart';
+import '../../models/pos/pos_settings_model.dart';
 
 abstract class PosDashboardRepository {
   Future<PosDashboard> getDashboard();
@@ -77,4 +81,45 @@ abstract class PosOrdersRepository {
 
   /// The narrow counter bill for 58 or 80 mm paper.
   Future<PosPdf> miniBillPdf(String id, {int paperMm = 80});
+}
+
+/// The Search tab: one box for orders, customers and garment tags.
+abstract class PosSearchRepository {
+  /// [query] must be at least 2 characters (the server refuses less).
+  Future<PosSearchResults> search(String query);
+}
+
+/// Customers beyond the booking picker: the profile with orders and dues.
+abstract class PosCustomersRepository {
+  Future<PosCustomerDetail> detail(String customerId);
+}
+
+/// Expenses and the cash drawer.
+abstract class PosExpenseRepository {
+  /// Expenses dated `from`..`to` (`YYYY-MM-DD`, inclusive), newest first; cancelled ones are included and marked.
+  Future<List<PosExpense>> listExpenses({required String from, required String to, int limit = 100});
+  Future<PosExpense> createExpense(ExpenseDraft draft);
+  Future<PosExpense> updateExpense(String id, ExpenseDraft draft, {required String reason});
+  Future<PosExpense> cancelExpense(String id, {required String reason});
+
+  /// The open drawer session, or `null` when none is open.
+  Future<CashShift?> currentShift();
+  Future<CashShift> openShift({required int openingCashPaise, String? note});
+
+  /// Closes the drawer. A count that differs from the expected cash needs [note] and [approvedBy] (the server insists).
+  Future<CashShift> closeShift(String id, {required int countedCashPaise, String? note, String? approvedBy});
+  Future<List<CashShift>> listShifts({int limit = 10});
+}
+
+abstract class PosReportRepository {
+  Future<PosReport> report({required String from, required String to});
+
+  /// The counter sales in the range as CSV text (header + one row per order).
+  Future<String> exportCsv({required String from, required String to});
+}
+
+abstract class PosSettingsRepository {
+  /// The shop's saved WhatsApp messages, or the defaults when none were saved.
+  Future<List<MessageTemplate>> messageTemplates();
+  Future<List<PosStaffMember>> staff();
 }

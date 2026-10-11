@@ -11,6 +11,14 @@ Flutter app for laundry-shop partners (owners and staff) to manage orders, prici
 - **Serialization:** `freezed` / `json_serializable`
 - **Firebase:** Auth, Firestore, Storage, Messaging (requires a real Firebase project — see below)
 
+## Modes: Marketplace and POS
+
+The app has two modes. **Marketplace** is the original app (orders from the LNDRY customer app). **POS** runs the shop counter
+(billing, payments, invoices, tags, customers, expenses, reports) with its own short onboarding and a violet theme.
+The backend says which a shop may use (`GET /vendor/app-mode`); a shop with both switches in **Settings → App mode**.
+Plain-words guide to the six POS tabs: [`docs/pos-mode/USER-GUIDE.md`](docs/pos-mode/USER-GUIDE.md). Plan and rules: `CLAUDE.md`, `PROGRESS.md`.
+Running POS locally (Postgres + backend + real-browser journeys): [`docs/pos-mode/LOCAL-TESTING.md`](docs/pos-mode/LOCAL-TESTING.md).
+
 ## Getting started
 
 ```bash
