@@ -1,0 +1,1 @@
+{"success":true,"message":"Step saved","data":{"onboarding":{"status":"IN_PROGRESS","offering":"POS","data":{"shop":{"city":"Pune","name":"Fixture Laundry","state":null,"pincode":"411001","ownerName":"Ravi Kumar","addressLine1":"12 MG Road"}},"missingSteps":["tax","counter","pricelist"],"nextStep":"tax"}}}

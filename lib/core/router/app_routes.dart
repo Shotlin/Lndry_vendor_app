@@ -8,6 +8,11 @@ abstract final class AppRoutes {
   AppRoutes._();
 
   // ── Auth & Onboarding ─────────────────────────────────────────────────────
+  /// First-run question for a user with no shop yet: Marketplace or POS?
+  static const String chooseProduct = '/choose-product';
+
+  /// Spinner shown while the backend says which modes this vendor may use.
+  static const String modeCheck = '/mode-check';
   static const String splash = '/';
   static const String onboarding = '/onboarding';
   static const String login = '/login';
@@ -40,6 +45,15 @@ abstract final class AppRoutes {
   /// under /orders, so full path = /orders/details/:orderId.
   static const String orderDetails = '/orders/details/:orderId';
 
+  // ── POS mode ──────────────────────────────────────────────────────────────
+  static const String posOnboarding = '/pos/onboarding';
+  static const String posHome = '/pos/home';
+  static const String posOrders = '/pos/orders';
+  static const String posSearch = '/pos/search';
+  static const String posExpense = '/pos/expense';
+  static const String posReport = '/pos/report';
+  static const String posSettings = '/pos/settings';
+
   // ── Vendor-specific routes ───────────────────────────────────────────────────
   static const String pricing = '/pricing';
   static const String inventory = '/inventory';
@@ -70,6 +84,15 @@ abstract final class AppRouteNames {
   AppRouteNames._();
 
   static const String splash = 'splash';
+  static const String chooseProduct = 'choose-product';
+  static const String modeCheck = 'mode-check';
+  static const String posOnboarding = 'pos-onboarding';
+  static const String posHome = 'pos-home';
+  static const String posOrders = 'pos-orders';
+  static const String posSearch = 'pos-search';
+  static const String posExpense = 'pos-expense';
+  static const String posReport = 'pos-report';
+  static const String posSettings = 'pos-settings';
   static const String onboarding = 'onboarding';
   static const String login = 'login';
   static const String otp = 'otp';

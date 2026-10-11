@@ -2537,6 +2537,262 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get loginSessionEnded =>
       'आपका सत्र समाप्त हो गया है। जारी रखने के लिए कृपया दोबारा लॉग इन करें।';
+
+  @override
+  String get posModeMarketplace => 'मार्केटप्लेस';
+
+  @override
+  String get posModePos => 'POS (काउंटर)';
+
+  @override
+  String get posAppModeTitle => 'ऐप मोड';
+
+  @override
+  String get posAppModeSubtitle =>
+      'अभी आप क्या इस्तेमाल करना चाहते हैं, चुनें।';
+
+  @override
+  String posAppModeSwitched(String mode) {
+    return '$mode पर बदल गया';
+  }
+
+  @override
+  String get posAppModeNotAllowed => 'यह मोड आपकी दुकान के लिए उपलब्ध नहीं है।';
+
+  @override
+  String get posGetPosTitle => 'मेरी दुकान के लिए POS लें';
+
+  @override
+  String get posGetPosSubtitle =>
+      'दुकान पर आने वाले ग्राहकों के बिल बनाएं और रिकॉर्ड रखें।';
+
+  @override
+  String get posFinishSetupTitle => 'POS सेटअप पूरा करें';
+
+  @override
+  String get posFinishSetupSubtitle =>
+      'POS इस्तेमाल करने के लिए बस कुछ कदम बाकी हैं।';
+
+  @override
+  String get posChoiceTitle => 'आपको क्या चाहिए?';
+
+  @override
+  String get posChoiceSubtitle =>
+      'शुरू करने के लिए एक चुनें। दूसरा बाद में जोड़ सकते हैं।';
+
+  @override
+  String get posChoiceMarketplaceTitle => 'ग्राहक पाएं';
+
+  @override
+  String get posChoiceMarketplaceBody =>
+      'LNDRY ग्राहक ऐप से ऑर्डर पाएं। दुकान की जानकारी और दस्तावेज़ चाहिए।';
+
+  @override
+  String get posChoicePosTitle => 'मेरी दुकान चलाएं (POS)';
+
+  @override
+  String get posChoicePosBody =>
+      'काउंटर पर बिल बनाएं, ग्राहकों का रिकॉर्ड रखें और पैसों का हिसाब देखें। लगभग 3 मिनट में तैयार।';
+
+  @override
+  String get posChoiceBothHint =>
+      'दोनों चाहिए? पहले मार्केटप्लेस चुनें, फिर सेटिंग्स में POS चालू करें।';
+
+  @override
+  String get posModeCheckLoading => 'आपकी दुकान तैयार हो रही है…';
+
+  @override
+  String get posOnbTitle => 'POS सेटअप';
+
+  @override
+  String posOnbStepOf(int current, int total) {
+    return 'चरण $current / $total';
+  }
+
+  @override
+  String get posOnbStepShop => 'दुकान की जानकारी';
+
+  @override
+  String get posOnbStepTax => 'टैक्स और भुगतान';
+
+  @override
+  String get posOnbStepCounter => 'काउंटर सेटअप';
+
+  @override
+  String get posOnbStepPrices => 'रेट लिस्ट';
+
+  @override
+  String get posOnbShopName => 'दुकान का नाम';
+
+  @override
+  String get posOnbOwnerName => 'मालिक का नाम';
+
+  @override
+  String get posOnbAddress => 'दुकान का पता';
+
+  @override
+  String get posOnbCity => 'शहर';
+
+  @override
+  String get posOnbState => 'राज्य (वैकल्पिक)';
+
+  @override
+  String get posOnbPincode => 'पिनकोड (वैकल्पिक)';
+
+  @override
+  String get posOnbGstSwitch => 'मेरी दुकान GST में रजिस्टर्ड है';
+
+  @override
+  String get posOnbGstin => 'GSTIN (15 अक्षर)';
+
+  @override
+  String get posOnbUpi => 'UPI ID (वैकल्पिक)';
+
+  @override
+  String get posOnbUpiHint => 'जैसे name@bank';
+
+  @override
+  String get posOnbInvoicePrefix => 'इनवॉइस की शुरुआत';
+
+  @override
+  String get posOnbPrinter => 'प्रिंटर';
+
+  @override
+  String get posPrinterNone => 'कोई प्रिंटर नहीं';
+
+  @override
+  String get posPrinterSystem => 'फोन / सिस्टम प्रिंटर';
+
+  @override
+  String get posPrinter58 => 'थर्मल 58 mm';
+
+  @override
+  String get posPrinter80 => 'थर्मल 80 mm';
+
+  @override
+  String get posOnbOrderPrefix => 'ऑर्डर नंबर की शुरुआत';
+
+  @override
+  String get posOnbDeliveryDays => 'सामान्य डिलीवरी समय (दिन)';
+
+  @override
+  String get posOnbPricesTitle => 'अपनी रेट लिस्ट शुरू करें';
+
+  @override
+  String get posOnbPricesStarter => 'सैंपल रेट लिस्ट इस्तेमाल करें';
+
+  @override
+  String get posOnbPricesStarterBody =>
+      'हम आम कपड़े और सेवाएं सैंपल रेट के साथ जोड़ देंगे। कृपया रेट देखकर बदल लें।';
+
+  @override
+  String get posOnbPricesOwn => 'मैं खुद जोड़ूंगा';
+
+  @override
+  String get posOnbPricesOwnBody =>
+      'खाली शुरू करें और अपने कपड़े व रेट खुद जोड़ें।';
+
+  @override
+  String get posNext => 'आगे';
+
+  @override
+  String get posBack => 'पीछे';
+
+  @override
+  String get posFinish => 'सेटअप पूरा करें';
+
+  @override
+  String get posSaving => 'सेव हो रहा है…';
+
+  @override
+  String get posErrShopName => 'अपनी दुकान का नाम लिखें';
+
+  @override
+  String get posErrOwnerName => 'मालिक का नाम लिखें';
+
+  @override
+  String get posErrAddress => 'अपनी दुकान का पता लिखें';
+
+  @override
+  String get posErrCity => 'अपना शहर लिखें';
+
+  @override
+  String get posErrPincode => 'पिनकोड 6 अंकों का होना चाहिए';
+
+  @override
+  String get posErrGstin => 'सही 15 अक्षर का GSTIN लिखें';
+
+  @override
+  String get posErrUpi => 'UPI ID ऐसा होना चाहिए: name@bank';
+
+  @override
+  String get posErrPrefix => '1 से 6 अक्षर या अंक लिखें';
+
+  @override
+  String get posErrDays => '0 से 30 के बीच की संख्या लिखें';
+
+  @override
+  String get posDoneTitle => 'आपकी दुकान तैयार है!';
+
+  @override
+  String get posDoneBody => 'होम स्क्रीन से अपना पहला ऑर्डर बुक करें।';
+
+  @override
+  String posDoneStarterNote(int count) {
+    return '$count सैंपल कपड़े जोड़े गए हैं। कृपया उनके रेट देख लें।';
+  }
+
+  @override
+  String get posDoneButton => 'POS खोलें';
+
+  @override
+  String get posOnbOwnerOnlyTitle => 'दुकान के मालिक से कहें';
+
+  @override
+  String get posOnbOwnerOnlyBody =>
+      'POS सेटअप दुकान के मालिक को पूरा करना होगा।';
+
+  @override
+  String get posLogOut => 'लॉग आउट';
+
+  @override
+  String get posTabHome => 'होम';
+
+  @override
+  String get posTabOrder => 'ऑर्डर';
+
+  @override
+  String get posTabSearch => 'खोजें';
+
+  @override
+  String get posTabExpense => 'खर्च';
+
+  @override
+  String get posTabReport => 'रिपोर्ट';
+
+  @override
+  String get posTabSetting => 'सेटिंग';
+
+  @override
+  String get posComingSoonTitle => 'जल्द आ रहा है';
+
+  @override
+  String get posComingSoonBody => 'POS का यह हिस्सा तैयार हो रहा है।';
+
+  @override
+  String posHomeWelcome(String shop) {
+    return 'स्वागत है, $shop';
+  }
+
+  @override
+  String get posHomeReady =>
+      'आपका POS तैयार है। ऑर्डर बुकिंग, ग्राहक और रेट अगले अपडेट में आएंगे।';
+
+  @override
+  String get posSettingsTitle => 'सेटिंग';
+
+  @override
+  String get posSettingsShop => 'दुकान';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -5091,4 +5347,261 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   @override
   String get loginSessionEnded =>
       'Aapka session khatam ho gaya hai. Aage badhne ke liye kripya dobara login karein.';
+
+  @override
+  String get posModeMarketplace => 'Marketplace';
+
+  @override
+  String get posModePos => 'POS (Counter)';
+
+  @override
+  String get posAppModeTitle => 'App mode';
+
+  @override
+  String get posAppModeSubtitle =>
+      'Abhi aap kya use karna chahte hain, chunein.';
+
+  @override
+  String posAppModeSwitched(String mode) {
+    return '$mode par badal gaya';
+  }
+
+  @override
+  String get posAppModeNotAllowed =>
+      'Yeh mode aapki dukaan ke liye uplabdh nahin hai.';
+
+  @override
+  String get posGetPosTitle => 'Meri dukaan ke liye POS lein';
+
+  @override
+  String get posGetPosSubtitle =>
+      'Dukaan par aane wale customers ke bill banayein aur record rakhein.';
+
+  @override
+  String get posFinishSetupTitle => 'POS setup poora karein';
+
+  @override
+  String get posFinishSetupSubtitle =>
+      'POS use karne ke liye bas kuch kadam baaki hain.';
+
+  @override
+  String get posChoiceTitle => 'Aapko kya chahiye?';
+
+  @override
+  String get posChoiceSubtitle =>
+      'Shuru karne ke liye ek chunein. Doosra baad mein jod sakte hain.';
+
+  @override
+  String get posChoiceMarketplaceTitle => 'Customers paayein';
+
+  @override
+  String get posChoiceMarketplaceBody =>
+      'LNDRY customer app se order paayein. Dukaan ki jaankari aur documents chahiye.';
+
+  @override
+  String get posChoicePosTitle => 'Meri dukaan chalayein (POS)';
+
+  @override
+  String get posChoicePosBody =>
+      'Counter par bill banayein, customers ka record rakhein aur paison ka hisaab dekhein. Lagbhag 3 minute mein taiyaar.';
+
+  @override
+  String get posChoiceBothHint =>
+      'Dono chahiye? Pehle Marketplace chunein, phir Settings mein POS chalu karein.';
+
+  @override
+  String get posModeCheckLoading => 'Aapki dukaan taiyaar ho rahi hai…';
+
+  @override
+  String get posOnbTitle => 'POS setup';
+
+  @override
+  String posOnbStepOf(int current, int total) {
+    return 'Step $current / $total';
+  }
+
+  @override
+  String get posOnbStepShop => 'Dukaan ki jaankari';
+
+  @override
+  String get posOnbStepTax => 'Tax aur bhugtaan';
+
+  @override
+  String get posOnbStepCounter => 'Counter setup';
+
+  @override
+  String get posOnbStepPrices => 'Rate list';
+
+  @override
+  String get posOnbShopName => 'Dukaan ka naam';
+
+  @override
+  String get posOnbOwnerName => 'Maalik ka naam';
+
+  @override
+  String get posOnbAddress => 'Dukaan ka pata';
+
+  @override
+  String get posOnbCity => 'Shehar';
+
+  @override
+  String get posOnbState => 'Rajya (optional)';
+
+  @override
+  String get posOnbPincode => 'Pincode (optional)';
+
+  @override
+  String get posOnbGstSwitch => 'Meri dukaan GST mein registered hai';
+
+  @override
+  String get posOnbGstin => 'GSTIN (15 akshar)';
+
+  @override
+  String get posOnbUpi => 'UPI ID (optional)';
+
+  @override
+  String get posOnbUpiHint => 'jaise name@bank';
+
+  @override
+  String get posOnbInvoicePrefix => 'Invoice ki shuruaat';
+
+  @override
+  String get posOnbPrinter => 'Printer';
+
+  @override
+  String get posPrinterNone => 'Koi printer nahin';
+
+  @override
+  String get posPrinterSystem => 'Phone / system printer';
+
+  @override
+  String get posPrinter58 => 'Thermal 58 mm';
+
+  @override
+  String get posPrinter80 => 'Thermal 80 mm';
+
+  @override
+  String get posOnbOrderPrefix => 'Order number ki shuruaat';
+
+  @override
+  String get posOnbDeliveryDays => 'Aam delivery time (din)';
+
+  @override
+  String get posOnbPricesTitle => 'Apni rate list shuru karein';
+
+  @override
+  String get posOnbPricesStarter => 'Sample rate list use karein';
+
+  @override
+  String get posOnbPricesStarterBody =>
+      'Hum aam kapde aur services sample rate ke saath jod denge. Kripya rate dekhkar badal lein.';
+
+  @override
+  String get posOnbPricesOwn => 'Main khud jodunga';
+
+  @override
+  String get posOnbPricesOwnBody =>
+      'Khaali shuru karein aur apne kapde va rate khud jodein.';
+
+  @override
+  String get posNext => 'Aage';
+
+  @override
+  String get posBack => 'Peeche';
+
+  @override
+  String get posFinish => 'Setup poora karein';
+
+  @override
+  String get posSaving => 'Save ho raha hai…';
+
+  @override
+  String get posErrShopName => 'Apni dukaan ka naam likhein';
+
+  @override
+  String get posErrOwnerName => 'Maalik ka naam likhein';
+
+  @override
+  String get posErrAddress => 'Apni dukaan ka pata likhein';
+
+  @override
+  String get posErrCity => 'Apna shehar likhein';
+
+  @override
+  String get posErrPincode => 'Pincode 6 ankon ka hona chahiye';
+
+  @override
+  String get posErrGstin => 'Sahi 15 akshar ka GSTIN likhein';
+
+  @override
+  String get posErrUpi => 'UPI ID aisa hona chahiye: name@bank';
+
+  @override
+  String get posErrPrefix => '1 se 6 akshar ya ank likhein';
+
+  @override
+  String get posErrDays => '0 se 30 ke beech ki sankhya likhein';
+
+  @override
+  String get posDoneTitle => 'Aapki dukaan taiyaar hai!';
+
+  @override
+  String get posDoneBody => 'Home screen se apna pehla order book karein.';
+
+  @override
+  String posDoneStarterNote(int count) {
+    return '$count sample kapde jode gaye hain. Kripya unke rate dekh lein.';
+  }
+
+  @override
+  String get posDoneButton => 'POS kholein';
+
+  @override
+  String get posOnbOwnerOnlyTitle => 'Dukaan ke maalik se kahein';
+
+  @override
+  String get posOnbOwnerOnlyBody =>
+      'POS setup dukaan ke maalik ko poora karna hoga.';
+
+  @override
+  String get posLogOut => 'Log out';
+
+  @override
+  String get posTabHome => 'Home';
+
+  @override
+  String get posTabOrder => 'Order';
+
+  @override
+  String get posTabSearch => 'Khojein';
+
+  @override
+  String get posTabExpense => 'Kharch';
+
+  @override
+  String get posTabReport => 'Report';
+
+  @override
+  String get posTabSetting => 'Setting';
+
+  @override
+  String get posComingSoonTitle => 'Jald aa raha hai';
+
+  @override
+  String get posComingSoonBody => 'POS ka yeh hissa taiyaar ho raha hai.';
+
+  @override
+  String posHomeWelcome(String shop) {
+    return 'Swagat hai, $shop';
+  }
+
+  @override
+  String get posHomeReady =>
+      'Aapka POS taiyaar hai. Order booking, customers aur rate agle update mein aayenge.';
+
+  @override
+  String get posSettingsTitle => 'Setting';
+
+  @override
+  String get posSettingsShop => 'Dukaan';
 }

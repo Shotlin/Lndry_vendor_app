@@ -2531,4 +2531,260 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get loginSessionEnded =>
       'Your session has ended. Please log in again to continue.';
+
+  @override
+  String get posModeMarketplace => 'Marketplace';
+
+  @override
+  String get posModePos => 'POS (Counter)';
+
+  @override
+  String get posAppModeTitle => 'App mode';
+
+  @override
+  String get posAppModeSubtitle => 'Choose what you want to use right now.';
+
+  @override
+  String posAppModeSwitched(String mode) {
+    return 'Switched to $mode';
+  }
+
+  @override
+  String get posAppModeNotAllowed =>
+      'That mode is not available for your shop.';
+
+  @override
+  String get posGetPosTitle => 'Get POS for my shop';
+
+  @override
+  String get posGetPosSubtitle =>
+      'Make bills and keep customer records for walk-in customers.';
+
+  @override
+  String get posFinishSetupTitle => 'Finish POS setup';
+
+  @override
+  String get posFinishSetupSubtitle =>
+      'You are only a few steps away from using POS.';
+
+  @override
+  String get posChoiceTitle => 'What do you need?';
+
+  @override
+  String get posChoiceSubtitle =>
+      'Pick one to start. You can add the other later.';
+
+  @override
+  String get posChoiceMarketplaceTitle => 'Get customers';
+
+  @override
+  String get posChoiceMarketplaceBody =>
+      'Get orders from the LNDRY customer app. Needs shop details and documents.';
+
+  @override
+  String get posChoicePosTitle => 'Run my shop (POS)';
+
+  @override
+  String get posChoicePosBody =>
+      'Make bills, keep customer records and track your money at the counter. Ready in about 3 minutes.';
+
+  @override
+  String get posChoiceBothHint =>
+      'Want both? Start with Marketplace, then turn on POS later in Settings.';
+
+  @override
+  String get posModeCheckLoading => 'Getting your shop ready…';
+
+  @override
+  String get posOnbTitle => 'Set up POS';
+
+  @override
+  String posOnbStepOf(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get posOnbStepShop => 'Shop details';
+
+  @override
+  String get posOnbStepTax => 'Tax & payments';
+
+  @override
+  String get posOnbStepCounter => 'Counter setup';
+
+  @override
+  String get posOnbStepPrices => 'Price list';
+
+  @override
+  String get posOnbShopName => 'Shop name';
+
+  @override
+  String get posOnbOwnerName => 'Owner name';
+
+  @override
+  String get posOnbAddress => 'Shop address';
+
+  @override
+  String get posOnbCity => 'City';
+
+  @override
+  String get posOnbState => 'State (optional)';
+
+  @override
+  String get posOnbPincode => 'Pincode (optional)';
+
+  @override
+  String get posOnbGstSwitch => 'My shop is GST registered';
+
+  @override
+  String get posOnbGstin => 'GSTIN (15 characters)';
+
+  @override
+  String get posOnbUpi => 'UPI ID (optional)';
+
+  @override
+  String get posOnbUpiHint => 'like name@bank';
+
+  @override
+  String get posOnbInvoicePrefix => 'Invoice prefix';
+
+  @override
+  String get posOnbPrinter => 'Printer';
+
+  @override
+  String get posPrinterNone => 'No printer';
+
+  @override
+  String get posPrinterSystem => 'Phone / system printer';
+
+  @override
+  String get posPrinter58 => 'Thermal 58 mm';
+
+  @override
+  String get posPrinter80 => 'Thermal 80 mm';
+
+  @override
+  String get posOnbOrderPrefix => 'Order numbers start with';
+
+  @override
+  String get posOnbDeliveryDays => 'Usual delivery time (days)';
+
+  @override
+  String get posOnbPricesTitle => 'Start your price list';
+
+  @override
+  String get posOnbPricesStarter => 'Use the sample price list';
+
+  @override
+  String get posOnbPricesStarterBody =>
+      'We add common garments and services with sample prices. Please check and change the prices.';
+
+  @override
+  String get posOnbPricesOwn => 'I will add my own';
+
+  @override
+  String get posOnbPricesOwnBody =>
+      'Start empty and add your garments and prices yourself.';
+
+  @override
+  String get posNext => 'Next';
+
+  @override
+  String get posBack => 'Back';
+
+  @override
+  String get posFinish => 'Finish setup';
+
+  @override
+  String get posSaving => 'Saving…';
+
+  @override
+  String get posErrShopName => 'Enter your shop name';
+
+  @override
+  String get posErrOwnerName => 'Enter the owner name';
+
+  @override
+  String get posErrAddress => 'Enter your shop address';
+
+  @override
+  String get posErrCity => 'Enter your city';
+
+  @override
+  String get posErrPincode => 'Pincode must be 6 digits';
+
+  @override
+  String get posErrGstin => 'Enter a valid 15-character GSTIN';
+
+  @override
+  String get posErrUpi => 'UPI ID should look like name@bank';
+
+  @override
+  String get posErrPrefix => 'Use 1 to 6 letters or numbers';
+
+  @override
+  String get posErrDays => 'Enter a number from 0 to 30';
+
+  @override
+  String get posDoneTitle => 'Your shop is ready!';
+
+  @override
+  String get posDoneBody => 'Book your first order from the Home screen.';
+
+  @override
+  String posDoneStarterNote(int count) {
+    return '$count sample garments were added. Please check their prices.';
+  }
+
+  @override
+  String get posDoneButton => 'Open POS';
+
+  @override
+  String get posOnbOwnerOnlyTitle => 'Ask the shop owner';
+
+  @override
+  String get posOnbOwnerOnlyBody =>
+      'POS setup must be finished by the shop owner.';
+
+  @override
+  String get posLogOut => 'Log out';
+
+  @override
+  String get posTabHome => 'Home';
+
+  @override
+  String get posTabOrder => 'Order';
+
+  @override
+  String get posTabSearch => 'Search';
+
+  @override
+  String get posTabExpense => 'Expense';
+
+  @override
+  String get posTabReport => 'Report';
+
+  @override
+  String get posTabSetting => 'Setting';
+
+  @override
+  String get posComingSoonTitle => 'Coming soon';
+
+  @override
+  String get posComingSoonBody => 'This part of POS is being built.';
+
+  @override
+  String posHomeWelcome(String shop) {
+    return 'Welcome, $shop';
+  }
+
+  @override
+  String get posHomeReady =>
+      'Your POS is ready. Booking orders, customers and prices arrive in the next update.';
+
+  @override
+  String get posSettingsTitle => 'Settings';
+
+  @override
+  String get posSettingsShop => 'Shop';
 }

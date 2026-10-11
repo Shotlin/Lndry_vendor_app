@@ -4551,6 +4551,480 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your session has ended. Please log in again to continue.'**
   String get loginSessionEnded;
+
+  /// POS mode: posModeMarketplace
+  ///
+  /// In en, this message translates to:
+  /// **'Marketplace'**
+  String get posModeMarketplace;
+
+  /// POS mode: posModePos
+  ///
+  /// In en, this message translates to:
+  /// **'POS (Counter)'**
+  String get posModePos;
+
+  /// POS mode: posAppModeTitle
+  ///
+  /// In en, this message translates to:
+  /// **'App mode'**
+  String get posAppModeTitle;
+
+  /// POS mode: posAppModeSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Choose what you want to use right now.'**
+  String get posAppModeSubtitle;
+
+  /// POS mode: posAppModeSwitched
+  ///
+  /// In en, this message translates to:
+  /// **'Switched to {mode}'**
+  String posAppModeSwitched(String mode);
+
+  /// POS mode: posAppModeNotAllowed
+  ///
+  /// In en, this message translates to:
+  /// **'That mode is not available for your shop.'**
+  String get posAppModeNotAllowed;
+
+  /// POS mode: posGetPosTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Get POS for my shop'**
+  String get posGetPosTitle;
+
+  /// POS mode: posGetPosSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Make bills and keep customer records for walk-in customers.'**
+  String get posGetPosSubtitle;
+
+  /// POS mode: posFinishSetupTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Finish POS setup'**
+  String get posFinishSetupTitle;
+
+  /// POS mode: posFinishSetupSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'You are only a few steps away from using POS.'**
+  String get posFinishSetupSubtitle;
+
+  /// POS mode: posChoiceTitle
+  ///
+  /// In en, this message translates to:
+  /// **'What do you need?'**
+  String get posChoiceTitle;
+
+  /// POS mode: posChoiceSubtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Pick one to start. You can add the other later.'**
+  String get posChoiceSubtitle;
+
+  /// POS mode: posChoiceMarketplaceTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Get customers'**
+  String get posChoiceMarketplaceTitle;
+
+  /// POS mode: posChoiceMarketplaceBody
+  ///
+  /// In en, this message translates to:
+  /// **'Get orders from the LNDRY customer app. Needs shop details and documents.'**
+  String get posChoiceMarketplaceBody;
+
+  /// POS mode: posChoicePosTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Run my shop (POS)'**
+  String get posChoicePosTitle;
+
+  /// POS mode: posChoicePosBody
+  ///
+  /// In en, this message translates to:
+  /// **'Make bills, keep customer records and track your money at the counter. Ready in about 3 minutes.'**
+  String get posChoicePosBody;
+
+  /// POS mode: posChoiceBothHint
+  ///
+  /// In en, this message translates to:
+  /// **'Want both? Start with Marketplace, then turn on POS later in Settings.'**
+  String get posChoiceBothHint;
+
+  /// POS mode: posModeCheckLoading
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your shop ready…'**
+  String get posModeCheckLoading;
+
+  /// POS mode: posOnbTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Set up POS'**
+  String get posOnbTitle;
+
+  /// POS mode: posOnbStepOf
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String posOnbStepOf(int current, int total);
+
+  /// POS mode: posOnbStepShop
+  ///
+  /// In en, this message translates to:
+  /// **'Shop details'**
+  String get posOnbStepShop;
+
+  /// POS mode: posOnbStepTax
+  ///
+  /// In en, this message translates to:
+  /// **'Tax & payments'**
+  String get posOnbStepTax;
+
+  /// POS mode: posOnbStepCounter
+  ///
+  /// In en, this message translates to:
+  /// **'Counter setup'**
+  String get posOnbStepCounter;
+
+  /// POS mode: posOnbStepPrices
+  ///
+  /// In en, this message translates to:
+  /// **'Price list'**
+  String get posOnbStepPrices;
+
+  /// POS mode: posOnbShopName
+  ///
+  /// In en, this message translates to:
+  /// **'Shop name'**
+  String get posOnbShopName;
+
+  /// POS mode: posOnbOwnerName
+  ///
+  /// In en, this message translates to:
+  /// **'Owner name'**
+  String get posOnbOwnerName;
+
+  /// POS mode: posOnbAddress
+  ///
+  /// In en, this message translates to:
+  /// **'Shop address'**
+  String get posOnbAddress;
+
+  /// POS mode: posOnbCity
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get posOnbCity;
+
+  /// POS mode: posOnbState
+  ///
+  /// In en, this message translates to:
+  /// **'State (optional)'**
+  String get posOnbState;
+
+  /// POS mode: posOnbPincode
+  ///
+  /// In en, this message translates to:
+  /// **'Pincode (optional)'**
+  String get posOnbPincode;
+
+  /// POS mode: posOnbGstSwitch
+  ///
+  /// In en, this message translates to:
+  /// **'My shop is GST registered'**
+  String get posOnbGstSwitch;
+
+  /// POS mode: posOnbGstin
+  ///
+  /// In en, this message translates to:
+  /// **'GSTIN (15 characters)'**
+  String get posOnbGstin;
+
+  /// POS mode: posOnbUpi
+  ///
+  /// In en, this message translates to:
+  /// **'UPI ID (optional)'**
+  String get posOnbUpi;
+
+  /// POS mode: posOnbUpiHint
+  ///
+  /// In en, this message translates to:
+  /// **'like name@bank'**
+  String get posOnbUpiHint;
+
+  /// POS mode: posOnbInvoicePrefix
+  ///
+  /// In en, this message translates to:
+  /// **'Invoice prefix'**
+  String get posOnbInvoicePrefix;
+
+  /// POS mode: posOnbPrinter
+  ///
+  /// In en, this message translates to:
+  /// **'Printer'**
+  String get posOnbPrinter;
+
+  /// POS mode: posPrinterNone
+  ///
+  /// In en, this message translates to:
+  /// **'No printer'**
+  String get posPrinterNone;
+
+  /// POS mode: posPrinterSystem
+  ///
+  /// In en, this message translates to:
+  /// **'Phone / system printer'**
+  String get posPrinterSystem;
+
+  /// POS mode: posPrinter58
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal 58 mm'**
+  String get posPrinter58;
+
+  /// POS mode: posPrinter80
+  ///
+  /// In en, this message translates to:
+  /// **'Thermal 80 mm'**
+  String get posPrinter80;
+
+  /// POS mode: posOnbOrderPrefix
+  ///
+  /// In en, this message translates to:
+  /// **'Order numbers start with'**
+  String get posOnbOrderPrefix;
+
+  /// POS mode: posOnbDeliveryDays
+  ///
+  /// In en, this message translates to:
+  /// **'Usual delivery time (days)'**
+  String get posOnbDeliveryDays;
+
+  /// POS mode: posOnbPricesTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Start your price list'**
+  String get posOnbPricesTitle;
+
+  /// POS mode: posOnbPricesStarter
+  ///
+  /// In en, this message translates to:
+  /// **'Use the sample price list'**
+  String get posOnbPricesStarter;
+
+  /// POS mode: posOnbPricesStarterBody
+  ///
+  /// In en, this message translates to:
+  /// **'We add common garments and services with sample prices. Please check and change the prices.'**
+  String get posOnbPricesStarterBody;
+
+  /// POS mode: posOnbPricesOwn
+  ///
+  /// In en, this message translates to:
+  /// **'I will add my own'**
+  String get posOnbPricesOwn;
+
+  /// POS mode: posOnbPricesOwnBody
+  ///
+  /// In en, this message translates to:
+  /// **'Start empty and add your garments and prices yourself.'**
+  String get posOnbPricesOwnBody;
+
+  /// POS mode: posNext
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get posNext;
+
+  /// POS mode: posBack
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get posBack;
+
+  /// POS mode: posFinish
+  ///
+  /// In en, this message translates to:
+  /// **'Finish setup'**
+  String get posFinish;
+
+  /// POS mode: posSaving
+  ///
+  /// In en, this message translates to:
+  /// **'Saving…'**
+  String get posSaving;
+
+  /// POS mode: posErrShopName
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your shop name'**
+  String get posErrShopName;
+
+  /// POS mode: posErrOwnerName
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the owner name'**
+  String get posErrOwnerName;
+
+  /// POS mode: posErrAddress
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your shop address'**
+  String get posErrAddress;
+
+  /// POS mode: posErrCity
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your city'**
+  String get posErrCity;
+
+  /// POS mode: posErrPincode
+  ///
+  /// In en, this message translates to:
+  /// **'Pincode must be 6 digits'**
+  String get posErrPincode;
+
+  /// POS mode: posErrGstin
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid 15-character GSTIN'**
+  String get posErrGstin;
+
+  /// POS mode: posErrUpi
+  ///
+  /// In en, this message translates to:
+  /// **'UPI ID should look like name@bank'**
+  String get posErrUpi;
+
+  /// POS mode: posErrPrefix
+  ///
+  /// In en, this message translates to:
+  /// **'Use 1 to 6 letters or numbers'**
+  String get posErrPrefix;
+
+  /// POS mode: posErrDays
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a number from 0 to 30'**
+  String get posErrDays;
+
+  /// POS mode: posDoneTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Your shop is ready!'**
+  String get posDoneTitle;
+
+  /// POS mode: posDoneBody
+  ///
+  /// In en, this message translates to:
+  /// **'Book your first order from the Home screen.'**
+  String get posDoneBody;
+
+  /// POS mode: posDoneStarterNote
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sample garments were added. Please check their prices.'**
+  String posDoneStarterNote(int count);
+
+  /// POS mode: posDoneButton
+  ///
+  /// In en, this message translates to:
+  /// **'Open POS'**
+  String get posDoneButton;
+
+  /// POS mode: posOnbOwnerOnlyTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the shop owner'**
+  String get posOnbOwnerOnlyTitle;
+
+  /// POS mode: posOnbOwnerOnlyBody
+  ///
+  /// In en, this message translates to:
+  /// **'POS setup must be finished by the shop owner.'**
+  String get posOnbOwnerOnlyBody;
+
+  /// POS mode: posLogOut
+  ///
+  /// In en, this message translates to:
+  /// **'Log out'**
+  String get posLogOut;
+
+  /// POS mode: posTabHome
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get posTabHome;
+
+  /// POS mode: posTabOrder
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get posTabOrder;
+
+  /// POS mode: posTabSearch
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get posTabSearch;
+
+  /// POS mode: posTabExpense
+  ///
+  /// In en, this message translates to:
+  /// **'Expense'**
+  String get posTabExpense;
+
+  /// POS mode: posTabReport
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get posTabReport;
+
+  /// POS mode: posTabSetting
+  ///
+  /// In en, this message translates to:
+  /// **'Setting'**
+  String get posTabSetting;
+
+  /// POS mode: posComingSoonTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get posComingSoonTitle;
+
+  /// POS mode: posComingSoonBody
+  ///
+  /// In en, this message translates to:
+  /// **'This part of POS is being built.'**
+  String get posComingSoonBody;
+
+  /// POS mode: posHomeWelcome
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome, {shop}'**
+  String posHomeWelcome(String shop);
+
+  /// POS mode: posHomeReady
+  ///
+  /// In en, this message translates to:
+  /// **'Your POS is ready. Booking orders, customers and prices arrive in the next update.'**
+  String get posHomeReady;
+
+  /// POS mode: posSettingsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get posSettingsTitle;
+
+  /// POS mode: posSettingsShop
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get posSettingsShop;
 }
 
 class _AppLocalizationsDelegate
