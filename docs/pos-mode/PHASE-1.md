@@ -90,3 +90,30 @@ cd ../Lndry_vendor_app && flutter pub get && dart run build_runner build --delet
 
 ## Out of scope
 Real POS screens, subscription billing, multi-store switching, changing marketplace UI.
+
+---
+
+## As built (2026-10-10) — differences from the plan above and facts learned
+
+**Backend**
+* Admin endpoint is **`PUT /api/v1/vendors/admin/:id/offering`** (mirrors `vendor-type`), not PATCH. Body `{offering, pos_plan_name?, pos_valid_to?}`.
+* Contract doc is **`Lndry_backend/docs/vendor-app-mode.md`** (the repo's `API_REFERENCE.md` only covers the old customer API).
+* Vendor detail/list reads (`findById`, `findMany`, `update` return) now include `offering, pos_onboarding_status, pos_plan_name, pos_valid_to`; the dashboard needs them.
+* `pos_valid_to` is selected `::text`. A Postgres `DATE` arrives as a JS `Date` at local midnight; on an IST server `toISOString()` shows the **previous day** (reproduced: 2026-11-03 → 2026-11-02). Never convert a DATE column to a JS Date.
+* Backfill treats **any** `store_orders` row as POS use — the Epic desktop pushes orders with `source = 'DESKTOP_PUSH'`, not `'COUNTER'`.
+* A calendar-date check must round-trip (`new Date(v).toISOString().slice(0,10) === v`): `Date.parse('2026-02-31')` does not fail.
+* A user who already has a marketplace *application* cannot start a POS-only shop (`409 MARKETPLACE_APPLICATION_EXISTS`) — a second shop would make login ambiguous. A POS-first user adding Marketplace later is **not** supported yet (support/admin task).
+* `ENFORCE_OFFERING` is OFF. With it ON the guard was verified: POS-only vendor → marketplace routes `403 MARKETPLACE_NOT_ENABLED`; POS routes, `/vendor/app-mode`, unauthenticated 401 unaffected.
+* Wizard answers live in `vendors.pos_onboarding_data`; only shop name/owner/address and GSTIN are mirrored into real columns. They are **not** written into `vendor_pos_settings` (Epic-owned shapes) — map them when the POS settings screens are built (Phase 4).
+
+**Flutter**
+* Plain Dart models (no freezed codegen) for the new types.
+* Two extra routes: `/choose-product` (first-run) and `/mode-check` (spinner until the backend answers so the wrong UI never flashes). A failed/old backend → falls back to Marketplace.
+* `vendorRedirectForTest(..., appMode:)` has an optional `appMode`; `null` = old behaviour, so existing tests keep their signature.
+* Staff of a BOTH shop can use the mode switch; "Get POS" / "Finish POS setup" are owner-only.
+* Saved mode is keyed per vendor (`app_mode_v1:<vendorId>`); the "I chose Marketplace" flag is keyed per phone.
+* Theme: Epic's `attention` (#A96916) and `danger` (#DC2626) fail 4.5:1 for words on their washes → added `attentionText` / `dangerText`. Material derives tab icons, segmented buttons and progress tracks from `secondaryContainer`; left unset it rendered a **green progress track and white-on-pale tab icons** — pinned to the brand wash and guarded by `pos_colors_test.dart`.
+* `ModeSwitchSection` also lives in the **marketplace** Settings page (top of the list); it renders nothing unless it applies.
+
+**Verified end to end (real Chromium + real Flutter web build + real backend + real Postgres):** new phone → OTP → choice → POS shop created → 4-step wizard (with validation) → starter price list → POS Home → tabs → logout → login lands on POS Home. See `LOCAL-TESTING.md`.
+

@@ -62,3 +62,13 @@ cd ../Lndry_backend && npm test && node scripts/pos-smoke.mjs --lifecycle
 
 ## Out of scope
 Direct Bluetooth ESC/POS printing (Phase 4 optional), refunds/returns/quality-claim screens, production queue screens.
+
+---
+
+## Verified API facts (checked against the running backend, 2026-10-10)
+
+* Transitions are strict: `BOOKED → (PICKED_UP) → IN_PROCESS → READY → (OUT_FOR_DELIVERY) → DELIVERED`. Skipping returns `409 INVALID_TRANSITION` ("An order that is in process cannot move to delivered").
+* **READY is gated:** `IN_PROCESS → READY` fails with *"N garment(s) have not reached assembly yet — scan them through processing first, or mark the order ready anyway."* unless the body carries **`allowIncomplete: true`**. The "Process Order" button must either scan tags first or offer a clear "Mark ready anyway" confirmation (the screenshot's single button needs this second path).
+* **DELIVERED is gated on payment:** an unpaid order needs **`allowUnpaid: true`** (the backend records "delivered with balance due"). Offer "Collect payment first" and an explicit "Deliver with balance due" confirmation.
+* Both flags go in the `POST /vendor/counter/orders/:id/transition` body next to `{ state }`.
+

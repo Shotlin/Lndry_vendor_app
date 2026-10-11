@@ -185,8 +185,10 @@ of the reference screenshots.
 | `posMuted` | `#767086` | Hints |
 | `posLine` | `#E5E0F2` | Card borders |
 | `posSuccess` / wash | `#187B5C` / `#E9F7F1` | Paid, Done, Delivered |
-| `posAttention` / wash | `#A96916` / `#FFF3D7` | Pending, Balance due |
-| `posDanger` / wash | `#DC2626` / `#FEF2F2` | Cancel, errors |
+| `posAttention` / wash | `#A96916` / `#FFF3D7` | Icons, borders, fills for Pending / Balance due |
+| `posDanger` / wash | `#DC2626` / `#FEF2F2` | Icons, borders, fills for Cancel / errors |
+| `posAttentionText` | `#8A5412` | **Words** on attention wash/paper (5.67:1). Epic's own `#A96916` is only 4.04:1 on its wash |
+| `posDangerText` | `#B91C1C` | **Words** on danger wash/paper (5.91:1). Epic's own `#DC2626` is only 4.41:1 on its wash |
 | Dark: canvas / paper / brand | `#14121C` / `#201E2A` / `#B8AAFF` | Dark theme |
 
 Font: **Manrope** (same as desktop POS) via `google_fonts`.

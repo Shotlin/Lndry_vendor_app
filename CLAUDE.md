@@ -39,7 +39,7 @@ All four repos live side by side (`/home/user/<name>` in the cloud session). **B
 - State: Riverpod. Routing: go_router (`lib/core/router/vendor_router.dart`, redirect logic is exposed for tests). Network: dio via existing client + auth interceptor. Models: freezed + json_serializable.
 - New code lives in `lib/features/pos/**`, `lib/models/pos/**`, `lib/repositories/pos/**`, tests in `test/pos/**` (layout in Master Plan §7).
 - Modes: `AppMode {marketplace, pos}` chosen on device, **allowed** by backend `GET /vendor/app-mode` (`offering` = MARKETPLACE | POS | BOTH).
-- Backend conventions: module = routes/controller/service/repository/schema; **AJV strips undeclared body fields** (`removeAdditional:'all'`) so validate free-form bodies in the service; migrations are numbered idempotent SQL in `src/database/migrations/` (last known: `151_…`); all POS tables are vendor-scoped — every query must filter by `vendor_id`.
+- Backend conventions: module = routes/controller/service/repository/schema; **AJV strips undeclared body fields** (`removeAdditional:'all'`) so validate free-form bodies in the service; migrations are numbered idempotent SQL in `src/database/migrations/` (last: `152_vendor_offering.sql`); **never return a Postgres DATE as a JS Date (select `::text`)**; all POS tables are vendor-scoped — every query must filter by `vendor_id`.
 - `vendor_type` (STANDARD/PARTNER/EXCLUSIVE) is a separate axis (walk-in sync + LNDRY wallet). Don't conflate it with `offering`.
 
 ## Commands
@@ -61,6 +61,9 @@ npm run lint && npm test
 # Dashboard (../Lndry_dashboard_frontend)
 npm run lint && npx vitest run && npx tsc --noEmit
 ```
+
+**Running things locally (Postgres + Redis + backend + Flutter SDK, real browser journeys): see `docs/pos-mode/LOCAL-TESTING.md`.**
+Never commit `pubspec.lock` / `analysis_options.yaml` changes made by Flutter tools (`git checkout --` them before committing).
 
 If `flutter` is missing: try to install the SDK per https://docs.flutter.dev/get-started/install/linux (stable channel, Dart ≥ 3.4) — if the network/proxy blocks it, continue writing code and tests, and record "Flutter tests written, not run" in `PROGRESS.md`. Do not skip `dart format`-style care when you cannot run the analyzer: keep code simple and double-check imports and generated-file names (`*.freezed.dart`, `*.g.dart`).
 

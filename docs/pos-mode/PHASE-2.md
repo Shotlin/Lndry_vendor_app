@@ -76,3 +76,15 @@ cd ../Lndry_vendor_app && flutter analyze && flutter test test/pos && node ../Ln
 
 ## Out of scope
 Orders list/detail/payments after booking (Phase 3), expenses/reports (Phase 4), CSV import UI, barcode scanning.
+
+---
+
+## Verified API facts (checked against the running backend, 2026-10-10)
+
+* Quote/book body: `{ customer: {id} | {name, phone}, expectedDeliveryDate: 'YYYY-MM-DD' (required), items: [{ garmentId, serviceId, qty }], paymentMode: 'CASH'|…|'PAY_LATER', chargeRuleIds?, discountRuleIds?, chargesPaise?, discountsPaise? }`. The line field is **`qty`** (not `quantity`).
+* `POST /vendor/counter/orders/quote` → `data.quote = { subtotalPaise, chargesPaise, discountsPaise, taxablePaise, taxPaise, totalPaise, … }` (2 × Shirt dry clean at ₹80 → 16000 paise).
+* `POST /vendor/counter/orders` → `data.order = { id, orderNumber ('LND-yymmdd-XXXX'), status:'BOOKED', totalPaise, paymentStatus }`; booking with `paymentMode: CASH` is already `PAID`.
+* A POS-only shop created by Phase 1 can already quote, book and show up in `GET /vendor/pos/dashboard` (`counterSalesToday: {count, revenuePaise, collectedPaise}`) with the starter price list — no extra setup.
+* `GET /vendor/counter/access` works for POS-only shops (`vendorType: STANDARD, appSync:false, walletAccess:false`) → hide the Wallet payment option.
+* Counter order `source` column default is `'DESKTOP_PUSH'`; counter orders use `'COUNTER'`. Both count as POS use.
+

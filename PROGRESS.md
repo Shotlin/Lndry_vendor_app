@@ -4,15 +4,15 @@
 > **Rule:** a box is ticked only when the work is done **and verified**. Unverified work is marked `(written, not run)`.
 
 **Branch (all repos):** `claude/laundry-vendor-pos-modes-bs0o61`
-**Last updated:** 2026-10-10 — planning complete, no implementation started
-**Current phase:** 1 (not started)
+**Last updated:** 2026-10-11 — Phase 1 built and verified locally; **not pushed** (GitHub App has no access to the repos — see Blockers)
+**Current phase:** 1 (🟡 only the push is left; then Phase 2)
 
 ## Phase status
 
 | Phase | Name | Status | Started | Completed |
 |---|---|---|---|---|
 | 0 | Planning, docs, slash commands | ✅ Done | 2026-10-10 | 2026-10-10 |
-| 1 | Foundation: modes + POS onboarding | ⬜ Not started | — | — |
+| 1 | Foundation: modes + POS onboarding | 🟡 Built & verified; push blocked | 2026-10-10 | — |
 | 2 | Counter core: Home · Book Order · Customers · Price list | ⬜ Not started | — | — |
 | 3 | Order lifecycle: Orders · Detail · Payments · Invoice · Tags | ⬜ Not started | — | — |
 | 4 | Money, Reports, Polish & Release | ⬜ Not started | — | — |
@@ -21,27 +21,28 @@ Status legend: ⬜ not started · 🟡 in progress · ✅ done (Definition of Do
 
 ## Phase 1 checklist (details: `docs/pos-mode/PHASE-1.md`)
 
-- [ ] 1A-1 Migration `152_vendor_offering.sql` (+ backfill)
-- [ ] 1A-2 `vendor-app-mode` module: `GET /vendor/app-mode`
-- [ ] 1A-3 `POST /vendor/pos-onboarding/start`
-- [ ] 1A-4 `PATCH /vendor/pos-onboarding` (steps)
-- [ ] 1A-5 `POST /vendor/pos-onboarding/complete`
-- [ ] 1A-6 Admin `PATCH /vendors/admin/:id/offering` + vendor cannot self-set
-- [ ] 1A-7 `requireOffering` guards behind `ENFORCE_OFFERING` (default off)
-- [ ] 1A-8 Backend tests green + `API_REFERENCE.md`
-- [ ] 1B-1 Dashboard: offering control on vendor detail + list badge
-- [ ] 1B-2 Dashboard tests
-- [ ] 1C-1 POS theme/colors/fonts
-- [ ] 1C-2 App-mode models + repository
-- [ ] 1C-3 `appModeProvider` (persist + clamp)
-- [ ] 1C-4 Router: POS routes + redirect matrix
-- [ ] 1C-5 Choice screen
-- [ ] 1C-6 POS onboarding wizard (4 steps)
-- [ ] 1C-7 POS shell + bottom nav placeholders
-- [ ] 1C-8 Settings: App mode switch + "Get POS"
-- [ ] 1C-9 l10n en/hi/hi_Latn
-- [ ] 1C-10 Flutter tests (provider, router matrix, onboarding validation, widgets)
-- [ ] 1D Definition of Done verified + pushed on all touched repos
+- [x] 1A-1 Migration `152_vendor_offering.sql` (+ backfill) — migration applied, re-applied and backfill-tested on real Postgres
+- [x] 1A-2 `vendor-app-mode` module: `GET /vendor/app-mode`
+- [x] 1A-3 `POST /vendor/pos-onboarding/start` — idempotent, 8 concurrent starts → 1 shop
+- [x] 1A-4 `PATCH /vendor/pos-onboarding` (steps)
+- [x] 1A-5 `POST /vendor/pos-onboarding/complete`
+- [x] 1A-6 Admin `PATCH /vendors/admin/:id/offering` + vendor cannot self-set — as `PUT /vendors/admin/:id/offering`
+- [x] 1A-7 `requireOffering` guards behind `ENFORCE_OFFERING` (default off) — off by default; verified both modes
+- [x] 1A-8 Backend tests green + `API_REFERENCE.md` — 53 unit + 11 real-DB integration tests; contract in `Lndry_backend/docs/vendor-app-mode.md`
+- [x] 1B-1 Dashboard: offering control on vendor detail + list badge
+- [x] 1B-2 Dashboard tests — 13 tests
+- [x] 1C-1 POS theme/colors/fonts — + accessible text variants, theme leak fixes
+- [x] 1C-2 App-mode models + repository — plain Dart models; contract-tested against REAL captured responses
+- [x] 1C-3 `appModeProvider` (persist + clamp)
+- [x] 1C-4 Router: POS routes + redirect matrix
+- [x] 1C-5 Choice screen
+- [x] 1C-6 POS onboarding wizard (4 steps)
+- [x] 1C-7 POS shell + bottom nav placeholders
+- [x] 1C-8 Settings: App mode switch + "Get POS"
+- [x] 1C-9 l10n en/hi/hi_Latn — 79 keys × en / hi / hi_Latn
+- [x] 1C-10 Flutter tests (provider, router matrix, onboarding validation, widgets) — 147 tests in `test/pos`
+- [x] 1D-a Definition of Done verified (see Log)
+- [ ] 1D-b **Push** every touched repo (blocked: GitHub 403) — run `/pos-handoff` once access is fixed, then mark Phase 1 ✅
 
 ## Phase 2 checklist (details: `docs/pos-mode/PHASE-2.md`)
 
@@ -99,13 +100,23 @@ _None yet. Defaults in `00-MASTER-PLAN.md` §10 are in force until the user chan
 
 ## Environment notes
 
-- 2026-10-10: planning sandbox had Node 22 + psql, **no Flutter/Dart SDK**. Check `flutter --version` at the start of each phase.
-- Backend integration tests need Postgres + Redis (`npm run infra:up` needs Docker; if unavailable, use local `psql`/`redis-server` or mark integration tests "not run").
+- **Reproducible local test recipe (Postgres, Redis, backend, Flutter SDK): `docs/pos-mode/LOCAL-TESTING.md`.** The cloud sandbox is ephemeral; redo it at the start of a session that must run things.
+- 2026-10-11: Flutter 3.47.7 was installed at `/root/sdk/flutter` (session-local). `flutter pub get/analyze` rewrite `pubspec.lock` and `analysis_options.yaml` — **never commit those two** (`git checkout --` them first).
+- Known pre-existing failures on untouched code: backend `tests/unit/step-up.test.js` + one auth test in `tests/integration/lndry-endpoints.test.js`; dashboard 3 `CustomerProfileDrawer` tests + 4 `any` lint errors; Flutter `test/widget_test.dart` smoke test; 626 analyzer infos in `lib`. None are caused by this initiative (each verified on the original commit).
+
 
 ## Blockers / open questions
 
-- (none)
+- **GitHub push is refused (403): "Claude doesn't have GitHub access to Shotlin/<repo>".** Fix: connect/reinstall the Claude GitHub App for the `Shotlin` org at https://claude.ai/connect-github (an org owner installs it at https://github.com/apps/claude/installations/select_target). Local commits exist on branch `claude/laundry-vendor-pos-modes-bs0o61` in `Lndry_backend`, `Lndry_dashboard_frontend` and `Lndry_vendor_app`.
+- Open product question (not blocking): a **POS-first user who later wants Marketplace** is not supported (a second shop would make login ambiguous) — handled by support/admin for now. Confirm if that is acceptable.
 
 ## Log (newest first)
+
+- 2026-10-11 — **Phase 1 built and verified; push blocked.**
+  Shipped: backend migration 152 + `vendor-app-mode` module + admin endpoint + flagged guard (+docs); dashboard "App access" control + list badge; Flutter POS theme, modes provider, router rules, choice screen, 4-step wizard, POS shell with 6 tabs, Settings mode switch (marketplace + POS), 79 l10n keys in 3 languages.
+  Verified (real, not mocked): backend 53 unit + 11 integration tests on real Postgres (also under 4 time zones); dashboard 13 tests; Flutter 147 tests in `test/pos` (mutation-checked: router matrix, provider clamp, theme, semantics) + contract test on real captured backend JSON; `flutter analyze` clean for all new files; **release web build of the whole app** driven in real Chromium against the real backend — new-user journey 17/17 and existing-marketplace-owner journey 17/17 (login → choice → shop created → wizard with validation → starter price list → POS → tabs → logout/login resume; marketplace owner sees the unchanged dashboard, adds POS from Settings, switches modes both ways, mode survives restart).
+  Bugs found by that verification and fixed: DATE→JS Date shifted a day on IST servers; backfill missed `DESKTOP_PUSH` orders (would have locked Epic shops out once enforcement is on); `2026-02-31` passed date validation (500); Epic's attention/danger colours fail 4.5:1 for text; unset `secondaryContainer` painted a green progress track and white-on-pale tab icons; a `Card` merged the mode switch and Get-POS tile into one screen-reader item.
+  Not done / next: push (blocked); `ENFORCE_OFFERING` stays OFF until you approve; Phase 2 next.
+  Phase 3 note: READY needs `allowIncomplete`, DELIVERED needs `allowUnpaid` (see PHASE-3.md).
 
 - 2026-10-10 — Phase 0: analysed 5 screenshots + 4 repos; wrote Master Plan, Phase 1–4 docs, CLAUDE.md, PROGRESS.md and slash commands (`/pos-next`, `/pos-status`, `/pos-phase`, `/pos-verify`, `/pos-handoff`). No product code changed.

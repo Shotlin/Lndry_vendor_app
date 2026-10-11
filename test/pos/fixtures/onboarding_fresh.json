@@ -1,0 +1,1 @@
+{"success":true,"message":"Success","data":{"onboarding":{"status":"IN_PROGRESS","offering":"POS","data":{},"missingSteps":["shop","tax","counter","pricelist"],"nextStep":"shop"}}}
