@@ -116,7 +116,7 @@ void main() {
     await t.tap(find.text('Shirt'));
     await settleQuote(t);
     final lines = pos.c.read(bookOrderControllerProvider).lines;
-    expect(lines.map((l) => '${l.garmentId}/${l.serviceId}/${l.qty}'), ['g-shirt/s-dry/1', 'g-shirt/s-wash/1']);
+    expect(lines.map((l) => '${l.garmentId}/${l.serviceId}/${l.qty.toInt()}'), ['g-shirt/s-dry/1', 'g-shirt/s-wash/1']);
     await reveal(t, find.text('Selected Garments'));
     expect(find.byTooltip('Remove Shirt'), findsNWidgets(2));
   });

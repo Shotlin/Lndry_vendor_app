@@ -1,13 +1,21 @@
 int? _int(Object? v) => v is num ? v.toInt() : null;
 bool _active(Map<String, dynamic> j) => j['active'] != false;
 
+/// A picture the server sends for a category or an item: the admin's photo by default, or the shop's own upload.
+/// Empty strings count as "no picture".
+String? _image(Object? v) {
+  final s = v?.toString().trim();
+  return s == null || s.isEmpty ? null : s;
+}
+
 class PosCategory {
-  const PosCategory({required this.id, required this.name, this.parentId, this.active = true});
-  factory PosCategory.fromJson(Map<String, dynamic> j) =>
-      PosCategory(id: j['id'].toString(), name: (j['name'] ?? '').toString(), parentId: j['parentId']?.toString(), active: _active(j));
+  const PosCategory({required this.id, required this.name, this.parentId, this.imageUrl, this.active = true});
+  factory PosCategory.fromJson(Map<String, dynamic> j) => PosCategory(
+      id: j['id'].toString(), name: (j['name'] ?? '').toString(), parentId: j['parentId']?.toString(), imageUrl: _image(j['imageUrl']), active: _active(j));
   final String id;
   final String name;
   final String? parentId;
+  final String? imageUrl;
   final bool active;
 }
 
@@ -23,18 +31,20 @@ class PosService {
 const List<String> kPosUnits = ['piece', 'kg', 'pair', 'sqft'];
 
 class PosGarment {
-  const PosGarment({required this.id, required this.name, this.categoryId, this.unit = 'piece', this.active = true});
+  const PosGarment({required this.id, required this.name, this.categoryId, this.unit = 'piece', this.imageUrl, this.active = true});
   factory PosGarment.fromJson(Map<String, dynamic> j) => PosGarment(
         id: j['id'].toString(),
         name: (j['name'] ?? '').toString(),
         categoryId: j['categoryId']?.toString(),
         unit: (j['unit'] ?? 'piece').toString().toLowerCase(),
+        imageUrl: _image(j['imageUrl']),
         active: _active(j),
       );
   final String id;
   final String name;
   final String? categoryId;
   final String unit;
+  final String? imageUrl;
   final bool active;
 
   /// Pieces and pairs are counted in whole numbers; the stepper adds one either way.
@@ -103,6 +113,17 @@ class PosCatalogue {
     }
     return null;
   }
+
+  PosCategory? category(String? id) {
+    if (id == null) return null;
+    for (final c in categories) {
+      if (c.id == id) return c;
+    }
+    return null;
+  }
+
+  /// The picture to show for an item: its own (the shop's upload, else the admin's photo), otherwise its category's.
+  String? imageOf(PosGarment g) => g.imageUrl ?? category(g.categoryId)?.imageUrl;
 
   PosService? service(String id) {
     for (final s in services) {

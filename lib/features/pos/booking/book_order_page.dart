@@ -9,6 +9,7 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../../models/pos/pos_catalogue_model.dart';
 import '../../../models/pos/pos_order_model.dart';
 import '../core/money.dart';
+import '../core/pos_image.dart';
 import '../core/pos_providers.dart';
 import '../core/pos_theme.dart';
 import '../core/pos_widgets.dart';
@@ -239,7 +240,12 @@ class _BookOrderPageState extends ConsumerState<BookOrderPage> {
                   itemBuilder: (_, i) {
                     if (i == 0) return ChoiceChip(label: Text(l10n.posBookAll), selected: s.categoryId == null, onSelected: (_) => _c.selectCategory(null));
                     final cc = cat.activeCategories[i - 1];
-                    return ChoiceChip(label: Text(cc.name), selected: s.categoryId == cc.id, onSelected: (_) => _c.selectCategory(cc.id));
+                    return ChoiceChip(
+                      avatar: cc.imageUrl == null ? null : PosImage(url: cc.imageUrl, name: cc.name, size: 28, radius: 14),
+                      label: Text(cc.name),
+                      selected: s.categoryId == cc.id,
+                      onSelected: (_) => _c.selectCategory(cc.id),
+                    );
                   },
                 ),
               ),
@@ -281,12 +287,12 @@ class _BookOrderPageState extends ConsumerState<BookOrderPage> {
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             sliver: SliverGrid.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200, mainAxisExtent: 132, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200, mainAxisExtent: 156, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemCount: garments.length,
               itemBuilder: (_, i) {
                 final g = garments[i];
                 final price = cat.priceOf(g.id, s.serviceId!)!;
-                return GarmentTile(garment: g, ratePaise: price.ratePaise, qty: s.qtyOf(g.id, s.serviceId!), onSetQty: (q) => _c.setQty(g.id, s.serviceId!, q));
+                return GarmentTile(garment: g, ratePaise: price.ratePaise, qty: s.qtyOf(g.id, s.serviceId!), imageUrl: cat.imageOf(g), onSetQty: (q) => _c.setQty(g.id, s.serviceId!, q));
               },
             ),
           ),

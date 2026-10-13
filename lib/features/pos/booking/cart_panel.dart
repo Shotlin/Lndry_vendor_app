@@ -4,6 +4,8 @@ import '../../../l10n/generated/app_localizations.dart';
 import '../../../models/pos/pos_catalogue_model.dart';
 import '../../../models/pos/pos_order_model.dart';
 import '../core/money.dart';
+import '../core/pos_image.dart';
+import 'add_garment_price_sheet.dart' show unitLabelOf;
 import 'garment_grid.dart';
 
 /// "Selected Garments": one row per garment + service with its quantity, the server's line amount and a delete button.
@@ -26,7 +28,7 @@ class CartPanel extends StatelessWidget {
   /// The quote belongs to exactly this cart. When false the line amounts are shown as "…".
   final bool quoteIsCurrent;
   final bool canChangePrice;
-  final void Function(CartLine line, int qty) onSetQty;
+  final void Function(CartLine line, double qty) onSetQty;
   final void Function(CartLine line) onChangePrice;
 
   @override
@@ -64,6 +66,8 @@ class CartPanel extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              PosImage(url: garment == null ? null : catalogue.imageOf(garment), name: name, size: 40, radius: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -87,7 +91,13 @@ class CartPanel extends StatelessWidget {
             alignment: WrapAlignment.spaceBetween,
             crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              QtyStepper(qty: line.qty, name: name, onChanged: (q) => onSetQty(line, q)),
+              QtyStepper(
+                qty: line.qty,
+                name: name,
+                decimal: garment != null && !garment.isCountable,
+                unitLabel: garment == null ? null : unitLabelOf(l10n, garment.unit),
+                onChanged: (q) => onSetQty(line, q),
+              ),
               if (canChangePrice) TextButton.icon(onPressed: () => onChangePrice(line), icon: const Icon(Icons.edit_rounded, size: 18), label: Text(l10n.posBookChangePrice)),
             ],
           ),

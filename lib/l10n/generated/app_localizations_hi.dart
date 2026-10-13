@@ -3197,9 +3197,20 @@ class AppLocalizationsHi extends AppLocalizations {
   String get posBookSubtotal => 'रकम';
 
   @override
-  String posBookQtySemantics(String name, int qty) {
+  String posBookQtySemantics(String name, String qty) {
     return '$name, मात्रा $qty';
   }
+
+  @override
+  String posBookQtyDialogTitle(String unit) {
+    return 'मात्रा दर्ज करें ($unit)';
+  }
+
+  @override
+  String get posBookQtyInvalid => '0.1 से 9999 के बीच मात्रा दर्ज करें';
+
+  @override
+  String get posBookQtyOk => 'सेट करें';
 
   @override
   String get posBookBill => 'बिल';
@@ -7661,9 +7672,20 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
   String get posBookSubtotal => 'Rakam';
 
   @override
-  String posBookQtySemantics(String name, int qty) {
+  String posBookQtySemantics(String name, String qty) {
     return '$name, matra $qty';
   }
+
+  @override
+  String posBookQtyDialogTitle(String unit) {
+    return 'Matra daalein ($unit)';
+  }
+
+  @override
+  String get posBookQtyInvalid => '0.1 se 9999 ke beech matra daalein';
+
+  @override
+  String get posBookQtyOk => 'Set karein';
 
   @override
   String get posBookBill => 'Bill';

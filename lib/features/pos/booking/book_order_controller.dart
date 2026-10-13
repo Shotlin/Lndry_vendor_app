@@ -99,12 +99,16 @@ class BookOrderController extends StateNotifier<BookOrderState> {
     setQty(garmentId, service, state.qtyOf(garmentId, service) + 1);
   }
 
-  void setQty(String garmentId, String serviceId, int qty) {
+  /// Sets how much of [garmentId] in [serviceId] is in the cart (0 removes it). Kg and sq ft items can be
+  /// fractional (0.6, 1.25) — quantities are kept to two decimals. Whole-number units (pieces, pairs) are
+  /// held to whole numbers by the server, which refuses a fraction with a clear message.
+  void setQty(String garmentId, String serviceId, double qty) {
     final others = state.lines.where((l) => !l.matches(garmentId, serviceId)).toList();
     final index = state.lines.indexWhere((l) => l.matches(garmentId, serviceId));
     final next = [...others];
-    if (qty > 0) {
-      final line = CartLine(garmentId: garmentId, serviceId: serviceId, qty: qty > 9999 ? 9999 : qty);
+    final clean = qty.isFinite ? double.parse(qty.toStringAsFixed(2)) : 0.0;
+    if (clean > 0) {
+      final line = CartLine(garmentId: garmentId, serviceId: serviceId, qty: clean > 9999 ? 9999 : clean);
       // Keep the line where it was, so the cart does not reshuffle while the owner taps + and −.
       next.insert(index < 0 || index > next.length ? next.length : index, line);
     }

@@ -1,6 +1,7 @@
 import 'pos_customer_model.dart';
 
 int _int(Object? v) => v is num ? v.toInt() : 0;
+double _qty(Object? v) => v is num ? double.parse(v.toDouble().toStringAsFixed(2)) : 0;
 
 /// How the order reaches the customer. Backend `store_orders.delivery_mode`.
 enum DeliveryMode {
@@ -44,13 +45,15 @@ enum PosPaymentMode {
 class CartLine {
   const CartLine({required this.garmentId, required this.serviceId, required this.qty});
   factory CartLine.fromJson(Map<String, dynamic> j) =>
-      CartLine(garmentId: j['garmentId'].toString(), serviceId: j['serviceId'].toString(), qty: _int(j['qty']));
+      CartLine(garmentId: j['garmentId'].toString(), serviceId: j['serviceId'].toString(), qty: _qty(j['qty']));
 
   final String garmentId;
   final String serviceId;
-  final int qty;
 
-  CartLine withQty(int q) => CartLine(garmentId: garmentId, serviceId: serviceId, qty: q);
+  /// Whole numbers for pieces and pairs; up to two decimals for kg and sq ft (0.6, 1.25).
+  final double qty;
+
+  CartLine withQty(double q) => CartLine(garmentId: garmentId, serviceId: serviceId, qty: q);
   bool matches(String g, String s) => garmentId == g && serviceId == s;
   Map<String, dynamic> toJson() => {'garmentId': garmentId, 'serviceId': serviceId, 'qty': qty};
 }
@@ -73,7 +76,7 @@ class QuoteLine {
         name: (j['name'] ?? '').toString(),
         serviceName: (j['serviceName'] ?? '').toString(),
         unit: (j['unit'] ?? 'piece').toString(),
-        qty: _int(j['qty']),
+        qty: _qty(j['qty']),
         ratePaise: _int(j['ratePaise']),
         amountPaise: _int(j['amountPaise']),
       );
@@ -82,7 +85,7 @@ class QuoteLine {
   final String name;
   final String serviceName;
   final String unit;
-  final int qty;
+  final double qty;
   final int ratePaise;
   final int amountPaise;
 }

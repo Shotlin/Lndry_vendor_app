@@ -5780,7 +5780,25 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{name}, quantity {qty}'**
-  String posBookQtySemantics(String name, int qty);
+  String posBookQtySemantics(String name, String qty);
+
+  /// POS mode: posBookQtyDialogTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Enter quantity ({unit})'**
+  String posBookQtyDialogTitle(String unit);
+
+  /// POS mode: posBookQtyInvalid
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an amount from 0.1 to 9999'**
+  String get posBookQtyInvalid;
+
+  /// POS mode: posBookQtyOk
+  ///
+  /// In en, this message translates to:
+  /// **'Set'**
+  String get posBookQtyOk;
 
   /// POS mode: posBookBill
   ///

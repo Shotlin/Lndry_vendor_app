@@ -54,7 +54,7 @@ PosQuote priceLikeServer(OrderRequest r,
   var subtotal = 0;
   for (final l in r.lines) {
     final price = cat.priceOf(l.garmentId, l.serviceId)!;
-    final amount = price.ratePaise * l.qty;
+    final amount = (price.ratePaise * l.qty).round();
     subtotal += amount;
     lines.add(QuoteLine(
       garmentId: l.garmentId,

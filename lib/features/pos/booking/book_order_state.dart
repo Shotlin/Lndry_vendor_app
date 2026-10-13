@@ -68,8 +68,8 @@ class BookOrderState {
         taxRatePercent: taxRateBps == null ? null : taxRateBps! / 100,
       );
 
-  int get totalQty => lines.fold(0, (sum, l) => sum + l.qty);
-  int qtyOf(String garmentId, String serviceId) {
+  double get totalQty => lines.fold(0.0, (sum, l) => sum + l.qty);
+  double qtyOf(String garmentId, String serviceId) {
     for (final l in lines) {
       if (l.matches(garmentId, serviceId)) return l.qty;
     }

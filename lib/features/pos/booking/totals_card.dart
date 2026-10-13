@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../core/money.dart';
 import '../core/pos_widgets.dart';
+import '../core/qty.dart';
 import 'book_order_state.dart';
 
 /// The bill. Every figure is the server's answer; while a newer answer is on its way the old one is shown
@@ -32,7 +33,7 @@ class TotalsCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          row(l10n.posBookItems, '${state.totalQty}'),
+          row(l10n.posBookItems, fmtQty(state.totalQty)),
           row(l10n.posBookSubtotal, formatPaise(q?.subtotalPaise)),
           if (q != null) ...[
             for (final c in q.charges) row(c.label, formatPaise(c.amountPaise)),

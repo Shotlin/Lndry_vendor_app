@@ -3189,9 +3189,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get posBookSubtotal => 'Amount';
 
   @override
-  String posBookQtySemantics(String name, int qty) {
+  String posBookQtySemantics(String name, String qty) {
     return '$name, quantity $qty';
   }
+
+  @override
+  String posBookQtyDialogTitle(String unit) {
+    return 'Enter quantity ($unit)';
+  }
+
+  @override
+  String get posBookQtyInvalid => 'Enter an amount from 0.1 to 9999';
+
+  @override
+  String get posBookQtyOk => 'Set';
 
   @override
   String get posBookBill => 'Bill';
