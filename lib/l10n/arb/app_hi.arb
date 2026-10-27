@@ -1395,5 +1395,20 @@
   "posSetLanguage": "भाषा",
   "posSetLoadFailed": "यह नहीं खुल पाया।",
   "posSetSectionShop": "मेरी दुकान",
-  "posSetSectionApp": "यह ऐप"
+  "posSetSectionApp": "यह ऐप",
+  "posEditItemsTitle": "कपड़े और सर्विस",
+  "posEditAddItem": "कपड़ा या सर्विस जोड़ें",
+  "posEditAddTitle": "इस ऑर्डर में जोड़ें",
+  "posEditNoneForService": "इस सर्विस के लिए कोई रेट वाला कपड़ा नहीं है।",
+  "posEditKeepOne": "ऑर्डर में कम से कम एक कपड़ा रखें।",
+  "posEditNewTotal": "नया टोटल",
+  "posEditWasTotal": "पहले {amount}",
+  "@posEditWasTotal": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditMore": "{amount} और देना होगा",
+  "@posEditMore": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditLess": "{amount} कम",
+  "@posEditLess": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditPriceFailed": "नया रेट निकाल नहीं सके।",
+  "posEditLocked": "प्रोसेसिंग शुरू होने से पहले ही कपड़े बदल सकते हैं।",
+  "posEditDone": "हो गया"
 }

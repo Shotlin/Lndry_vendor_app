@@ -423,46 +423,81 @@ class _HeaderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final text = Theme.of(context).textTheme;
-    return _Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(order.customer.displayName,
-                        style: text.titleLarge,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis),
-                    if (order.customer.name.trim().isNotEmpty)
-                      Text(order.customer.phone, style: text.bodyMedium),
-                  ],
+    final scheme = Theme.of(context).colorScheme;
+    final hasName = order.customer.name.trim().isNotEmpty;
+    return Material(
+      color: scheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: scheme.outline),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 10, 8, 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        order.orderNumber,
+                        style: text.labelLarge?.copyWith(
+                          color: scheme.primary,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        order.customer.displayName,
+                        style: text.titleMedium,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      if (hasName && order.customer.phone.isNotEmpty)
+                        Text(order.customer.phone, style: text.bodyMedium),
+                    ],
+                  ),
                 ),
-              ),
-              if (onCall != null)
-                OutlinedButton.icon(
+                // An icon-only button: the POS theme stretches text buttons to full width, which squeezed this row.
+                if (onCall != null)
+                  IconButton.filled(
                     onPressed: onCall,
+                    tooltip: l10n.posOrdCall,
                     icon: const Icon(Icons.call_rounded),
-                    label: Text(l10n.posOrdCall)),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(spacing: 8, runSpacing: 8, children: [
-            OrderStatusChip(order: order),
-            if (order.status != 'CANCELLED')
-              PosStatusChip(
-                  label: paymentStatusLabel(l10n, order.paymentStatus),
-                  tone: toneOfPayment(order.paymentStatus)),
-            if (order.isExpress)
-              PosStatusChip(
-                  label: l10n.posOrdExpress,
-                  tone: PosTone.danger,
-                  icon: Icons.bolt_rounded),
-          ]),
-        ],
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size(48, 48),
+                      fixedSize: const Size(48, 48),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(right: 6),
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                children: [
+                  OrderStatusChip(order: order),
+                  if (order.status != 'CANCELLED')
+                    PosStatusChip(
+                      label: paymentStatusLabel(l10n, order.paymentStatus),
+                      tone: toneOfPayment(order.paymentStatus),
+                    ),
+                  if (order.isExpress)
+                    PosStatusChip(
+                      label: l10n.posOrdExpress,
+                      tone: PosTone.danger,
+                      icon: Icons.bolt_rounded,
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

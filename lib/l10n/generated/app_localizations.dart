@@ -8051,6 +8051,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This app'**
   String get posSetSectionApp;
+
+  /// POS mode: posEditItemsTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Garments & services'**
+  String get posEditItemsTitle;
+
+  /// POS mode: posEditAddItem
+  ///
+  /// In en, this message translates to:
+  /// **'Add garment or service'**
+  String get posEditAddItem;
+
+  /// POS mode: posEditAddTitle
+  ///
+  /// In en, this message translates to:
+  /// **'Add to this order'**
+  String get posEditAddTitle;
+
+  /// POS mode: posEditNoneForService
+  ///
+  /// In en, this message translates to:
+  /// **'No priced garments for this service.'**
+  String get posEditNoneForService;
+
+  /// POS mode: posEditKeepOne
+  ///
+  /// In en, this message translates to:
+  /// **'Keep at least one garment on the order.'**
+  String get posEditKeepOne;
+
+  /// POS mode: posEditNewTotal
+  ///
+  /// In en, this message translates to:
+  /// **'New total'**
+  String get posEditNewTotal;
+
+  /// POS mode: posEditWasTotal
+  ///
+  /// In en, this message translates to:
+  /// **'Was {amount}'**
+  String posEditWasTotal(String amount);
+
+  /// POS mode: posEditMore
+  ///
+  /// In en, this message translates to:
+  /// **'+{amount} more to pay'**
+  String posEditMore(String amount);
+
+  /// POS mode: posEditLess
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} less'**
+  String posEditLess(String amount);
+
+  /// POS mode: posEditPriceFailed
+  ///
+  /// In en, this message translates to:
+  /// **'Could not work out the new price.'**
+  String get posEditPriceFailed;
+
+  /// POS mode: posEditLocked
+  ///
+  /// In en, this message translates to:
+  /// **'Garments can only be changed before processing starts.'**
+  String get posEditLocked;
+
+  /// POS mode: posEditDone
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get posEditDone;
 }
 
 class _AppLocalizationsDelegate

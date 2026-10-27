@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../api/repositories/api_pos_repositories.dart';
 import '../../../models/pos/pos_counter_order_model.dart';
+import '../../../models/pos/pos_order_model.dart';
 import '../../../repositories/abstract/pos_repositories.dart';
 import '../core/pos_providers.dart';
 import 'order_errors.dart';
@@ -308,6 +309,9 @@ class OrderActions {
       rethrow;
     }
   }
+
+  Future<OrderEditPreview> previewItems(String id, List<CartLine> lines) =>
+      _repo.previewOrderItems(id, lines);
 
   Future<CounterOrder> assign(String id,
       {String? pickupCaptainId, String? deliveryCaptainId}) async {

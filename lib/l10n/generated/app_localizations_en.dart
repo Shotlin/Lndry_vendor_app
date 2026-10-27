@@ -4457,4 +4457,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get posSetSectionApp => 'This app';
+
+  @override
+  String get posEditItemsTitle => 'Garments & services';
+
+  @override
+  String get posEditAddItem => 'Add garment or service';
+
+  @override
+  String get posEditAddTitle => 'Add to this order';
+
+  @override
+  String get posEditNoneForService => 'No priced garments for this service.';
+
+  @override
+  String get posEditKeepOne => 'Keep at least one garment on the order.';
+
+  @override
+  String get posEditNewTotal => 'New total';
+
+  @override
+  String posEditWasTotal(String amount) {
+    return 'Was $amount';
+  }
+
+  @override
+  String posEditMore(String amount) {
+    return '+$amount more to pay';
+  }
+
+  @override
+  String posEditLess(String amount) {
+    return '$amount less';
+  }
+
+  @override
+  String get posEditPriceFailed => 'Could not work out the new price.';
+
+  @override
+  String get posEditLocked =>
+      'Garments can only be changed before processing starts.';
+
+  @override
+  String get posEditDone => 'Done';
 }

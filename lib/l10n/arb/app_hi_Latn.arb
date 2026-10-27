@@ -1395,5 +1395,20 @@
   "posSetLanguage": "Bhasha",
   "posSetLoadFailed": "Yeh load nahi ho paya.",
   "posSetSectionShop": "Meri dukaan",
-  "posSetSectionApp": "Yeh app"
+  "posSetSectionApp": "Yeh app",
+  "posEditItemsTitle": "Kapde aur service",
+  "posEditAddItem": "Kapda ya service jodein",
+  "posEditAddTitle": "Is order mein jodein",
+  "posEditNoneForService": "Is service ke liye koi rate wala kapda nahi hai.",
+  "posEditKeepOne": "Order mein kam se kam ek kapda rakhein.",
+  "posEditNewTotal": "Naya total",
+  "posEditWasTotal": "Pehle {amount}",
+  "@posEditWasTotal": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditMore": "{amount} aur dena hoga",
+  "@posEditMore": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditLess": "{amount} kam",
+  "@posEditLess": {"placeholders": {"amount": {"type": "String"}}},
+  "posEditPriceFailed": "Naya rate nikal nahi sake.",
+  "posEditLocked": "Processing shuru hone se pehle hi kapde badal sakte hain.",
+  "posEditDone": "Ho gaya"
 }

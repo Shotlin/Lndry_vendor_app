@@ -121,6 +121,10 @@ class ApiPosOrdersRepository implements PosOrdersRepository {
       CounterOrder.fromJson(_part(_dataMap(await _dio.patch('/vendor/counter/orders/$id', data: {...edit.toJson(), if (version != null) 'version': version})), 'order'));
 
   @override
+  Future<OrderEditPreview> previewOrderItems(String id, List<CartLine> lines) async => OrderEditPreview.fromJson(_part(
+      _dataMap(await _dio.patch('/vendor/counter/orders/$id', data: {'preview': true, 'items': [for (final l in lines) l.toJson()]})), 'preview'));
+
+  @override
   Future<CounterOrder> transition(String id, String state, {bool allowIncomplete = false, bool allowUnpaid = false, int? version}) async =>
       CounterOrder.fromJson(_part(
           _dataMap(await _dio.post('/vendor/counter/orders/$id/transition', data: {

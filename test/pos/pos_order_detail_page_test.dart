@@ -79,7 +79,7 @@ void main() {
       expect(find.text('LND-D-1'), findsWidgets);
       expect(find.text('Asha Verma'), findsOneWidget);
       expect(find.text('9811122233'), findsOneWidget);
-      expect(find.text('Call'), findsOneWidget);
+      expect(find.byTooltip('Call'), findsOneWidget);
       expect(find.text('Booked'), findsWidgets);
       expect(find.text('Unpaid'), findsOneWidget);
       expect(find.text('Express'), findsOneWidget);
@@ -763,13 +763,11 @@ void main() {
     }
 
     testWidgets(
-        'starts from what the order has, says garments cannot be edited, and sends ONLY what changed',
+        'starts from what the order has, lists the garments, and sends ONLY what changed',
         (t) async {
       final pos = await openEdit(t);
-      expect(
-          find.text(
-              'To change the garments, cancel this order and book a new one.'),
-          findsOneWidget);
+      expect(find.text('Garments & services'), findsOneWidget);
+      expect(find.text('Shirt'), findsWidgets);
       expect(
           t
               .widget<FilterChip>(find.widgetWithText(FilterChip, 'Express'))
@@ -802,6 +800,34 @@ void main() {
         null
       ));
       expect(find.text('Order updated.'), findsOneWidget);
+    });
+
+    testWidgets(
+        'adding a piece shows the server\'s new price and sends the whole new garment list',
+        (t) async {
+      final pos = await openEdit(t);
+      expect(find.text('New total'), findsNothing);
+      await t.tap(find.byTooltip('Add one Shirt'));
+      await t.pumpAndSettle();
+      expect(find.text('New total'), findsOneWidget);
+      await t.tap(find.text('Save changes'));
+      await t.pumpAndSettle();
+      final lines = pos.orders.edits.single.edit.items!;
+      expect((lines.single.garmentId, lines.single.serviceId, lines.single.qty),
+          ('g-shirt', 's-dry', 3.0));
+    });
+
+    testWidgets('removing the last garment is refused before anything is sent',
+        (t) async {
+      final pos = await openEdit(t);
+      await t.tap(find.byTooltip('Remove Shirt'));
+      await t.pumpAndSettle();
+      expect(find.text('Keep at least one garment on the order.'),
+          findsOneWidget);
+      final save = t.widget<FilledButton>(
+          find.widgetWithText(FilledButton, 'Save changes'));
+      expect(save.onPressed, isNull);
+      expect(pos.orders.edits, isEmpty);
     });
 
     testWidgets('home delivery tapped off means "collect at the counter"',
@@ -910,7 +936,7 @@ void main() {
         expect(find.text(a), findsNothing, reason: a);
       }
       expect(find.text('View Invoice'), findsOneWidget);
-      expect(find.text('Call'), findsOneWidget);
+      expect(find.byTooltip('Call'), findsOneWidget);
       expect(find.text('WhatsApp'), findsOneWidget);
     });
 
@@ -944,14 +970,14 @@ void main() {
     testWidgets('Call opens the dialler with the customer\'s number',
         (t) async {
       final pos = await openDetail(t, booked());
-      await t.tap(find.text('Call'));
+      await t.tap(find.byTooltip('Call'));
       await t.pumpAndSettle();
       expect(pos.opened.single.toString(), 'tel:9811122233');
     });
 
     testWidgets('Call that cannot open says so', (t) async {
       await openDetail(t, booked(), openerWorks: false);
-      await t.tap(find.text('Call'));
+      await t.tap(find.byTooltip('Call'));
       await t.pumpAndSettle();
       expect(find.text('Could not open the phone.'), findsOneWidget);
     });
@@ -991,7 +1017,7 @@ void main() {
               number: 'LND-D-1',
               customer:
                   const PosCustomer(id: 'u', name: 'No Phone', phone: '')));
-      expect(find.text('Call'), findsNothing);
+      expect(find.byTooltip('Call'), findsNothing);
       expect(find.text('WhatsApp'), findsNothing);
     });
 

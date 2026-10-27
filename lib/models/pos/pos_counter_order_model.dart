@@ -14,9 +14,13 @@ class CounterOrderItem {
       required this.unit,
       required this.qty,
       required this.ratePaise,
-      required this.amountPaise});
+      required this.amountPaise,
+      this.garmentId = '',
+      this.serviceId = ''});
 
   factory CounterOrderItem.fromJson(Map<String, dynamic> j) => CounterOrderItem(
+        garmentId: _str(j['garmentId']),
+        serviceId: _str(j['serviceId']),
         name: _str(j['name']),
         serviceName: _str(j['serviceName']),
         unit: j['unit'] == null ? 'piece' : _str(j['unit']),
@@ -25,6 +29,8 @@ class CounterOrderItem {
         amountPaise: _int(j['amountPaise']),
       );
 
+  final String garmentId;
+  final String serviceId;
   final String name;
   final String serviceName;
   final String unit;
@@ -377,19 +383,24 @@ class OrderEdit {
       this.deliveryMode,
       this.isExpress,
       this.notes,
-      this.deliveryAddress});
+      this.deliveryAddress,
+      this.items});
   final String? expectedDeliveryDate;
   final DeliveryMode? deliveryMode;
   final bool? isExpress;
   final String? notes;
   final String? deliveryAddress;
 
+  /// The whole new list of garment lines; null leaves the garments alone.
+  final List<CartLine>? items;
+
   bool get isEmpty =>
       expectedDeliveryDate == null &&
       deliveryMode == null &&
       isExpress == null &&
       notes == null &&
-      deliveryAddress == null;
+      deliveryAddress == null &&
+      items == null;
 
   Map<String, dynamic> toJson() => {
         if (expectedDeliveryDate != null)
@@ -398,5 +409,39 @@ class OrderEdit {
         if (isExpress != null) 'isExpress': isExpress,
         if (notes != null) 'notes': notes,
         if (deliveryAddress != null) 'deliveryAddress': deliveryAddress,
+        if (items != null) 'items': [for (final l in items!) l.toJson()],
       };
+}
+
+/// What an edited garment list would cost, as the server priced it — nothing is saved by asking.
+class OrderEditPreview {
+  const OrderEditPreview({
+    required this.subtotalPaise,
+    required this.chargesPaise,
+    required this.discountsPaise,
+    required this.taxPaise,
+    required this.totalPaise,
+    required this.previousTotalPaise,
+    required this.amountPaidPaise,
+  });
+
+  factory OrderEditPreview.fromJson(Map<String, dynamic> j) => OrderEditPreview(
+    subtotalPaise: _int(j['subtotalPaise']),
+    chargesPaise: _int(j['chargesPaise']),
+    discountsPaise: _int(j['discountsPaise']),
+    taxPaise: _int(j['taxPaise']),
+    totalPaise: _int(j['totalPaise']),
+    previousTotalPaise: _int(j['previousTotalPaise']),
+    amountPaidPaise: _int(j['amountPaidPaise']),
+  );
+
+  final int subtotalPaise;
+  final int chargesPaise;
+  final int discountsPaise;
+  final int taxPaise;
+  final int totalPaise;
+  final int previousTotalPaise;
+  final int amountPaidPaise;
+
+  int get differencePaise => totalPaise - previousTotalPaise;
 }

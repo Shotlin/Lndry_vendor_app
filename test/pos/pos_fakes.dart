@@ -250,6 +250,8 @@ CounterOrder makeOrder({
       items: items ??
           const [
             CounterOrderItem(
+                garmentId: 'g-shirt',
+                serviceId: 's-dry',
                 name: 'Shirt',
                 serviceName: 'Dry Cleaning',
                 unit: 'piece',
@@ -483,6 +485,19 @@ class FakeOrdersRepo implements PosOrdersRepository {
         expected: edit.expectedDeliveryDate);
     _replace(next);
     return next;
+  }
+
+  @override
+  Future<OrderEditPreview> previewOrderItems(String id, List<CartLine> lines) async {
+    final total = _get(id).totalPaise;
+    return OrderEditPreview(
+        subtotalPaise: total,
+        chargesPaise: 0,
+        discountsPaise: 0,
+        taxPaise: 0,
+        totalPaise: total,
+        previousTotalPaise: total,
+        amountPaidPaise: 0);
   }
 
   final List<({String id, String? pickup, String? delivery})> assigns = [];

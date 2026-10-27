@@ -58,6 +58,9 @@ abstract class PosOrdersRepository {
   /// Delivery date, delivery mode, express and remarks only — what the server lets an open order change.
   Future<CounterOrder> updateOrder(String id, OrderEdit edit, {int? version});
 
+  /// What the order would cost with these garment lines. Saves nothing.
+  Future<OrderEditPreview> previewOrderItems(String id, List<CartLine> lines);
+
   /// Moves the order to [state]. [allowIncomplete] ("mark ready anyway") and [allowUnpaid] ("deliver with balance due")
   /// are only ever set after the owner has said so.
   Future<CounterOrder> transition(String id, String state, {bool allowIncomplete = false, bool allowUnpaid = false, int? version});

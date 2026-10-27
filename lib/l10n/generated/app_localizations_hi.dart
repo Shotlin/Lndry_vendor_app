@@ -4456,6 +4456,50 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get posSetSectionApp => 'यह ऐप';
+
+  @override
+  String get posEditItemsTitle => 'कपड़े और सर्विस';
+
+  @override
+  String get posEditAddItem => 'कपड़ा या सर्विस जोड़ें';
+
+  @override
+  String get posEditAddTitle => 'इस ऑर्डर में जोड़ें';
+
+  @override
+  String get posEditNoneForService =>
+      'इस सर्विस के लिए कोई रेट वाला कपड़ा नहीं है।';
+
+  @override
+  String get posEditKeepOne => 'ऑर्डर में कम से कम एक कपड़ा रखें।';
+
+  @override
+  String get posEditNewTotal => 'नया टोटल';
+
+  @override
+  String posEditWasTotal(String amount) {
+    return 'पहले $amount';
+  }
+
+  @override
+  String posEditMore(String amount) {
+    return '$amount और देना होगा';
+  }
+
+  @override
+  String posEditLess(String amount) {
+    return '$amount कम';
+  }
+
+  @override
+  String get posEditPriceFailed => 'नया रेट निकाल नहीं सके।';
+
+  @override
+  String get posEditLocked =>
+      'प्रोसेसिंग शुरू होने से पहले ही कपड़े बदल सकते हैं।';
+
+  @override
+  String get posEditDone => 'हो गया';
 }
 
 /// The translations for Hindi, using the Latin script (`hi_Latn`).
@@ -8937,4 +8981,48 @@ class AppLocalizationsHiLatn extends AppLocalizationsHi {
 
   @override
   String get posSetSectionApp => 'Yeh app';
+
+  @override
+  String get posEditItemsTitle => 'Kapde aur service';
+
+  @override
+  String get posEditAddItem => 'Kapda ya service jodein';
+
+  @override
+  String get posEditAddTitle => 'Is order mein jodein';
+
+  @override
+  String get posEditNoneForService =>
+      'Is service ke liye koi rate wala kapda nahi hai.';
+
+  @override
+  String get posEditKeepOne => 'Order mein kam se kam ek kapda rakhein.';
+
+  @override
+  String get posEditNewTotal => 'Naya total';
+
+  @override
+  String posEditWasTotal(String amount) {
+    return 'Pehle $amount';
+  }
+
+  @override
+  String posEditMore(String amount) {
+    return '$amount aur dena hoga';
+  }
+
+  @override
+  String posEditLess(String amount) {
+    return '$amount kam';
+  }
+
+  @override
+  String get posEditPriceFailed => 'Naya rate nikal nahi sake.';
+
+  @override
+  String get posEditLocked =>
+      'Processing shuru hone se pehle hi kapde badal sakte hain.';
+
+  @override
+  String get posEditDone => 'Ho gaya';
 }
