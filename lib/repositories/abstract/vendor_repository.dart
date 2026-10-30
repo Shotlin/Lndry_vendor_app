@@ -253,9 +253,8 @@ abstract interface class VendorRepository {
 
   Future<EmployeeModel> createEmployee({
     required String name,
-    required String email,
     required String role,
-    String? phone,
+    required String phone,
     List<String>? permissions,
   });
 

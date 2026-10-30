@@ -78,12 +78,11 @@ class _FakeRepo extends Fake implements VendorRepository {
   @override
   Future<EmployeeModel> createEmployee({
     required String name,
-    required String email,
     required String role,
     String? phone,
     List<String>? permissions,
   }) async {
-    created = {'name': name, 'email': email, 'role': role, 'phone': phone, 'permissions': permissions};
+    created = {'name': name, 'role': role, 'phone': phone, 'permissions': permissions};
     final e = _emp('9', name, role, perms: permissions ?? const []);
     all.add(e);
     return e;
@@ -296,8 +295,7 @@ void main() {
       expect(find.text('Re-evaluation'), findsWidgets);
 
       await tester.enterText(find.widgetWithText(TextFormField, 'Full Name'), 'New Person');
-      await tester.enterText(find.widgetWithText(TextFormField, 'Email Address'), 'new@example.com');
-      await tester.enterText(find.byType(TextFormField).at(2), '98765 43210');
+      await tester.enterText(find.byType(TextFormField).at(1), '98765 43210');
 
       // Turn on Re-evaluation (the view permission is on by default).
       await tester.ensureVisible(find.widgetWithText(SwitchListTile, 'Re-evaluation'));
@@ -326,7 +324,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.enterText(find.widgetWithText(TextFormField, 'Full Name'), 'No Phone');
-      await tester.enterText(find.widgetWithText(TextFormField, 'Email Address'), 'np@example.com');
       await tester.ensureVisible(find.text('Invite Staff').last);
       await tester.tap(find.text('Invite Staff').last);
       await tester.pumpAndSettle();

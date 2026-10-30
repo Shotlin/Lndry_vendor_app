@@ -21,15 +21,13 @@ class EmployeesNotifier extends StateNotifier<AsyncValue<List<EmployeeModel>>> {
 
   Future<void> addEmployee({
     required String name,
-    required String email,
     required String role,
-    String? phone,
+    required String phone,
     List<String>? permissions,
   }) async {
     try {
       await _repo.createEmployee(
         name: name,
-        email: email,
         role: role,
         phone: phone,
         permissions: permissions,

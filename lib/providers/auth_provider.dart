@@ -524,12 +524,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (state is! AuthAuthenticated && state is! AuthNeedsVendorApplication) {
       return;
     }
-    await _tokenRefreshSub?.cancel();
-    _tokenRefreshSub = null;
-    onSessionExpired?.call();
-    await _storage.clearSession();
-    await _clearVendorPrefs();
-    state = const AuthUnauthenticated();
+    try {
+      await _tokenRefreshSub?.cancel();
+      _tokenRefreshSub = null;
+      onSessionExpired?.call();
+      await _storage.clearSession();
+      await _clearVendorPrefs();
+    } finally {
+      state = const AuthUnauthenticated();
+    }
   }
 
   /// Set by [authProvider] so the login page can show a one-time notice.
@@ -538,37 +541,57 @@ class AuthNotifier extends StateNotifier<AuthState> {
   // ── Logout ────────────────────────────────────────────────────────────────
 
   Future<void> logout() async {
-    await _tokenRefreshSub?.cancel();
-    _tokenRefreshSub = null;
-    // Detach this device while the session is still valid, then drop the FCM
-    // token so this phone stops receiving the signed-out person's notifications
-    // (a fresh token is issued for whoever signs in next — e.g. a captain and
-    // the owner sharing one phone).
-    final deviceId = _storage.getString('device_id');
-    if (deviceId != null && deviceId.isNotEmpty) {
-      String? token;
-      try {
-        token = await FirebaseMessaging.instance
-            .getToken()
-            .timeout(const Duration(seconds: 3));
-      } catch (_) {}
-      try {
-        await _repo.unregisterDevice(deviceId, fcmToken: token);
-      } catch (_) {}
-      try {
-        await FirebaseMessaging.instance
-            .deleteToken()
-            .timeout(const Duration(seconds: 3));
-      } catch (_) {}
-    }
+    // Every step below is best-effort cleanup: a device-unregister failure,
+    // a storage error, or any other exception here must never stop the user
+    // from actually being signed out. Previously only the `_repo.logout()`
+    // server call was guarded — a throw from `_storage.clearSession()` (or
+    // anything before it) escaped the function entirely, leaving `state`
+    // stuck at `AuthAuthenticated` with no error shown. The router's
+    // redirect guard only fires once the state actually flips, so the
+    // screen the user was on (e.g. a captain's job list) stayed on screen
+    // after tapping "Log out", looking logged in, until the app was force
+    // -closed and reopened (a cold start re-derives auth independently and
+    // gets it right). Wrapping the whole body and flipping state in
+    // `finally` makes logout unconditional, matching the UI contract that
+    // tapping "Log out" always lands on the login screen.
     try {
-      await _repo.logout();
-    } catch (_) {
-      // Best-effort server-side invalidation
+      await _tokenRefreshSub?.cancel();
+      _tokenRefreshSub = null;
+      // Detach this device while the session is still valid, then drop the FCM
+      // token so this phone stops receiving the signed-out person's notifications
+      // (a fresh token is issued for whoever signs in next — e.g. a captain and
+      // the owner sharing one phone).
+      final deviceId = _storage.getString('device_id');
+      if (deviceId != null && deviceId.isNotEmpty) {
+        String? token;
+        try {
+          token = await FirebaseMessaging.instance
+              .getToken()
+              .timeout(const Duration(seconds: 3));
+        } catch (_) {}
+        try {
+          await _repo.unregisterDevice(deviceId, fcmToken: token);
+        } catch (_) {}
+        try {
+          await FirebaseMessaging.instance
+              .deleteToken()
+              .timeout(const Duration(seconds: 3));
+        } catch (_) {}
+      }
+      try {
+        await _repo.logout();
+      } catch (_) {
+        // Best-effort server-side invalidation
+      }
+      try {
+        await _storage.clearSession();
+      } catch (_) {}
+      try {
+        await _clearVendorPrefs();
+      } catch (_) {}
+    } finally {
+      state = const AuthUnauthenticated();
     }
-    await _storage.clearSession();
-    await _clearVendorPrefs();
-    state = const AuthUnauthenticated();
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────

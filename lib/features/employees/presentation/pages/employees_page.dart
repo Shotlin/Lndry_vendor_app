@@ -281,7 +281,7 @@ class _EmployeesPageState extends ConsumerState<EmployeesPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(height: 4.h),
-                                  Text(emp.email, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
+                                  Text(emp.phone ?? emp.email, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
                                   if (emp.phone != null && emp.phone!.isNotEmpty && !emp.phone!.startsWith('s:')) ...[
                                     SizedBox(height: 2.h),
                                     Text(emp.phone!, style: AppTypography.bodySmall.copyWith(color: AppColors.textSecondary)),
@@ -372,7 +372,6 @@ class _StaffFormSheet extends ConsumerStatefulWidget {
 class _StaffFormSheetState extends ConsumerState<_StaffFormSheet> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _name;
-  late final TextEditingController _email;
   late final TextEditingController _phone;
 
   /// The backend permission strings currently switched on. Starts from what
@@ -389,7 +388,6 @@ class _StaffFormSheetState extends ConsumerState<_StaffFormSheet> {
     super.initState();
     final e = widget.existing;
     _name = TextEditingController(text: e?.name ?? '');
-    _email = TextEditingController(text: e?.email ?? '');
     _phone = TextEditingController(text: e?.phone ?? '');
     _granted = {...?e?.permissions};
   }
@@ -397,7 +395,6 @@ class _StaffFormSheetState extends ConsumerState<_StaffFormSheet> {
   @override
   void dispose() {
     _name.dispose();
-    _email.dispose();
     _phone.dispose();
     super.dispose();
   }
@@ -459,7 +456,6 @@ class _StaffFormSheetState extends ConsumerState<_StaffFormSheet> {
       } else {
         await notifier.addEmployee(
           name: _name.text.trim(),
-          email: _email.text.trim(),
           phone: _normalizedPhone(),
           // Staff only. Captains are added under Captain Management.
           role: 'VENDOR_STAFF',
@@ -516,22 +512,6 @@ class _StaffFormSheetState extends ConsumerState<_StaffFormSheet> {
                   prefixIcon: const Icon(Icons.person_outline_rounded),
                 ),
                 validator: (value) => value == null || value.trim().isEmpty ? l10n.employeesNameRequired : null,
-              ),
-              SizedBox(height: 12.h),
-              TextFormField(
-                controller: _email,
-                enabled: !_isEdit,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  labelText: l10n.employeesEmailLabel,
-                  hintText: l10n.employeesEmailHint,
-                  prefixIcon: const Icon(Icons.email_outlined),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) return l10n.employeesEmailRequired;
-                  if (!value.contains('@') || !value.contains('.')) return l10n.employeesEmailInvalid;
-                  return null;
-                },
               ),
               SizedBox(height: 12.h),
               if (!_isEdit) ...[

@@ -806,16 +806,14 @@ class ApiVendorRepository implements VendorRepository {
   @override
   Future<EmployeeModel> createEmployee({
     required String name,
-    required String email,
     required String role,
-    String? phone,
+    required String phone,
     List<String>? permissions,
   }) async {
     final resp = await _dio.post('/vendor/employees', data: {
       'name': name,
-      'email': email,
       'role': role,
-      if (phone != null) 'phone': phone,
+      'phone': phone,
       if (permissions != null) 'permissions': permissions,
     });
     final json = _extractData(resp.data as Map<String, dynamic>);

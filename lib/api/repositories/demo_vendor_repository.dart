@@ -1022,9 +1022,8 @@ class DemoVendorRepository implements VendorRepository {
   @override
   Future<EmployeeModel> createEmployee({
     required String name,
-    required String email,
     required String role,
-    String? phone,
+    required String phone,
     List<String>? permissions,
   }) async {
     final emp = EmployeeModel(
@@ -1032,7 +1031,7 @@ class DemoVendorRepository implements VendorRepository {
       vendorId: 'demo_vendor_id',
       userId: 'usr_${DateTime.now().millisecondsSinceEpoch}',
       name: name,
-      email: email,
+      email: '',
       phone: phone,
       role: role,
       permissions: permissions ?? const [],
