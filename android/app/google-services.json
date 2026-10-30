@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1066034827137",
+    "project_id": "lndry-app-shotlin",
+    "storage_bucket": "lndry-app-shotlin.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066034827137:android:378b32dda23bba330ba280",
+        "android_client_info": {
+          "package_name": "com.lndry.Vender"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY8MyxE8gaVlclrx0qNoMcnbevKQsn0c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066034827137:android:dc6131e0aa3db39c0ba280",
+        "android_client_info": {
+          "package_name": "com.lndry.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY8MyxE8gaVlclrx0qNoMcnbevKQsn0c0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
